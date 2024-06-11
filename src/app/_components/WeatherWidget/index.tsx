@@ -49,26 +49,26 @@ function WeatherWidget() {
     return <p>Loading</p>
   }
   return (
-    <div>
-      <div className="flex justify-around">
-        <div>
-          <p>{(weatherData.temp - 273.15).toFixed(0)}°</p>
+    <div className="flex flex-col justify-between h-full">
+      <div className="flex justify-center">
+        <div className="flex justify-center items-end">
+          <p className="text-[48px] font-[700]">
+            {(weatherData.temp - 273.15).toFixed(0)}°
+          </p>
         </div>
-        <div>
-          <div>
-            <img alt={weatherData.desc} src={imgSrc} width={20} height={20} />
+        <div className="relative flex justify-center text-center">
+          <div className="relative">
+            <img alt={weatherData.desc} src={imgSrc} width={80} height={80} />
           </div>
-          <p>{weatherData.desc}</p>
+          <p className="absolute bottom-0 text-nowrap text-[14px] font-[600] text-neutral-600">
+            {weatherData.desc}
+          </p>
         </div>
       </div>
-
-      <span className="m-[10px]" />
-      <div className="flex justify-around">
-        <p>
-          최고: {(weatherData.temp_max - 273.15).toFixed(0)}° 최저:{' '}
-          {(weatherData.temp_min - 273.15).toFixed(0)}°
-        </p>
-        <p>습도: {weatherData.humidity}</p>
+      <div className="mt-[15px] flex gap-[5px] text-[14px] font-[600]">
+        <p>최고: {(weatherData.temp_max - 273.15).toFixed(0)}°</p>
+        <p>최저: {(weatherData.temp_min - 273.15).toFixed(0)}°</p>
+        <p>습도: {weatherData.humidity}%</p>
       </div>
     </div>
   )

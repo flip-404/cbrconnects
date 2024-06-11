@@ -16,14 +16,22 @@ import BusinessSwiper from './_components/BusinessSwiper'
 import WeatherWidget from './_components/WeatherWidget'
 import NotificationBar from './_components/NotificationBar'
 import TradingViewWidget from './_components/TradingViewWidget'
+import CalendarWidget from './_components/CalendarWidget'
 
 export default function Home() {
   return (
     <div className="mt-[20px] flex flex-col gap-[20px]">
       <div className="flex gap-[20px] justify-center">
-        <WeatherWidget />
-        <TradingViewWidget />
-        <NotificationBar />
+        <div className="px-[5px] py-[10px] bg-slate-100 rounded-lg">
+          <WeatherWidget />
+        </div>
+        <div className="relative px-[5px] py-[10px] bg-slate-100 rounded-lg">
+          <TradingViewWidget />
+        </div>
+        <div className="px-[5px] py-[10px] ">
+          <NotificationBar />
+        </div>
+        <div />
         <div />
       </div>
       <div className="flex justify-center">
@@ -44,12 +52,7 @@ export default function Home() {
           />
         </div>
         <div className="flex border items-center justify-center w-[400px] h-[400px]">
-          <Image
-            alt="진행 중인 이벤트"
-            src={TempImage}
-            width={400}
-            height={400}
-          />
+          <CalendarWidget />
         </div>
       </div>
       <div className="flex justify-center">

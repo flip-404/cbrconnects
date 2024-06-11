@@ -9,19 +9,13 @@ function SubRouteBar() {
         href="/community"
         className="text-[16px] font-[600] text-[] hover:bg-slate-100 rounded-xl py-[10px] px-[20px]"
       >
+        공지사항
+      </Link>
+      <Link
+        href="/community"
+        className="text-[16px] font-[600] text-[] hover:bg-slate-100 rounded-xl py-[10px] px-[20px]"
+      >
         자유게시판
-      </Link>
-      <Link
-        href="/community"
-        className="text-[16px] font-[600] text-[] hover:bg-slate-100 rounded-xl py-[10px] px-[20px]"
-      >
-        업소 홍보
-      </Link>
-      <Link
-        href="/community"
-        className="text-[16px] font-[600] text-[] hover:bg-slate-100 rounded-xl py-[10px] px-[20px]"
-      >
-        한인 전문 택배
       </Link>
       <Link
         href="/community"
@@ -33,7 +27,19 @@ function SubRouteBar() {
         href="/community"
         className="text-[16px] font-[600] text-[] hover:bg-slate-100 rounded-xl py-[10px] px-[20px]"
       >
-        최근글
+        호주뉴스
+      </Link>
+      <Link
+        href="/community"
+        className="text-[16px] font-[600] text-[] hover:bg-slate-100 rounded-xl py-[10px] px-[20px]"
+      >
+        예스이민
+      </Link>
+      <Link
+        href="/community"
+        className="text-[16px] font-[600] text-[] hover:bg-slate-100 rounded-xl py-[10px] px-[20px]"
+      >
+        한인 전문 택배
       </Link>
     </div>
   )

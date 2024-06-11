@@ -22,6 +22,20 @@ const Notifications = [
     createdAt: '2024.05.29',
     views: '3',
   },
+  {
+    id: 4,
+    title: '[예스이민 세미나 안내] 6월 12일/ 점수제 방식 변화 발표 분석',
+    author: '호주형',
+    createdAt: '2024.05.29',
+    views: '3',
+  },
+  {
+    id: 5,
+    title: '[예스이민 세미나 안내] 6월 12일/ 점수제 방식 변화 발표 분석',
+    author: '호주형',
+    createdAt: '2024.05.29',
+    views: '3',
+  },
 ]
 
 function RecentPostBar() {
