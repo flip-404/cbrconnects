@@ -12,10 +12,13 @@ function PostListCard({ lable, data }: PostListCardProps) {
         <tbody className="flex flex-col gap-[2px]">
           {data.map((val: any) => (
             <tr className="flex justify-between" key={val.id}>
-              <td className="w-[300px] text-left whitespace-nowrap overflow-hidden text-ellipsis">
-                {val.title}
+              <td className="flex items-center w-[300px] text-left whitespace-nowrap overflow-hidden text-ellipsis">
+                {val.title}{' '}
+                {val.date === '20분전' && (
+                  <span className="text-red-500 text-[11px]">&nbsp;[new]</span>
+                )}
               </td>
-              <td className="w-[100px] text-center whitespace-nowrap">
+              <td className="flex items-center justify-center w-[100px] text-center whitespace-nowrap ">
                 {val.date}
               </td>
             </tr>

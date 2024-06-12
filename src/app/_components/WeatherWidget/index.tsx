@@ -70,6 +70,11 @@ function WeatherWidget() {
         <p>최저: {(weatherData.temp_min - 273.15).toFixed(0)}°</p>
         <p>습도: {weatherData.humidity}%</p>
       </div>
+      <div>
+        <p className="text-center text-[14px] font-[600] text-[#3b4890]">
+          캔버라 날씨
+        </p>
+      </div>
     </div>
   )
 }

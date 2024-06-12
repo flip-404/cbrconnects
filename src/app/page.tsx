@@ -58,33 +58,22 @@ export default function Home() {
       <div className="flex justify-center">
         <BusinessSwiper />
       </div>
-      <div className="flex justify-center gap-[10px]">
-        <div className="flex justify-center w-[400px] ">
-          <PostListCard lable="🙋🏻 구인/구직" data={recruitmentData} />
-        </div>
-        <div className="flex justify-center w-[400px] ">
-          <PostListCard lable="🍎 쿼카마켓" data={recruitmentData} />
-        </div>
-        <div className="flex justify-center w-[400px] ">
-          <PostListCard lable="🏘️ 렌트/쉐어" data={recruitmentData} />
-        </div>
-      </div>
-
       <div className="flex justify-center">
-        <div className="flex justify-center w-[400px] ">
-          <PostListCard lable="📢 업소홍보" data={recruitmentData} />
-        </div>
-        <div className="flex justify-center w-[400px] ">
+        <div className="grid grid-cols-3 justify-items-center items-center gap-[20px]">
+          <PostListCard lable="📋 자유게시판" data={recruitmentData} />
+          <PostListCard lable="🚴🏻 동호회/모임" data={recruitmentData} />
+          <PostListCard lable="📰 호주뉴스" data={recruitmentData} />
           <PostListCard
-            lable="👩🏻‍🎓 예스이민 & 호주형 유학"
+            lable="🙋🏻 예스이민 & 호주형 유학"
             data={recruitmentData}
           />
-        </div>
-        <div className="flex justify-center w-[400px] ">
-          <PostListCard
-            lable="📦 한인 전문 택배 (항공, 해상)"
-            data={recruitmentData}
-          />
+          <PostListCard lable="📦 한인 전문 택배 " data={recruitmentData} />
+          <PostListCard lable="📢 업소 홍보" data={recruitmentData} />
+          <PostListCard lable="🔎 구인" data={recruitmentData} />
+          <PostListCard lable="🙋🏻 구직" data={recruitmentData} />
+          <PostListCard lable="🍎 쿼카마켓" data={recruitmentData} />
+          <PostListCard lable="🚗 렌트" data={recruitmentData} />
+          <PostListCard lable="🏘️ 쉐어" data={recruitmentData} />
         </div>
       </div>
     </div>
