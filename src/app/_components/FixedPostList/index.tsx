@@ -45,12 +45,16 @@ const Notifications = [
   },
 ]
 
-function NotificationBar() {
+type FixedPostListProps = {
+  label: string
+}
+
+function FixedPostList({ label }: FixedPostListProps) {
   return (
-    <div className="w-[400px] flex flex-col">
+    <div className="w-full flex flex-col">
       <div className="flex items-center justify-between text-[13px] font-[600]">
         <span className="flex gap-[4px] ">
-          고정글{' '}
+          {label}
           <span className="bg-red-500 py-[1px] px-[6px] rounded-xl text-white text-[12px] font-[700]">
             16
           </span>
@@ -85,4 +89,4 @@ function NotificationBar() {
   )
 }
 
-export default NotificationBar
+export default FixedPostList

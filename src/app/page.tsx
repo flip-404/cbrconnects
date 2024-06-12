@@ -14,7 +14,7 @@ import TempImage from './tempEventImg.png'
 import PostListCard from './_components/PostListCard'
 import BusinessSwiper from './_components/BusinessSwiper'
 import WeatherWidget from './_components/WeatherWidget'
-import NotificationBar from './_components/NotificationBar'
+import FixedPostList from './_components/FixedPostList'
 import TradingViewWidget from './_components/TradingViewWidget'
 import CalendarWidget from './_components/CalendarWidget'
 
@@ -29,7 +29,7 @@ export default function Home() {
           <TradingViewWidget />
         </div>
         <div className="px-[5px] py-[10px] ">
-          <NotificationBar />
+          <FixedPostList label="공지사항" />
         </div>
         <div />
         <div />
@@ -60,20 +60,11 @@ export default function Home() {
       </div>
       <div className="flex justify-center">
         <div className="grid grid-cols-3 justify-items-center items-center gap-[20px]">
-          <PostListCard lable="📋 자유게시판" data={recruitmentData} />
-          <PostListCard lable="🚴🏻 동호회/모임" data={recruitmentData} />
-          <PostListCard lable="📰 호주뉴스" data={recruitmentData} />
-          <PostListCard
-            lable="🙋🏻 예스이민 & 호주형 유학"
-            data={recruitmentData}
-          />
-          <PostListCard lable="📦 한인 전문 택배 " data={recruitmentData} />
-          <PostListCard lable="📢 업소 홍보" data={recruitmentData} />
-          <PostListCard lable="🔎 구인" data={recruitmentData} />
-          <PostListCard lable="🙋🏻 구직" data={recruitmentData} />
-          <PostListCard lable="🍎 쿼카마켓" data={recruitmentData} />
-          <PostListCard lable="🚗 렌트" data={recruitmentData} />
-          <PostListCard lable="🏘️ 쉐어" data={recruitmentData} />
+          <PostListCard lable="📋 커뮤니티" data={recruitmentData} />
+          <PostListCard lable="🚴🏻 업소록" data={recruitmentData} />
+          <PostListCard lable="📰 구인/구직" data={recruitmentData} />
+          <PostListCard lable="📦 쿼카마켓" data={recruitmentData} />
+          <PostListCard lable="📢 렌트/쉐어" data={recruitmentData} />
         </div>
       </div>
     </div>
