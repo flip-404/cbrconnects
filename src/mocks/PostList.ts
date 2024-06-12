@@ -2,6 +2,7 @@ import TempImage from '../app/tempEventImg.png'
 
 export const recruitmentData = [
   {
+    id: 1,
     author: '테스트 유저',
     view: 602,
     like: 32,
@@ -12,6 +13,7 @@ export const recruitmentData = [
     thumbnail: TempImage,
   },
   {
+    id: 2,
     author: '테스트 유저',
     view: 602,
     like: 32,
@@ -22,6 +24,7 @@ export const recruitmentData = [
     thumbnail: TempImage,
   },
   {
+    id: 3,
     author: '테스트 유저',
     view: 602,
     like: 32,
@@ -32,6 +35,7 @@ export const recruitmentData = [
     thumbnail: TempImage,
   },
   {
+    id: 4,
     author: '테스트 유저',
     view: 602,
     like: 32,
@@ -41,6 +45,7 @@ export const recruitmentData = [
     date: '1일전',
   },
   {
+    id: 5,
     author: '테스트 유저',
     view: 602,
     like: 32,
@@ -50,6 +55,7 @@ export const recruitmentData = [
     date: '1일전',
   },
   {
+    id: 6,
     author: '테스트 유저',
     view: 602,
     like: 32,
@@ -62,6 +68,7 @@ export const recruitmentData = [
 
 export const marketData = [
   {
+    id: 1,
     author: '테스트 유저',
     view: 602,
     like: 32,
@@ -72,6 +79,7 @@ export const marketData = [
     thumbnail: TempImage,
   },
   {
+    id: 2,
     author: '테스트 유저',
     view: 602,
     like: 32,
@@ -81,6 +89,7 @@ export const marketData = [
     date: '1일전',
   },
   {
+    id: 3,
     author: '테스트 유저',
     view: 602,
     like: 32,
@@ -90,6 +99,7 @@ export const marketData = [
     date: '1일전',
   },
   {
+    id: 4,
     author: '테스트 유저',
     view: 602,
     like: 32,
@@ -99,6 +109,7 @@ export const marketData = [
     date: '1일전',
   },
   {
+    id: 5,
     author: '테스트 유저',
     view: 602,
     like: 32,

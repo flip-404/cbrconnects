@@ -1,7 +1,7 @@
 'use client'
 
 function Business() {
-  return <></>
+  return <>dd</>
 }
 
 export default Business

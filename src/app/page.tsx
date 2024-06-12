@@ -1,15 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import {
-  recruitmentData,
-  marketData,
-  rentData,
-  businessData,
-  yesmigrationData,
-  parcelData,
-  clubData,
-} from '@/mocks/PostList'
+import { recruitmentData } from '@/mocks/PostList'
 import TempImage from './tempEventImg.png'
 import PostListCard from './_components/PostListCard'
 import BusinessSwiper from './_components/BusinessSwiper'

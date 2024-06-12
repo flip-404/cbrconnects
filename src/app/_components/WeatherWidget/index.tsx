@@ -17,7 +17,6 @@ function WeatherWidget() {
       try {
         const cityName = 'Incheon'
         const apiKey = process.env.NEXT_PUBLIC_WEATHER_KEY
-        console.log('apiKey:', apiKey)
         const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}`
 
         const response = await fetch(url)
