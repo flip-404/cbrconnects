@@ -1,6 +1,6 @@
 import TempImage from '../app/tempEventImg.png'
 
-export const recruitmentData = [
+export const jobData = [
   {
     id: 1,
     author: '테스트 유저',

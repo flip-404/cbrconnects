@@ -1,7 +1,7 @@
 'use client'
 
 import Image from 'next/image'
-import { recruitmentData } from '@/mocks/PostList'
+import { jobData } from '@/mocks/PostList'
 import TempImage from './tempEventImg.png'
 import PostListCard from './_components/PostListCard'
 import BusinessSwiper from './_components/BusinessSwiper'
@@ -21,7 +21,7 @@ export default function Home() {
           <TradingViewWidget />
         </div>
         <div className="px-[5px] py-[10px] ">
-          <FixedPostList label="공지사항" />
+          <FixedPostList href="/community/announcement" label="공지사항" />
         </div>
         <div />
         <div />
@@ -52,11 +52,11 @@ export default function Home() {
       </div>
       <div className="flex justify-center">
         <div className="grid grid-cols-3 justify-items-center items-center gap-[20px]">
-          <PostListCard lable="📋 커뮤니티" data={recruitmentData} />
-          <PostListCard lable="🚴🏻 업소록" data={recruitmentData} />
-          <PostListCard lable="📰 구인/구직" data={recruitmentData} />
-          <PostListCard lable="📦 쿼카마켓" data={recruitmentData} />
-          <PostListCard lable="📢 렌트/쉐어" data={recruitmentData} />
+          <PostListCard href="/community" lable="📋 커뮤니티" data={jobData} />
+          <PostListCard href="/business" lable="🚴🏻 업소록" data={jobData} />
+          <PostListCard href="/job" lable="📰 구인/구직" data={jobData} />
+          <PostListCard href="/market" lable="📦 쿼카마켓" data={jobData} />
+          <PostListCard href="/rentshare" lable="📢 렌트/쉐어" data={jobData} />
         </div>
       </div>
     </div>

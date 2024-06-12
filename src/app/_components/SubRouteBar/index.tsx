@@ -1,5 +1,6 @@
 'use client'
 
+import cls from '@/utils/cls'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 
@@ -8,7 +9,7 @@ type SubNav = { id: string; label: string; href: string }
 interface SubNavsType {
   community: SubNav[]
   business: SubNav[]
-  recruit: SubNav[]
+  job: SubNav[]
   market: SubNav[]
   rentshare: SubNav[]
 }
@@ -23,9 +24,9 @@ const subNavs: SubNavsType = {
     { id: 'parcel', label: '한인전문택배', href: '/community/parcel' },
   ],
   business: [],
-  recruit: [
-    { id: 'joboffer', label: '구인', href: '/recruit/joboffer' },
-    { id: 'jobsearch', label: '구직', href: '/recruit/jobsearch' },
+  job: [
+    { id: 'joboffer', label: '구인', href: '/job/joboffer' },
+    { id: 'jobsearch', label: '구직', href: '/job/jobsearch' },
   ],
   market: [],
   rentshare: [
@@ -49,7 +50,10 @@ function SubRouteBar() {
             <Link
               key={route.id}
               href={route.href}
-              className="text-[16px] font-[600] hover:bg-slate-100 rounded-xl py-[10px] px-[20px]"
+              className={cls(
+                pathname === route.href ? 'text-[#01A69F]' : '',
+                'text-[16px] font-[600] hover:bg-slate-100 rounded-xl py-[10px] px-[20px]',
+              )}
             >
               {route.label}
             </Link>

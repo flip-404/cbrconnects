@@ -1,13 +1,21 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 type PostListCardProps = {
+  href: string
   lable: string
   data: any
 }
 
-function PostListCard({ lable, data }: PostListCardProps) {
+function PostListCard({ href, lable, data }: PostListCardProps) {
   return (
     <div>
-      <span className="text-[24px] text-[#3b4890] font-[700]">{lable}</span>
+      <div className="flex items-center justify-between">
+        <a href={href} className="text-[24px] text-[#3b4890] font-[700]">
+          {lable}
+        </a>
+        <a href={href} className="text-[14px] text-gray-500">
+          바로가기 아이콘
+        </a>
+      </div>
       <table className="text-[13px] font-[700]">
         <tbody className="flex flex-col gap-[2px]">
           {data.map((val: any) => (

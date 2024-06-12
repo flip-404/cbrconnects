@@ -9,17 +9,20 @@ import Link from 'next/link'
 // import PostListItem from './PostListItem'
 
 type PostListProps = {
+  href: string
   label: string
   data: any
   displayAll: boolean
 }
 
-function PostList({ label, data, displayAll }: PostListProps) {
+function PostList({ href, label, data, displayAll }: PostListProps) {
   return (
     <div className="w-full">
       <div className="flex items-center justify-between">
-        <h2 className="text-[36px] text-[#3B4890] font-[700]">{label}</h2>
-        <Link href="/community/freeboard" className="text-[#868E96] font-[500]">
+        <Link href={href} className="text-[36px] text-[#3B4890] font-[700]">
+          {label}
+        </Link>
+        <Link href={href} className="text-[#868E96] font-[500]">
           화살표 아이콘
         </Link>
       </div>

@@ -1,6 +1,7 @@
 'use client'
 
 import cls from '@/utils/cls'
+import Link from 'next/link'
 
 const Notifications = [
   {
@@ -46,20 +47,23 @@ const Notifications = [
 ]
 
 type FixedPostListProps = {
+  href: string
   label: string
 }
 
-function FixedPostList({ label }: FixedPostListProps) {
+function FixedPostList({ href, label }: FixedPostListProps) {
   return (
     <div className="w-full flex flex-col">
       <div className="flex items-center justify-between text-[13px] font-[600]">
-        <span className="flex gap-[4px] ">
+        <Link href={href} className="flex gap-[4px] ">
           {label}
           <span className="bg-red-500 py-[1px] px-[6px] rounded-xl text-white text-[12px] font-[700]">
             16
           </span>
-        </span>{' '}
-        <span className="text-[#8d919c]">전체보기</span>
+        </Link>{' '}
+        <Link href={href} className="text-[#8d919c]">
+          전체보기
+        </Link>
       </div>
       <table className="text-[13px] font-[700]">
         <tbody>

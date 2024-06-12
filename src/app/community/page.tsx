@@ -8,16 +8,37 @@ function Community() {
   return (
     <div className="flex flex-col gap-[40px] items-center mt-[40px]">
       <div className="w-[1100px] grid grid-cols-2 justify-items-center items-center gap-[20px]">
-        <FixedPostList label="공지사항" />
-        <FixedPostList label="최근 게시물" />
+        <FixedPostList href="/community/announcement" label="공지사항" />
+        <FixedPostList href="/community/announcement" label="최근 게시물" />
       </div>
       <div className="flex justify-center">
         <div className="w-[1100px] grid grid-cols-2 justify-items-center items-center gap-[20px]">
-          <PostList label="자유게시판" data={marketData} displayAll={false} />
-          <PostList label="동호회/모임" data={marketData} displayAll={false} />
-          <PostList label="호주뉴스" data={marketData} displayAll={false} />
-          <PostList label="예스이민" data={marketData} displayAll={false} />
           <PostList
+            href="/community/freeboard"
+            label="자유게시판"
+            data={marketData}
+            displayAll={false}
+          />
+          <PostList
+            href="/community/club"
+            label="동호회/모임"
+            data={marketData}
+            displayAll={false}
+          />
+          <PostList
+            href="/community/news"
+            label="호주뉴스"
+            data={marketData}
+            displayAll={false}
+          />
+          <PostList
+            href="/community/yesmigration"
+            label="예스이민"
+            data={marketData}
+            displayAll={false}
+          />
+          <PostList
+            href="/community/parcel"
             label="한인 전문 택배"
             data={marketData}
             displayAll={false}
