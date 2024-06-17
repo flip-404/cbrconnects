@@ -7,11 +7,13 @@
 `캔버라커넥트`는 호주 캔버라에 거주하는 한인들을 위한 커뮤니티 웹사이트입니다. 이 웹사이트는 캔버라에 거주하는 한인들이 서로 소통하고 정보를 공유하며, 지역 사회에 쉽게 적응하고 통합할 수 있도록 돕는 것을 목표로 합니다. 이 프로젝트는 Next.JS, Next-Auth, SWR, Prisma, Typescript, Tailwind, Kakao API, Google API 등을 사용하여 개발됩니다.
 
 ### 기술 스택
-프론트엔드: Next.JS, Tailwind CSS, Typescript
-백엔드: Next.JS (API Routes), Prisma
-인증: Next-Auth
-데이터 페칭: SWR
-API 연동: Kakao API, Google API
+프론트엔드: Next.JS, Tailwind CSS, Typescript <br/>
+백엔드: Next.JS (API Routes), Prisma <br/>
+인증: Next-Auth <br/>
+데이터 페칭: SWR <br/>
+API 연동: Kakao API, Google API <br/>
+
+## Architecture
 
 ```mermaid
 graph TD
