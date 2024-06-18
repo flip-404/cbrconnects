@@ -31,7 +31,7 @@ const NavsData = [
       { id: 'search', label: '구직', href: '/job/search' },
     ],
   },
-  { label: '쿼카마켓', href: '/market', id: 'market' },
+  { label: '쿼카마켓', href: '/market', id: 'market', submenu: [] },
   {
     label: '렌트/쉐어',
     href: '/rentshare',

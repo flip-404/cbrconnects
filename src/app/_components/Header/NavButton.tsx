@@ -16,6 +16,8 @@ function NavButton({ label, href, submenu = [] }: NavsDataType) {
       onMouseLeave={() => setIsDropdownVisible(false)}
     >
       <Link
+        scroll={false}
+        prefetch
         href={href}
         className={cls(
           'text-xl font-[600] border-b-[3px] border-black ',

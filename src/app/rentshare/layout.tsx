@@ -2,10 +2,10 @@
 
 import LayoutByDepth from '@/layouts/LayoutByDepth'
 
-export default function CommunityLayout({
+export default function RentShareLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  return <LayoutByDepth href="/community">{children}</LayoutByDepth>
+  return <LayoutByDepth href="/rentshare">{children}</LayoutByDepth>
 }
