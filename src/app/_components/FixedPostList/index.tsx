@@ -51,7 +51,7 @@ type FixedPostListProps = {
   label: string
 }
 
-function FixedPostList({ href, label }: FixedPostListProps) {
+function FixedPostList({ href = '', label }: FixedPostListProps) {
   return (
     <div className="w-full flex flex-col">
       <div className="flex items-center justify-between text-[13px] font-[600]">

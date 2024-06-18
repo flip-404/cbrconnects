@@ -29,7 +29,10 @@ function PostList({ href, label, data, displayAll }: PostListProps) {
       </div>
       <div className="flex flex-col">
         {data.map((el: any) => (
-          <div className="flex justify-between items-center first:border-t px-[2px] py-[5px] border-b border-gray-200">
+          <div
+            key={el.id}
+            className="flex justify-between items-center first:border-t px-[2px] py-[5px] border-b border-gray-200"
+          >
             <div className="flex flex-col">
               <div>
                 <h3 className="text-[16px] font-[500]">
