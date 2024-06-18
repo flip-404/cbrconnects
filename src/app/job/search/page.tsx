@@ -1,7 +1,7 @@
 'use client'
 
-function JobSearch() {
+function Search() {
   return <div className="flex flex-col ">ㅇㅇㅇ</div>
 }
 
-export default JobSearch
+export default Search

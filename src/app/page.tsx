@@ -47,14 +47,19 @@ export default function Home() {
           <CalendarWidget />
         </div>
       </div>
-      <div className="flex justify-center">
-        <BusinessSwiper />
-      </div>
+
       <div className="flex justify-center">
         <div className="grid grid-cols-3 justify-items-center items-center gap-[20px]">
           <PostListCard href="/community" lable="🏙️ 커뮤니티" data={jobData} />
           <PostListCard href="/business" lable="🏘️ 업소록" data={jobData} />
           <PostListCard href="/job" lable="🙋🏻 구인/구직" data={jobData} />
+        </div>
+      </div>
+      <div className="flex justify-center">
+        <BusinessSwiper />
+      </div>
+      <div className="flex justify-center">
+        <div className="grid grid-cols-3 justify-items-center items-center gap-[20px]">
           <PostListCard href="/market" lable="🍎 쿼카마켓" data={jobData} />
           <PostListCard href="/rentshare" lable="🚗 렌트/쉐어" data={jobData} />
         </div>
