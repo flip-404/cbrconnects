@@ -1,7 +1,7 @@
 'use client'
 
 function Offer() {
-  return <div className="flex flex-col ">ㅇㅇㅇ</div>
+  return <div className="flex flex-col " />
 }
 
 export default Offer

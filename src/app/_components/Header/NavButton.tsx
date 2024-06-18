@@ -29,25 +29,21 @@ function NavButton({ label, href, submenu = [] }: NavsDataType) {
         {label}
       </Link>
       {submenu.length > 0 && isDropdownVisible && (
-        <div className="flex flex-col absolute left-1/2 transform -translate-x-1/2 top-full bg-white border shadow-lg ">
-          {submenu.map((item) => {
-            console.log('is It? ', pathname === item.href)
-
-            return (
-              <Link
-                scroll={false}
-                prefetch
-                key={item.id}
-                href={item.href}
-                className={cls(
-                  pathname === item.href ? 'text-[#01A69F]' : 'text-black',
-                  'font-600 text-nowrap min-w-0 px-4 py-2  hover:bg-gray-200 z-50',
-                )}
-              >
-                {item.label}
-              </Link>
-            )
-          })}
+        <div className="z-50 flex flex-col absolute left-1/2 transform -translate-x-1/2 top-full bg-white border shadow-lg ">
+          {submenu.map((item) => (
+            <Link
+              scroll={false}
+              prefetch
+              key={item.id}
+              href={item.href}
+              className={cls(
+                pathname === item.href ? 'text-[#01A69F]' : 'text-black',
+                'font-600 text-nowrap min-w-0 px-4 py-2  hover:bg-gray-200 z-50',
+              )}
+            >
+              {item.label}
+            </Link>
+          ))}
         </div>
       )}
     </div>
