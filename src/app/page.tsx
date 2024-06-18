@@ -7,7 +7,6 @@ import PostListCard from './_components/PostListCard'
 import BusinessSwiper from './_components/BusinessSwiper'
 import WeatherWidget from './_components/WeatherWidget'
 import FixedPostList from './_components/FixedPostList'
-import TradingViewWidget from './_components/TradingViewWidget'
 import CalendarWidget from './_components/CalendarWidget'
 
 export default function Home() {
@@ -16,9 +15,6 @@ export default function Home() {
       <div className="flex gap-[20px] justify-center">
         <div className="px-[5px] py-[10px] bg-slate-100 rounded-lg">
           <WeatherWidget />
-        </div>
-        <div className="relative px-[5px] py-[10px] bg-slate-100 rounded-lg">
-          <TradingViewWidget />
         </div>
         <div className="px-[5px] py-[10px] ">
           <FixedPostList href="/community/announcement" label="공지사항" />
