@@ -1,73 +1,152 @@
 'use client'
 
+import Link from 'next/link'
+import styled from 'styled-components'
+
+const SignInContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #f3f4f6;
+  padding: 16px;
+`
+
+const SignInForm = styled.div`
+  background-color: #ffffff;
+  padding: 32px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
+`
+
+const Title = styled.h2`
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 24px;
+  text-align: center;
+`
+
+const FormGroup = styled.div`
+  margin-bottom: 16px;
+`
+
+const Label = styled.label`
+  display: block;
+  color: #374151;
+  margin-bottom: 8px;
+`
+
+const Input = styled.input`
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #d1d5db;
+  border-radius: 4px;
+`
+
+const CheckboxContainer = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 24px;
+`
+
+const CheckboxLabel = styled.label`
+  color: #374151;
+  font-size: 0.875rem;
+  display: flex;
+  align-items: center;
+`
+
+const Checkbox = styled.input`
+  margin-right: 8px;
+`
+
+const StyledLink = styled(Link)`
+  color: #3b82f6;
+  font-size: 0.875rem;
+  margin: 0 4px;
+`
+
+const SocialLoginContainer = styled.div`
+  text-align: center;
+  margin-bottom: 24px;
+`
+
+const SocialLoginButton = styled.button<{
+  bgColor: string
+  hoverColor: string
+}>`
+  width: 100%;
+  background-color: ${(props) => props.bgColor};
+  color: #ffffff;
+  padding: 8px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: ${(props) => props.hoverColor};
+  }
+`
+
+const SignUpButton = styled.button`
+  width: 100%;
+  background-color: #3b82f6;
+  color: #ffffff;
+  padding: 8px;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: #2563eb;
+  }
+`
+
 function SignIn() {
   return (
-    <div className="flex flex-col items-center justify-center  bg-gray-100 p-4">
-      <div className="bg-white p-8 rounded shadow-md w-full max-w-sm">
-        <h2 className="text-2xl font-bold mb-6 text-center">로그인</h2>
+    <SignInContainer>
+      <SignInForm>
+        <Title>로그인</Title>
 
-        {/* 아이디 인풋 */}
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2" htmlFor="username">
-            아이디
-          </label>
-          <input
-            type="text"
-            id="username"
-            className="w-full p-2 border border-gray-300 rounded"
-          />
-        </div>
+        <FormGroup>
+          <Label htmlFor="username">아이디</Label>
+          <Input type="text" id="username" />
+        </FormGroup>
 
-        {/* 비밀번호 인풋 */}
-        <div className="mb-4">
-          <label className="block text-gray-700 mb-2" htmlFor="password">
-            비밀번호
-          </label>
-          <input
-            type="password"
-            id="password"
-            className="w-full p-2 border border-gray-300 rounded"
-          />
-        </div>
+        <FormGroup>
+          <Label htmlFor="password">비밀번호</Label>
+          <Input type="password" id="password" />
+        </FormGroup>
 
-        {/* 자동 로그인 체크박스와 링크 */}
-        <div className="flex items-center justify-between mb-6">
+        <CheckboxContainer>
           <div>
-            <input type="checkbox" id="rememberMe" className="mr-2" />
-            <label htmlFor="rememberMe" className="text-gray-700">
-              자동 로그인
-            </label>
+            <Checkbox type="checkbox" id="rememberMe" />
+            <CheckboxLabel htmlFor="rememberMe">자동 로그인</CheckboxLabel>
           </div>
           <div>
-            <a href="#" className="text-blue-500 text-sm">
-              아이디 찾기
-            </a>
-            <span className="mx-1">|</span>
-            <a href="#" className="text-blue-500 text-sm">
-              비밀번호 찾기
-            </a>
+            <StyledLink href="#">아이디 찾기</StyledLink>
+            <span>|</span>
+            <StyledLink href="#">비밀번호 찾기</StyledLink>
           </div>
-        </div>
+        </CheckboxContainer>
 
-        {/* 소셜 로그인 */}
-        <div className="text-center mb-6">
-          <p className="text-gray-500 mb-4">또는</p>
-          <button className="w-full bg-yellow-500 text-white py-2 rounded mb-2 hover:bg-yellow-600">
+        <SocialLoginContainer>
+          <p>또는</p>
+          <SocialLoginButton bgColor="#FFEB00" hoverColor="#FFC800">
             카카오로 간편로그인
-          </button>
-          <button className="w-full bg-red-500 text-white py-2 rounded mb-2 hover:bg-red-600">
+          </SocialLoginButton>
+          <SocialLoginButton bgColor="#EA4335" hoverColor="#CC3127">
             구글로 간편로그인
-          </button>
-        </div>
+          </SocialLoginButton>
+        </SocialLoginContainer>
 
-        {/* 회원가입 버튼 */}
-        <div className="text-center">
-          <button className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600">
-            회원가입
-          </button>
-        </div>
-      </div>
-    </div>
+        <SignUpButton>회원가입</SignUpButton>
+      </SignInForm>
+    </SignInContainer>
   )
 }
 

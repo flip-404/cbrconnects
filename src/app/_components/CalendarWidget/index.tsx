@@ -3,6 +3,7 @@ import Calendar, { CalendarProps } from 'react-calendar'
 import 'react-calendar/dist/Calendar.css'
 import '@/styles/calendar.css'
 import moment from 'moment'
+import styled from 'styled-components'
 
 function CalendarWidget() {
   const [selectedDate, setSelectedDate] = useState<CalendarProps['value']>(
@@ -31,13 +32,18 @@ function CalendarWidget() {
         value={selectedDate}
         minDetail="year" // 10년단위 년도 숨기기
       />
-      <div className="flex flex-col">
+      <EventContainer>
         <p>[이벤트] </p>
         <p>[이벤트] </p>
         <p>[이벤트] </p>
-      </div>
+      </EventContainer>
     </div>
   )
 }
 
 export default CalendarWidget
+
+const EventContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+`

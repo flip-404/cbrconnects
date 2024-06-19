@@ -1,7 +1,7 @@
 'use client'
 
-import cls from '@/utils/cls'
 import Link from 'next/link'
+import styled from 'styled-components'
 
 const Notifications = [
   {
@@ -53,44 +53,92 @@ type FixedPostListProps = {
 
 function FixedPostList({ href = '', label }: FixedPostListProps) {
   return (
-    <div className="w-full flex flex-col">
-      <div className="flex items-center justify-between text-[13px] font-[600]">
-        <Link href={href} className="flex gap-[4px] ">
+    <Container>
+      <div
+        style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          fontSize: '13px',
+          fontWeight: '600',
+        }}
+      >
+        <StyledLink href={href}>
           {label}
-          <span className="bg-red-500 py-[1px] px-[6px] rounded-xl text-white text-[12px] font-[700]">
-            16
-          </span>
-        </Link>{' '}
-        <Link href={href} className="text-[#8d919c]">
+          <span>16</span>
+        </StyledLink>
+        <StyledLink href={href} color="#8d919c">
           전체보기
-        </Link>
+        </StyledLink>
       </div>
-      <table className="text-[13px] font-[700]">
+      <NotificationsTable>
         <tbody>
           {Notifications.map((notification) => (
-            <tr className="flex justify-between" key={notification.id}>
-              <td className="flex gap-2 w-[300px] text-left whitespace-nowrap overflow-hidden text-ellipsis">
-                <span
-                  className={cls(
-                    'rounded-md px-[2px]',
-                    notification.postType === 'notification'
-                      ? 'border border-red-400 text-red-400 '
-                      : 'border border-green-400 text-green-400',
-                  )}
-                >
+            <tr key={notification.id}>
+              <FirstCell style={{}}>
+                <NotificationTypeTag postType={notification.postType}>
                   {notification.postType === 'notification' ? '공지' : '이벤트'}
-                </span>
+                </NotificationTypeTag>
                 {notification.title}
-              </td>
-              <td className="w-[100px] text-right whitespace-nowrap overflow-hidden text-ellipsis">
-                {notification.createdAt}
-              </td>
+              </FirstCell>
+              <SecondCell style={{}}>{notification.createdAt}</SecondCell>
             </tr>
           ))}
         </tbody>
-      </table>
-    </div>
+      </NotificationsTable>
+    </Container>
   )
 }
 
 export default FixedPostList
+
+const Container = styled.div``
+
+const StyledLink = styled(Link)<{ color?: string }>`
+  display: flex;
+  gap: 4px;
+  color: ${(props) => props.color};
+
+  span {
+    background-color: #f56565;
+    padding: 1px 6px;
+    border-radius: 0.5rem;
+    color: white;
+    font-size: 12px;
+    font-weight: 700;
+  }
+`
+
+const NotificationTypeTag = styled.span<{ postType: string }>`
+  border: 1px solid
+    ${(props) => (props.postType === 'notification' ? '#f56565' : '#38a169')};
+  color: ${(props) =>
+    props.postType === 'notification' ? '#f56565' : '#38a169'};
+  border-radius: 0.25rem;
+  padding: 2px;
+  font-size: 13px;
+  font-weight: 600;
+`
+
+const NotificationsTable = styled.table`
+  font-size: 13px;
+  font-weight: 700;
+`
+
+const FirstCell = styled.td`
+  display: flex;
+  gap: 2px;
+  width: 300px;
+  text-align: left;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`
+
+const SecondCell = styled.td`
+  width: 100px;
+  text-align: right;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`

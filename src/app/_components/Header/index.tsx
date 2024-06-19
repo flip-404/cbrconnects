@@ -1,15 +1,21 @@
 'use client'
 
+import styled from 'styled-components'
 import NavBar from './NavBar'
 import SearchBar from './SearchBar'
 
 function Header() {
   return (
-    <div className="flex flex-col ">
+    <Container>
       <SearchBar />
       <NavBar />
-    </div>
+    </Container>
   )
 }
 
 export default Header
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+`

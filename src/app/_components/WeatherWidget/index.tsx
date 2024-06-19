@@ -1,5 +1,62 @@
 import React, { useState, useEffect } from 'react'
-// import Image from 'next/image'
+import styled from 'styled-components'
+
+// Styled Components
+const WeatherWidgetContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+`
+
+const TemperatureContainer = styled.div`
+  display: flex;
+  justify-content: center;
+`
+
+const Temperature = styled.p`
+  font-size: 48px;
+  font-weight: 700;
+`
+
+const WeatherIconContainer = styled.div`
+  position: relative;
+  display: flex;
+  justify-content: center;
+  text-align: center;
+`
+
+const WeatherIcon = styled.img`
+  width: 80px;
+  height: 80px;
+`
+
+const WeatherDescription = styled.p`
+  position: absolute;
+  bottom: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #666;
+`
+
+const WeatherDetails = styled.div`
+  margin-top: 15px;
+  display: flex;
+  gap: 5px;
+  font-size: 14px;
+  font-weight: 600;
+`
+
+const WeatherDetail = styled.p`
+  color: #333;
+`
+
+const Location = styled.p`
+  text-align: center;
+  font-size: 14px;
+  font-weight: 600;
+  color: #3b4890;
+`
 
 function WeatherWidget() {
   const [weatherData, setWeatherData] = useState({
@@ -15,7 +72,7 @@ function WeatherWidget() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const cityName = 'Incheon'
+        const cityName = 'Incheon' // 변경 가능
         const apiKey = process.env.NEXT_PUBLIC_WEATHER_KEY
         const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}`
 
@@ -47,34 +104,29 @@ function WeatherWidget() {
   if (weatherData.loading) {
     return <p>Loading</p>
   }
+
   return (
-    <div className="flex flex-col justify-between h-full">
-      <div className="flex justify-center">
-        <div className="flex justify-center items-end">
-          <p className="text-[48px] font-[700]">
-            {(weatherData.temp - 273.15).toFixed(0)}°
-          </p>
-        </div>
-        <div className="relative flex justify-center text-center">
-          <div className="relative">
-            <img alt={weatherData.desc} src={imgSrc} width={80} height={80} />
-          </div>
-          <p className="absolute bottom-0 text-nowrap text-[14px] font-[600] text-neutral-600">
-            {weatherData.desc}
-          </p>
-        </div>
-      </div>
-      <div className="mt-[15px] flex gap-[5px] text-[14px] font-[600]">
-        <p>최고: {(weatherData.temp_max - 273.15).toFixed(0)}°</p>
-        <p>최저: {(weatherData.temp_min - 273.15).toFixed(0)}°</p>
-        <p>습도: {weatherData.humidity}%</p>
-      </div>
-      <div>
-        <p className="text-center text-[14px] font-[600] text-[#3b4890]">
-          캔버라 날씨
-        </p>
-      </div>
-    </div>
+    <WeatherWidgetContainer>
+      <TemperatureContainer>
+        <Temperature>{(weatherData.temp - 273.15).toFixed(0)}°</Temperature>
+
+        <WeatherIconContainer>
+          <WeatherIcon alt={weatherData.desc} src={imgSrc} />
+
+          <WeatherDescription>{weatherData.desc}</WeatherDescription>
+        </WeatherIconContainer>
+      </TemperatureContainer>
+      <WeatherDetails>
+        <WeatherDetail>
+          최고: {(weatherData.temp_max - 273.15).toFixed(0)}°
+        </WeatherDetail>
+        <WeatherDetail>
+          최저: {(weatherData.temp_min - 273.15).toFixed(0)}°
+        </WeatherDetail>
+        <WeatherDetail>습도: {weatherData.humidity}%</WeatherDetail>
+      </WeatherDetails>
+      <Location>캔버라 날씨</Location>
+    </WeatherWidgetContainer>
   )
 }
 

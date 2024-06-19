@@ -1,8 +1,8 @@
-import cls from '@/utils/cls'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import type { NavsDataType } from '@/mocks/NavsData'
+import styled, { css } from 'styled-components'
 
 function NavButton({ label, href, submenu = [] }: NavsDataType) {
   const pathname = usePathname()
@@ -10,44 +10,105 @@ function NavButton({ label, href, submenu = [] }: NavsDataType) {
   const [isDropdownVisible, setIsDropdownVisible] = useState(false)
 
   return (
-    <div
-      className="relative flex items-center h-full"
+    <NavButtonWrapper
       onMouseEnter={() => setIsDropdownVisible(true)}
       onMouseLeave={() => setIsDropdownVisible(false)}
     >
-      <Link
-        scroll={false}
-        prefetch
-        href={href}
-        className={cls(
-          'text-xl font-[600] border-b-[3px] border-black ',
-          isActive
-            ? ''
-            : 'border-transparent relative w-fit block after:block after:content-[""] after:absolute after:h-[3px] after:bg-black after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-center',
-        )}
-      >
+      <NavLink scroll={false} prefetch href={href} isActive={isActive}>
         {label}
-      </Link>
+      </NavLink>
+
       {submenu.length > 0 && isDropdownVisible && (
-        <div className="z-50 flex flex-col absolute left-1/2 transform -translate-x-1/2 top-full bg-white border shadow-lg ">
+        <DropdownMenu>
           {submenu.map((item) => (
-            <Link
+            <DropdownLink
               scroll={false}
               prefetch
               key={item.id}
               href={item.href}
-              className={cls(
-                pathname === item.href ? 'text-[#01A69F]' : 'text-black',
-                'font-600 text-nowrap min-w-0 px-4 py-2  hover:bg-gray-200 z-50',
-              )}
+              active={pathname === item.href}
             >
               {item.label}
-            </Link>
+            </DropdownLink>
           ))}
-        </div>
+        </DropdownMenu>
       )}
-    </div>
+    </NavButtonWrapper>
   )
 }
 
 export default NavButton
+
+const NavButtonWrapper = styled.div`
+  position: relative;
+  display: flex;
+  align-items: center;
+  height: 100%;
+
+  &:hover {
+    cursor: pointer;
+  }
+`
+
+const NavLink = styled(Link)<{ isActive: boolean }>`
+  font-size: 1.5rem; /* Corresponds to text-xl */
+  font-weight: 600;
+  border-bottom: 3px solid black;
+  color: inherit;
+  text-decoration: none;
+  position: relative;
+  display: inline-block;
+  transition: border-color 0.3s ease-in-out;
+
+  ${(props) =>
+    !props.isActive &&
+    css`
+      border-color: transparent;
+      &::after {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        width: 100%;
+        height: 3px;
+        background-color: black;
+        transform-origin: center;
+        transform: scaleX(0);
+        transition: transform 0.3s ease-in-out;
+      }
+      &:hover::after {
+        transform: scaleX(1);
+      }
+    `}
+
+  &:hover {
+    text-decoration: none;
+  }
+`
+
+const DropdownMenu = styled.div`
+  position: absolute;
+  display: flex;
+  flex-direction: column;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 100%;
+  background-color: white;
+  border: 1px solid #ccc;
+  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  z-index: 50;
+`
+
+const DropdownLink = styled(Link)<{ active: boolean }>`
+  z-index: 50;
+  font-size: 1rem;
+  font-weight: 600;
+  color: ${(props) => (props.active ? '#01A69F' : 'black')};
+  min-width: 0;
+  padding: 8px 16px;
+  white-space: nowrap;
+
+  &:hover {
+    background-color: #e5e5e5;
+  }
+`

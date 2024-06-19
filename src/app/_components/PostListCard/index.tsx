@@ -1,4 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+
+import styled from 'styled-components'
+
 type PostListCardProps = {
   href: string
   lable: string
@@ -7,34 +10,80 @@ type PostListCardProps = {
 
 function PostListCard({ href, lable, data }: PostListCardProps) {
   return (
-    <div>
-      <div className="flex items-center justify-between">
-        <a href={href} className="text-[24px] text-[#3b4890] font-[700]">
-          {lable}
-        </a>
-        <a href={href} className="text-[14px] text-gray-500">
-          바로가기 아이콘
-        </a>
-      </div>
-      <table className="text-[13px] font-[700]">
-        <tbody className="flex flex-col gap-[2px]">
+    <CardContainer>
+      <CardHeader>
+        <TitleLink href={href}>{lable}</TitleLink>
+        <ShortcutLink href={href}>바로가기 아이콘</ShortcutLink>
+      </CardHeader>
+      <Table>
+        <TableBody>
           {data.map((val: any) => (
-            <tr className="flex justify-between" key={val.id}>
-              <td className="flex items-center w-[300px] text-left whitespace-nowrap overflow-hidden text-ellipsis">
+            <TableRow key={val.id}>
+              <TableCell>
                 {val.title}{' '}
-                {val.date === '20분전' && (
-                  <span className="text-red-500 text-[11px]">&nbsp;[new]</span>
-                )}
-              </td>
-              <td className="flex items-center justify-center w-[100px] text-center whitespace-nowrap ">
-                {val.date}
-              </td>
-            </tr>
+                {val.date === '20분전' && <NewChip>&nbsp;[new]</NewChip>}
+              </TableCell>
+              <TableCell>{val.date}</TableCell>
+            </TableRow>
           ))}
-        </tbody>
-      </table>
-    </div>
+        </TableBody>
+      </Table>
+    </CardContainer>
   )
 }
 
 export default PostListCard
+
+// Styled Components
+const CardContainer = styled.div`
+  margin-bottom: 20px;
+`
+
+const CardHeader = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+`
+
+const TitleLink = styled.a`
+  font-size: 24px;
+  color: #3b4890;
+  font-weight: 700;
+  margin-right: 10px;
+`
+
+const ShortcutLink = styled.a`
+  font-size: 14px;
+  color: #666;
+`
+
+const Table = styled.table`
+  font-size: 13px;
+  font-weight: 700;
+`
+
+const TableBody = styled.tbody`
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+`
+
+const TableRow = styled.tr`
+  display: flex;
+  justify-content: space-between;
+`
+
+const TableCell = styled.td`
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  width: ${({ width }) => width};
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+`
+
+const NewChip = styled.span`
+  color: red;
+  font-size: 0.75rem;
+`

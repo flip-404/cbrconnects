@@ -1,7 +1,7 @@
 'use client'
 
 function Job() {
-  return <div className="flex flex-col " />
+  return <div />
 }
 
 export default Job
