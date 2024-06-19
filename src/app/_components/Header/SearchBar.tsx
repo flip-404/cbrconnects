@@ -1,16 +1,58 @@
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
+import styled from 'styled-components'
+
+const Container = styled.div`
+  display: flex;
+  height: 96px;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+`
+
+const StyledLink = styled(Link)`
+  font-size: 32px;
+  font-weight: 700;
+  color: #3b4890;
+  text-decoration: none;
+
+  span {
+    color: #3b4890;
+  }
+`
+
+const SearchContainer = styled.div`
+  display: flex;
+  gap: 10px;
+  padding: 10px;
+  border: 2px solid #e5e7eb; /* Tailwind의 테두리 색상 */
+  border-radius: 16px;
+  flex: 0.5;
+`
+
+const SearchInput = styled.input`
+  flex: 1;
+  outline: none;
+`
+
+const LoginButton = styled.button`
+  padding: 10px 20px;
+  border: 2px solid black;
+  border-radius: 100px;
+  font-size: 12px;
+  font-weight: 700;
+`
 
 function SearchBar() {
   const router = useRouter()
 
   return (
-    <div className="flex h-[96px] justify-center items-center gap-[20px]">
-      <Link className="text-[32px] font-[700]" href="/">
-        <span className="text-[#3B4890]">캔버라</span>
+    <Container>
+      <StyledLink href="/">
+        <span className="text-[]">캔버라</span>
         커넥트
-      </Link>
-      <div className="flex gap-[10px] px-[10px] py-[10px] border rounded-[16px] flex-[0.5]">
+      </StyledLink>
+      <SearchContainer>
         <svg
           width="24"
           height="24"
@@ -24,9 +66,12 @@ function SearchBar() {
             fill="#828282"
           />
         </svg>
-        <input className="outline-none flex-1 " placeholder="게시글 검색" />
-      </div>
-      <button
+        <SearchInput
+          className="outline-none flex-1 "
+          placeholder="게시글 검색"
+        />
+      </SearchContainer>
+      <LoginButton
         type="button"
         className="py-[10px] px-[20px] border-[2px] border-black rounded-[100px] text-[12px] font-[700]"
         onClick={() => {
@@ -34,8 +79,8 @@ function SearchBar() {
         }}
       >
         가입 · 로그인
-      </button>
-    </div>
+      </LoginButton>
+    </Container>
   )
 }
 
