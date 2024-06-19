@@ -6,6 +6,7 @@
 'use client'
 
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import styled from 'styled-components'
 
 type PostListProps = {
@@ -16,6 +17,8 @@ type PostListProps = {
 }
 
 function PostList({ href, label, data, displayAll }: PostListProps) {
+  const router = useRouter()
+
   return (
     <Container>
       <Header>
@@ -42,6 +45,17 @@ function PostList({ href, label, data, displayAll }: PostListProps) {
           </PostItem>
         ))}
       </PostContainer>
+      {displayAll && (
+        <WriteButtonWrapper>
+          <WriteButton
+            onClick={() => {
+              router.push('/write')
+            }}
+          >
+            글쓰기
+          </WriteButton>
+        </WriteButtonWrapper>
+      )}
     </Container>
   )
 }
@@ -94,6 +108,11 @@ const MetaInfo = styled.div`
   font-size: 14px;
 `
 
-const Thumbnail = styled.img`
-  // Your styles for the image here
+const Thumbnail = styled.img``
+
+const WriteButtonWrapper = styled.div`
+  display: flex;
+  justify-content: end;
 `
+
+const WriteButton = styled.button``

@@ -46,7 +46,11 @@ export default function Home() {
       <GridWrapper>
         <GridContainer>
           <PostListCard href="/community" lable="🏙️ 커뮤니티" data={jobData} />
-          <PostListCard href="/business" lable="🏘️ 업소록" data={jobData} />
+          <PostListCard
+            href="/community/business"
+            lable="🏘️ 업소록"
+            data={jobData}
+          />
           <PostListCard href="/job" lable="🙋🏻 구인/구직" data={jobData} />
         </GridContainer>
       </GridWrapper>

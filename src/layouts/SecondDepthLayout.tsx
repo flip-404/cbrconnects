@@ -33,7 +33,7 @@ export default function SecondDepthLayout({
           href={secondNavItem?.href}
           label={secondNavItem?.label}
           data={marketData}
-          displayAll={false}
+          displayAll
         />
       </CenteredContainer>
       {children}
@@ -52,7 +52,7 @@ const LayoutWrapper = styled.div`
 const Container = styled.div`
   width: 1100px;
   display: grid;
-  grid-template-columns: repeat(2, 1fr);
+  grid-template-columns: 1fr 1fr;
   justify-items: center;
   align-items: center;
   gap: 20px;
