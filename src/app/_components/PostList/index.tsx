@@ -74,11 +74,13 @@ const StyledLink = styled(Link)`
   font-size: 36px;
   color: #3b4890;
   font-weight: 700;
+  text-decoration: none;
 `
 
 const ArrowLink = styled(Link)`
   color: #868e96;
   font-weight: 500;
+  text-decoration: none;
 `
 
 const PostContainer = styled.div`

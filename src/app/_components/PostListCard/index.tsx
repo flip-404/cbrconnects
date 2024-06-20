@@ -1,6 +1,7 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 
 import styled from 'styled-components'
+import Link from 'next/link'
 
 type PostListCardProps = {
   href: string
@@ -45,16 +46,18 @@ const CardHeader = styled.div`
   justify-content: space-between;
 `
 
-const TitleLink = styled.a`
+const TitleLink = styled(Link)`
   font-size: 24px;
   color: #3b4890;
   font-weight: 700;
   margin-right: 10px;
+  text-decoration: none;
 `
 
-const ShortcutLink = styled.a`
+const ShortcutLink = styled(Link)`
   font-size: 14px;
   color: #666;
+  text-decoration: none;
 `
 
 const Table = styled.table`

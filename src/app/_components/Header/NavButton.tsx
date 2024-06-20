@@ -107,6 +107,7 @@ const DropdownLink = styled(Link)<{ active: boolean }>`
   min-width: 0;
   padding: 8px 16px;
   white-space: nowrap;
+  text-decoration: none;
 
   &:hover {
     background-color: #e5e5e5;

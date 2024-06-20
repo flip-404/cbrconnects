@@ -97,7 +97,8 @@ const Container = styled.div``
 const StyledLink = styled(Link)<{ color?: string }>`
   display: flex;
   gap: 4px;
-  color: ${(props) => props.color};
+  color: ${(props) => props.color || 'black'};
+  text-decoration: none;
 
   span {
     background-color: #f56565;

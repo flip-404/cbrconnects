@@ -74,11 +74,12 @@ const SearchContainer = styled.div`
 const SearchInput = styled.input`
   flex: 1;
   outline: none;
+  border: none;
 `
 
 const LoginButton = styled.button`
   padding: 10px 20px;
-  border: 2px solid black;
+  border: 1px solid black;
   border-radius: 100px;
   font-size: 12px;
   font-weight: 700;

@@ -1,7 +1,62 @@
 'use client'
 
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
 import styled from 'styled-components'
+
+function SignIn() {
+  const router = useRouter()
+
+  return (
+    <SignInContainer>
+      <SignInForm>
+        <Title>로그인</Title>
+
+        <FormGroup>
+          <Label htmlFor="username">아이디</Label>
+          <Input type="text" id="username" />
+        </FormGroup>
+
+        <FormGroup>
+          <Label htmlFor="password">비밀번호</Label>
+          <Input type="password" id="password" />
+        </FormGroup>
+
+        <CheckboxContainer>
+          <div>
+            <Checkbox type="checkbox" id="rememberMe" />
+            <CheckboxLabel htmlFor="rememberMe">자동 로그인</CheckboxLabel>
+          </div>
+          <div>
+            <StyledLink href="#">아이디 찾기</StyledLink>
+            <span>|</span>
+            <StyledLink href="#">비밀번호 찾기</StyledLink>
+          </div>
+        </CheckboxContainer>
+
+        <SocialLoginContainer>
+          <p>또는</p>
+          <SocialLoginButton bgColor="#FFEB00" hoverColor="#FFC800">
+            카카오로 간편로그인
+          </SocialLoginButton>
+          <SocialLoginButton bgColor="#EA4335" hoverColor="#CC3127">
+            구글로 간편로그인
+          </SocialLoginButton>
+        </SocialLoginContainer>
+
+        <SignUpButton
+          onClick={() => {
+            router.push('/signup')
+          }}
+        >
+          회원가입
+        </SignUpButton>
+      </SignInForm>
+    </SignInContainer>
+  )
+}
+
+export default SignIn
 
 const SignInContainer = styled.div`
   display: flex;
@@ -105,49 +160,3 @@ const SignUpButton = styled.button`
     background-color: #2563eb;
   }
 `
-
-function SignIn() {
-  return (
-    <SignInContainer>
-      <SignInForm>
-        <Title>로그인</Title>
-
-        <FormGroup>
-          <Label htmlFor="username">아이디</Label>
-          <Input type="text" id="username" />
-        </FormGroup>
-
-        <FormGroup>
-          <Label htmlFor="password">비밀번호</Label>
-          <Input type="password" id="password" />
-        </FormGroup>
-
-        <CheckboxContainer>
-          <div>
-            <Checkbox type="checkbox" id="rememberMe" />
-            <CheckboxLabel htmlFor="rememberMe">자동 로그인</CheckboxLabel>
-          </div>
-          <div>
-            <StyledLink href="#">아이디 찾기</StyledLink>
-            <span>|</span>
-            <StyledLink href="#">비밀번호 찾기</StyledLink>
-          </div>
-        </CheckboxContainer>
-
-        <SocialLoginContainer>
-          <p>또는</p>
-          <SocialLoginButton bgColor="#FFEB00" hoverColor="#FFC800">
-            카카오로 간편로그인
-          </SocialLoginButton>
-          <SocialLoginButton bgColor="#EA4335" hoverColor="#CC3127">
-            구글로 간편로그인
-          </SocialLoginButton>
-        </SocialLoginContainer>
-
-        <SignUpButton>회원가입</SignUpButton>
-      </SignInForm>
-    </SignInContainer>
-  )
-}
-
-export default SignIn
