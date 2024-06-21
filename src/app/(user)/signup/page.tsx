@@ -2,6 +2,7 @@
 
 import React from 'react'
 import styled from 'styled-components'
+import AgreementBox from './AgreementBox'
 
 const SignUpContainer = styled.div`
   display: flex;
@@ -49,6 +50,8 @@ function SignUp() {
   return (
     <SignUpContainer>
       <Title>회원가입</Title>
+      <AgreementBox />
+
       <KakaoButton>카카오로 회원가입하기</KakaoButton>
       <GoogleButton>구글로 회원가입하기</GoogleButton>
       <Divider>------또는------</Divider>

@@ -63,11 +63,11 @@ function FixedPostList({ href = '', label }: FixedPostListProps) {
           fontWeight: '600',
         }}
       >
-        <StyledLink href={href}>
+        <StyledLink scroll={false} href={href}>
           {label}
           <span>16</span>
         </StyledLink>
-        <StyledLink href={href} color="#8d919c">
+        <StyledLink scroll={false} href={href} color="#8d919c">
           전체보기
         </StyledLink>
       </div>

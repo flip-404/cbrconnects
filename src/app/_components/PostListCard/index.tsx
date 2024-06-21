@@ -13,8 +13,12 @@ function PostListCard({ href, lable, data }: PostListCardProps) {
   return (
     <CardContainer>
       <CardHeader>
-        <TitleLink href={href}>{lable}</TitleLink>
-        <ShortcutLink href={href}>바로가기 아이콘</ShortcutLink>
+        <TitleLink scroll={false} href={href}>
+          {lable}
+        </TitleLink>
+        <ShortcutLink scroll={false} href={href}>
+          바로가기 아이콘
+        </ShortcutLink>
       </CardHeader>
       <Table>
         <TableBody>

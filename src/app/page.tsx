@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import TempImage from './tempEventImg.png'
 import PostListCard from './_components/PostListCard'
 import BusinessSwiper from './_components/BusinessSwiper'
-import WeatherWidget from './_components/WeatherWidget'
+// import WeatherWidget from './_components/WeatherWidget'
 import FixedPostList from './_components/FixedPostList'
 import CalendarWidget from './_components/CalendarWidget'
 
@@ -14,9 +14,9 @@ export default function Home() {
   return (
     <Container>
       <WidgetWrapper>
-        <WidgetBox>
+        {/* <WidgetBox>
           <WeatherWidget />
-        </WidgetBox>
+        </WidgetBox> */}
         <div>
           <FixedPostList href="/post" label="공지사항" />
         </div>
@@ -81,11 +81,11 @@ const WidgetWrapper = styled.div`
   justify-content: center;
 `
 
-const WidgetBox = styled.div`
-  padding: 10px;
-  background-color: #cbd5e0;
-  border-radius: 0.5rem;
-`
+// const WidgetBox = styled.div`
+//   padding: 10px;
+//   background-color: #cbd5e0;
+//   border-radius: 0.5rem;
+// `
 
 const ImageWrapper = styled.div`
   display: flex;

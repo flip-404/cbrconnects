@@ -28,9 +28,13 @@ function SignIn() {
             <CheckboxLabel htmlFor="rememberMe">자동 로그인</CheckboxLabel>
           </div>
           <div>
-            <StyledLink href="#">아이디 찾기</StyledLink>
+            <StyledLink scroll={false} href="#">
+              아이디 찾기
+            </StyledLink>
             <span>|</span>
-            <StyledLink href="#">비밀번호 찾기</StyledLink>
+            <StyledLink scroll={false} href="#">
+              비밀번호 찾기
+            </StyledLink>
           </div>
         </CheckboxContainer>
 

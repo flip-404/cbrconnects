@@ -22,8 +22,12 @@ function PostList({ href, label, data, displayAll }: PostListProps) {
   return (
     <Container>
       <Header>
-        <StyledLink href={href}>{label}</StyledLink>
-        <ArrowLink href={href}>화살표 아이콘</ArrowLink>
+        <StyledLink scroll={false} href={href}>
+          {label}
+        </StyledLink>
+        <ArrowLink scroll={false} href={href}>
+          화살표 아이콘
+        </ArrowLink>
       </Header>
 
       <PostContainer>
