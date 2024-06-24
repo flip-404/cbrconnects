@@ -13,7 +13,7 @@ model User {
   email            String   @unique
   userName         String   @unique
   userId           String   @unique
-  userGroup        String
+  userGroup        String   @default("User")
   nickname         String
   password         String
   gender           String

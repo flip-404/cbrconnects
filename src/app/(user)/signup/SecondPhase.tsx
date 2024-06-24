@@ -1,29 +1,17 @@
 import AuthInput from '@/app/_components/AuthInput'
-import { useRef } from 'react'
+import { useRef, useState } from 'react'
 import styled from 'styled-components'
 import { useForm } from 'react-hook-form'
 import ErrorMessage from '@/app/_components/ErrorMessage'
+import type { SignUpForm } from '@/app/api/(user)/signup/route'
+import NotificationModal from '@/app/_components/NotificationModal'
+import { useRouter } from 'next/navigation'
 import AgreementBox from './AgreementBox'
 import BirthdaySelector from './BirthdaySelector'
 import GenderSelector from './GenderSelector'
 
-export interface SignUpForm {
-  userId: string
-  userName: string
-  email: string
-  password: string
-  passwordCheck: string
-  nickname: string
-  gender: string
-  description: string
-  dateOfBirth: {
-    year: string
-    month: string
-    day: string
-  }
-}
-
 function SecondPhase() {
+  const [modalStatus, setModalStatus] = useState<null | string>(null)
   const {
     register,
     handleSubmit,
@@ -35,15 +23,42 @@ function SecondPhase() {
   })
   const passwordRef = useRef<string>('')
   passwordRef.current = watch('password')
+  const router = useRouter()
 
   const onValid = async (formData: SignUpForm) => {
-    console.log('formData', formData)
+    const res = await fetch('/api/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({ ...formData }),
+    })
+    if (res.status === 200) {
+      setModalStatus('success')
+    } else {
+      setModalStatus('fail')
+    }
+
+    console.log()
+  }
+
+  const checkExists = async (value: string, type: string) => {
+    const response = await fetch(`/api/exists?${type}=${value}`)
+    const {
+      data: { exists },
+    } = await response.json()
+
+    return !exists
+  }
+
+  const handdleModalClose = () => {
+    router.back()
   }
 
   return (
     <StyledForm onSubmit={handleSubmit(onValid)}>
       <AuthInput
-        type="userName"
+        id="userName"
         placeholder="이름을 입력해주세요."
         label="이름"
         required
@@ -54,7 +69,7 @@ function SecondPhase() {
       />
       {errors.userName && <ErrorMessage message={errors.userName.message!} />}
       <AuthInput
-        type="email"
+        id="email"
         placeholder="이메일을 입력해주세요."
         label="이메일"
         required
@@ -65,22 +80,35 @@ function SecondPhase() {
               /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
             message: '올바른 이메일 주소를 입력하세요',
           },
+          validate: async (value) => {
+            return (
+              (await checkExists(value, 'email')) ||
+              '이미 존재하는 이메일입니다'
+            )
+          },
         })}
         isError={Boolean(errors.email)}
       />
       {errors.email && <ErrorMessage message={errors.email.message!} />}
       <AuthInput
-        type="userId"
+        id="userId"
         placeholder="아이디를 입력해주세요."
         label="아이디"
         required
         register={register('userId', {
           required: '아이디를 입력해 주세요',
+          validate: async (value) => {
+            return (
+              (await checkExists(value, 'userId')) ||
+              '이미 존재하는 아이디입니다'
+            )
+          },
         })}
         isError={Boolean(errors.userId)}
       />
       {errors.userId && <ErrorMessage message={errors.userId.message!} />}
       <AuthInput
+        id="password"
         type="password"
         placeholder="비밀번호를 입력해주세요."
         label="비밀번호"
@@ -108,7 +136,8 @@ function SecondPhase() {
         <ErrorMessage message={errors.password?.message} />
       )}
       <AuthInput
-        type="passwordCheck"
+        id="passwordCheck"
+        type="password"
         placeholder="비밀번호를 한번 더 입력해주세요."
         label="비밀번호 확인"
         required
@@ -124,12 +153,18 @@ function SecondPhase() {
         <ErrorMessage message={errors.passwordCheck.message!} />
       )}
       <AuthInput
-        type="nickname"
+        id="nickname"
         placeholder="사용하실 닉네임을 입력해주세요."
         label="닉네임"
         required
         register={register('nickname', {
           required: '닉네임을 입력해 주세요',
+          validate: async (value) => {
+            return (
+              (await checkExists(value, 'nickname')) ||
+              '이미 존재하는 닉네임입니다'
+            )
+          },
         })}
         isError={Boolean(errors.nickname)}
       />
@@ -137,7 +172,19 @@ function SecondPhase() {
       <GenderSelector control={control} errors={errors} />
       <BirthdaySelector control={control} errors={errors} />
       <AgreementBox />
-      <SignupButton>회원가입</SignupButton>
+      <SignupButton type="submit">회원가입</SignupButton>{' '}
+      {modalStatus === 'success' && (
+        <NotificationModal
+          onClose={handdleModalClose}
+          label="회원가입이 완료 되었습니다."
+        />
+      )}
+      {modalStatus === 'fail' && (
+        <NotificationModal
+          onClose={handdleModalClose}
+          label="회원가입에 실패 하였습니다.."
+        />
+      )}
     </StyledForm>
   )
 }

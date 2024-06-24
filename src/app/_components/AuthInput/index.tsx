@@ -3,7 +3,8 @@ import type { UseFormRegisterReturn } from 'react-hook-form'
 import styled from 'styled-components'
 
 type InputProps = {
-  type: string
+  type?: string
+  id: string
   placeholder?: string
   label?: string
   required?: boolean
@@ -12,7 +13,8 @@ type InputProps = {
 }
 
 function AuthInput({
-  type,
+  type = 'text',
+  id,
   placeholder,
   label,
   required,
@@ -21,13 +23,13 @@ function AuthInput({
 }: InputProps) {
   return (
     <Container className="flex relative">
-      <StyledLabel htmlFor={type}>{label}</StyledLabel>
+      <StyledLabel htmlFor={id}>{label}</StyledLabel>
       <StyledInput
-        id={type}
         type={type}
+        id={id}
         placeholder={placeholder}
         required={required}
-        isError={isError}
+        $isError={isError}
         {...register}
       />
     </Container>
@@ -48,11 +50,11 @@ const StyledLabel = styled.label`
   line-height: 1.875rem;
 `
 
-const StyledInput = styled.input<{ isError: boolean | undefined }>`
+const StyledInput = styled.input<{ $isError: boolean | undefined }>`
   display: flex;
   flex: 1;
   border: ${(props) =>
-    props.isError ? '1px solid #ED6464' : '1px solid #E4E7EC'};
+    props.$isError ? '1px solid #ED6464' : '1px solid #E4E7EC'};
   border-radius: 4px;
   background-color: #f9faff;
   padding: 0.75rem 1rem;

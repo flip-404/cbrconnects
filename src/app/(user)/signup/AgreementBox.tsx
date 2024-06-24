@@ -66,4 +66,6 @@ export default AgreementBox
 
 const Container = styled.div`
   background-color: #f8f9fb;
+  padding: 1rem;
+  border-radius: 10px;
 `
