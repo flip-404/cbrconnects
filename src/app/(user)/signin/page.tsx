@@ -3,6 +3,7 @@
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import styled from 'styled-components'
+import AuthInput from '@/app/_components/AuthInput'
 
 function SignIn() {
   const router = useRouter()
@@ -11,39 +12,42 @@ function SignIn() {
     <SignInContainer>
       <SignInForm>
         <Title>로그인</Title>
-
-        <FormGroup>
-          <Label htmlFor="username">아이디</Label>
-          <Input type="text" id="username" />
-        </FormGroup>
-
-        <FormGroup>
-          <Label htmlFor="password">비밀번호</Label>
-          <Input type="password" id="password" />
-        </FormGroup>
-
-        <CheckboxContainer>
-          <div>
-            <Checkbox type="checkbox" id="rememberMe" />
-            <CheckboxLabel htmlFor="rememberMe">자동 로그인</CheckboxLabel>
-          </div>
-          <div>
-            <StyledLink scroll={false} href="#">
-              아이디 찾기
-            </StyledLink>
-            <span>|</span>
-            <StyledLink scroll={false} href="#">
-              비밀번호 찾기
-            </StyledLink>
-          </div>
-        </CheckboxContainer>
+        <LoginForm>
+          <AuthInput
+            type="id"
+            label="아이디"
+            placeholder="아이디를 입력해 주세요"
+            required
+          />
+          <AuthInput
+            type="password"
+            label="비밀번호"
+            placeholder="비밀번호를 입력해 주세요"
+            required
+          />
+          <ExtraFeatureContainer>
+            <CheckboxWrapper>
+              <Checkbox type="checkbox" id="rememberMe" />
+              <CheckboxLabel htmlFor="rememberMe">자동 로그인</CheckboxLabel>
+            </CheckboxWrapper>
+            <div>
+              <StyledLink scroll={false} href="#">
+                아이디 찾기
+              </StyledLink>
+              <span>|</span>
+              <StyledLink scroll={false} href="#">
+                비밀번호 찾기
+              </StyledLink>
+            </div>
+          </ExtraFeatureContainer>
+        </LoginForm>
 
         <SocialLoginContainer>
           <p>또는</p>
-          <SocialLoginButton bgColor="#FFEB00" hoverColor="#FFC800">
+          <SocialLoginButton $bgColor="#FFEB00" $hoverColor="#FFC800">
             카카오로 간편로그인
           </SocialLoginButton>
-          <SocialLoginButton bgColor="#EA4335" hoverColor="#CC3127">
+          <SocialLoginButton $bgColor="#EA4335" $hoverColor="#CC3127">
             구글로 간편로그인
           </SocialLoginButton>
         </SocialLoginContainer>
@@ -68,7 +72,7 @@ const SignInContainer = styled.div`
   align-items: center;
   justify-content: center;
   background-color: #f3f4f6;
-  padding: 16px;
+  padding: 5rem 0rem;
 `
 
 const SignInForm = styled.div`
@@ -87,28 +91,22 @@ const Title = styled.h2`
   text-align: center;
 `
 
-const FormGroup = styled.div`
-  margin-bottom: 16px;
+const LoginForm = styled.form`
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 `
 
-const Label = styled.label`
-  display: block;
-  color: #374151;
-  margin-bottom: 8px;
-`
-
-const Input = styled.input`
-  width: 100%;
-  padding: 8px;
-  border: 1px solid #d1d5db;
-  border-radius: 4px;
-`
-
-const CheckboxContainer = styled.div`
+const ExtraFeatureContainer = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
   margin-bottom: 24px;
+`
+
+const CheckboxWrapper = styled.div`
+  display: flex;
+  align-items: center;
 `
 
 const CheckboxLabel = styled.label`
@@ -134,11 +132,11 @@ const SocialLoginContainer = styled.div`
 `
 
 const SocialLoginButton = styled.button<{
-  bgColor: string
-  hoverColor: string
+  $bgColor: string
+  $hoverColor: string
 }>`
   width: 100%;
-  background-color: ${(props) => props.bgColor};
+  background-color: ${(props) => props.$bgColor};
   color: #ffffff;
   padding: 8px;
   border-radius: 4px;
@@ -147,7 +145,7 @@ const SocialLoginButton = styled.button<{
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: ${(props) => props.hoverColor};
+    background-color: ${(props) => props.$hoverColor};
   }
 `
 

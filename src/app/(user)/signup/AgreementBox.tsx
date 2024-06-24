@@ -1,4 +1,7 @@
 import React, { useState } from 'react'
+import Agreement from '@/mocks/AgreementData'
+import styled from 'styled-components'
+import CheckBox from './CheckBox'
 
 function AgreementBox() {
   const [agreement, setAgreement] = useState({
@@ -6,21 +9,20 @@ function AgreementBox() {
     ageChecked: false,
     serviceChecked: false,
     privacyChecked: false,
-    marketingChecked: false,
   })
 
-  const handleCheckAll = (event) => {
+  const handleCheckAll = (event: React.ChangeEvent<HTMLInputElement>) => {
     const isChecked = event.target.checked
+
     setAgreement({
       allChecked: isChecked,
-      ageChecked: isChecked,
       serviceChecked: isChecked,
       privacyChecked: isChecked,
-      marketingChecked: agreement.marketingChecked,
+      ageChecked: isChecked,
     })
   }
 
-  const handleCheckboxChange = (event) => {
+  const handleCheckboxChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, checked } = event.target
     setAgreement((prevAgreement) => ({
       ...prevAgreement,
@@ -29,69 +31,39 @@ function AgreementBox() {
   }
 
   return (
-    <div>
-      <input
-        type="checkbox"
-        id="checkAll"
+    <Container>
+      <CheckBox
         name="checkAll"
         checked={agreement.allChecked}
-        onChange={handleCheckAll}
+        label="체크버튼 전체 동의"
+        handdleChange={handleCheckAll}
       />
-      <label htmlFor="checkAll">체크버튼 전체 동의</label>
-      <br />
-
-      <input
-        type="checkbox"
-        id="ageChecked"
+      <CheckBox
         name="ageChecked"
         checked={agreement.ageChecked}
-        onChange={handleCheckboxChange}
-        required
+        label="만 14세 이상입니다."
+        handdleChange={handleCheckboxChange}
       />
-      <label htmlFor="ageChecked">
-        체크버튼 [필수] 만 14세 이상 회원입니다.
-      </label>
-      <br />
-
-      <input
-        type="checkbox"
-        id="serviceChecked"
+      <CheckBox
         name="serviceChecked"
         checked={agreement.serviceChecked}
-        onChange={handleCheckboxChange}
-        required
+        label="서비스 이용약관에 동의합니다."
+        handdleChange={handleCheckboxChange}
+        fullText={Agreement.serviceAgreement}
       />
-      <label htmlFor="serviceChecked">
-        체크버튼 [필수] 클라썸 서비스 이용약관에 동의합니다.
-      </label>
-      <br />
-
-      <input
-        type="checkbox"
-        id="privacyChecked"
+      <CheckBox
         name="privacyChecked"
         checked={agreement.privacyChecked}
-        onChange={handleCheckboxChange}
-        required
+        label="개인정보 수집 및 이용에 동의합니다."
+        handdleChange={handleCheckboxChange}
+        fullText={Agreement.privacyAgreement}
       />
-      <label htmlFor="privacyChecked">
-        체크버튼 [필수] 클라썸 개인정보 수집 및 이용에 동의합니다.
-      </label>
-      <br />
-
-      <input
-        type="checkbox"
-        id="marketingChecked"
-        name="marketingChecked"
-        checked={agreement.marketingChecked}
-        onChange={handleCheckboxChange}
-      />
-      <label htmlFor="marketingChecked">
-        체크버튼 [선택] 마케팅 정보 수신에 동의합니다.
-      </label>
-      <br />
-    </div>
+    </Container>
   )
 }
 
 export default AgreementBox
+
+const Container = styled.div`
+  background-color: #f8f9fb;
+`

@@ -76,7 +76,7 @@ function FixedPostList({ href = '', label }: FixedPostListProps) {
           {Notifications.map((notification) => (
             <tr key={notification.id}>
               <FirstCell style={{}}>
-                <NotificationTypeTag postType={notification.postType}>
+                <NotificationTypeTag $postType={notification.postType}>
                   {notification.postType === 'notification' ? '공지' : '이벤트'}
                 </NotificationTypeTag>
                 {notification.title}
@@ -110,11 +110,11 @@ const StyledLink = styled(Link)<{ color?: string }>`
   }
 `
 
-const NotificationTypeTag = styled.span<{ postType: string }>`
+const NotificationTypeTag = styled.span<{ $postType: string }>`
   border: 1px solid
-    ${(props) => (props.postType === 'notification' ? '#f56565' : '#38a169')};
+    ${(props) => (props.$postType === 'notification' ? '#f56565' : '#38a169')};
   color: ${(props) =>
-    props.postType === 'notification' ? '#f56565' : '#38a169'};
+    props.$postType === 'notification' ? '#f56565' : '#38a169'};
   border-radius: 0.25rem;
   padding: 2px;
   font-size: 13px;

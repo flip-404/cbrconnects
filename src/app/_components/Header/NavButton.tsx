@@ -14,7 +14,7 @@ function NavButton({ label, href, submenu = [] }: NavsDataType) {
       onMouseEnter={() => setIsDropdownVisible(true)}
       onMouseLeave={() => setIsDropdownVisible(false)}
     >
-      <NavLink scroll={false} prefetch href={href} isActive={isActive}>
+      <NavLink scroll={false} prefetch href={href} $isActive={isActive}>
         {label}
       </NavLink>
 
@@ -50,7 +50,7 @@ const NavButtonWrapper = styled.div`
   }
 `
 
-const NavLink = styled(Link)<{ isActive: boolean }>`
+const NavLink = styled(Link)<{ $isActive: boolean }>`
   font-size: 1.5rem; /* Corresponds to text-xl */
   font-weight: 600;
   border-bottom: 3px solid black;
@@ -61,7 +61,7 @@ const NavLink = styled(Link)<{ isActive: boolean }>`
   transition: border-color 0.3s ease-in-out;
 
   ${(props) =>
-    !props.isActive &&
+    !props.$isActive &&
     css`
       border-color: transparent;
       &::after {

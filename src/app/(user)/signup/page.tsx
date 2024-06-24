@@ -1,20 +1,70 @@
 'use client'
 
-import React from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
-import AgreementBox from './AgreementBox'
+import SecondPhase from './SecondPhase'
+
+function SignUp() {
+  const [phase, setPhase] = useState(0)
+
+  const renderSignUpPhase = () => {
+    switch (phase) {
+      case 0:
+        return (
+          <SignUpForm>
+            <Title>회원가입</Title>
+            <KakaoButton>카카오로 회원가입하기</KakaoButton>
+            <GoogleButton>구글로 회원가입하기</GoogleButton>
+            <Divider>------또는------</Divider>
+            <IdPasswordButton onClick={() => setPhase(1)}>
+              ID/PASSWORD로 가입하기
+            </IdPasswordButton>
+          </SignUpForm>
+        )
+      case 1:
+        return (
+          <SignUpForm>
+            <Title>회원가입</Title>
+            <SecondPhase />
+          </SignUpForm>
+        )
+      default:
+        return <div />
+    }
+  }
+
+  return <SignUpContainer>{renderSignUpPhase()}</SignUpContainer>
+}
+
+export default SignUp
 
 const SignUpContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 50px;
+  justify-content: center;
+  background-color: #f3f4f6;
+  padding: 5rem 0rem;
 `
 
-const Title = styled.h1`
-  margin-bottom: 20px;
+const SignUpForm = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: #ffffff;
+  padding: 32px;
+  border-radius: 8px;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+  width: 100%;
+  max-width: 400px;
 `
 
+const Title = styled.h2`
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin-bottom: 24px;
+  text-align: center;
+`
 const Button = styled.button`
   width: 200px;
   padding: 10px;
@@ -45,19 +95,3 @@ const Divider = styled.div`
   font-size: 14px;
   color: #aaa;
 `
-
-function SignUp() {
-  return (
-    <SignUpContainer>
-      <Title>회원가입</Title>
-      <AgreementBox />
-
-      <KakaoButton>카카오로 회원가입하기</KakaoButton>
-      <GoogleButton>구글로 회원가입하기</GoogleButton>
-      <Divider>------또는------</Divider>
-      <IdPasswordButton>ID/PASSWORD로 가입하기</IdPasswordButton>
-    </SignUpContainer>
-  )
-}
-
-export default SignUp
