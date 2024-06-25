@@ -2,7 +2,7 @@ import styled from 'styled-components'
 
 type NotificationModalProps = {
   label: string
-  onClose: () => void
+  onClose?: () => void
 }
 
 function NotificationModal({ label, onClose }: NotificationModalProps) {
@@ -12,7 +12,7 @@ function NotificationModal({ label, onClose }: NotificationModalProps) {
       <ModalContainer>
         <ContentWrapper>
           <Label>{label}</Label>
-          <CloseButton onClick={onClose}>닫기</CloseButton>
+          {onClose && <CloseButton onClick={onClose}>닫기</CloseButton>}
         </ContentWrapper>
       </ModalContainer>
     </>

@@ -1,11 +1,13 @@
 'use client'
 
+import { useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import styled from 'styled-components'
 
 function SearchBar() {
   const router = useRouter()
+  const { data: session } = useSession()
 
   return (
     <Container>
@@ -29,14 +31,19 @@ function SearchBar() {
         </svg>
         <SearchInput placeholder="게시글 검색" />
       </SearchContainer>
-      <LoginButton
-        type="button"
-        onClick={() => {
-          router.push('/signin')
-        }}
-      >
-        가입 · 로그인
-      </LoginButton>
+
+      {session && session.user ? (
+        `${session.user.userName}님 안녕하세요`
+      ) : (
+        <LoginButton
+          type="button"
+          onClick={() => {
+            router.push('/signin')
+          }}
+        >
+          가입 · 로그인
+        </LoginButton>
+      )}
     </Container>
   )
 }

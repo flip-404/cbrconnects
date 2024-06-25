@@ -4,6 +4,7 @@ import StyledComponentsRegistry from '@/libs/registry'
 import './globals.css'
 import Header from './_components/Header'
 import Footer from './_components/Footer'
+import Providers from './_components/Providers'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -21,10 +22,13 @@ export default function RootLayout({
     <html lang="ko">
       <body className={inter.className}>
         <StyledComponentsRegistry>
-          <Header />
-          {children}
-          <Footer />
+          <Providers>
+            <Header />
+            {children}
+            <Footer />
+          </Providers>
         </StyledComponentsRegistry>
+        ;
       </body>
     </html>
   )

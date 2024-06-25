@@ -26,6 +26,8 @@ function SecondPhase() {
   const router = useRouter()
 
   const onValid = async (formData: SignUpForm) => {
+    setModalStatus('loading')
+
     const res = await fetch('/api/signup', {
       method: 'POST',
       headers: {
@@ -38,8 +40,6 @@ function SecondPhase() {
     } else {
       setModalStatus('fail')
     }
-
-    console.log()
   }
 
   const checkExists = async (value: string, type: string) => {
@@ -183,6 +183,12 @@ function SecondPhase() {
         <NotificationModal
           onClose={handdleModalClose}
           label="회원가입에 실패 하였습니다.."
+        />
+      )}
+      {modalStatus === 'loading' && (
+        <NotificationModal
+          onClose={handdleModalClose}
+          label="회원가입 중 입니다. 잠시만 기다려주세요"
         />
       )}
     </StyledForm>

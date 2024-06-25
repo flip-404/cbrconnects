@@ -23,29 +23,21 @@ async function POST(request: Request) {
   const { year, month, day } = body.dateOfBirth
   const dateOfBirth = new Date(`${year}-${month}-${day}`)
 
-  try {
-    const user = await prisma.user.create({
-      data: {
-        userId: body.userId,
-        userName: body.userName,
-        email: body.email,
-        password: await bcrypt.hash(body.password, 10),
-        nickname: body.nickname,
-        gender: body.gender,
-        dateOfBirth,
-      },
-    })
-    const { password, ...result } = user
-    return new Response(JSON.stringify(result))
-  } catch (error) {
-    return new Response(
-      JSON.stringify({
-        error: (error as Error).message,
-        stack: (error as Error).stack,
-      }),
-      { status: 500 },
-    )
-  }
+  const user = await prisma.user.create({
+    data: {
+      userId: body.userId,
+      userName: body.userName,
+      email: body.email,
+      password: await bcrypt.hash(body.password, 10),
+      nickname: body.nickname,
+      gender: body.gender,
+      dateOfBirth,
+    },
+  })
+  const { password, ...result } = user
+
+  if (user) return new Response(JSON.stringify(result))
+  return new Response(JSON.stringify(null))
 }
 
 export { POST }

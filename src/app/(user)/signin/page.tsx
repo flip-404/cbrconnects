@@ -7,12 +7,10 @@ import AuthInput from '@/app/_components/AuthInput'
 import { useForm } from 'react-hook-form'
 import { SignInForm } from '@/app/api/(user)/signin/route'
 import ErrorMessage from '@/app/_components/ErrorMessage'
-import NotificationModal from '@/app/_components/NotificationModal'
-import { useState } from 'react'
+import { signIn } from 'next-auth/react'
 
 function SignIn() {
   const router = useRouter()
-  const [modalOpen, setModalOpen] = useState(false)
   const {
     register,
     handleSubmit,
@@ -22,22 +20,13 @@ function SignIn() {
   })
 
   const onValid = async (formData: SignInForm) => {
-    const res = await fetch('/api/signin', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({ ...formData }),
+    console.log('뭐여')
+    await signIn('credentials', {
+      userId: formData.userId,
+      password: formData.password,
+      redirect: true,
+      callbackUrl: '/',
     })
-    if (res.status !== 200) {
-      setModalOpen(true)
-    } else {
-      router.back()
-    }
-  }
-
-  const handdleModalClose = () => {
-    router.back()
   }
 
   return (
@@ -89,6 +78,7 @@ function SignIn() {
               </StyledLink>
             </div>
           </ExtraFeatureContainer>
+          <CredentialLoginButton type="submit">로그인</CredentialLoginButton>
         </LoginForm>
 
         <SocialLoginContainer>
@@ -109,12 +99,6 @@ function SignIn() {
           회원가입
         </SignUpButton>
       </SignInBox>
-      {modalOpen && (
-        <NotificationModal
-          onClose={handdleModalClose}
-          label="로그인에 실패 하였습니다.."
-        />
-      )}
     </SignInContainer>
   )
 }
@@ -186,6 +170,16 @@ const SocialLoginContainer = styled.div`
   margin-bottom: 24px;
 `
 
+const CredentialLoginButton = styled.button`
+  width: 100%;
+  font-weight: 700;
+
+  padding: 8px;
+  border-radius: 4px;
+  margin-bottom: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+`
 const SocialLoginButton = styled.button<{
   $bgColor: string
   $hoverColor: string

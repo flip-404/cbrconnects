@@ -5,13 +5,26 @@ const handler = NextAuth({
   providers: [
     CredentialsProvider({
       name: 'Credentials',
-
       credentials: {
-        username: { label: 'Username', type: 'text', placeholder: 'jsmith' },
-        password: { label: 'Password', type: 'password' },
+        userId: {
+          label: '아이디',
+          type: 'text',
+        },
+        password: { label: '비밀번호', type: 'password' },
       },
+
       async authorize(credentials, req) {
-        const user = { id: '1', name: 'J Smith', email: 'jsmith@example.com' }
+        const res = await fetch(`${process.env.NEXTAUTH_URL}/api/signin`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            userId: credentials?.userId,
+            password: credentials?.password,
+          }),
+        })
+        const user = await res.json()
 
         if (user) {
           return user
@@ -21,6 +34,21 @@ const handler = NextAuth({
       },
     }),
   ],
+  pages: {
+    signIn: '/signin',
+  },
+  callbacks: {
+    async jwt({ token, user }) {
+      console.log('token', token)
+      console.log('user', user)
+      return { ...token, ...user }
+    },
+
+    async session({ session, token }) {
+      session.user = token as any
+      return session
+    },
+  },
 })
 
 export { handler as GET, handler as POST }
