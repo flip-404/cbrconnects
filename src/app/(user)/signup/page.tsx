@@ -38,7 +38,7 @@ function SignUp() {
 
 export default SignUp
 
-const SignUpContainer = styled.div`
+export const SignUpContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -47,7 +47,7 @@ const SignUpContainer = styled.div`
   padding: 5rem 0rem;
 `
 
-const SignUpForm = styled.div`
+export const SignUpForm = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -59,7 +59,7 @@ const SignUpForm = styled.div`
   max-width: 400px;
 `
 
-const Title = styled.h2`
+export const Title = styled.h2`
   font-size: 1.5rem;
   font-weight: bold;
   margin-bottom: 24px;

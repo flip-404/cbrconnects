@@ -10,7 +10,12 @@ import AgreementBox from './AgreementBox'
 import BirthdaySelector from './BirthdaySelector'
 import GenderSelector from './GenderSelector'
 
-function SecondPhase() {
+function SecondPhase({
+  defaultValues,
+}: {
+  defaultValues?: Partial<SignUpForm>
+}) {
+  console.log('defaultValues', defaultValues)
   const [modalStatus, setModalStatus] = useState<null | string>(null)
   const {
     register,
@@ -20,6 +25,7 @@ function SecondPhase() {
     formState: { errors },
   } = useForm<SignUpForm>({
     mode: 'onBlur',
+    defaultValues: defaultValues || {},
   })
   const passwordRef = useRef<string>('')
   passwordRef.current = watch('password')
@@ -58,6 +64,7 @@ function SecondPhase() {
   return (
     <StyledForm onSubmit={handleSubmit(onValid)}>
       <AuthInput
+        disabled={!!defaultValues?.userName}
         id="userName"
         placeholder="이름을 입력해주세요."
         label="이름"

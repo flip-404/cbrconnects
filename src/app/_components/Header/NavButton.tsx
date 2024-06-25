@@ -26,7 +26,7 @@ function NavButton({ label, href, submenu = [] }: NavsDataType) {
               prefetch
               key={item.id}
               href={item.href}
-              active={pathname === item.href}
+              active={pathname === item.href ? 'avtive' : ''}
             >
               {item.label}
             </DropdownLink>
@@ -99,11 +99,11 @@ const DropdownMenu = styled.div`
   z-index: 50;
 `
 
-const DropdownLink = styled(Link)<{ active: boolean }>`
+const DropdownLink = styled(Link)<{ active: string }>`
   z-index: 50;
   font-size: 1rem;
   font-weight: 600;
-  color: ${(props) => (props.active ? '#01A69F' : 'black')};
+  color: ${(props) => (props.active === 'active' ? '#01A69F' : 'black')};
   min-width: 0;
   padding: 8px 16px;
   white-space: nowrap;

@@ -7,7 +7,8 @@ import AuthInput from '@/app/_components/AuthInput'
 import { useForm } from 'react-hook-form'
 import { SignInForm } from '@/app/api/(user)/signin/route'
 import ErrorMessage from '@/app/_components/ErrorMessage'
-import { signIn } from 'next-auth/react'
+import { getProviders, signIn } from 'next-auth/react'
+import { useEffect, useState } from 'react'
 
 function SignIn() {
   const router = useRouter()
@@ -19,11 +20,27 @@ function SignIn() {
     mode: 'onBlur',
   })
 
-  const onValid = async (formData: SignInForm) => {
-    console.log('뭐여')
+  const [providers, setProviders] = useState(null)
+
+  useEffect(() => {
+    ;(async () => {
+      const res: any = await getProviders()
+      console.log(res)
+      setProviders(res)
+    })()
+  }, [])
+
+  const handdleCredentialsLogin = async (formData: SignInForm) => {
     await signIn('credentials', {
       userId: formData.userId,
       password: formData.password,
+      redirect: true,
+      callbackUrl: '/',
+    })
+  }
+
+  const handleKakao = async () => {
+    await signIn('kakao', {
       redirect: true,
       callbackUrl: '/',
     })
@@ -33,7 +50,7 @@ function SignIn() {
     <SignInContainer>
       <SignInBox>
         <Title>로그인</Title>
-        <LoginForm onSubmit={handleSubmit(onValid)}>
+        <LoginForm onSubmit={handleSubmit(handdleCredentialsLogin)}>
           <div>
             <AuthInput
               id="id"
@@ -83,7 +100,11 @@ function SignIn() {
 
         <SocialLoginContainer>
           <p>또는</p>
-          <SocialLoginButton $bgColor="#FFEB00" $hoverColor="#FFC800">
+          <SocialLoginButton
+            onClick={handleKakao}
+            $bgColor="#FFEB00"
+            $hoverColor="#FFC800"
+          >
             카카오로 간편로그인
           </SocialLoginButton>
           <SocialLoginButton $bgColor="#EA4335" $hoverColor="#CC3127">

@@ -3,6 +3,7 @@ import type { UseFormRegisterReturn } from 'react-hook-form'
 import styled from 'styled-components'
 
 type InputProps = {
+  disabled?: boolean
   type?: string
   id: string
   placeholder?: string
@@ -13,6 +14,7 @@ type InputProps = {
 }
 
 function AuthInput({
+  disabled = false,
   type = 'text',
   id,
   placeholder,
@@ -25,6 +27,7 @@ function AuthInput({
     <Container className="flex relative">
       <StyledLabel htmlFor={id}>{label}</StyledLabel>
       <StyledInput
+        disabled={disabled}
         type={type}
         id={id}
         placeholder={placeholder}
@@ -50,13 +53,17 @@ const StyledLabel = styled.label`
   line-height: 1.875rem;
 `
 
-const StyledInput = styled.input<{ $isError: boolean | undefined }>`
+const StyledInput = styled.input<{
+  disabled: boolean
+  $isError: boolean | undefined
+}>`
   display: flex;
   flex: 1;
   border: ${(props) =>
     props.$isError ? '1px solid #ED6464' : '1px solid #E4E7EC'};
   border-radius: 4px;
-  background-color: #f9faff;
+  background-color: ${(props) => (props.disabled ? '#efefef' : '#f9faff')};
+  font-weight: ${(props) => (props.disabled ? '700' : '#f9faff')};
   padding: 0.75rem 1rem;
 
   ::placeholder {
