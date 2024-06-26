@@ -25,7 +25,11 @@ function SignUp() {
         return (
           <SignUpForm>
             <Title>회원가입</Title>
-            <SecondPhase />
+            <SecondPhase
+              defaultValues={{
+                authType: 'credentials',
+              }}
+            />
           </SignUpForm>
         )
       default:

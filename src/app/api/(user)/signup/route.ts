@@ -14,6 +14,9 @@ export interface SignUpForm {
     month: string
     day: string
   }
+  authType: 'credentials' | 'kakao' | 'google'
+  kakaoId: string | null
+  googleId: string | null
 }
 
 type RequestBody = SignUpForm
@@ -32,6 +35,8 @@ async function POST(request: Request) {
       nickname: body.nickname,
       gender: body.gender,
       dateOfBirth,
+      kakaoId: body.authType === 'kakao' ? body.kakaoId : null,
+      googleId: body.authType === 'google' ? body.googleId : null,
     },
   })
   const { password, ...result } = user

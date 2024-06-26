@@ -33,13 +33,12 @@ function SecondPhase({
 
   const onValid = async (formData: SignUpForm) => {
     setModalStatus('loading')
-
     const res = await fetch('/api/signup', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ ...formData }),
+      body: JSON.stringify({ ...formData, authType: defaultValues?.authType }),
     })
     if (res.status === 200) {
       setModalStatus('success')

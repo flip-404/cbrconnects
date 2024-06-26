@@ -13,7 +13,7 @@ import CalendarWidget from './_components/CalendarWidget'
 
 export default function Home() {
   const data = useSession()
-  console.log('session data', data)
+  console.log('data session', data)
 
   return (
     <Container>

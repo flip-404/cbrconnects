@@ -8,20 +8,26 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+enum AuthType {
+  credentials
+  kakao
+  google
+}
+
 model User {
-  id                       Int      @id @default(autoincrement())
-  email                    String   @unique
-  userName                 String
-  userId                   String   @unique
-  userGroup                String   @default("User")
-  nickname                 String
-  password                 String
-  gender                   String
-  dateOfBirth              DateTime
-  registrationDate         DateTime @default(now())
-  postCount                Int      @default(0)
-  commentCount             Int      @default(0)
-  kakaoId                  String?  @unique
-  googleId                 String?  @unique
-  refresh_token_expires_in Int      @default(3600)
+  id               Int      @id @default(autoincrement())
+  email            String   @unique
+  userName         String
+  userId           String   @unique
+  userGroup        String   @default("User")
+  nickname         String   @unique
+  password         String
+  gender           String
+  dateOfBirth      DateTime
+  registrationDate DateTime @default(now())
+  postCount        Int      @default(0)
+  commentCount     Int      @default(0)
+  authType         AuthType
+  kakaoId          String?  @unique
+  googleId         String?  @unique
 }
