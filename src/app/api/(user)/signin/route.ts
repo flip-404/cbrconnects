@@ -1,10 +1,13 @@
 import { signJwtAccessToken } from '@/libs/jwt'
 import prisma from '@/libs/prisma'
+import { User } from '@prisma/client'
 import * as bcrypt from 'bcrypt'
 
 export interface SignInForm {
   userId: string
+  userName: string
   password: string
+  email: string
   authType: string
   kakaoId?: string
   googleId?: string
@@ -12,40 +15,62 @@ export interface SignInForm {
 
 type RequestBody = SignInForm
 
+async function findUserByCredentials(userId: string, userName: string) {
+  return prisma.user.findFirst({
+    where: { userId, userName },
+  })
+}
+
+async function findUserByKakao(userName: string, kakaoId?: string) {
+  return prisma.user.findFirst({
+    where: { kakaoId, userName },
+  })
+}
+
+async function findUserByGoogle(
+  userName: string,
+  email: string,
+  googleId?: string,
+) {
+  return prisma.user.findFirst({
+    where: { userName, email, googleId },
+  })
+}
+
+function createResponse(user: User) {
+  const { password, ...userWithoutPass } = user
+  const accessToken = signJwtAccessToken(userWithoutPass)
+  return new Response(JSON.stringify({ ...userWithoutPass, accessToken }))
+}
+
 async function POST(request: Request) {
   const body: RequestBody = await request.json()
+  let user
 
-  if (body.authType === 'credentials') {
-    const user = await prisma.user.findFirst({
-      where: {
-        userId: body.userId,
-      },
-    })
-    if (user && (await bcrypt.compare(body.password, user.password))) {
-      const { password, ...userWithoutPass } = user
-      const accessToken = signJwtAccessToken(userWithoutPass)
-      const result = {
-        ...userWithoutPass,
-        accessToken,
+  switch (body.authType) {
+    case 'credentials':
+      user = await findUserByCredentials(body.userId, body.userName)
+      if (user && (await bcrypt.compare(body.password, user.password))) {
+        return createResponse(user)
       }
-      return new Response(JSON.stringify(result))
-    }
-  } else if (body.authType === 'kakao') {
-    const user = await prisma.user.findFirst({
-      where: {
-        userId: body.userId,
-        kakaoId: body.kakaoId,
-      },
-    })
-    if (user && (await bcrypt.compare(body.password, user.password))) {
-      const { password, ...userWithoutPass } = user
-      const accessToken = signJwtAccessToken(userWithoutPass)
-      const result = {
-        ...userWithoutPass,
-        accessToken,
+      break
+
+    case 'kakao':
+      user = await findUserByKakao(body.userName, body.kakaoId)
+      if (user) {
+        return createResponse(user)
       }
-      return new Response(JSON.stringify(result))
-    }
+      break
+
+    case 'google':
+      user = await findUserByGoogle(body.userName, body.email, body.googleId)
+      if (user) {
+        return createResponse(user)
+      }
+      break
+
+    default:
+      return new Response(JSON.stringify(null))
   }
 
   return new Response(JSON.stringify(null))

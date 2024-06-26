@@ -25,7 +25,6 @@ function SignIn() {
   useEffect(() => {
     ;(async () => {
       const res: any = await getProviders()
-      console.log(res)
       setProviders(res)
     })()
   }, [])
@@ -39,8 +38,15 @@ function SignIn() {
     })
   }
 
-  const handleKakao = async () => {
+  const handleKakaoLogin = async () => {
     await signIn('kakao', {
+      redirect: true,
+      callbackUrl: '/',
+    })
+  }
+
+  const handleGoogleLogin = async () => {
+    await signIn('google', {
       redirect: true,
       callbackUrl: '/',
     })
@@ -101,13 +107,17 @@ function SignIn() {
         <SocialLoginContainer>
           <p>또는</p>
           <SocialLoginButton
-            onClick={handleKakao}
+            onClick={handleKakaoLogin}
             $bgColor="#FFEB00"
             $hoverColor="#FFC800"
           >
             카카오로 간편로그인
           </SocialLoginButton>
-          <SocialLoginButton $bgColor="#EA4335" $hoverColor="#CC3127">
+          <SocialLoginButton
+            onClick={handleGoogleLogin}
+            $bgColor="#EA4335"
+            $hoverColor="#CC3127"
+          >
             구글로 간편로그인
           </SocialLoginButton>
         </SocialLoginContainer>

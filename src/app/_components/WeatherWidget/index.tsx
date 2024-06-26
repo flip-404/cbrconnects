@@ -71,29 +71,25 @@ function WeatherWidget() {
 
   useEffect(() => {
     const fetchData = async () => {
-      try {
-        const cityName = 'Incheon' // 변경 가능
-        const apiKey = process.env.NEXT_PUBLIC_WEATHER_KEY
-        const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}`
+      const cityName = 'Incheon' // 변경 가능
+      const apiKey = process.env.NEXT_PUBLIC_WEATHER_KEY
+      const url = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}`
 
-        const response = await fetch(url)
-        if (!response.ok) {
-          throw new Error('Network response was not ok')
-        }
-
-        const data = await response.json()
-        setWeatherData({
-          temp: data.main.temp,
-          temp_max: data.main.temp_max,
-          temp_min: data.main.temp_min,
-          humidity: data.main.humidity,
-          desc: data.weather[0].description,
-          icon: data.weather[0].icon,
-          loading: false,
-        })
-      } catch (error) {
-        console.error('There was a problem with the fetch operation:', error)
+      const response = await fetch(url)
+      if (!response.ok) {
+        throw new Error('Network response was not ok')
       }
+
+      const data = await response.json()
+      setWeatherData({
+        temp: data.main.temp,
+        temp_max: data.main.temp_max,
+        temp_min: data.main.temp_min,
+        humidity: data.main.humidity,
+        desc: data.weather[0].description,
+        icon: data.weather[0].icon,
+        loading: false,
+      })
     }
 
     fetchData()

@@ -15,7 +15,6 @@ function CalendarWidget() {
     event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
   ) => {
     setSelectedDate(newDate)
-    console.log('Clicked element:', event.target)
   }
 
   return (

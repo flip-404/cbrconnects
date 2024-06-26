@@ -15,7 +15,6 @@ function SecondPhase({
 }: {
   defaultValues?: Partial<SignUpForm>
 }) {
-  console.log('defaultValues', defaultValues)
   const [modalStatus, setModalStatus] = useState<null | string>(null)
   const {
     register,
@@ -80,6 +79,7 @@ function SecondPhase({
       />
       {errors.userName && <ErrorMessage message={errors.userName.message!} />}
       <AuthInput
+        disabled={!!defaultValues?.email}
         id="email"
         placeholder="이메일을 입력해주세요."
         label="이메일"

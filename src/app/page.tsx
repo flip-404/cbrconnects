@@ -3,7 +3,6 @@
 import Image from 'next/image'
 import { jobData } from '@/mocks/PostList'
 import styled from 'styled-components'
-import { useSession } from 'next-auth/react'
 import TempImage from './tempEventImg.png'
 import PostListCard from './_components/PostListCard'
 import BusinessSwiper from './_components/BusinessSwiper'
@@ -12,9 +11,6 @@ import FixedPostList from './_components/FixedPostList'
 import CalendarWidget from './_components/CalendarWidget'
 
 export default function Home() {
-  const data = useSession()
-  console.log('data session', data)
-
   return (
     <Container>
       <WidgetWrapper>
