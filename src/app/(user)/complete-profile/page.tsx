@@ -2,7 +2,7 @@
 
 import { useSession } from 'next-auth/react'
 import SecondPhase from '../signup/SecondPhase'
-import { SignUpContainer, SignUpForm, Title } from '../signup/page'
+import { SignUpContainer, SignUpForm, Title } from '../signup/styledCompoents'
 
 function CompleteProfile() {
   const { data, status } = useSession()
