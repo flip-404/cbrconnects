@@ -10,10 +10,7 @@ function CalendarWidget() {
     new Date(),
   )
 
-  const onChange = (
-    newDate: CalendarProps['value'],
-    event: React.MouseEvent<HTMLButtonElement, MouseEvent>,
-  ) => {
+  const onChange = (newDate: CalendarProps['value']) => {
     setSelectedDate(newDate)
   }
 
