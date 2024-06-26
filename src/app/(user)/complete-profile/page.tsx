@@ -6,7 +6,7 @@ import { SignUpContainer, SignUpForm, Title } from '../signup/page'
 
 function CompleteProfile() {
   const { data, status } = useSession()
-
+  console.log('CompleteProfile data', data)
   // 지우면 값이 제대로 들어가지 않음
   if (status === 'loading') {
     return <p>Loading...</p>
@@ -19,6 +19,8 @@ function CompleteProfile() {
           defaultValues={{
             userName: data?.user.userName,
             authType: data?.user.authType,
+            kakaoId: data?.user.kakaoId || null,
+            googleId: data?.user.googleId || null,
           }}
         />
       </SignUpForm>

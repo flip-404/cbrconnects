@@ -19,8 +19,6 @@ const handler = NextAuth({
       },
 
       async authorize(credentials, req) {
-        console.log('뭐가 더 빨리0')
-
         const res = await fetch(`${process.env.NEXTAUTH_URL}/api/signin`, {
           method: 'POST',
           headers: {
@@ -62,8 +60,8 @@ const handler = NextAuth({
       // 그리고 나서 다음에 로그인 했을 때는 닉네임으로 찾아야하나.... -> 카카오 ID 3595326584이렇게 있음
       // 아니면 아이디도 받게 해서
       if (token.provider === 'kakao') {
-        // 카카오 프로필 picture는 나중에 구현
         if (token.userId !== undefined) {
+          // 추가 정보가 모두 기입되어 있을 시 로그인 완료
           const res = await fetch(`${process.env.NEXTAUTH_URL}/api/signin`, {
             method: 'POST',
             headers: {
@@ -81,10 +79,12 @@ const handler = NextAuth({
             return { user, expires: session.expires }
           }
         } else {
+          // 추가 정보가 기입되어 있지 않을 시 빈껍데기 로그인
           return {
             user: {
               userName: token.name,
               profile: token.picture,
+              kakaoId: token.id,
               authType: 'kakao',
             },
             expires: session.expires,

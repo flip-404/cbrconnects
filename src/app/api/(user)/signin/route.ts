@@ -5,7 +5,7 @@ import * as bcrypt from 'bcrypt'
 export interface SignInForm {
   userId: string
   password: string
-  authType: 'credentials' | 'kakao' | 'google'
+  authType: string
   kakaoId?: string
   googleId?: string
 }

@@ -28,6 +28,8 @@ function SignUp() {
             <SecondPhase
               defaultValues={{
                 authType: 'credentials',
+                kakaoId: null,
+                googleId: null,
               }}
             />
           </SignUpForm>

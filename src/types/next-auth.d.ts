@@ -12,7 +12,7 @@ declare module 'next-auth' {
       gender: string
       dateOfBirth: Date
       accessToken: string
-      authType: 'credentials' | 'kakao' | 'google'
+      authType: string
       kakaoId: string | null
       googleId: string | null
     }

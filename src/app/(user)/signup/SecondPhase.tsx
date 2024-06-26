@@ -38,7 +38,12 @@ function SecondPhase({
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ ...formData, authType: defaultValues?.authType }),
+      body: JSON.stringify({
+        ...formData,
+        authType: defaultValues?.authType,
+        kakaoId: defaultValues?.kakaoId,
+        googleId: defaultValues?.googleId,
+      }),
     })
     if (res.status === 200) {
       setModalStatus('success')

@@ -8,12 +8,6 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
-enum AuthType {
-  credentials
-  kakao
-  google
-}
-
 model User {
   id               Int      @id @default(autoincrement())
   email            String   @unique
@@ -27,7 +21,7 @@ model User {
   registrationDate DateTime @default(now())
   postCount        Int      @default(0)
   commentCount     Int      @default(0)
-  authType         AuthType
+  authType         String
   kakaoId          String?  @unique
   googleId         String?  @unique
 }
