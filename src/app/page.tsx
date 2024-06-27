@@ -6,7 +6,6 @@ import styled from 'styled-components'
 import TempImage from './tempEventImg.png'
 import PostListCard from './_components/PostListCard'
 import BusinessSwiper from './_components/BusinessSwiper'
-// import WeatherWidget from './_components/WeatherWidget'
 import FixedPostList from './_components/FixedPostList'
 import CalendarWidget from './_components/CalendarWidget'
 

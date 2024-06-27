@@ -3,6 +3,35 @@ import CredentialsProvider from 'next-auth/providers/credentials'
 import KakaoProvider from 'next-auth/providers/kakao'
 import GoogleProvider from 'next-auth/providers/google'
 
+const authorizeUser = async (credentials: any, authType: string) => {
+  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/signin`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      userId: credentials?.userId,
+      password: credentials?.password,
+      authType,
+    }),
+  })
+  return res.json()
+}
+
+const fetchUser = async (token: any, authType: string, additionalData: any) => {
+  const res = await fetch(`${process.env.NEXTAUTH_URL}/api/signin`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      ...additionalData,
+      authType,
+    }),
+  })
+  return res.json()
+}
+
 const handler = NextAuth({
   providers: [
     KakaoProvider({
@@ -16,38 +45,15 @@ const handler = NextAuth({
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        userId: {
-          label: '아이디',
-          type: 'text',
-        },
+        userId: { label: '아이디', type: 'text' },
         password: { label: '비밀번호', type: 'password' },
       },
-
       async authorize(credentials, req) {
-        const res = await fetch(`${process.env.NEXTAUTH_URL}/api/signin`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            userId: credentials?.userId,
-            password: credentials?.password,
-            authType: 'credentials',
-          }),
-        })
-        const user = await res.json()
-
-        if (user) {
-          return user
-        }
-
-        return null
+        return authorizeUser(credentials, 'credentials')
       },
     }),
   ],
-  pages: {
-    signIn: '/signin',
-  },
+  pages: { signIn: '/signin' },
   callbacks: {
     async jwt({ token, user, account }) {
       if (account) {
@@ -55,66 +61,41 @@ const handler = NextAuth({
       }
       return { ...token, ...user }
     },
-
     async session({ session, token }) {
+      if (token.provider === 'credentials') {
+        session.user = token as any
+        return session
+      }
+
+      let user
       if (token.provider === 'kakao') {
-        const res = await fetch(`${process.env.NEXTAUTH_URL}/api/signin`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            kakaoId: token.id,
-            userName: token.name,
-            authType: 'kakao',
-          }),
+        user = await fetchUser(token, 'kakao', {
+          kakaoId: token.id,
+          userName: token.name,
         })
-
-        const user = await res.json()
-        if (user) return { user, expires: session.expires }
-        return {
-          user: {
-            userName: token.name,
-            profile: token.picture,
-            kakaoId: token.id,
-            authType: 'kakao',
-          },
-          expires: session.expires,
-        }
-      }
-      if (token.provider === 'google') {
-        const res = await fetch(`${process.env.NEXTAUTH_URL}/api/signin`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-          },
-          body: JSON.stringify({
-            userName: token.name,
-            email: token.email,
-            googleId: token.id,
-            authType: 'google',
-          }),
+      } else if (token.provider === 'google') {
+        user = await fetchUser(token, 'google', {
+          userName: token.name,
+          email: token.email,
+          googleId: token.id,
         })
-
-        const user = await res.json()
-        if (user) {
-          return { user, expires: session.expires }
-        }
-
-        return {
-          user: {
-            userName: token.name,
-            email: token.email,
-            profile: token.picture,
-            googleId: token.id,
-            authType: 'google',
-          },
-          expires: session.expires,
-        }
       }
 
-      session.user = token as any
-      return session
+      if (user) {
+        return { user, expires: session.expires }
+      }
+
+      return {
+        user: {
+          userName: token.name,
+          profile: token.picture,
+          ...(token.provider === 'kakao'
+            ? { kakaoId: token.id }
+            : { googleId: token.id, email: token.email }),
+          authType: token.provider,
+        },
+        expires: session.expires,
+      }
     },
   },
 })

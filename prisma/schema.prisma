@@ -19,9 +19,83 @@ model User {
   gender           String
   dateOfBirth      DateTime
   registrationDate DateTime @default(now())
-  postCount        Int      @default(0)
-  commentCount     Int      @default(0)
   authType         String
   kakaoId          String?  @unique
   googleId         String?  @unique
+
+  posts    Post[]
+  comments Comment[]
+  likes    PostLike[]
+}
+
+model Post {
+  id           Int          @id @default(autoincrement())
+  title        String
+  content      String
+  viewCount    Int          @default(0)
+  isNotice     Boolean      @default(false)
+  mainCategory MainCategory
+  subCategory  SubCategory?
+  createdAt    DateTime     @default(now())
+  updatedAt    DateTime     @updatedAt
+
+  userId   Int
+  user     User       @relation(fields: [userId], references: [id])
+  comments Comment[]
+  likes    PostLike[]
+
+  @@index([mainCategory, subCategory])
+}
+
+model Comment {
+  id        Int      @id @default(autoincrement())
+  content   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  postId Int
+  post   Post @relation(fields: [postId], references: [id])
+
+  parentId Int?
+  parent   Comment?  @relation("CommentToComment", fields: [parentId], references: [id])
+  replies  Comment[] @relation("CommentToComment")
+
+  @@index([postId])
+}
+
+model PostLike {
+  id Int @id @default(autoincrement())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  postId Int
+  post   Post @relation(fields: [postId], references: [id])
+
+  @@unique([userId, postId])
+}
+
+enum MainCategory {
+  community
+  job
+  market
+  rent_share
+}
+
+enum SubCategory {
+  notification
+  event
+  freeboard
+  club
+  news
+  yesmigration
+  parcel
+  business
+  offer
+  search
+  rent
+  share
 }
