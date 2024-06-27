@@ -17,6 +17,7 @@ export default function FirstDepthLayout({
     (item) => item.href === pathname,
   )!
 
+  console.log('firstNavItem', firstNavItem)
   return (
     <LayoutWrapper>
       <Container>
@@ -24,13 +25,21 @@ export default function FirstDepthLayout({
         <FixedPostList href="/post" label="최근 게시물" />
       </Container>
       <CenteredContainer>
-        {firstNavItem.submenu!.map((nav) => (
+        {firstNavItem.submenu!.map((secondNavItem) => (
           <PostList
-            key={nav.id}
-            href={nav.href}
-            label={nav.label}
+            key={secondNavItem.id}
+            href={secondNavItem.href}
+            label={secondNavItem.label}
             data={marketData}
             displayAll={false}
+            mainCategoryLink={{
+              href: firstNavItem.href,
+              label: firstNavItem.label,
+            }}
+            subCategoryLink={{
+              href: secondNavItem.href,
+              label: secondNavItem.label,
+            }}
           />
         ))}
         {children}

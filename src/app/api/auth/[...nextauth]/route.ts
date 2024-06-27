@@ -10,7 +10,7 @@ const authorizeUser = async (credentials: any, authType: string) => {
       'Content-Type': 'application/json',
     },
     body: JSON.stringify({
-      userId: credentials?.userId,
+      userAuthId: credentials?.userAuthId,
       password: credentials?.password,
       authType,
     }),
@@ -45,7 +45,7 @@ const handler = NextAuth({
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
-        userId: { label: '아이디', type: 'text' },
+        userAuthId: { label: '아이디', type: 'text' },
         password: { label: '비밀번호', type: 'password' },
       },
       async authorize(credentials, req) {

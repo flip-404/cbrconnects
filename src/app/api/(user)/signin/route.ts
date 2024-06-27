@@ -4,7 +4,7 @@ import { User } from '@prisma/client'
 import * as bcrypt from 'bcrypt'
 
 export interface SignInForm {
-  userId: string
+  userAuthId: string
   userName: string
   password: string
   email: string
@@ -15,9 +15,9 @@ export interface SignInForm {
 
 type RequestBody = SignInForm
 
-async function findUserByCredentials(userId: string, userName: string) {
+async function findUserByCredentials(userAuthId: string, userName: string) {
   return prisma.user.findFirst({
-    where: { userId, userName },
+    where: { userAuthId, userName },
   })
 }
 
@@ -49,7 +49,7 @@ async function POST(request: Request) {
 
   switch (body.authType) {
     case 'credentials':
-      user = await findUserByCredentials(body.userId, body.userName)
+      user = await findUserByCredentials(body.userAuthId, body.userName)
       if (user && (await bcrypt.compare(body.password, user.password))) {
         return createResponse(user)
       }

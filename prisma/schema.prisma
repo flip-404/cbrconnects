@@ -12,7 +12,7 @@ model User {
   id               Int      @id @default(autoincrement())
   email            String   @unique
   userName         String
-  userId           String   @unique
+  userAuthId       String   @unique
   userGroup        String   @default("User")
   nickname         String   @unique
   password         String
@@ -36,6 +36,7 @@ model Post {
   isNotice     Boolean      @default(false)
   mainCategory MainCategory
   subCategory  SubCategory?
+  thumbnail    String?
   createdAt    DateTime     @default(now())
   updatedAt    DateTime     @updatedAt
 
@@ -82,7 +83,7 @@ enum MainCategory {
   community
   job
   market
-  rent_share
+  rentshare
 }
 
 enum SubCategory {

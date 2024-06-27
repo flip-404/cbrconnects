@@ -102,22 +102,24 @@ function SecondPhase({
       />
       {errors.email && <ErrorMessage message={errors.email.message!} />}
       <AuthInput
-        id="userId"
+        id="userAuthId"
         placeholder="아이디를 입력해주세요."
         label="아이디"
         required
-        register={register('userId', {
+        register={register('userAuthId', {
           required: '아이디를 입력해 주세요',
           validate: async (value) => {
             return (
-              (await checkExists(value, 'userId')) ||
+              (await checkExists(value, 'userAuthId')) ||
               '이미 존재하는 아이디입니다'
             )
           },
         })}
-        isError={Boolean(errors.userId)}
+        isError={Boolean(errors.userAuthId)}
       />
-      {errors.userId && <ErrorMessage message={errors.userId.message!} />}
+      {errors.userAuthId && (
+        <ErrorMessage message={errors.userAuthId.message!} />
+      )}
       <AuthInput
         id="password"
         type="password"

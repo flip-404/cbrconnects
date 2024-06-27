@@ -6,18 +6,46 @@
 'use client'
 
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
+import {
+  usePathname,
+  useRouter,
+  useSelectedLayoutSegment,
+  useSelectedLayoutSegments,
+} from 'next/navigation'
 import styled from 'styled-components'
+import type { MainCategoryLink, SubCategoryLink } from '@/types'
+import { useEffect, useState } from 'react'
+import { Post } from '@prisma/client'
 
 type PostListProps = {
   href: string
   label: string
   data: any
   displayAll: boolean
+  mainCategoryLink: MainCategoryLink
+  subCategoryLink: SubCategoryLink
 }
 
-function PostList({ href, label, data, displayAll }: PostListProps) {
-  const router = useRouter()
+function PostList({
+  href,
+  label,
+  data,
+  displayAll,
+  mainCategoryLink,
+  subCategoryLink,
+}: PostListProps) {
+  const [posts, setPosts] = useState<Array<Post>>([])
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const response = await fetch(`/api/posts`)
+      console.log('response', response)
+      const data = await response.json()
+      console.log('response data', data)
+      setPosts(data)
+    }
+    fetchData()
+  }, [])
 
   return (
     <Container>
@@ -31,33 +59,44 @@ function PostList({ href, label, data, displayAll }: PostListProps) {
       </Header>
 
       <PostContainer>
-        {data.map((el: any) => (
-          <PostItem key={el.id}>
+        {posts.map((post: any) => (
+          <PostItem key={post.id}>
             <div>
               <PostTitle>
-                {el.title}
-                <span>{el.comment.length}</span>
+                {post.title}
+                <span>{post.comments.length}</span>
               </PostTitle>
               <MetaInfo>
-                <span>{el.author}</span>·<span>{el.date}</span>·
-                <span>조회수 {el.view}</span>·<span>{el.like}</span>
+                <span>{post.user.nickname}</span>·<span>{post.createdAt}</span>·
+                <span>조회수 {post.view}</span>·<span>{post.likes.length}</span>
               </MetaInfo>
             </div>
             <div>
-              {el.title && <Thumbnail alt="임시 사진" src={el.thumbnail} />}
+              {post.title && (
+                <Thumbnail
+                  width={100}
+                  height={100}
+                  alt="임시 사진"
+                  src={post.thumbnail}
+                />
+              )}
             </div>
           </PostItem>
         ))}
       </PostContainer>
       {displayAll && (
         <WriteButtonWrapper>
-          <WriteButton
-            onClick={() => {
-              router.push('/write')
+          <Link
+            href={{
+              pathname: '/write',
+              query: {
+                mainCategory: mainCategoryLink.href,
+                subCategory: subCategoryLink.href,
+              },
             }}
           >
             글쓰기
-          </WriteButton>
+          </Link>
         </WriteButtonWrapper>
       )}
     </Container>
@@ -120,5 +159,3 @@ const WriteButtonWrapper = styled.div`
   display: flex;
   justify-content: end;
 `
-
-const WriteButton = styled.button``

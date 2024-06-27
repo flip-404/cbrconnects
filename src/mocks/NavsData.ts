@@ -1,4 +1,5 @@
 export type NavsDataType = {
+  id: string
   label: string
   href: string
   submenu?: { id: string; label: string; href: string }[]

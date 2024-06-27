@@ -3,14 +3,14 @@ import client from '@/libs/prisma'
 
 async function GET(request: Request) {
   const url = new URL(request.url)
-  const userId = url.searchParams.get('userId')
+  const userAuthId = url.searchParams.get('userAuthId')
   const email = url.searchParams.get('email')
   const nickname = url.searchParams.get('nickname')
 
   let exists
-  if (userId) {
+  if (userAuthId) {
     exists = await client.user.findFirst({
-      where: { userId },
+      where: { userAuthId },
     })
   } else if (email) {
     exists = await client.user.findFirst({

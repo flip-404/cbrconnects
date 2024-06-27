@@ -31,7 +31,7 @@ function SignIn() {
 
   const handdleCredentialsLogin = async (formData: SignInForm) => {
     await signIn('credentials', {
-      userId: formData.userId,
+      userAuthId: formData.userAuthId,
       password: formData.password,
       redirect: true,
       callbackUrl: '/',
@@ -63,12 +63,14 @@ function SignIn() {
               label="아이디"
               placeholder="아이디를 입력해 주세요"
               required
-              register={register('userId', {
+              register={register('userAuthId', {
                 required: '아이디를 입력해 주세요',
               })}
-              isError={Boolean(errors.userId)}
+              isError={Boolean(errors.userAuthId)}
             />
-            {errors.userId && <ErrorMessage message={errors.userId.message!} />}
+            {errors.userAuthId && (
+              <ErrorMessage message={errors.userAuthId.message!} />
+            )}
           </div>
           <div>
             <AuthInput

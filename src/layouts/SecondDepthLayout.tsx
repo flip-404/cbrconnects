@@ -34,6 +34,14 @@ export default function SecondDepthLayout({
           label={secondNavItem?.label}
           data={marketData}
           displayAll
+          mainCategoryLink={{
+            href: firstNavItem.href,
+            label: firstNavItem.label,
+          }}
+          subCategoryLink={{
+            href: secondNavItem.href,
+            label: secondNavItem.label,
+          }}
         />
       </CenteredContainer>
       {children}

@@ -2,7 +2,7 @@ import * as bcrypt from 'bcrypt'
 import prisma from '@/libs/prisma'
 
 export interface SignUpForm {
-  userId: string
+  userAuthId: string
   userName: string
   email: string
   password: string
@@ -28,7 +28,7 @@ async function POST(request: Request) {
 
   const user = await prisma.user.create({
     data: {
-      userId: body.userId,
+      userAuthId: body.userAuthId,
       userName: body.userName,
       email: body.email,
       password: await bcrypt.hash(body.password, 10),
