@@ -1,7 +1,7 @@
 'use client'
 
-function Rent() {
+function RentShare() {
   return <div />
 }
 
-export default Rent
+export default RentShare

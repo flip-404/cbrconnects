@@ -137,6 +137,7 @@ const PostContainer = styled.div`
 `
 
 const PostItem = styled.div`
+  cursor: pointer;
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -144,6 +145,14 @@ const PostItem = styled.div`
   padding: 2px;
   padding-bottom: 5px;
   border-bottom: 1px solid #e2e8f0;
+  transition:
+    background-color 0.3s ease,
+    box-shadow 0.3s ease;
+
+  &:hover {
+    background-color: #f1f1f1;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
 `
 
 const PostTitle = styled.h3`

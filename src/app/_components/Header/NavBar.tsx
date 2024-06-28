@@ -9,6 +9,7 @@ function NavBar() {
         {NavsData.map((link) => (
           <NavButton
             key={link.id}
+            id={link.id}
             label={link.label}
             href={link.href}
             submenu={link.submenu}
