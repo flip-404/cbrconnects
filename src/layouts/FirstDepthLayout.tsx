@@ -17,7 +17,6 @@ export default function FirstDepthLayout({
     (item) => item.href === pathname,
   )!
 
-  console.log('firstNavItem', firstNavItem)
   return (
     <LayoutWrapper>
       <Container>
@@ -35,10 +34,12 @@ export default function FirstDepthLayout({
             mainCategoryLink={{
               href: firstNavItem.href,
               label: firstNavItem.label,
+              id: firstNavItem.id,
             }}
             subCategoryLink={{
               href: secondNavItem.href,
               label: secondNavItem.label,
+              id: secondNavItem.id,
             }}
           />
         ))}

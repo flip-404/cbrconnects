@@ -2,14 +2,36 @@
 
 import styled from 'styled-components'
 import Link from 'next/link'
+import useSWR from 'swr'
+import { Post } from '@prisma/client'
+import buildQuery from '@/utils/queryUtils'
+import fetcher from '@/utils/fetcher'
 
 type PostListCardProps = {
+  mainCategory?: string
+  subCategory?: string
   href: string
   lable: string
-  data: any
 }
 
-function PostListCard({ href, lable, data }: PostListCardProps) {
+function PostListCard({
+  mainCategory,
+  subCategory,
+  href,
+  lable,
+}: PostListCardProps) {
+  const query = buildQuery({
+    mainCategory,
+    subCategory,
+  })
+
+  const { data: posts, error } = useSWR<Array<Post>>(
+    `/api/posts${query ? `?${query}` : ''}`,
+    fetcher,
+  )
+
+  if (error) return <div>Failed to load posts</div>
+  if (!posts) return <div>Loading...</div>
   return (
     <CardContainer>
       <CardHeader>
@@ -22,13 +44,13 @@ function PostListCard({ href, lable, data }: PostListCardProps) {
       </CardHeader>
       <Table>
         <TableBody>
-          {data.map((val: any) => (
-            <TableRow key={val.id}>
+          {posts.map((post: any) => (
+            <TableRow key={post.id}>
               <TableCell>
-                {val.title}{' '}
-                {val.date === '20분전' && <NewChip>&nbsp;[new]</NewChip>}
+                {post.title}{' '}
+                {post.createdAt === '20분전' && <NewChip>&nbsp;[new]</NewChip>}
               </TableCell>
-              <TableCell>{val.date}</TableCell>
+              <TableCell>{post.createdAt}</TableCell>
             </TableRow>
           ))}
         </TableBody>

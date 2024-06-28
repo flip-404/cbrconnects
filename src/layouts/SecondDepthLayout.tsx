@@ -37,10 +37,12 @@ export default function SecondDepthLayout({
           mainCategoryLink={{
             href: firstNavItem.href,
             label: firstNavItem.label,
+            id: firstNavItem.id,
           }}
           subCategoryLink={{
             href: secondNavItem.href,
             label: secondNavItem.label,
+            id: secondNavItem.id,
           }}
         />
       </CenteredContainer>

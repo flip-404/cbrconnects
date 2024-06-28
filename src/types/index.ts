@@ -1,9 +1,5 @@
-export type MainCategoryLink = {
+export type CategoryLink = {
   href: string
   label: string
-}
-
-export type SubCategoryLink = {
-  href: string
-  label: string
+  id: string
 }

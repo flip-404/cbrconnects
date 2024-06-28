@@ -18,15 +18,15 @@ function Write() {
   const searchParams = useSearchParams()
   console.log('session', session)
 
-  const mainCategoryHref = searchParams.get('mainCategory')
-  const subCategoryHref = searchParams.get('subCategory')
+  const mainCategory = searchParams.get('mainCategory')
+  const subCategory = searchParams.get('subCategory')
 
   const firstNavItem: NavsDataType = NavsData.find(
-    (item) => item.href === mainCategoryHref,
+    (item) => item.id === mainCategory,
   )!
 
   const secondNavItem: NavsDataType = firstNavItem.submenu!.find(
-    (item) => item.href === subCategoryHref,
+    (item) => item.id === subCategory,
   )!
 
   const modules = {
@@ -68,7 +68,7 @@ function Write() {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        title: 'Sample Post',
+        title,
         content,
         userId: session?.user.id,
         mainCategory: firstNavItem.id,

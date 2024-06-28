@@ -13,17 +13,20 @@ import {
   useSelectedLayoutSegments,
 } from 'next/navigation'
 import styled from 'styled-components'
-import type { MainCategoryLink, SubCategoryLink } from '@/types'
+import type { CategoryLink } from '@/types'
 import { useEffect, useState } from 'react'
 import { Post } from '@prisma/client'
+import fetcher from '@/utils/fetcher'
+import useSWR from 'swr'
+import buildQuery from '@/utils/queryUtils'
 
 type PostListProps = {
   href: string
   label: string
   data: any
   displayAll: boolean
-  mainCategoryLink: MainCategoryLink
-  subCategoryLink: SubCategoryLink
+  mainCategoryLink: CategoryLink
+  subCategoryLink: CategoryLink
 }
 
 function PostList({
@@ -34,18 +37,20 @@ function PostList({
   mainCategoryLink,
   subCategoryLink,
 }: PostListProps) {
-  const [posts, setPosts] = useState<Array<Post>>([])
+  const query = buildQuery({
+    mainCategory: mainCategoryLink?.id,
+    subCategory: subCategoryLink?.id,
+  })
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const response = await fetch(`/api/posts`)
-      console.log('response', response)
-      const data = await response.json()
-      console.log('response data', data)
-      setPosts(data)
-    }
-    fetchData()
-  }, [])
+  console.log()
+
+  const { data: posts, error } = useSWR<Array<Post>>(
+    `/api/posts${query ? `?${query}` : ''}`,
+    fetcher,
+  )
+
+  if (error) return <div>Failed to load posts</div>
+  if (!posts) return <div>Loading...</div>
 
   return (
     <Container>
@@ -90,8 +95,8 @@ function PostList({
             href={{
               pathname: '/write',
               query: {
-                mainCategory: mainCategoryLink.href,
-                subCategory: subCategoryLink.href,
+                mainCategory: mainCategoryLink.id,
+                subCategory: subCategoryLink.id,
               },
             }}
           >

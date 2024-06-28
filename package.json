@@ -23,7 +23,8 @@
     "react-hook-form": "^7.52.0",
     "react-quill": "^2.0.0",
     "styled-components": "^6.1.11",
-    "swiper": "^11.1.4"
+    "swiper": "^11.1.4",
+    "swr": "^2.2.5"
   },
   "devDependencies": {
     "@swc/plugin-styled-components": "^2.0.8",

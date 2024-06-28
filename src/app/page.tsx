@@ -1,7 +1,6 @@
 'use client'
 
 import Image from 'next/image'
-import { jobData } from '@/mocks/PostList'
 import styled from 'styled-components'
 import TempImage from './tempEventImg.png'
 import PostListCard from './_components/PostListCard'
@@ -44,13 +43,18 @@ export default function Home() {
 
       <GridWrapper>
         <GridContainer>
-          <PostListCard href="/community" lable="🏙️ 커뮤니티" data={jobData} />
           <PostListCard
+            mainCategory="community"
+            href="/community"
+            lable="🏙️ 커뮤니티"
+          />
+          <PostListCard
+            mainCategory="community"
+            subCategory="business"
             href="/community/business"
             lable="🏘️ 업소록"
-            data={jobData}
           />
-          <PostListCard href="/job" lable="🙋🏻 구인/구직" data={jobData} />
+          <PostListCard mainCategory="job" href="/job" lable="🙋🏻 구인/구직" />
         </GridContainer>
       </GridWrapper>
 
@@ -60,8 +64,16 @@ export default function Home() {
 
       <GridWrapper>
         <GridContainer>
-          <PostListCard href="/market" lable="🍎 쿼카마켓" data={jobData} />
-          <PostListCard href="/rentshare" lable="🚗 렌트/쉐어" data={jobData} />
+          <PostListCard
+            mainCategory="market"
+            href="/market"
+            lable="🍎 쿼카마켓"
+          />
+          <PostListCard
+            mainCategory="rentshare"
+            href="/rentshare"
+            lable="🚗 렌트/쉐어"
+          />
         </GridContainer>
       </GridWrapper>
     </Container>
