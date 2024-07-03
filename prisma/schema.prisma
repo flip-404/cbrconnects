@@ -23,9 +23,10 @@ model User {
   kakaoId          String?  @unique
   googleId         String?  @unique
 
-  posts    Post[]
-  comments Comment[]
-  likes    PostLike[]
+  posts       Post[]
+  comments    Comment[]
+  likes       PostLike[]
+  CommentLike CommentLike[]
 }
 
 model Post {
@@ -54,8 +55,8 @@ model Comment {
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
-  userId Int
-  user   User @relation(fields: [userId], references: [id])
+  authorId Int
+  author   User @relation(fields: [authorId], references: [id])
 
   postId Int
   post   Post @relation(fields: [postId], references: [id])
@@ -63,6 +64,8 @@ model Comment {
   parentId Int?
   parent   Comment?  @relation("CommentToComment", fields: [parentId], references: [id])
   replies  Comment[] @relation("CommentToComment")
+
+  likes CommentLike[]
 
   @@index([postId])
 }
@@ -77,6 +80,18 @@ model PostLike {
   post   Post @relation(fields: [postId], references: [id])
 
   @@unique([userId, postId])
+}
+
+model CommentLike {
+  id Int @id @default(autoincrement())
+
+  userId Int
+  user   User @relation(fields: [userId], references: [id])
+
+  commentId Int
+  comment   Comment @relation(fields: [commentId], references: [id])
+
+  @@unique([userId, commentId])
 }
 
 enum MainCategory {

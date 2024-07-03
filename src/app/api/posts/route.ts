@@ -12,19 +12,19 @@ const getPostQueryParams = (url: URL): GetPostQuery => {
   const mainCategory = url.searchParams.get('mainCategory') as MainCategory
   const subCategory = url.searchParams.get('subCategory') as SubCategory
   const postId = url.searchParams.get('postId') as string | undefined
-  console.log('\n')
-  console.log('mmainCategory', mainCategory)
-  console.log('subCategory', subCategory)
-  console.log('postId', postId)
 
-  console.log('\n')
   return { mainCategory, subCategory, postId }
 }
 
 const fetchPostById = async (postId: number) => {
-  return prisma.post.findUnique({
+  const updatedPost = await prisma.post.update({
     where: {
       id: postId,
+    },
+    data: {
+      viewCount: {
+        increment: 1,
+      },
     },
     include: {
       author: true,
@@ -32,6 +32,8 @@ const fetchPostById = async (postId: number) => {
       likes: true,
     },
   })
+
+  return updatedPost
 }
 
 const fetchPosts = async (whereQuery: Prisma.PostWhereInput) => {
@@ -63,7 +65,6 @@ async function GET(request: NextRequest) {
 
       return new NextResponse(JSON.stringify(post), { status: 200 })
     } catch (error) {
-      console.error(error)
       return new NextResponse(
         JSON.stringify({ error: 'Failed to fetch post' }),
         { status: 500 },

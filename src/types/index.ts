@@ -1,4 +1,4 @@
-import { Post, PostLike, User } from '@prisma/client'
+import { Comment, Post, PostLike, User } from '@prisma/client'
 
 export type CategoryLink = {
   href: string

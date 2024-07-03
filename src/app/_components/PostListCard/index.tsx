@@ -36,6 +36,8 @@ function PostListCard({
     router.push(`/posts?postId=${postId}`)
   }
 
+  console.log('posts', posts)
+
   if (error) return <div>Failed to load posts</div>
   if (!posts) return <div>Loading...</div>
   return (
