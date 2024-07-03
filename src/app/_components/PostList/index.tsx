@@ -75,7 +75,7 @@ function PostList({
               </PostTitle>
               <MetaInfo>
                 <span>{post.author.nickname}</span>·
-                <span>{formatDate(post.createdAt.toString())}</span>·
+                <span>{formatDate(post.createdAt)}</span>·
                 <span>조회수 {post.viewCount}</span>·
                 <span>{post.likes.length}</span>
               </MetaInfo>

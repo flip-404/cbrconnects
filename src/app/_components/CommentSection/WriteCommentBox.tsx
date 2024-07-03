@@ -24,8 +24,9 @@ function WriteCommentBox({
       <ButtonWrapper>
         <WriteButton
           onClick={() => {
+            const tempContent = content
             setContent('')
-            handdleWriteComment(content)
+            handdleWriteComment(tempContent)
           }}
         >
           등록

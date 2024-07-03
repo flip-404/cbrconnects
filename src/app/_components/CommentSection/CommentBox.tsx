@@ -9,9 +9,7 @@ function CommentBox({ content }: { content: CommentWithRelations }) {
       <CommentWrapper>
         <CommentAuthor>{content.author.nickname}</CommentAuthor>
         <CommentContent>{content.content}</CommentContent>
-        <CommentDetail>
-          {formatDate(content.createdAt.toString())} 좋아요 0
-        </CommentDetail>
+        <CommentDetail>{formatDate(content.createdAt)} 좋아요 0</CommentDetail>
       </CommentWrapper>
     </Container>
   )

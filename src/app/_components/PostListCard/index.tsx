@@ -66,7 +66,7 @@ function PostListCard({
                   <NewChip>&nbsp;[new]</NewChip>
                 )}
               </TableCell>
-              <TableCell>{formatDate(post.createdAt.toString())}</TableCell>
+              <TableCell>{formatDate(post.createdAt)}</TableCell>
             </TableRow>
           ))}
         </TableBody>

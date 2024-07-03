@@ -16,6 +16,9 @@ function Posts() {
   const postId = searchParams.get('postId')
   const { data: session } = useSession()
 
+  console.log('테스트', Date.now())
+  console.log('테스트', new Date())
+
   const { data: post, error } = useSWR<PostWithRelations>(
     `/api/posts?postId=${postId}`,
     fetcher,
@@ -29,7 +32,7 @@ function Posts() {
     const newComment = {
       author: { nickname: session?.user.nickname },
       content,
-      createdAt: formatDate(Date.now()),
+      createdAt: new Date(),
       likes: [],
     }
     mutate([...comments, newComment], false)
@@ -41,7 +44,7 @@ function Posts() {
       },
       body: JSON.stringify({
         content,
-        postId,
+        postId: Number(postId),
         authorId: session?.user.id,
         parentId,
       }),
@@ -71,7 +74,7 @@ function Posts() {
             <InfoWrapper>
               <AuthorNickname>{post.author.nickname}</AuthorNickname>
               <DetailInfo>
-                <CreatedAt>{formatDate(post.createdAt.toString())}</CreatedAt>
+                <CreatedAt>{formatDate(post.createdAt)}</CreatedAt>
                 <ViewCount>조회 {post.viewCount}</ViewCount>
               </DetailInfo>
             </InfoWrapper>
@@ -90,7 +93,6 @@ function Posts() {
           </ReactionSummary>
         </div>
         <CommentSection
-          postId={post.id}
           comments={comments}
           handdleWriteComment={handdleWriteComment}
           isLoggedIn={Boolean(session?.user.accessToken)}

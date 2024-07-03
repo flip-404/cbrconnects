@@ -1,16 +1,21 @@
-function formatDate(input: string | number): string {
-  // 현재 시간
-  const now = new Date()
-
-  // 입력값을 Date 객체로 변환
+function formatDate(input: Date | string): string {
   let date: Date
+
   if (typeof input === 'string') {
+    // Try to parse the string as a Date
     date = new Date(input)
-  } else if (typeof input === 'number') {
-    date = new Date(input)
+
+    // If the parsed date is invalid, handle it (e.g., return an error message)
+    if (Number.isNaN(date.getTime())) {
+      return '유효하지 않은 날짜'
+    }
+  } else if (input instanceof Date) {
+    date = input
   } else {
-    throw new Error('Invalid input type')
+    return '유효하지 않은 날짜' // Handle unexpected input types
   }
+
+  const now = new Date()
 
   // 시간 차이 계산 (밀리세컨드 단위)
   const timeDifference = now.getTime() - date.getTime()

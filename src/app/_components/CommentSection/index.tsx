@@ -1,21 +1,16 @@
 'use client'
 
 import styled from 'styled-components'
-import fetcher from '@/utils/fetcher'
-import useSWR from 'swr'
-import { useSession } from 'next-auth/react'
 import { CommentWithRelations } from '@/types'
 import CommentBox from './CommentBox'
 import WriteCommentBox from './WriteCommentBox'
 import LoginRequiredNotice from './LoginRequiredNotice'
 
 function CommentSection({
-  postId,
   comments,
   handdleWriteComment,
   isLoggedIn,
 }: {
-  postId: number
   comments: CommentWithRelations[]
   handdleWriteComment: (content: string, parentId?: number) => void
   isLoggedIn: boolean
