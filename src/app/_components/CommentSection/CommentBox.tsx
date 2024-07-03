@@ -1,12 +1,12 @@
-import type { Comment } from '@prisma/client'
+import { CommentWithRelations } from '@/types'
 import styled from 'styled-components'
 
-function CommentBox({ content }: { content: Comment }) {
+function CommentBox({ content }: { content: CommentWithRelations }) {
   return (
     <Container>
       <AuthorProfile />
       <CommentWrapper>
-        <CommentAuthor>{content.content}</CommentAuthor>
+        <CommentAuthor>{content.author.nickname}</CommentAuthor>
         <CommentContent>{content.content}</CommentContent>
         <CommentDetail>{content.createdAt.toString()} 좋아요 0</CommentDetail>
       </CommentWrapper>

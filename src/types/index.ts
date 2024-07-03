@@ -11,3 +11,7 @@ export type PostWithRelations = Post & {
   likes: PostLike[]
   author: User
 }
+
+export type CommentWithRelations = Comment & {
+  author: User
+}

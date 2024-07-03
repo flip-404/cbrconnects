@@ -1,10 +1,10 @@
 'use client'
 
 import styled from 'styled-components'
-import { Comment } from '@prisma/client'
 import fetcher from '@/utils/fetcher'
 import useSWR from 'swr'
 import { useSession } from 'next-auth/react'
+import { CommentWithRelations } from '@/types'
 import CommentBox from './CommentBox'
 import WriteCommentBox from './WriteCommentBox'
 import LoginRequiredNotice from './LoginRequiredNotice'
@@ -24,6 +24,7 @@ function CommentSection({ postId }: { postId: number }) {
       createdAt: Date.now(),
       likes: [],
     }
+
     mutate([...comments, newComment], false)
 
     fetch('/api/comments', {
@@ -47,7 +48,7 @@ function CommentSection({ postId }: { postId: number }) {
 
   return (
     <Container>
-      {comments.map((comment: Comment) => (
+      {comments.map((comment: CommentWithRelations) => (
         <CommentBox key={comment.id} content={comment} />
       ))}
 
