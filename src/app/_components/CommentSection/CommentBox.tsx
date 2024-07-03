@@ -1,4 +1,5 @@
 import { CommentWithRelations } from '@/types'
+import formatDate from '@/utils/formatData'
 import styled from 'styled-components'
 
 function CommentBox({ content }: { content: CommentWithRelations }) {
@@ -8,7 +9,9 @@ function CommentBox({ content }: { content: CommentWithRelations }) {
       <CommentWrapper>
         <CommentAuthor>{content.author.nickname}</CommentAuthor>
         <CommentContent>{content.content}</CommentContent>
-        <CommentDetail>{content.createdAt.toString()} 좋아요 0</CommentDetail>
+        <CommentDetail>
+          {formatDate(content.createdAt.toString())} 좋아요 0
+        </CommentDetail>
       </CommentWrapper>
     </Container>
   )

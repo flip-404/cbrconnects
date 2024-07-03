@@ -7,16 +7,46 @@ import parse from 'html-react-parser'
 import { useSearchParams } from 'next/navigation'
 import styled from 'styled-components'
 import useSWR from 'swr'
+import { useSession } from 'next-auth/react'
+import formatDate from '@/utils/formatData'
 import CommentSection from '../_components/CommentSection'
 
 function Posts() {
   const searchParams = useSearchParams()
-
   const postId = searchParams.get('postId')
+  const { data: session } = useSession()
+
   const { data: post, error } = useSWR<PostWithRelations>(
     `/api/posts?postId=${postId}`,
     fetcher,
   )
+  const { data: comments, mutate } = useSWR(
+    `/api/comments?postId=${postId}`,
+    fetcher,
+  )
+
+  const handdleWriteComment = (content: string, parentId?: number) => {
+    const newComment = {
+      author: { nickname: session?.user.nickname },
+      content,
+      createdAt: formatDate(Date.now()),
+      likes: [],
+    }
+    mutate([...comments, newComment], false)
+
+    fetch('/api/comments', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        content,
+        postId,
+        authorId: session?.user.id,
+        parentId,
+      }),
+    })
+  }
 
   if (error) return <div>Failed to load post</div>
   if (!post) return <div>Loading...</div>
@@ -41,7 +71,7 @@ function Posts() {
             <InfoWrapper>
               <AuthorNickname>{post.author.nickname}</AuthorNickname>
               <DetailInfo>
-                <CreatedAt>{post.createdAt.toString()}</CreatedAt>
+                <CreatedAt>{formatDate(post.createdAt.toString())}</CreatedAt>
                 <ViewCount>조회 {post.viewCount}</ViewCount>
               </DetailInfo>
             </InfoWrapper>
@@ -55,11 +85,16 @@ function Posts() {
               좋아요 <span>{post.likes.length}</span>
             </LikeAndCommentCount>
             <LikeAndCommentCount>
-              댓글 <span>{post.comments.length}</span>
+              댓글 <span>{comments.length}</span>
             </LikeAndCommentCount>
           </ReactionSummary>
         </div>
-        <CommentSection postId={post.id} />
+        <CommentSection
+          postId={post.id}
+          comments={comments}
+          handdleWriteComment={handdleWriteComment}
+          isLoggedIn={Boolean(session?.user.accessToken)}
+        />
       </ContentBox>
     </Container>
   )

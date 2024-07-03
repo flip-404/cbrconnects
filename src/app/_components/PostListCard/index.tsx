@@ -7,6 +7,7 @@ import buildQuery from '@/utils/queryUtils'
 import fetcher from '@/utils/fetcher'
 import { PostWithRelations } from '@/types'
 import { useRouter } from 'next/navigation'
+import formatDate from '@/utils/formatData'
 
 type PostListCardProps = {
   mainCategory?: string
@@ -65,7 +66,7 @@ function PostListCard({
                   <NewChip>&nbsp;[new]</NewChip>
                 )}
               </TableCell>
-              <TableCell>{post.createdAt.toString()}</TableCell>
+              <TableCell>{formatDate(post.createdAt.toString())}</TableCell>
             </TableRow>
           ))}
         </TableBody>

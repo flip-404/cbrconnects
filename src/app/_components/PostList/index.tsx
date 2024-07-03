@@ -12,6 +12,7 @@ import fetcher from '@/utils/fetcher'
 import useSWR from 'swr'
 import buildQuery from '@/utils/queryUtils'
 import { useRouter } from 'next/navigation'
+import formatDate from '@/utils/formatData'
 
 type PostListProps = {
   href: string
@@ -74,7 +75,7 @@ function PostList({
               </PostTitle>
               <MetaInfo>
                 <span>{post.author.nickname}</span>·
-                <span>{post.createdAt.toString()}</span>·
+                <span>{formatDate(post.createdAt.toString())}</span>·
                 <span>조회수 {post.viewCount}</span>·
                 <span>{post.likes.length}</span>
               </MetaInfo>
