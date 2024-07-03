@@ -3,9 +3,10 @@
 import styled from 'styled-components'
 import Link from 'next/link'
 import useSWR from 'swr'
-import { Post } from '@prisma/client'
 import buildQuery from '@/utils/queryUtils'
 import fetcher from '@/utils/fetcher'
+import { PostWithRelations } from '@/types'
+import { useRouter } from 'next/navigation'
 
 type PostListCardProps = {
   mainCategory?: string
@@ -20,15 +21,20 @@ function PostListCard({
   href,
   lable,
 }: PostListCardProps) {
+  const router = useRouter()
   const query = buildQuery({
     mainCategory,
     subCategory,
   })
 
-  const { data: posts, error } = useSWR<Array<Post>>(
+  const { data: posts, error } = useSWR<Array<PostWithRelations>>(
     `/api/posts${query ? `?${query}` : ''}`,
     fetcher,
   )
+
+  const handleMoveToPost = (postId: number) => {
+    router.push(`/posts?postId=${postId}`)
+  }
 
   if (error) return <div>Failed to load posts</div>
   if (!posts) return <div>Loading...</div>
@@ -44,13 +50,20 @@ function PostListCard({
       </CardHeader>
       <Table>
         <TableBody>
-          {posts.map((post: any) => (
-            <TableRow key={post.id}>
+          {posts.map((post) => (
+            <TableRow
+              key={post.id}
+              onClick={() => {
+                handleMoveToPost(post.id)
+              }}
+            >
               <TableCell>
                 {post.title}{' '}
-                {post.createdAt === '20분전' && <NewChip>&nbsp;[new]</NewChip>}
+                {post.createdAt.toString() === '20분전' && (
+                  <NewChip>&nbsp;[new]</NewChip>
+                )}
               </TableCell>
-              <TableCell>{post.createdAt}</TableCell>
+              <TableCell>{post.createdAt.toString()}</TableCell>
             </TableRow>
           ))}
         </TableBody>
@@ -100,6 +113,12 @@ const TableBody = styled.tbody`
 const TableRow = styled.tr`
   display: flex;
   justify-content: space-between;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #f1f1f1;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  }
 `
 
 const TableCell = styled.td`

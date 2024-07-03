@@ -14,22 +14,18 @@ export default function SecondDepthLayout({
 }) {
   const pathname = usePathname()
   const communityPath = pathname.split('/')[1]
-  console.log('pathname', pathname)
   const firstNavItem: NavsDataType = NavsData.find(
     (item) => item.href === `/${communityPath}`,
   )!
-  console.log('firstNavItem', firstNavItem)
   const secondNavItem: NavsDataType = firstNavItem.submenu!.find(
     (item) => item.href === pathname,
   )!
 
-  console.log('secondNavItem', secondNavItem)
-
   return (
     <LayoutWrapper>
       <Container>
-        <FixedPostList href="/post" label="공지사항" />
-        <FixedPostList href="/post" label="최근 게시물" />
+        <FixedPostList href="/posts" label="공지사항" />
+        <FixedPostList href="/posts" label="최근 게시물" />
       </Container>
       <CenteredContainer>
         <PostList

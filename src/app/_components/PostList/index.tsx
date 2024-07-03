@@ -6,19 +6,12 @@
 'use client'
 
 import Link from 'next/link'
-import {
-  usePathname,
-  useRouter,
-  useSelectedLayoutSegment,
-  useSelectedLayoutSegments,
-} from 'next/navigation'
 import styled from 'styled-components'
-import type { CategoryLink } from '@/types'
-import { useEffect, useState } from 'react'
-import { Post } from '@prisma/client'
+import type { CategoryLink, PostWithRelations } from '@/types'
 import fetcher from '@/utils/fetcher'
 import useSWR from 'swr'
 import buildQuery from '@/utils/queryUtils'
+import { useRouter } from 'next/navigation'
 
 type PostListProps = {
   href: string
@@ -26,7 +19,7 @@ type PostListProps = {
   data: any
   displayAll: boolean
   mainCategoryLink: CategoryLink
-  subCategoryLink: CategoryLink
+  subCategoryLink?: CategoryLink
 }
 
 function PostList({
@@ -42,12 +35,15 @@ function PostList({
     subCategory: subCategoryLink?.id,
   })
 
-  console.log()
-
-  const { data: posts, error } = useSWR<Array<Post>>(
+  const router = useRouter()
+  const { data: posts, error } = useSWR<Array<PostWithRelations>>(
     `/api/posts${query ? `?${query}` : ''}`,
     fetcher,
   )
+
+  const handleMoveToPost = (postId: number) => {
+    router.push(`/posts?postId=${postId}`)
+  }
 
   if (error) return <div>Failed to load posts</div>
   if (!posts) return <div>Loading...</div>
@@ -64,16 +60,23 @@ function PostList({
       </Header>
 
       <PostContainer>
-        {posts.map((post: any) => (
-          <PostItem key={post.id}>
+        {posts.map((post) => (
+          <PostItem
+            key={post.id}
+            onClick={() => {
+              handleMoveToPost(post.id)
+            }}
+          >
             <div>
               <PostTitle>
                 {post.title}
                 <span>{post.comments.length}</span>
               </PostTitle>
               <MetaInfo>
-                <span>{post.user.nickname}</span>·<span>{post.createdAt}</span>·
-                <span>조회수 {post.view}</span>·<span>{post.likes.length}</span>
+                <span>{post.author.nickname}</span>·
+                <span>{post.createdAt.toString()}</span>·
+                <span>조회수 {post.viewCount}</span>·
+                <span>{post.likes.length}</span>
               </MetaInfo>
             </div>
             <div>
@@ -96,7 +99,7 @@ function PostList({
               pathname: '/write',
               query: {
                 mainCategory: mainCategoryLink.id,
-                subCategory: subCategoryLink.id,
+                ...(subCategoryLink && { subCategory: subCategoryLink.id }),
               },
             }}
           >

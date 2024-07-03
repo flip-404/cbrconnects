@@ -72,7 +72,7 @@ function Write() {
         content,
         userId: session?.user.id,
         mainCategory: firstNavItem.id,
-        subCategory: secondNavItem.id,
+        ...(secondNavItem && { subCategory: secondNavItem.id }),
         thumbnail: 'https://picsum.photos/id/237/200/300',
         isNotice: false,
       }),
@@ -95,7 +95,7 @@ function Write() {
     <Container>
       <Header>
         <CategoryWrapper>
-          {firstNavItem.label} - {secondNavItem.label}
+          {firstNavItem.label} - {secondNavItem?.label}
         </CategoryWrapper>
         <WriteButton onClick={handdleWritePost}>글 작성</WriteButton>
       </Header>

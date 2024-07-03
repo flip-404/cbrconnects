@@ -20,29 +20,45 @@ export default function FirstDepthLayout({
   return (
     <LayoutWrapper>
       <Container>
-        <FixedPostList href="/post" label="공지사항" />
-        <FixedPostList href="/post" label="최근 게시물" />
+        <FixedPostList href="/posts" label="공지사항" />
+        <FixedPostList href="/posts" label="최근 게시물" />
       </Container>
       <CenteredContainer>
-        {firstNavItem.submenu!.map((secondNavItem) => (
+        {firstNavItem.submenu?.length !== 0 ? (
+          firstNavItem.submenu!.map((secondNavItem) => (
+            <PostList
+              key={secondNavItem.id}
+              href={secondNavItem.href}
+              label={secondNavItem.label}
+              data={marketData}
+              displayAll={false}
+              mainCategoryLink={{
+                href: firstNavItem.href,
+                label: firstNavItem.label,
+                id: firstNavItem.id,
+              }}
+              subCategoryLink={{
+                href: secondNavItem.href,
+                label: secondNavItem.label,
+                id: secondNavItem.id,
+              }}
+            />
+          ))
+        ) : (
           <PostList
-            key={secondNavItem.id}
-            href={secondNavItem.href}
-            label={secondNavItem.label}
+            key={firstNavItem.id}
+            href={firstNavItem.href}
+            label={firstNavItem.label}
             data={marketData}
-            displayAll={false}
+            displayAll
             mainCategoryLink={{
               href: firstNavItem.href,
               label: firstNavItem.label,
               id: firstNavItem.id,
             }}
-            subCategoryLink={{
-              href: secondNavItem.href,
-              label: secondNavItem.label,
-              id: secondNavItem.id,
-            }}
           />
-        ))}
+        )}
+        {}
         {children}
       </CenteredContainer>
     </LayoutWrapper>

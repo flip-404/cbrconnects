@@ -16,7 +16,7 @@ export default function Home() {
           <WeatherWidget />
         </WidgetBox> */}
         <div>
-          <FixedPostList href="/post" label="공지사항" />
+          <FixedPostList href="/posts" label="공지사항" />
         </div>
       </WidgetWrapper>
 
