@@ -1,6 +1,5 @@
 'use client'
 
-import { marketData } from '@/mocks/PostList'
 import FixedPostList from '@/app/_components/FixedPostList'
 import PostList from '@/app/_components/PostList'
 import NavsData, { NavsDataType } from '@/mocks/NavsData'
@@ -30,7 +29,7 @@ export default function FirstDepthLayout({
               key={secondNavItem.id}
               href={secondNavItem.href}
               label={secondNavItem.label}
-              data={marketData}
+              data={[]}
               displayAll={false}
               mainCategoryLink={{
                 href: firstNavItem.href,
@@ -49,7 +48,7 @@ export default function FirstDepthLayout({
             key={firstNavItem.id}
             href={firstNavItem.href}
             label={firstNavItem.label}
-            data={marketData}
+            data={[]}
             displayAll
             mainCategoryLink={{
               href: firstNavItem.href,

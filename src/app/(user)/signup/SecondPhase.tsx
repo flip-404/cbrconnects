@@ -1,3 +1,5 @@
+'use client'
+
 import AuthInput from '@/app/_components/AuthInput'
 import { useRef, useState } from 'react'
 import styled from 'styled-components'

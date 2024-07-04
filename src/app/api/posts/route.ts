@@ -77,17 +77,11 @@ async function GET(request: NextRequest) {
     ...(subCategory ? { subCategory } : {}),
   }
 
-  console.log('whereQuery', whereQuery)
-
   try {
     const posts = await fetchPosts(whereQuery)
     return new NextResponse(JSON.stringify(posts), { status: 200 })
   } catch (error) {
-    console.error(error)
-    return new NextResponse(
-      JSON.stringify({ error: 'Failed to fetch posts' }),
-      { status: 500 },
-    )
+    return new NextResponse(JSON.stringify([]), { status: 500 })
   }
 }
 
@@ -125,11 +119,7 @@ async function POST(request: NextRequest) {
     })
     return new NextResponse(JSON.stringify(post), { status: 201 })
   } catch (error) {
-    console.error(error)
-    return new NextResponse(
-      JSON.stringify({ error: 'Failed to create post' }),
-      { status: 500 },
-    )
+    return new NextResponse(JSON.stringify({ error }), { status: 500 })
   }
 }
 

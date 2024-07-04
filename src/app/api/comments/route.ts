@@ -45,8 +45,6 @@ async function POST(request: NextRequest) {
     )
   }
 
-  console.log('확인', postId, authorId, content, parentId)
-
   try {
     const comment = await prisma.comment.create({
       data: {
@@ -57,10 +55,8 @@ async function POST(request: NextRequest) {
       },
     })
 
-    console.log('comment', comment)
     return new NextResponse(JSON.stringify(comment), { status: 201 })
   } catch (error) {
-    console.log('error', error)
     return new NextResponse(JSON.stringify([]), { status: 500 })
   }
 }

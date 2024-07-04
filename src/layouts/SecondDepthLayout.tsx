@@ -1,6 +1,5 @@
 'use client'
 
-import { marketData } from '@/mocks/PostList'
 import FixedPostList from '@/app/_components/FixedPostList'
 import PostList from '@/app/_components/PostList'
 import NavsData, { NavsDataType } from '@/mocks/NavsData'
@@ -31,7 +30,7 @@ export default function SecondDepthLayout({
         <PostList
           href={secondNavItem?.href}
           label={secondNavItem?.label}
-          data={marketData}
+          data={[]}
           displayAll
           mainCategoryLink={{
             href: firstNavItem.href,

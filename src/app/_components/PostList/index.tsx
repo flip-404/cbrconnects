@@ -86,7 +86,7 @@ function PostList({
                   width={100}
                   height={100}
                   alt="임시 사진"
-                  src={post.thumbnail}
+                  src={post.thumbnail || undefined}
                 />
               )}
             </div>

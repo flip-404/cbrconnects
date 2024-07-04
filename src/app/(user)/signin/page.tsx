@@ -7,8 +7,7 @@ import AuthInput from '@/app/_components/AuthInput'
 import { useForm } from 'react-hook-form'
 import { SignInForm } from '@/app/api/(user)/signin/route'
 import ErrorMessage from '@/app/_components/ErrorMessage'
-import { getProviders, signIn } from 'next-auth/react'
-import { useEffect, useState } from 'react'
+import { signIn } from 'next-auth/react'
 
 function SignIn() {
   const router = useRouter()
@@ -19,15 +18,6 @@ function SignIn() {
   } = useForm<SignInForm>({
     mode: 'onBlur',
   })
-
-  const [providers, setProviders] = useState(null)
-
-  useEffect(() => {
-    ;(async () => {
-      const res: any = await getProviders()
-      setProviders(res)
-    })()
-  }, [])
 
   const handdleCredentialsLogin = async (formData: SignInForm) => {
     await signIn('credentials', {

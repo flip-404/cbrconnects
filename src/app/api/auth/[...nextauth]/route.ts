@@ -1,9 +1,14 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable no-param-reassign */
 import NextAuth from 'next-auth/next'
 import CredentialsProvider from 'next-auth/providers/credentials'
 import KakaoProvider from 'next-auth/providers/kakao'
 import GoogleProvider from 'next-auth/providers/google'
 
-const authorizeUser = async (credentials: any, authType: string) => {
+const authorizeUser = async (
+  credentials: Record<'userAuthId' | 'password', string> | undefined,
+  authType: string,
+) => {
   const res = await fetch(`${process.env.NEXTAUTH_URL}/api/signin`, {
     method: 'POST',
     headers: {
@@ -48,7 +53,7 @@ const handler = NextAuth({
         userAuthId: { label: '아이디', type: 'text' },
         password: { label: '비밀번호', type: 'password' },
       },
-      async authorize(credentials, req) {
+      async authorize(credentials) {
         return authorizeUser(credentials, 'credentials')
       },
     }),
