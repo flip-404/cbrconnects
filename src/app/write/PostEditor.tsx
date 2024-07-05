@@ -1,14 +1,23 @@
-import ReactQuill from 'react-quill'
+/* eslint-disable @typescript-eslint/no-unused-vars */
+
+'use client'
+
 import styled from 'styled-components'
 import { useSearchParams } from 'next/navigation'
 import NavsData, { NavsDataType } from '@/mocks/NavsData'
 import { useSession } from 'next-auth/react'
-import { useState } from 'react'
+import { Suspense, useEffect, useState } from 'react'
+import dynamic from 'next/dynamic'
+
+const ReactQuill = dynamic(() => import('react-quill'), {
+  ssr: false,
+})
 
 function PostEditor() {
   const { data: session } = useSession()
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
+
   const searchParams = useSearchParams()
 
   const mainCategory = searchParams.get('mainCategory')
@@ -78,6 +87,8 @@ function PostEditor() {
     setContent(value)
   }
 
+  if (typeof document !== 'undefined') return <div />
+
   return (
     <Container>
       <Header>
@@ -97,15 +108,18 @@ function PostEditor() {
           value={title}
         />
       </TitleWrapper>
-      <QuillContainer>
-        <ReactQuill
-          theme="snow"
-          modules={modules}
-          formats={formats}
-          value={content}
-          onChange={handleChange}
-        />
-      </QuillContainer>
+      <Suspense fallback={<div>Loading...</div>}>
+        {' '}
+        <QuillContainer>
+          <ReactQuill
+            theme="snow"
+            modules={modules}
+            formats={formats}
+            value={content}
+            onChange={handleChange}
+          />
+        </QuillContainer>
+      </Suspense>
     </Container>
   )
 }
