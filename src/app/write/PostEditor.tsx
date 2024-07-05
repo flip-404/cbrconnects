@@ -87,8 +87,6 @@ function PostEditor() {
     setContent(value)
   }
 
-  if (typeof document !== 'undefined') return <div />
-
   return (
     <Container>
       <Header>
