@@ -7,10 +7,12 @@ import WriteCommentBox from './WriteCommentBox'
 import LoginRequiredNotice from './LoginRequiredNotice'
 
 function CommentSection({
+  handdleLikeComment,
   comments,
   handdleWriteComment,
   isLoggedIn,
 }: {
+  handdleLikeComment: (commentId: number) => void
   comments: CommentWithRelations[]
   handdleWriteComment: (content: string, parentId?: number) => void
   isLoggedIn: boolean
@@ -23,7 +25,11 @@ function CommentSection({
   return (
     <Container>
       {comments.map((comment: CommentWithRelations) => (
-        <CommentBox key={comment.id} content={comment} />
+        <CommentBox
+          handdleLikeComment={handdleLikeComment}
+          key={comment.id}
+          comment={comment}
+        />
       ))}
 
       {isLoggedIn ? (
