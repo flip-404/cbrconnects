@@ -30,7 +30,6 @@ export default function SecondDepthLayout({
         <PostList
           href={secondNavItem?.href}
           label={secondNavItem?.label}
-          data={[]}
           displayAll
           mainCategoryLink={{
             href: firstNavItem.href,

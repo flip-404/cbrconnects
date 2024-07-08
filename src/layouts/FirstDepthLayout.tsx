@@ -26,7 +26,6 @@ export default function FirstDepthLayout({
               key={secondNavItem.id}
               href={secondNavItem.href}
               label={secondNavItem.label}
-              data={[]}
               displayAll={false}
               mainCategoryLink={{
                 href: firstNavItem.href,
@@ -45,7 +44,6 @@ export default function FirstDepthLayout({
             key={firstNavItem.id}
             href={firstNavItem.href}
             label={firstNavItem.label}
-            data={[]}
             displayAll
             mainCategoryLink={{
               href: firstNavItem.href,
@@ -62,19 +60,25 @@ export default function FirstDepthLayout({
 }
 
 const LayoutWrapper = styled.div`
+  padding-top: 40px;
   background-color: #eff0f3;
   display: flex;
   flex-direction: column;
-  gap: 40px;
   align-items: center;
-  padding-top: 40px;
+  width: 100vw;
+  min-height: 60vh;
+  gap: 40px;
 `
 
 const CenteredContainer = styled.div`
+  width: 70vw;
+  background-color: white;
+  padding: 40px;
+  border-radius: 25px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+
   display: grid;
   grid-template-columns: 1fr 1fr;
-  width: 1100px;
   justify-items: center;
-  align-items: center;
   gap: 20px;
 `
