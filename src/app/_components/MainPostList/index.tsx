@@ -8,20 +8,23 @@ import fetcher from '@/utils/fetcher'
 import { PostWithRelations } from '@/types'
 import { useRouter } from 'next/navigation'
 import formatDate from '@/utils/formatData'
+import isNew from '@/utils/isNew'
+import EmptyBox from '../PostList/EmptyBox'
+import SkeletonPostItem from './SkeletonMainPostItem'
 
-type PostListCardProps = {
+type MainPostListProps = {
   mainCategory?: string
   subCategory?: string
   href: string
   lable: string
 }
 
-function PostListCard({
+function MainPostList({
   mainCategory,
   subCategory,
   href,
   lable,
-}: PostListCardProps) {
+}: MainPostListProps) {
   const router = useRouter()
   const query = buildQuery({
     mainCategory,
@@ -38,49 +41,51 @@ function PostListCard({
   }
 
   if (error) return <div>Failed to load posts</div>
-  if (!posts) return <div>Loading...</div>
+  let content
+
+  if (!posts) {
+    content = <SkeletonPostItem />
+  } else if (posts.length === 0) {
+    content = <EmptyBox />
+  } else {
+    content = posts.map((post) => (
+      <ListItem
+        key={post.id}
+        onClick={() => {
+          handleMoveToPost(post.id)
+        }}
+      >
+        <Title>
+          {post.title} {isNew(post.createdAt) && <NewChip>&nbsp;[new]</NewChip>}
+        </Title>
+        <CreatedAt>{formatDate(post.createdAt)}</CreatedAt>
+      </ListItem>
+    ))
+  }
+
   return (
     <CardContainer>
-      <CardHeader>
+      <Header>
         <TitleLink scroll={false} href={href}>
           {lable}
         </TitleLink>
         <ShortcutLink scroll={false} href={href}>
-          바로가기 아이콘
+          바로가기
         </ShortcutLink>
-      </CardHeader>
-      <Table>
-        <TableBody>
-          {posts.map((post) => (
-            <TableRow
-              key={post.id}
-              onClick={() => {
-                handleMoveToPost(post.id)
-              }}
-            >
-              <TableCell>
-                {post.title}{' '}
-                {post.createdAt.toString() === '20분전' && (
-                  <NewChip>&nbsp;[new]</NewChip>
-                )}
-              </TableCell>
-              <TableCell>{formatDate(post.createdAt)}</TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
+      </Header>
+      <PostListWrapper>{content}</PostListWrapper>
     </CardContainer>
   )
 }
 
-export default PostListCard
+export default MainPostList
 
-// Styled Components
 const CardContainer = styled.div`
   margin-bottom: 20px;
+  width: 100%;
 `
 
-const CardHeader = styled.div`
+const Header = styled.div`
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -100,21 +105,21 @@ const ShortcutLink = styled(Link)`
   text-decoration: none;
 `
 
-const Table = styled.table`
+const PostListWrapper = styled.div`
   font-size: 13px;
-  font-weight: 700;
-`
-
-const TableBody = styled.tbody`
+  font-weight: 600;
   display: flex;
   flex-direction: column;
-  gap: 8px;
+  gap: 2px;
 `
 
-const TableRow = styled.tr`
+const ListItem = styled.div`
   display: flex;
+  align-items: center;
   justify-content: space-between;
   cursor: pointer;
+  padding: 2px;
+  width: 100%;
 
   &:hover {
     background-color: #f1f1f1;
@@ -122,11 +127,14 @@ const TableRow = styled.tr`
   }
 `
 
-const TableCell = styled.td`
-  display: flex;
-  align-items: center;
-  justify-content: flex-start;
-  width: ${({ width }) => width};
+const Title = styled.div`
+  width: 300px;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+  overflow: hidden;
+`
+
+const CreatedAt = styled.div`
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
