@@ -8,6 +8,7 @@ import { useRouter } from 'next/navigation'
 import type { PostWithRelations } from '@/types'
 import styled from 'styled-components'
 import SkeletonPostItem from './SkeletonPostItem'
+import EmptyBox from './EmptyBox'
 
 type PostListBodyProps = {
   query: string
@@ -26,45 +27,47 @@ function PostListBody({ query }: PostListBodyProps) {
     router.push(`/posts?postId=${postId}`)
   }
 
-  return (
-    <PostContainer>
-      {posts ? (
-        posts.map((post) => (
-          <PostItem
-            key={post.id}
-            onClick={() => {
-              handleMoveToPost(post.id)
-            }}
-          >
-            <div>
-              <PostTitle>
-                {post.title}
-                <span>{post.comments.length}</span>
-              </PostTitle>
-              <MetaInfo>
-                <span>{post.author.nickname}</span>·
-                <span>{formatDate(post.createdAt)}</span>·
-                <span>조회수 {post.viewCount}</span>·
-                <span>{post.likes.length}</span>
-              </MetaInfo>
-            </div>
-            <div>
-              {post.title && (
-                <Thumbnail
-                  width={100}
-                  height={100}
-                  alt="임시 사진"
-                  src={post.thumbnail || undefined}
-                />
-              )}
-            </div>
-          </PostItem>
-        ))
-      ) : (
-        <SkeletonPostItem />
-      )}
-    </PostContainer>
-  )
+  let content
+
+  if (!posts) {
+    content = <SkeletonPostItem />
+  } else if (posts.length === 0) {
+    content = <EmptyBox />
+  } else {
+    content = posts.map((post) => (
+      <PostItem
+        key={post.id}
+        onClick={() => {
+          handleMoveToPost(post.id)
+        }}
+      >
+        <div>
+          <PostTitle>
+            {post.title}
+            <span>{post.comments.length}</span>
+          </PostTitle>
+          <MetaInfo>
+            <span>{post.author.nickname}</span>·
+            <span>{formatDate(post.createdAt)}</span>·
+            <span>조회수 {post.viewCount}</span>·
+            <span>{post.likes.length}</span>
+          </MetaInfo>
+        </div>
+        <div>
+          {post.title && (
+            <Thumbnail
+              width={100}
+              height={100}
+              alt="임시 사진"
+              src={post.thumbnail || undefined}
+            />
+          )}
+        </div>
+      </PostItem>
+    ))
+  }
+
+  return <PostContainer>{content}</PostContainer>
 }
 
 export default PostListBody

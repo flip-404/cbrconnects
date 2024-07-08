@@ -54,15 +54,7 @@ type FixedPostListProps = {
 function FixedPostList({ href = '', label }: FixedPostListProps) {
   return (
     <Container>
-      <div
-        style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-          fontSize: '13px',
-          fontWeight: '600',
-        }}
-      >
+      <Header>
         <StyledLink scroll={false} href={href}>
           {label}
           <span>16</span>
@@ -70,22 +62,20 @@ function FixedPostList({ href = '', label }: FixedPostListProps) {
         <StyledLink scroll={false} href={href} color="#8d919c">
           전체보기
         </StyledLink>
-      </div>
-      <NotificationsTable>
-        <tbody>
-          {Notifications.map((notification) => (
-            <tr key={notification.id}>
-              <FirstCell style={{}}>
-                <NotificationTypeTag $postType={notification.postType}>
-                  {notification.postType === 'notification' ? '공지' : '이벤트'}
-                </NotificationTypeTag>
-                {notification.title}
-              </FirstCell>
-              <SecondCell style={{}}>{notification.createdAt}</SecondCell>
-            </tr>
-          ))}
-        </tbody>
-      </NotificationsTable>
+      </Header>
+      <NotifList>
+        {Notifications.map((notification) => (
+          <NotifListItem key={notification.id}>
+            <Title>
+              {notification.title}
+              <NotificationTypeTag $postType={notification.postType}>
+                {notification.postType === 'notification' ? '공지' : '이벤트'}
+              </NotificationTypeTag>
+            </Title>
+            <CreatedAt>{notification.createdAt}</CreatedAt>
+          </NotifListItem>
+        ))}
+      </NotifList>
     </Container>
   )
 }
@@ -93,7 +83,20 @@ function FixedPostList({ href = '', label }: FixedPostListProps) {
 export default FixedPostList
 
 const Container = styled.div`
-  width: 50vw;
+  width: 60vw;
+  background-color: white;
+  border-radius: 25px;
+  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+  padding: 1.5rem;
+`
+
+const Header = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
 `
 
 const StyledLink = styled(Link)<{ color?: string }>`
@@ -123,25 +126,24 @@ const NotificationTypeTag = styled.span<{ $postType: string }>`
   font-weight: 600;
 `
 
-const NotificationsTable = styled.table`
-  font-size: 13px;
-  font-weight: 700;
+const NotifList = styled.div`
+  font-size: 15px;
+  font-weight: 600;
 `
 
-const FirstCell = styled.td`
+const NotifListItem = styled.div`
   display: flex;
-  gap: 2px;
-  width: 300px;
+  justify-content: space-between;
+`
+
+const Title = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 6px;
   text-align: left;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 `
 
-const SecondCell = styled.td`
-  width: 100px;
-  text-align: right;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-`
+const CreatedAt = styled.div``

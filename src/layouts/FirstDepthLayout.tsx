@@ -80,5 +80,5 @@ const CenteredContainer = styled.div`
   display: grid;
   grid-template-columns: 1fr 1fr;
   justify-items: center;
-  gap: 20px;
+  gap: 4rem;
 `

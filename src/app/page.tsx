@@ -11,16 +11,8 @@ import CalendarWidget from './_components/CalendarWidget'
 export default function Home() {
   return (
     <Container>
-      <WidgetWrapper>
-        {/* <WidgetBox>
-          <WeatherWidget />
-        </WidgetBox> */}
-        <div>
-          <FixedPostList href="/posts" label="공지사항" />
-        </div>
-      </WidgetWrapper>
-
-      <WidgetWrapper>
+      <FixedPostList href="/posts" label="공지사항" />
+      <MainBannerSection>
         <ImageWrapper>
           <StyledImage
             alt="진행 중인 이벤트"
@@ -37,9 +29,8 @@ export default function Home() {
             height={400}
           />
         </ImageWrapper>
-
         <CalendarWidget />
-      </WidgetWrapper>
+      </MainBannerSection>
 
       <GridWrapper>
         <GridContainer>
@@ -84,20 +75,15 @@ const Container = styled.div`
   padding-top: 20px;
   display: flex;
   flex-direction: column;
+  align-items: center;
   gap: 20px;
 `
 
-const WidgetWrapper = styled.div`
+const MainBannerSection = styled.div`
   display: flex;
   gap: 20px;
   justify-content: center;
 `
-
-// const WidgetBox = styled.div`
-//   padding: 10px;
-//   background-color: #cbd5e0;
-//   border-radius: 0.5rem;
-// `
 
 const ImageWrapper = styled.div`
   display: flex;
