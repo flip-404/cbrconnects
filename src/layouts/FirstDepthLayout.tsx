@@ -18,10 +18,7 @@ export default function FirstDepthLayout({
 
   return (
     <LayoutWrapper>
-      <Container>
-        <FixedPostList href="/posts" label="공지사항" />
-        <FixedPostList href="/posts" label="최근 게시물" />
-      </Container>
+      <FixedPostList href="/posts" label="공지사항" />
       <CenteredContainer>
         {firstNavItem.submenu?.length !== 0 ? (
           firstNavItem.submenu!.map((secondNavItem) => (
@@ -65,20 +62,12 @@ export default function FirstDepthLayout({
 }
 
 const LayoutWrapper = styled.div`
+  background-color: #eff0f3;
   display: flex;
   flex-direction: column;
   gap: 40px;
   align-items: center;
-  margin-top: 40px;
-`
-
-const Container = styled.div`
-  width: 1100px;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  justify-items: center;
-  align-items: center;
-  gap: 20px;
+  padding-top: 40px;
 `
 
 const CenteredContainer = styled.div`

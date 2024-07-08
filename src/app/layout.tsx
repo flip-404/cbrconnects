@@ -28,7 +28,6 @@ export default function RootLayout({
             <Footer />
           </Providers>
         </StyledComponentsRegistry>
-        ;
       </body>
     </html>
   )

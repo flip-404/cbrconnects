@@ -92,7 +92,9 @@ function FixedPostList({ href = '', label }: FixedPostListProps) {
 
 export default FixedPostList
 
-const Container = styled.div``
+const Container = styled.div`
+  width: 50vw;
+`
 
 const StyledLink = styled(Link)<{ color?: string }>`
   display: flex;

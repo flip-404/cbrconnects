@@ -80,7 +80,8 @@ export default function Home() {
   )
 }
 const Container = styled.div`
-  margin-top: 20px;
+  background-color: #eff0f3;
+  padding-top: 20px;
   display: flex;
   flex-direction: column;
   gap: 20px;

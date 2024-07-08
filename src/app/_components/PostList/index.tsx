@@ -13,6 +13,7 @@ import useSWR from 'swr'
 import buildQuery from '@/utils/queryUtils'
 import { useRouter } from 'next/navigation'
 import formatDate from '@/utils/formatData'
+import RightArrowIcon from '@/assets/right_arrow_icon.svg'
 
 type PostListProps = {
   href: string
@@ -56,7 +57,7 @@ function PostList({
           {label}
         </StyledLink>
         <ArrowLink scroll={false} href={href}>
-          화살표 아이콘
+          <RightArrowIcon width={24} height={24} />
         </ArrowLink>
       </Header>
 
