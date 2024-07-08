@@ -10,7 +10,7 @@ async function GET(request: NextRequest) {
 
   try {
     const comments = await prisma.comment.findMany({
-      where: { postId: postIdNumber },
+      where: { postId: postIdNumber, parentId: null },
       include: {
         likes: true,
         author: {
@@ -18,6 +18,7 @@ async function GET(request: NextRequest) {
         },
         replies: {
           include: {
+            likes: true,
             author: {
               select: { id: true, nickname: true },
             },

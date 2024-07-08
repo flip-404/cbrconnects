@@ -3,16 +3,28 @@ import formatDate from '@/utils/formatData'
 import styled from 'styled-components'
 import LikeIcon from '@/assets/like_icon.svg'
 import { useSession } from 'next-auth/react'
+import WriteCommentBox from './WriteCommentBox'
 
 function CommentBox({
   handdleLikeComment,
+  selectReplyComment,
+  handdleWriteComment,
+  commentToReply,
   comment,
+  parentId = null,
 }: {
-  handdleLikeComment: (commmentId: number) => void
+  handdleLikeComment: (commmentId: number, parentId: null | number) => void
+  selectReplyComment?: (commmentId: number) => void
+  handdleWriteComment?: (content: string, parentId: null | number) => void
+  commentToReply?: null | number
   comment: CommentWithRelations
+  parentId?: null | number
 }) {
   const { data: session } = useSession()
-  const isLiked = comment.likes.some((like) => like.userId === session?.user.id)
+
+  const isLiked = comment.likes?.some(
+    (like) => like.userId === session?.user.id,
+  )
   return (
     <Container>
       <AuthorProfile />
@@ -21,18 +33,42 @@ function CommentBox({
         <CommentContent>{comment.content}</CommentContent>
         <CommentDetail>
           <Date>{formatDate(comment.createdAt)}</Date>
-          <Reply>답글쓰기</Reply>
+          {selectReplyComment && (
+            <Reply
+              onClick={() => {
+                selectReplyComment(comment.id)
+              }}
+            >
+              답글쓰기
+            </Reply>
+          )}
+
           <LikeWrapper $isLiked={isLiked}>
             <LikeIcon
               onClick={() => {
-                handdleLikeComment(comment.id)
+                handdleLikeComment(comment.id, parentId)
               }}
               width={24}
               height={24}
             />{' '}
-            {comment.likes.length}
+            {comment.likes?.length}
           </LikeWrapper>
         </CommentDetail>
+        {comment.replies?.length !== 0 &&
+          comment.replies?.map((reply) => (
+            <CommentBox
+              key={reply.id}
+              comment={reply}
+              handdleLikeComment={handdleLikeComment}
+              parentId={comment.id}
+            />
+          ))}
+        {commentToReply === comment.id && (
+          <WriteCommentBox
+            handdleWriteComment={handdleWriteComment}
+            parentId={comment.id}
+          />
+        )}
       </CommentWrapper>
     </Container>
   )
@@ -60,6 +96,7 @@ const AuthorProfile = styled.div`
 const CommentWrapper = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
   gap: 0.3rem;
 `
 

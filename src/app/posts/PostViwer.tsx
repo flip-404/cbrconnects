@@ -7,7 +7,8 @@ import { useSearchParams } from 'next/navigation'
 import useSWR from 'swr'
 import { useSession } from 'next-auth/react'
 import formatDate from '@/utils/formatData'
-import { Comment, CommentLike } from '@prisma/client'
+import { CommentLike } from '@prisma/client'
+import LikeIcon from '@/assets/like_icon.svg'
 import CommentSection from '../_components/CommentSection'
 
 function PostViewer() {
@@ -32,7 +33,10 @@ function PostViewer() {
     const isLiked = post.likes.find((like) => like.userId === session.user.id)
     const updatedLikes = isLiked
       ? post.likes.filter((like) => like.userId !== session.user.id)
-      : [...post.likes, { id: -1, postId: post.id, userId: session.user.id }]
+      : [
+          ...post.likes,
+          { id: Math.random(), postId: post.id, userId: session.user.id },
+        ]
 
     postMutate({ ...post, likes: updatedLikes }, false)
     // 광클시 서버에러 나는거 수정
@@ -51,26 +55,71 @@ function PostViewer() {
     postMutate()
   }
 
-  const handdleLikeComment = (commentId: number) => {
+  const handdleLikeComment = (commentId: number, parentId: null | number) => {
     if (!session || !comments) return
 
-    const isLiked = comments
-      .find((comment: Comment) => comment.id === commentId)
-      ?.likes.find((like: CommentLike) => like.userId === session.user.id)
+    let isLiked: CommentLike | undefined
 
-    const updatedComments = comments.map((comment: CommentWithRelations) => {
-      if (comment.id === commentId) {
-        const updatedLikes = isLiked
-          ? comment.likes.filter((like) => like.userId !== session.user.id)
-          : [...comment.likes, { id: -1, commentId, userId: session.user.id }]
+    let updatedComments
 
-        return {
-          ...comment,
-          likes: updatedLikes,
-        }
+    if (parentId) {
+      const parentComment = comments.find(
+        (comment: CommentWithRelations) => comment.id === parentId,
+      )
+
+      if (parentComment) {
+        const targetReply = parentComment.replies.find(
+          (reply: CommentWithRelations) => reply.id === commentId,
+        )
+        isLiked = targetReply?.likes.find(
+          (like: CommentLike) => like.userId === session.user.id,
+        )
+
+        const updatedReplies = parentComment.replies.map(
+          (reply: CommentWithRelations) => {
+            if (reply.id === commentId) {
+              const updatedLikes = isLiked
+                ? reply.likes.filter((like) => like.userId !== session.user.id)
+                : [
+                    ...reply.likes,
+                    { id: Math.random(), commentId, userId: session.user.id },
+                  ]
+
+              return { ...reply, likes: updatedLikes }
+            }
+            return reply
+          },
+        )
+
+        updatedComments = comments.map((comment: CommentWithRelations) => {
+          if (comment.id === parentId) {
+            return { ...comment, replies: updatedReplies }
+          }
+          return comment
+        })
       }
-      return comment
-    })
+    } else {
+      const targetComment = comments.find(
+        (comment: CommentWithRelations) => comment.id === commentId,
+      )
+      isLiked = targetComment?.likes.find(
+        (like: CommentLike) => like.userId === session.user.id,
+      )
+
+      updatedComments = comments.map((comment: CommentWithRelations) => {
+        if (comment.id === commentId) {
+          const updatedLikes = isLiked
+            ? comment.likes.filter((like) => like.userId !== session.user.id)
+            : [
+                ...comment.likes,
+                { id: Math.random(), commentId, userId: session.user.id },
+              ]
+
+          return { ...comment, likes: updatedLikes }
+        }
+        return comment
+      })
+    }
 
     commentMutate(updatedComments, false)
 
@@ -89,14 +138,27 @@ function PostViewer() {
     commentMutate()
   }
 
-  const handdleWriteComment = (content: string, parentId?: number) => {
+  const handdleWriteComment = (content: string, parentId: number | null) => {
     const newComment = {
       author: { nickname: session?.user.nickname },
       content,
       createdAt: new Date(),
       likes: [],
+      id: Math.random(),
+      parentId,
     }
-    commentMutate([...comments, newComment], false)
+    if (parentId) {
+      const updatedComments = comments!.map((comment: CommentWithRelations) => {
+        if (comment.id === parentId) {
+          return {
+            ...comment,
+            replies: [...comment.replies, newComment],
+          }
+        }
+        return comment
+      })
+      commentMutate(updatedComments, false)
+    } else commentMutate([...comments, newComment], false)
 
     fetch('/api/comments', {
       method: 'POST',
@@ -146,11 +208,17 @@ function PostViewer() {
         <div>
           {parse(post!.content)}
           <ReactionSummary>
-            <LikeCount onClick={handdleLikePost}>
-              좋아요 <span>{post.likes.length}</span>
-            </LikeCount>
+            <LikeWrapper
+              $isLiked={post.likes.some(
+                (like) => like.userId === session?.user.id,
+              )}
+            >
+              <LikeIcon onClick={handdleLikePost} width={24} height={24} />{' '}
+              <span>{post.likes.length}</span>
+            </LikeWrapper>
+
             <CommentCount>
-              댓글 <span>{comments.length}</span>
+              댓글 <span>{comments?.length}</span>
             </CommentCount>
           </ReactionSummary>
         </div>
@@ -233,33 +301,41 @@ const AuthorProfile = styled.div`
 
 const ReactionSummary = styled.div`
   display: flex;
+  align-items: center;
   gap: 1rem;
-`
-
-const LikeCount = styled.span`
-  display: flex;
-  cursor: pointer;
-  font-size: 13px;
-  font-weight: 400;
-
-  &:hover {
-    color: red;
-  }
-
-  span {
-    margin-left: 0.3rem;
-    font-weight: 700;
-  }
 `
 
 const CommentCount = styled.span`
   display: flex;
-
+  align-items: center;
   font-size: 13px;
   font-weight: 400;
 
   span {
     margin-left: 0.3rem;
     font-weight: 700;
+  }
+`
+
+const LikeWrapper = styled.div<{ $isLiked: boolean }>`
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  span {
+    font-size: 13px;
+    margin-left: 0.3rem;
+    font-weight: 700;
+  }
+
+  path {
+    stroke: ${(props) => props.$isLiked && 'red'};
+    fill: ${(props) => props.$isLiked && 'red'};
+  }
+
+  &:hover {
+    path {
+      stroke: red;
+      fill: red;
+    }
   }
 `

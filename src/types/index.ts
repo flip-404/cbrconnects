@@ -15,4 +15,16 @@ export type PostWithRelations = Post & {
 export type CommentWithRelations = Comment & {
   author: User
   likes: CommentLike[]
+  replies: CommentWithRelations[]
+}
+
+export type CommentResponse = {
+  id: number
+  content: string
+  createdAt: Date
+  author: User
+  postId: number
+  parentId: number
+  likes: CommentLike[]
+  replies: CommentWithRelations[]
 }

@@ -4,8 +4,10 @@ import styled from 'styled-components'
 
 function WriteCommentBox({
   handdleWriteComment,
+  parentId,
 }: {
-  handdleWriteComment: (content: string, parentId?: number) => void
+  handdleWriteComment?: (content: string, parentId: number | null) => void
+  parentId: number | null
 }) {
   const [content, setContent] = useState('')
 
@@ -22,15 +24,17 @@ function WriteCommentBox({
         }}
       />
       <ButtonWrapper>
-        <WriteButton
-          onClick={() => {
-            const tempContent = content
-            setContent('')
-            handdleWriteComment(tempContent)
-          }}
-        >
-          등록
-        </WriteButton>
+        {handdleWriteComment && (
+          <WriteButton
+            onClick={() => {
+              const tempContent = content
+              setContent('')
+              handdleWriteComment(tempContent, parentId)
+            }}
+          >
+            등록
+          </WriteButton>
+        )}
       </ButtonWrapper>
     </Container>
   )

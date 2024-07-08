@@ -20,7 +20,7 @@ async function POST(request: NextRequest) {
     })
 
     return NextResponse.json(
-      { message: 'Post liked successfully' },
+      { message: 'Comment liked successfully' },
       { status: 200 },
     )
   } catch (error) {
@@ -33,20 +33,20 @@ async function DELETE(request: NextRequest) {
 
   if (!commentId || !userId || !commentLikeId) {
     return NextResponse.json(
-      { error: 'Post ID and User ID are required' },
+      { error: 'Comment ID and User ID are required' },
       { status: 400 },
     )
   }
 
   try {
-    await prisma.postLike.delete({
+    await prisma.commentLike.delete({
       where: {
         id: Number(commentLikeId),
       },
     })
 
     return NextResponse.json(
-      { message: 'Post unliked successfully' },
+      { message: 'Comment unliked successfully' },
       { status: 200 },
     )
   } catch (error) {
