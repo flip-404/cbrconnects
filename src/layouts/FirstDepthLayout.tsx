@@ -60,7 +60,7 @@ export default function FirstDepthLayout({
 }
 
 const LayoutWrapper = styled.div`
-  padding-top: 40px;
+  padding: 40px 0px;
   background-color: #eff0f3;
   display: flex;
   flex-direction: column;
