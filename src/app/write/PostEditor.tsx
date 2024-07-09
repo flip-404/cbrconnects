@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
 
 'use client'
@@ -6,17 +7,33 @@ import styled from 'styled-components'
 import { useSearchParams } from 'next/navigation'
 import NavsData, { NavsDataType } from '@/mocks/NavsData'
 import { useSession } from 'next-auth/react'
-import { Suspense, useEffect, useState } from 'react'
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
+import ImageResize from 'quill-image-resize-module-react'
+import { ImageDrop } from 'quill-image-drop-module'
+import { Quill } from 'react-quill'
+import ImageLoadingIcon from '@/assets/ImageLoading.gif'
 
-const ReactQuill = dynamic(() => import('react-quill'), {
-  ssr: false,
-})
+Quill.register('modules/imageResize', ImageResize)
+Quill.register('modules/imageDrop', ImageDrop)
+
+const ReactQuill = dynamic(
+  async () => {
+    const { default: RQ } = await import('react-quill')
+    return function comp({ forwardedRef, ...props }) {
+      return <RQ ref={forwardedRef} {...props} />
+    }
+  },
+  {
+    ssr: false,
+  },
+)
 
 function PostEditor() {
   const { data: session } = useSession()
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
+  const quillRef = useRef()
 
   const searchParams = useSearchParams()
 
@@ -31,21 +48,65 @@ function PostEditor() {
     (item) => item.id === subCategory,
   )!
 
-  const modules = {
-    toolbar: [
-      [{ font: [] }],
-      [{ size: ['small', false, 'large', 'huge'] }], // 텍스트 크기 옵션 추가
-      ['bold', 'italic', 'underline', 'strike'],
-      [
-        { list: 'ordered' },
-        { list: 'bullet' },
-        { indent: '-1' },
-        { indent: '+1' },
-      ],
-      ['link', 'image'],
-      [{ align: [] }, { color: [] }, { background: [] }],
-    ],
+  const imageHandler = async () => {
+    const input = document.createElement('input')
+    input.setAttribute('type', 'file')
+    input.setAttribute('accept', 'image/*')
+    input.click()
+
+    input.onchange = async () => {
+      const file: any = input.files ? input.files[0] : null
+      if (!file) return
+
+      const formData = new FormData()
+      formData.append('file', file)
+
+      const quillObj = quillRef.current?.getEditor()
+      const range = quillObj?.getSelection()!
+
+      quillObj.insertEmbed(range.index, 'image', '/ImageLoading.gif')
+
+      const { imageURL } = await fetch(`/api/image`, {
+        method: 'POST',
+        body: formData,
+      }).then((res) => {
+        quillObj.deleteText(range.index, 1)
+        return res.json()
+      })
+      quillObj?.insertEmbed(range.index, 'image', `${imageURL}`)
+      quillObj.setSelection(range.index + 1)
+    }
   }
+
+  const modules = useMemo(
+    () => ({
+      toolbar: {
+        container: [
+          [{ font: [] }],
+          [{ size: ['small', false, 'large', 'huge'] }], // 텍스트 크기 옵션 추가
+          ['bold', 'italic', 'underline', 'strike'],
+          [
+            { list: 'ordered' },
+            { list: 'bullet' },
+            { indent: '-1' },
+            { indent: '+1' },
+          ],
+          ['link', 'image'],
+          [{ align: [] }, { color: [] }, { background: [] }],
+        ],
+        handlers: {
+          image: imageHandler,
+        },
+      },
+      imageDrop: imageHandler,
+      imageResize: {
+        parchment: Quill.import('parchment'),
+        modules: ['Resize', 'DisplaySize'],
+      },
+    }),
+    [],
+  )
+
   const formats = [
     'font',
     'size',
@@ -110,6 +171,7 @@ function PostEditor() {
         {' '}
         <QuillContainer>
           <ReactQuill
+            forwardedRef={quillRef}
             theme="snow"
             modules={modules}
             formats={formats}
@@ -167,4 +229,9 @@ const WriteButton = styled.button`
 const QuillContainer = styled.div`
   width: 80%;
   height: 60%;
+
+  .ql-editor {
+    height: 40rem;
+    overflow-y: scroll;
+  }
 `
