@@ -22,6 +22,7 @@ model User {
   authType         String
   kakaoId          String?  @unique
   googleId         String?  @unique
+  profileImage     String?
 
   posts       Post[]
   comments    Comment[]

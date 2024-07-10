@@ -30,30 +30,28 @@ export default function Home() {
         </ImageWrapper>
         <CalendarWidget />
       </MainBannerSection>
-
-      <GridContainer>
-        <MainPostList
-          mainCategory="community"
-          href="/community"
-          lable="커뮤니티"
-        />
-        <MainPostList
-          mainCategory="community"
-          subCategory="business"
-          href="/community/business"
-          lable="업소록"
-        />
-        <MainPostList mainCategory="job" href="/job" lable="구인/구직" />
-      </GridContainer>
-
-      <GridContainer>
-        <MainPostList mainCategory="market" href="/market" lable="쿼카마켓" />
-        <MainPostList
-          mainCategory="rentshare"
-          href="/rentshare"
-          lable="렌트/쉐어"
-        />
-      </GridContainer>
+      <GridSection>
+        <GridContainer>
+          <MainPostList
+            mainCategory="community"
+            href="/community"
+            lable="커뮤니티"
+          />
+          <MainPostList
+            mainCategory="community"
+            subCategory="business"
+            href="/community/business"
+            lable="업소록"
+          />
+          <MainPostList mainCategory="job" href="/job" lable="구인/구직" />
+          <MainPostList mainCategory="market" href="/market" lable="쿼카마켓" />
+          <MainPostList
+            mainCategory="rentshare"
+            href="/rentshare"
+            lable="렌트/쉐어"
+          />
+        </GridContainer>
+      </GridSection>
     </Container>
   )
 }
@@ -65,6 +63,7 @@ const Container = styled.div`
   flex-direction: column;
   align-items: center;
   gap: 20px;
+  padding-bottom: 100px;
 `
 
 const MainBannerSection = styled.div`
@@ -85,7 +84,13 @@ const ImageWrapper = styled.div`
 const StyledImage = styled(Image)`
   border: 1px solid #e2e8f0;
 `
-
+const GridSection = styled.div`
+  background-color: white;
+  padding: 20px;
+  border-radius: 25px;
+  width: 100%;
+  max-width: 1200px;
+`
 const GridContainer = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -93,5 +98,4 @@ const GridContainer = styled.div`
   gap: 20px;
   width: 100%;
   max-width: 1200px;
-  margin: 20px 0;
 `

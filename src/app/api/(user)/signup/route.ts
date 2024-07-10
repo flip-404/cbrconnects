@@ -1,5 +1,6 @@
 import * as bcrypt from 'bcrypt'
 import prisma from '@/libs/prisma'
+import { NextResponse } from 'next/server'
 
 export interface SignUpForm {
   userAuthId: string
@@ -17,6 +18,7 @@ export interface SignUpForm {
   authType: string
   kakaoId: string | null
   googleId: string | null
+  profileImage: string | null
 }
 
 type RequestBody = SignUpForm
@@ -38,12 +40,13 @@ async function POST(request: Request) {
       kakaoId: body.authType === 'kakao' ? body.kakaoId : null,
       googleId: body.authType === 'google' ? body.googleId : null,
       authType: body.authType,
+      profileImage: body.profileImage,
     },
   })
-  const { password, ...result } = user
 
-  if (user) return new Response(JSON.stringify(result))
-  return new Response(JSON.stringify(null))
+  if (user)
+    return NextResponse.json({ message: '회원가입 완료' }, { status: 200 })
+  return NextResponse.json({ message: '회원가입 실패' }, { status: 500 })
 }
 
 export { POST }

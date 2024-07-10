@@ -18,6 +18,7 @@ function SecondPhase({
   defaultValues?: Partial<SignUpForm>
 }) {
   const [modalStatus, setModalStatus] = useState<null | string>(null)
+  const [profileImage, setProfileImage] = useState<null | string>(null)
   const {
     register,
     handleSubmit,
@@ -32,6 +33,35 @@ function SecondPhase({
   passwordRef.current = watch('password')
   const router = useRouter()
 
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files![0]
+    if (!file) return
+
+    const formData = new FormData()
+    formData.append('file', file)
+    const { imageURL } = await fetch(`/api/image`, {
+      method: 'POST',
+      body: formData,
+    }).then((res) => {
+      return res.json()
+    })
+
+    setProfileImage(imageURL)
+  }
+
+  const handdleModalClose = () => {
+    router.back()
+  }
+
+  const checkExists = async (value: string, type: string) => {
+    const response = await fetch(`/api/exists?${type}=${value}`)
+    const {
+      data: { exists },
+    } = await response.json()
+
+    return !exists
+  }
+
   const onValid = async (formData: SignUpForm) => {
     setModalStatus('loading')
     const res = await fetch('/api/signup', {
@@ -44,6 +74,7 @@ function SecondPhase({
         authType: defaultValues?.authType,
         kakaoId: defaultValues?.kakaoId,
         googleId: defaultValues?.googleId,
+        profileImage,
       }),
     })
     if (res.status === 200) {
@@ -53,21 +84,25 @@ function SecondPhase({
     }
   }
 
-  const checkExists = async (value: string, type: string) => {
-    const response = await fetch(`/api/exists?${type}=${value}`)
-    const {
-      data: { exists },
-    } = await response.json()
-
-    return !exists
-  }
-
-  const handdleModalClose = () => {
-    router.back()
-  }
-
   return (
     <StyledForm onSubmit={handleSubmit(onValid)}>
+      <ProfileImageWrapper>
+        <StyledLabel>프로필 사진 (선택)</StyledLabel>
+        <ImageInput
+          type="file"
+          id="profile-image"
+          accept="image/*"
+          onChange={handleImageChange}
+        />
+
+        <ImageLabel htmlFor="profile-image">
+          {profileImage ? (
+            <ProfileImage src={profileImage} alt="Profile" />
+          ) : (
+            <Placeholder>+</Placeholder>
+          )}
+        </ImageLabel>
+      </ProfileImageWrapper>
       <AuthInput
         disabled={!!defaultValues?.userName}
         id="userName"
@@ -221,4 +256,54 @@ const StyledForm = styled.form`
 
 const SignupButton = styled.button`
   padding: 10px 15px;
+`
+
+const ProfileImageWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+`
+
+const ImageInput = styled.input`
+  display: none;
+`
+
+const ImageLabel = styled.label`
+  background-color: #87ceeb;
+  border-radius: 50%;
+  cursor: pointer;
+  display: inline-block;
+  width: 100px;
+  height: 100px;
+  overflow: hidden;
+  position: relative;
+
+  &:hover {
+    opacity: 0.8;
+  }
+`
+
+const StyledLabel = styled.label`
+  width: 100%;
+  font-size: 1.25rem;
+  color: #475467;
+  font-weight: 600;
+  line-height: 1.875rem;
+`
+
+const ProfileImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+`
+
+const Placeholder = styled.div`
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  font-size: 24px;
 `
