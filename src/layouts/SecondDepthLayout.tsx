@@ -24,7 +24,6 @@ export default function SecondDepthLayout({
     <LayoutWrapper>
       <Container>
         <FixedPostList href="/posts" label="공지사항" />
-        <FixedPostList href="/posts" label="최근 게시물" />
       </Container>
       <CenteredContainer>
         <PostList

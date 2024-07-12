@@ -5,6 +5,7 @@ import styled from 'styled-components'
 import type { CategoryLink } from '@/types'
 import buildQuery from '@/utils/queryUtils'
 import RightArrowIcon from '@/assets/right_arrow_icon.svg'
+import WriteIcon from '@/assets/write_icon.svg'
 import PostListBody from './PostListBody'
 
 type PostListProps = {
@@ -43,7 +44,7 @@ function PostList({
       <Footer>
         {displayAll && (
           <WriteButtonWrapper>
-            <Link
+            <WriteButton
               href={{
                 pathname: '/write',
                 query: {
@@ -52,8 +53,9 @@ function PostList({
                 },
               }}
             >
+              <WriteIcon width={24} height={24} />
               글쓰기
-            </Link>
+            </WriteButton>
           </WriteButtonWrapper>
         )}
       </Footer>
@@ -64,7 +66,12 @@ function PostList({
 export default PostList
 
 const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
   width: 100%;
+  height: 500px;
+  padding-bottom: 100px;
 `
 
 const Header = styled.div`
@@ -102,3 +109,16 @@ const WriteButtonWrapper = styled.div`
 `
 
 const Footer = styled.div``
+
+const WriteButton = styled(Link)`
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 16px;
+  padding: 5px 15px;
+  border: 2px solid black;
+  border-radius: 25px;
+  text-decoration: none;
+  color: black;
+  font-weight: 700;
+`

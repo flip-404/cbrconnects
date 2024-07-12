@@ -208,6 +208,7 @@ const SocialLoginButton = styled.button<{
   $hoverColor: string
 }>`
   width: 100%;
+  font-weight: 700;
   background-color: ${(props) => props.$bgColor};
   color: #ffffff;
   padding: 8px;

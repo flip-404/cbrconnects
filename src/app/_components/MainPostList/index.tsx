@@ -83,6 +83,7 @@ export default MainPostList
 const CardContainer = styled.div`
   margin-bottom: 20px;
   width: 100%;
+  height: 200px;
 `
 
 const Header = styled.div`

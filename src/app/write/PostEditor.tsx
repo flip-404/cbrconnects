@@ -4,15 +4,16 @@
 'use client'
 
 import styled from 'styled-components'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import NavsData, { NavsDataType } from '@/mocks/NavsData'
 import { useSession } from 'next-auth/react'
-import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
+import { Suspense, useMemo, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
 import ImageResize from 'quill-image-resize-module-react'
 import { ImageDrop } from 'quill-image-drop-module'
 import { Quill } from 'react-quill'
 import ImageLoadingIcon from '@/assets/ImageLoading.gif'
+import NotificationModal from '../_components/NotificationModal'
 
 Quill.register('modules/imageResize', ImageResize)
 Quill.register('modules/imageDrop', ImageDrop)
@@ -30,6 +31,8 @@ const ReactQuill = dynamic(
 )
 
 function PostEditor() {
+  const [isLoading, setIsLoading] = useState(false)
+  const router = useRouter()
   const { data: session } = useSession()
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
@@ -125,7 +128,13 @@ function PostEditor() {
   ]
 
   const handdleWritePost = async () => {
-    const response = await fetch('/api/posts', {
+    setIsLoading(true)
+    setTimeout(() => {
+      setIsLoading(false)
+      router.back()
+    }, 2000)
+
+    await fetch('/api/posts', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -140,8 +149,6 @@ function PostEditor() {
         isNotice: false,
       }),
     })
-
-    await response.json()
   }
 
   const handleChange = (value: string) => {
@@ -150,6 +157,9 @@ function PostEditor() {
 
   return (
     <Container>
+      {isLoading && (
+        <NotificationModal label="게시글을 작성 중 입니다. 잠시만 기다려주세요" />
+      )}
       <Header>
         <CategoryWrapper>
           {firstNavItem.label} - {secondNavItem?.label}
@@ -192,7 +202,7 @@ const Container = styled.div`
   gap: 20px;
   width: 100vw;
   height: 100vh;
-  padding: 10px;
+  padding-top: 50px;
   align-items: center;
 `
 
@@ -223,7 +233,18 @@ const CategoryWrapper = styled.div`
 `
 
 const WriteButton = styled.button`
+  padding: 10px 15px;
+  background-color: rgba(136, 137, 209, 0.12);
+  color: #2a50da;
   font-size: 18px;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  font-weight: 700;
+
+  &:hover {
+    opacity: 0.8;
+  }
 `
 
 const QuillContainer = styled.div`
