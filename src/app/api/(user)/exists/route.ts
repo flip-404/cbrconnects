@@ -1,3 +1,4 @@
+// 리턴값 확인 완료
 /* eslint-disable import/prefer-default-export */
 import client from '@/libs/prisma'
 
@@ -23,8 +24,8 @@ async function GET(request: Request) {
   }
 
   return exists
-    ? Response.json({ data: { exists: true } })
-    : Response.json({ data: { exists: false } })
+    ? Response.json({ exists: true })
+    : Response.json({ exists: false })
 }
 
 export { GET }

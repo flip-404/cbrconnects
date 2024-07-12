@@ -1,3 +1,4 @@
+// 리턴값 확인 완료
 import * as bcrypt from 'bcrypt'
 import prisma from '@/libs/prisma'
 import { NextResponse } from 'next/server'
@@ -40,7 +41,7 @@ async function POST(request: Request) {
       kakaoId: body.authType === 'kakao' ? body.kakaoId : null,
       googleId: body.authType === 'google' ? body.googleId : null,
       authType: body.authType,
-      profileImage: body.profileImage,
+      profileImage: body.profileImage ? body.profileImage : null,
     },
   })
 

@@ -55,9 +55,7 @@ function SecondPhase({
 
   const checkExists = async (value: string, type: string) => {
     const response = await fetch(`/api/exists?${type}=${value}`)
-    const {
-      data: { exists },
-    } = await response.json()
+    const { exists } = await response.json()
 
     return !exists
   }
@@ -77,6 +75,7 @@ function SecondPhase({
         profileImage,
       }),
     })
+
     if (res.status === 200) {
       setModalStatus('success')
     } else {

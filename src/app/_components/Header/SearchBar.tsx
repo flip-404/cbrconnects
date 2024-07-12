@@ -33,7 +33,16 @@ function SearchBar() {
       </SearchContainer>
 
       {session && session.user ? (
-        `${session.user.userName}님 안녕하세요`
+        <ProfileWrapper>
+          <ImageLabel htmlFor="profile-image">
+            {session.user.profileImage && (
+              <>
+                <ProfileImage src={session.user.profileImage} alt="Profile" />
+              </>
+            )}
+          </ImageLabel>
+          {session.user.nickname}님
+        </ProfileWrapper>
       ) : (
         <LoginButton
           type="button"
@@ -73,7 +82,7 @@ const SearchContainer = styled.div`
   display: flex;
   gap: 10px;
   padding: 10px;
-  border: 2px solid #e5e7eb; /* Tailwind의 테두리 색상 */
+  border: 2px solid #e5e7eb;
   border-radius: 16px;
   flex: 0.5;
 `
@@ -90,4 +99,28 @@ const LoginButton = styled.button`
   border-radius: 100px;
   font-size: 12px;
   font-weight: 700;
+`
+
+const ProfileWrapper = styled.div`
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 1rem;
+  font-weight: 600;
+`
+const ImageLabel = styled.label`
+  background-color: #87ceeb;
+  border-radius: 50%;
+
+  display: inline-block;
+  width: 3rem;
+  height: 3rem;
+  overflow: hidden;
+  position: relative;
+`
+
+const ProfileImage = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 `

@@ -1,3 +1,4 @@
+// 리턴값 확인 완료
 import { signJwtAccessToken } from '@/libs/jwt'
 import prisma from '@/libs/prisma'
 import { User } from '@prisma/client'
