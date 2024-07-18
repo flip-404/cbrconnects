@@ -34,8 +34,6 @@ async function POST(request: NextRequest) {
     body: formData,
   }).then((res) => res.json())
 
-  console.log('variants', variants)
-
   return new NextResponse(JSON.stringify({ ok: true, imageURL: variants[0] }))
 }
 export { POST }
