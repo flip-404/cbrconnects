@@ -2,19 +2,18 @@
 
 'use client'
 
-import React, { Suspense } from 'react'
+import React from 'react'
 
 import 'react-quill/dist/quill.snow.css'
 import '@/styles/react-quill-custom.css'
-import PostEditor from './PostEditor'
+import dynamic from 'next/dynamic'
+
+const PostEditor = dynamic(() => import('./PostEditor'), {
+  ssr: false,
+})
 
 function Write() {
-  /* <Suspense>에 대해 공부 후 추후 개선 및 적용해야함 */
-  return (
-    <Suspense fallback={<div>Loading...</div>}>
-      <PostEditor />
-    </Suspense>
-  )
+  return <PostEditor />
 }
 
 export default Write

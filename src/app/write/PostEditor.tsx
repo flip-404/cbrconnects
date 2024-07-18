@@ -173,7 +173,6 @@ function PostEditor() {
         />
       </TitleWrapper>
       <Suspense fallback={<div>Loading...</div>}>
-        {' '}
         <QuillContainer>
           <ReactQuill
             forwardedRef={quillRef}
