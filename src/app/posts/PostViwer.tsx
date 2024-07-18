@@ -9,6 +9,7 @@ import { useSession } from 'next-auth/react'
 import formatDate from '@/utils/formatData'
 import { CommentLike } from '@prisma/client'
 import LikeIcon from '@/assets/like_icon.svg'
+import Link from 'next/link'
 import CommentSection from '../_components/CommentSection'
 
 function PostViewer() {
@@ -184,14 +185,19 @@ function PostViewer() {
     (item) => item.id === post?.subCategory,
   )!
 
-  /* <Suspense>에 대해 공부 후 추후 개선 및 적용해야함 */
   return (
     <Container>
       <ContentBox>
         <div>
-          <CategoryWrapper>
-            {`${firstNavItem.label} - ${secondNavItem.label} >`}
-          </CategoryWrapper>
+          <CategoryLink
+            href={
+              secondNavItem
+                ? `/${firstNavItem.id}/${secondNavItem.id}`
+                : `/${firstNavItem.id}`
+            }
+          >
+            {`${firstNavItem.label}${secondNavItem ? ` - ${secondNavItem.label}` : ''} >`}
+          </CategoryLink>
           <Title>{post?.title}</Title>
           <PostDetail>
             <AuthorProfile />
@@ -250,10 +256,12 @@ const ContentBox = styled.div`
   padding: 3rem;
 `
 
-const CategoryWrapper = styled.span`
+const CategoryLink = styled(Link)`
   font-size: 13px;
   font-weight: 400;
   color: #3b4890;
+
+  text-decoration: none;
 `
 const Title = styled.h1`
   margin: 0;

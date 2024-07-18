@@ -16,6 +16,7 @@ declare module 'next-auth' {
       authType: string
       kakaoId: string | null
       googleId: string | null
+      profileImage: string
     }
   }
 }

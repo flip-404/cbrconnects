@@ -38,9 +38,7 @@ function PostList({
           <RightArrowIcon width={24} height={24} />
         </ArrowLink>
       </Header>
-
       <PostListBody query={query} />
-
       <Footer>
         {displayAll && (
           <WriteButtonWrapper>
