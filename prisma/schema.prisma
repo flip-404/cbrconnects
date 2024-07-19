@@ -31,16 +31,19 @@ model User {
 }
 
 model Post {
-  id           Int          @id @default(autoincrement())
-  title        String
-  content      String
-  viewCount    Int          @default(0)
-  isNotice     Boolean      @default(false)
-  mainCategory MainCategory
-  subCategory  SubCategory?
-  thumbnail    String?
-  createdAt    DateTime     @default(now())
-  updatedAt    DateTime     @updatedAt
+  id             Int          @id @default(autoincrement())
+  title          String
+  content        String
+  viewCount      Int          @default(0)
+  isNotice       Boolean      @default(false)
+  mainCategory   MainCategory
+  subCategory    SubCategory?
+  thumbnail      String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+  searchTitle    String       @map("search_title")
+  searchContent  String       @map("search_content")
+  searchFullText String       @map("search_full_text")
 
   authorId Int
   author   User       @relation(fields: [authorId], references: [id])

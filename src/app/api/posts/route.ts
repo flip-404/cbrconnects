@@ -115,10 +115,14 @@ async function POST(request: NextRequest) {
         subCategory,
         thumbnail,
         isNotice,
+        searchTitle: title,
+        searchContent: content,
+        searchFullText: `${title} ${content}`,
       },
     })
     return new NextResponse(JSON.stringify(post), { status: 201 })
   } catch (error) {
+    console.log(error)
     return new NextResponse(JSON.stringify({ error }), { status: 500 })
   }
 }

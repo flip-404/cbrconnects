@@ -103,10 +103,10 @@ const DropdownLink = styled(Link)<{ active: string }>`
   z-index: 50;
   font-size: 1rem;
   font-weight: 600;
-  color: ${(props) => (props.active === 'active' ? '#01A69F' : 'black')};
-  min-width: 0;
   padding: 8px 16px;
   white-space: nowrap;
+  color: ${(props) => (props.active === 'active' ? '#01A69F' : 'black')};
+  min-width: 0;
   text-decoration: none;
 
   &:hover {
