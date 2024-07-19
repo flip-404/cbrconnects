@@ -135,6 +135,7 @@ const SelectedButton = styled.button`
   white-space: nowrap;
   background-color: transparent;
   border: 1px solid black;
+  cursor: pointer;
   &:hover {
     background-color: #e5e5e5;
   }
@@ -157,6 +158,7 @@ const DropdownMenu = styled.div`
   font-weight: 600;
   padding: 8px 16px;
   white-space: nowrap;
+  cursor: pointer;
 
   &:hover {
     background-color: #e5e5e5;
