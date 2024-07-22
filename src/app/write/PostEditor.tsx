@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/ban-ts-comment */
-// @ts-nocheck
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable @typescript-eslint/no-unused-vars */
@@ -14,16 +12,30 @@ import { Suspense, useMemo, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
 import ImageResize from 'quill-image-resize-module-react'
 import { ImageDrop } from 'quill-image-drop-module'
-import { Quill } from 'react-quill'
+import ReactQuill, { Quill } from 'react-quill'
 import ImageLoadingIcon from '@/assets/ImageLoading.gif'
 import NotificationModal from '../_components/NotificationModal'
 
 Quill.register('modules/imageResize', ImageResize)
 Quill.register('modules/imageDrop', ImageDrop)
 
-const ReactQuill = dynamic(() => import('react-quill'), {
-  ssr: false,
-})
+const DynamicReactQuill = dynamic(
+  async () => {
+    const { default: RQ } = await import('react-quill')
+    return function comp({
+      forwardedRef,
+      ...props
+    }: {
+      forwardedRef: any
+      [key: string]: any
+    }) {
+      return <RQ ref={forwardedRef} {...props} />
+    }
+  },
+  {
+    ssr: false,
+  },
+)
 
 function PostEditor() {
   const [isLoading, setIsLoading] = useState(false)
@@ -31,7 +43,7 @@ function PostEditor() {
   const { data: session } = useSession()
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
-  const quillRef = useRef()
+  const quillRef = useRef<ReactQuill>()
 
   const searchParams = useSearchParams()
 
@@ -60,19 +72,21 @@ function PostEditor() {
       formData.append('file', file)
 
       const quillObj = quillRef.current?.getEditor()
-      const range = quillObj?.getSelection()
+      if (quillObj) {
+        const range = quillObj.getSelection()!
 
-      quillObj?.insertEmbed(range!.index, 'image', '/ImageLoading.gif')
+        quillObj.insertEmbed(range.index, 'image', '/ImageLoading.gif')
 
-      const { imageURL } = await fetch(`/api/image`, {
-        method: 'POST',
-        body: formData,
-      }).then((res) => {
-        quillObj?.deleteText(range!.index, 1)
-        return res.json()
-      })
-      quillObj?.insertEmbed(range!.index, 'image', `${imageURL}`)
-      quillObj?.setSelection(range!.index + 1, 1)
+        const { imageURL } = await fetch(`/api/image`, {
+          method: 'POST',
+          body: formData,
+        }).then((res) => {
+          quillObj.deleteText(range.index, 1)
+          return res.json()
+        })
+        quillObj?.insertEmbed(range.index, 'image', `${imageURL}`)
+        quillObj.setSelection(range.index + 1, 1)
+      }
     }
   }
 
@@ -173,8 +187,9 @@ function PostEditor() {
         />
       </TitleWrapper>
       <Suspense fallback={<div>Loading...</div>}>
+        {' '}
         <QuillContainer>
-          <ReactQuill
+          <DynamicReactQuill
             forwardedRef={quillRef}
             theme="snow"
             modules={modules}
