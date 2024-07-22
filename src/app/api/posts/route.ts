@@ -122,7 +122,6 @@ async function POST(request: NextRequest) {
     })
     return new NextResponse(JSON.stringify(post), { status: 201 })
   } catch (error) {
-    console.log(error)
     return new NextResponse(JSON.stringify({ error }), { status: 500 })
   }
 }
