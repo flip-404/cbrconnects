@@ -1,12 +1,12 @@
 'use client'
 
 import { Suspense } from 'react'
-import SearchResult from '../search/SearchResult'
+import PostViewer from './PostViwer'
 
 function Posts() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
-      <SearchResult />
+      <PostViewer />
     </Suspense>
   )
 }
