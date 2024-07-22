@@ -3,26 +3,42 @@
 import styled from 'styled-components'
 import SearchIcon from '@/assets/search_icon.svg'
 import { useState } from 'react'
+import { useRouter } from 'next/navigation'
+import SearchFilterButton from './SearchFilterButton'
 
-type SelectedOption = {
+export type SelectedOption = {
   label: string
   type: string
 }
 
 function SearchBar() {
+  const router = useRouter()
   const [isOpen, setIsOpen] = useState(false)
-  const [selectedOption, setSelectedOption] = useState<SelectedOption>({
+  const [searchType, setSearchType] = useState<SelectedOption>({
     label: '전체',
     type: 'default',
   })
+  const [searchTerm, setSearchTerm] = useState('')
 
   const toggleDropdown = () => {
     setIsOpen(!isOpen)
   }
 
   const handleOptionClick = (option: SelectedOption) => {
-    setSelectedOption(option)
+    setSearchType(option)
     setIsOpen(false)
+  }
+
+  const handleSearch = () => {
+    router.push(
+      `/search?searchTerm=${searchTerm}&searchType=${searchType.type}`,
+    )
+  }
+
+  const handleKeyDown = (event: React.KeyboardEvent<HTMLInputElement>) => {
+    if (event.key === 'Enter') {
+      handleSearch()
+    }
   }
 
   const handleKeyPress = (
@@ -36,74 +52,29 @@ function SearchBar() {
 
   return (
     <SearchContainer>
-      <SearchIcon />
       <SelectedButton
         type="button"
         className="dropdown-toggle"
         onClick={toggleDropdown}
       >
-        {selectedOption.label}
+        {searchType.label}
 
         {isOpen && (
-          <DropdownWrapper>
-            <DropdownMenu
-              role="button"
-              tabIndex={0}
-              onClick={() =>
-                handleOptionClick({
-                  label: '전체',
-                  type: 'default',
-                })
-              }
-              onKeyDown={(event) =>
-                handleKeyPress(event, {
-                  label: '전체',
-                  type: 'default',
-                })
-              }
-            >
-              전체
-            </DropdownMenu>
-            <DropdownMenu
-              role="button"
-              tabIndex={0}
-              onClick={() =>
-                handleOptionClick({
-                  label: '제목만',
-                  type: 'title',
-                })
-              }
-              onKeyDown={(event) =>
-                handleKeyPress(event, {
-                  label: '제목만',
-                  type: 'title',
-                })
-              }
-            >
-              제목만
-            </DropdownMenu>
-            <DropdownMenu
-              role="button"
-              tabIndex={0}
-              onClick={() =>
-                handleOptionClick({
-                  label: '내용만',
-                  type: 'content',
-                })
-              }
-              onKeyDown={(event) =>
-                handleKeyPress(event, {
-                  label: '내용만',
-                  type: 'content',
-                })
-              }
-            >
-              내용만
-            </DropdownMenu>
-          </DropdownWrapper>
+          <SearchFilterButton
+            handleOptionClick={handleOptionClick}
+            handleKeyPress={handleKeyPress}
+          />
         )}
       </SelectedButton>
-      <SearchInput placeholder="검색어를 입력해주세요" />
+      <SearchInput
+        placeholder="검색어를 입력해주세요"
+        value={searchTerm}
+        onChange={(e) => {
+          setSearchTerm(e.target.value)
+        }}
+        onKeyDown={handleKeyDown}
+      />
+      <SearchIcon />
     </SearchContainer>
   )
 }
@@ -118,6 +89,10 @@ const SearchContainer = styled.div`
   border: 2px solid #e5e7eb;
   border-radius: 16px;
   flex: 0.5;
+
+  svg {
+    cursor: pointer;
+  }
 `
 
 const SearchInput = styled.input`
@@ -136,30 +111,6 @@ const SelectedButton = styled.button`
   background-color: transparent;
   border: 1px solid black;
   cursor: pointer;
-  &:hover {
-    background-color: #e5e5e5;
-  }
-`
-
-const DropdownWrapper = styled.div`
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  top: 100%;
-  background-color: white;
-  border: 1px solid #ccc;
-  font-size: 14px;
-  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
-`
-
-const DropdownMenu = styled.div`
-  z-index: 50;
-  font-size: 1rem;
-  font-weight: 600;
-  padding: 8px 16px;
-  white-space: nowrap;
-  cursor: pointer;
-
   &:hover {
     background-color: #e5e5e5;
   }
