@@ -9,11 +9,12 @@ import ViewIcon from '@/assets/view_icon.svg'
 import LikeIcon_ from '@/assets/like_icon.svg'
 import CommentIcon from '@/assets/comment_icon.svg'
 import findLabelById from '@/utils/findLabelById'
+import stripHtmlTags from '@/utils/stripHtmlTags'
 
 type Post = {
   mainCategory: string
   subCategory: string
-
+  thumbnail: string
   id: number
   title: string
   content: string
@@ -83,8 +84,20 @@ function SearchResult() {
                   handleMoveToPost(post.id)
                 }}
               >
-                <Title>{post.title}</Title>
-                <Content>{parse(post.content)}</Content>
+                <ContentSection>
+                  <ContentWrapper>
+                    <Title>{post.title}</Title>
+                    <Content>{parse(stripHtmlTags(post.content))} </Content>
+                  </ContentWrapper>{' '}
+                  {post.thumbnail && (
+                    <Thumbnail
+                      width={80}
+                      height={80}
+                      alt="임시 사진"
+                      src={post.thumbnail}
+                    />
+                  )}
+                </ContentSection>
                 <CategoryWrapper>
                   <CategoryChip $color="#c9932e">
                     {findLabelById(post.mainCategory)}
@@ -183,11 +196,28 @@ const ListItem = styled.li`
 const Title = styled.div`
   font-size: 20px;
   font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
 `
+const ContentSection = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
+
+const ContentWrapper = styled.div`
+  width: 70%;
+  display: flex;
+  flex-direction: column;
+`
+
 const Content = styled.div`
-  p {
-    margin: 0px;
-  }
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
 `
 
 const MetaInfo = styled.div`
@@ -223,3 +253,5 @@ const CategoryChip = styled.div<{ $color: string }>`
 `
 
 const LikeIcon = styled(LikeIcon_)``
+
+const Thumbnail = styled.img``
