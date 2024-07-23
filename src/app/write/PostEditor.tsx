@@ -44,6 +44,7 @@ function PostEditor() {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const quillRef = useRef<ReactQuill>()
+  const [thumbnail, setThumbnail] = useState(null)
 
   const searchParams = useSearchParams()
 
@@ -86,6 +87,9 @@ function PostEditor() {
         })
         quillObj?.insertEmbed(range.index, 'image', `${imageURL}`)
         quillObj.setSelection(range.index + 1, 1)
+        if (!thumbnail) {
+          setThumbnail(imageURL)
+        }
       }
     }
   }
@@ -154,7 +158,7 @@ function PostEditor() {
         userId: session?.user.id,
         mainCategory: firstNavItem.id,
         ...(secondNavItem && { subCategory: secondNavItem.id }),
-        thumbnail: 'https://picsum.photos/id/237/200/300',
+        thumbnail,
         isNotice: false,
       }),
     })
