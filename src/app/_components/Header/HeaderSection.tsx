@@ -94,6 +94,10 @@ const LoginButton = styled.button`
   font-size: 14px;
   font-weight: 700;
   background-color: transparent;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.6;
+  }
 `
 
 const ProfileWrapper = styled.div`

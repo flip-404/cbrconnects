@@ -7,7 +7,8 @@ export async function middleware(request: NextRequest) {
     req: request,
     secret: process.env.NEXTAUTH_SECRET,
   })
-  if (token === null) return NextResponse.next()
+  if (token === null)
+    return NextResponse.redirect(new URL('/signin', request.url))
   if (token && !token.accessToken) {
     return NextResponse.redirect(new URL('/complete-profile', request.url))
     // return NextResponse.next()

@@ -10,11 +10,14 @@ import formatDate from '@/utils/formatData'
 import { CommentLike } from '@prisma/client'
 import LikeIcon from '@/assets/like_icon.svg'
 import Link from 'next/link'
+import { useState } from 'react'
 import CommentSection from '../_components/CommentSection'
+import NotificationModal from '../_components/NotificationModal'
 
 function PostViewer() {
   const searchParams = useSearchParams()
   const postId = searchParams.get('postId')
+  const [openModal, setOpenModal] = useState(false)
 
   const { data: session } = useSession()
 
@@ -29,7 +32,10 @@ function PostViewer() {
   )
 
   const handdleLikePost = async () => {
-    if (!session || !post) return
+    if (!session || !post) {
+      setOpenModal(true)
+      return
+    }
 
     const isLiked = post.likes.find((like) => like.userId === session.user.id)
     const updatedLikes = isLiked
@@ -57,7 +63,10 @@ function PostViewer() {
   }
 
   const handdleLikeComment = (commentId: number, parentId: null | number) => {
-    if (!session || !comments) return
+    if (!session || !comments) {
+      setOpenModal(true)
+      return
+    }
 
     let isLiked: CommentLike | undefined
 
@@ -235,6 +244,14 @@ function PostViewer() {
           isLoggedIn={Boolean(session?.user.accessToken)}
         />
       </ContentBox>
+      {openModal && (
+        <NotificationModal
+          label="로그인이 필요한 서비스 입니다"
+          onClose={() => {
+            setOpenModal(false)
+          }}
+        />
+      )}
     </Container>
   )
 }
