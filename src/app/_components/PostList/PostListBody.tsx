@@ -41,10 +41,10 @@ function PostListBody({ query }: PostListBodyProps) {
           handleMoveToPost(post.id)
         }}
       >
-        <div>
+        <PostWrapper>
           <PostTitle>
             {post.title}
-            <span>{post.comments.length}</span>
+            {post.comments.length}
           </PostTitle>
           <MetaInfo>
             <span>{post.author.nickname}</span>·
@@ -52,17 +52,17 @@ function PostListBody({ query }: PostListBodyProps) {
             <span>조회수 {post.viewCount}</span>·
             <span>{post.likes.length}</span>
           </MetaInfo>
-        </div>
-        <div>
-          {post.title && (
+        </PostWrapper>
+        <ThumbnailWrapper>
+          {post.thumbnail && (
             <Thumbnail
               width={100}
               height={100}
               alt="임시 사진"
-              src={post.thumbnail || undefined}
+              src={post.thumbnail}
             />
           )}
-        </div>
+        </ThumbnailWrapper>
       </PostItem>
     ))
   }
@@ -75,6 +75,7 @@ export default PostListBody
 const PostContainer = styled.div`
   display: flex;
   flex-direction: column;
+  width: 100%;
 `
 
 const PostItem = styled.div`
@@ -97,8 +98,13 @@ const PostItem = styled.div`
 `
 
 const PostTitle = styled.h3`
+  width: 90%;
   font-size: 16px;
   font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  max-width: 100%;
 `
 
 const MetaInfo = styled.div`
@@ -109,3 +115,12 @@ const MetaInfo = styled.div`
 `
 
 const Thumbnail = styled.img``
+
+const PostWrapper = styled.div`
+  width: 80%;
+`
+
+const ThumbnailWrapper = styled.div`
+  width: 100px;
+  height: 100px;
+`
