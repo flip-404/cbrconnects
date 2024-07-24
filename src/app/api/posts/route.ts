@@ -126,4 +126,47 @@ async function POST(request: NextRequest) {
   }
 }
 
-export { GET, POST }
+async function PUT(request: NextRequest) {
+  const body = await request.json()
+
+  const {
+    postId,
+    title,
+    content,
+    userId,
+    mainCategory,
+    subCategory,
+    thumbnail,
+    isNotice,
+  } = body
+
+  if (!title || !content || !userId || !mainCategory || !postId) {
+    return new NextResponse(
+      JSON.stringify({ error: 'Missing required fields' }),
+      { status: 400 },
+    )
+  }
+
+  try {
+    const post = await prisma.post.update({
+      where: { id: Number(postId) },
+      data: {
+        title,
+        content,
+        authorId: userId,
+        mainCategory,
+        subCategory,
+        thumbnail,
+        isNotice,
+        searchTitle: title,
+        searchContent: content,
+        searchFullText: `${title} ${content}`,
+      },
+    })
+    return new NextResponse(JSON.stringify(post), { status: 200 })
+  } catch (error) {
+    return new NextResponse(JSON.stringify({ error }), { status: 500 })
+  }
+}
+
+export { GET, POST, PUT }

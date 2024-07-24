@@ -98,13 +98,8 @@ const PostItem = styled.div`
 `
 
 const PostTitle = styled.h3`
-  width: 90%;
   font-size: 16px;
   font-weight: 500;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  white-space: nowrap;
-  max-width: 100%;
 `
 
 const MetaInfo = styled.div`

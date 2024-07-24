@@ -215,6 +215,26 @@ function PostViewer() {
               <DetailInfo>
                 <CreatedAt>{formatDate(post.createdAt)}</CreatedAt>
                 <ViewCount>조회 {post.viewCount}</ViewCount>
+                {session?.user.id === post?.authorId && (
+                  <EditButton
+                    href={{
+                      pathname: '/write',
+                      query: {
+                        postId: post.id,
+                        isEditMode: true,
+                        mainCategory: post.mainCategory,
+                        ...(post.subCategory && {
+                          subCategory: post.subCategory,
+                        }),
+                      },
+                    }}
+                  >
+                    수정
+                  </EditButton>
+                )}
+                {session?.user.id === post?.authorId && (
+                  <DeleteButton>삭제</DeleteButton>
+                )}
               </DetailInfo>
             </InfoWrapper>
           </PostDetail>
@@ -304,7 +324,7 @@ const AuthorNickname = styled.div`
 
 const DetailInfo = styled.div`
   display: flex;
-
+  align-items: center;
   font-size: 12px;
   color: #979797;
   gap: 1rem;
@@ -364,5 +384,29 @@ const LikeWrapper = styled.div<{ $isLiked: boolean }>`
       stroke: red;
       fill: red;
     }
+  }
+`
+
+const EditButton = styled(Link)`
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  color: black;
+  font-size: 14px;
+  &:hover {
+    opacity: 0.7;
+  }
+`
+
+const DeleteButton = styled.div`
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  text-decoration: none;
+  color: black;
+  font-size: 14px;
+  &:hover {
+    opacity: 0.7;
   }
 `

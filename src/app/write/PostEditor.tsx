@@ -8,12 +8,15 @@ import styled from 'styled-components'
 import { useRouter, useSearchParams } from 'next/navigation'
 import NavsData, { NavsDataType } from '@/mocks/NavsData'
 import { useSession } from 'next-auth/react'
-import { Suspense, useMemo, useRef, useState } from 'react'
+import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
 import ImageResize from 'quill-image-resize-module-react'
 import { ImageDrop } from 'quill-image-drop-module'
 import ReactQuill, { Quill } from 'react-quill'
 import ImageLoadingIcon from '@/assets/ImageLoading.gif'
+import fetcher from '@/utils/fetcher'
+import useSWR from 'swr'
+import { PostWithRelations } from '@/types'
 import NotificationModal from '../_components/NotificationModal'
 
 Quill.register('modules/imageResize', ImageResize)
@@ -50,6 +53,22 @@ function PostEditor() {
 
   const mainCategory = searchParams.get('mainCategory')
   const subCategory = searchParams.get('subCategory')
+  const isEditMode = searchParams.get('isEditMode') === 'true'
+  const postId = searchParams.get('postId')
+
+  const { data: post } = useSWR<PostWithRelations>(
+    isEditMode ? `/api/posts?postId=${postId}` : null,
+    fetcher,
+  )
+
+  useEffect(() => {
+    console.log('post', post)
+
+    if (post) {
+      setTitle(post.title)
+      setContent(post.content)
+    }
+  }, [post])
 
   const firstNavItem: NavsDataType = NavsData.find(
     (item) => item.id === mainCategory,
@@ -139,6 +158,13 @@ function PostEditor() {
     'color',
     'background',
   ]
+  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.value.length > 100) {
+      alert('제목은 100자 이하로 작성해주세요.')
+    } else {
+      setTitle(e.target.value)
+    }
+  }
 
   const handdleWritePost = async () => {
     setIsLoading(true)
@@ -147,12 +173,15 @@ function PostEditor() {
       router.back()
     }, 2000)
 
+    const method = isEditMode ? 'PUT' : 'POST'
+
     await fetch('/api/posts', {
-      method: 'POST',
+      method,
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
+        postId: post?.id,
         title,
         content,
         userId: session?.user.id,
@@ -184,9 +213,7 @@ function PostEditor() {
         <TitleInput
           id="titleInput"
           placeholder="게시글 제목을 입력해주세요"
-          onChange={(e) => {
-            setTitle(e.target.value)
-          }}
+          onChange={handleTitleChange} // 변경된 부분
           value={title}
         />
       </TitleWrapper>
