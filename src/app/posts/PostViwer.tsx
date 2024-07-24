@@ -434,8 +434,8 @@ const EditButton = styled(Link)`
   border: none;
   cursor: pointer;
   text-decoration: none;
-  color: black;
-  font-size: 14px;
+  color: #799cfe;
+  font-size: 10px;
   &:hover {
     opacity: 0.7;
   }
@@ -446,8 +446,8 @@ const DeleteButton = styled.div`
   border: none;
   cursor: pointer;
   text-decoration: none;
-  color: black;
-  font-size: 14px;
+  color: rgb(255, 107, 107);
+  font-size: 10px;
   &:hover {
     opacity: 0.7;
   }
