@@ -2,17 +2,27 @@ import styled from 'styled-components'
 
 type NotificationModalProps = {
   label: string
+  onCheck?: () => void
   onClose?: () => void
+  onCheckLabel?: string
+  onCloseLabel?: string
 }
 
-function NotificationModal({ label, onClose }: NotificationModalProps) {
+function NotificationModal({
+  label,
+  onCheck,
+  onClose,
+  onCheckLabel,
+  onCloseLabel,
+}: NotificationModalProps) {
   return (
     <>
       <Overlay />
       <ModalContainer>
         <ContentWrapper>
           <Label>{label}</Label>
-          {onClose && <CloseButton onClick={onClose}>닫기</CloseButton>}
+          {onCheck && <Button onClick={onCheck}>{onCheckLabel}</Button>}
+          {onClose && <Button onClick={onClose}>{onCloseLabel}</Button>}
         </ContentWrapper>
       </ModalContainer>
     </>
@@ -58,7 +68,7 @@ const Label = styled.p`
   font-weight: 600;
 `
 
-const CloseButton = styled.button`
+const Button = styled.button`
   background-color: #cbd5e0; /* slate-300 */
   color: #1a202c; /* black */
   padding: 8px 16px;

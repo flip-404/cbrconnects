@@ -225,20 +225,19 @@ function SecondPhase({
       {modalStatus === 'success' && (
         <NotificationModal
           onClose={handdleModalClose}
+          onCloseLabel="확인"
           label="회원가입이 완료 되었습니다."
         />
       )}
       {modalStatus === 'fail' && (
         <NotificationModal
           onClose={handdleModalClose}
+          onCloseLabel="닫기"
           label="회원가입에 실패 하였습니다.."
         />
       )}
       {modalStatus === 'loading' && (
-        <NotificationModal
-          onClose={handdleModalClose}
-          label="회원가입 중 입니다. 잠시만 기다려주세요"
-        />
+        <NotificationModal label="회원가입 중 입니다. 잠시만 기다려주세요" />
       )}
     </StyledForm>
   )

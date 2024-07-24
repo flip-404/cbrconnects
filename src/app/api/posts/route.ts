@@ -169,4 +169,30 @@ async function PUT(request: NextRequest) {
   }
 }
 
-export { GET, POST, PUT }
+async function DELETE(request: NextRequest) {
+  const body = await request.json()
+
+  const { postId } = body
+
+  if (!postId) {
+    return new NextResponse(JSON.stringify({ error: 'Missing postId' }), {
+      status: 400,
+    })
+  }
+
+  try {
+    await prisma.post.delete({
+      where: { id: Number(postId) },
+    })
+    return new NextResponse(null, { status: 204 })
+  } catch (error) {
+    return new NextResponse(
+      JSON.stringify({ error: 'Failed to delete post' }),
+      {
+        status: 500,
+      },
+    )
+  }
+}
+
+export { GET, POST, PUT, DELETE }

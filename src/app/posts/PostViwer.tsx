@@ -3,7 +3,7 @@ import NavsData, { NavsDataType } from '@/mocks/NavsData'
 import { CommentWithRelations, PostWithRelations } from '@/types'
 import fetcher from '@/utils/fetcher'
 import parse from 'html-react-parser'
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import useSWR from 'swr'
 import { useSession } from 'next-auth/react'
 import formatDate from '@/utils/formatData'
@@ -17,9 +17,11 @@ import NotificationModal from '../_components/NotificationModal'
 function PostViewer() {
   const searchParams = useSearchParams()
   const postId = searchParams.get('postId')
-  const [openModal, setOpenModal] = useState(false)
-
+  const [requireLoginModal, setRequireLoginModal] = useState(false)
+  const [loadingModal, setLoadingModal] = useState(false)
+  const [deleteModal, setDeleteModal] = useState(false)
   const { data: session } = useSession()
+  const router = useRouter()
 
   const {
     data: post,
@@ -33,7 +35,7 @@ function PostViewer() {
 
   const handdleLikePost = async () => {
     if (!session || !post) {
-      setOpenModal(true)
+      setRequireLoginModal(true)
       return
     }
 
@@ -64,7 +66,7 @@ function PostViewer() {
 
   const handdleLikeComment = (commentId: number, parentId: null | number) => {
     if (!session || !comments) {
-      setOpenModal(true)
+      setRequireLoginModal(true)
       return
     }
 
@@ -146,6 +148,24 @@ function PostViewer() {
     })
 
     commentMutate()
+  }
+  const handleDeletePost = async () => {
+    setDeleteModal(false)
+    setLoadingModal(true)
+    setTimeout(() => {
+      setLoadingModal(false)
+      router.back()
+    }, 2000)
+
+    await fetch(`/api/posts`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        postId: post?.id,
+      }),
+    })
   }
 
   const handdleWriteComment = (content: string, parentId: number | null) => {
@@ -233,7 +253,13 @@ function PostViewer() {
                   </EditButton>
                 )}
                 {session?.user.id === post?.authorId && (
-                  <DeleteButton>삭제</DeleteButton>
+                  <DeleteButton
+                    onClick={() => {
+                      setDeleteModal(true)
+                    }}
+                  >
+                    삭제
+                  </DeleteButton>
                 )}
               </DetailInfo>
             </InfoWrapper>
@@ -264,12 +290,28 @@ function PostViewer() {
           isLoggedIn={Boolean(session?.user.accessToken)}
         />
       </ContentBox>
-      {openModal && (
+      {requireLoginModal && (
         <NotificationModal
           label="로그인이 필요한 서비스 입니다"
           onClose={() => {
-            setOpenModal(false)
+            setRequireLoginModal(false)
           }}
+          onCloseLabel="확인"
+        />
+      )}
+
+      {loadingModal && (
+        <NotificationModal label="삭제 중 입니다. 잠시만 기다려주세요." />
+      )}
+      {deleteModal && (
+        <NotificationModal
+          label="정말 삭제하시겠습니까?"
+          onCheck={handleDeletePost}
+          onCheckLabel="삭제"
+          onClose={() => {
+            setDeleteModal(false)
+          }}
+          onCloseLabel="취소"
         />
       )}
     </Container>
