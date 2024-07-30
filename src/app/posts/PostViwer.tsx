@@ -236,30 +236,31 @@ function PostViewer() {
                 <CreatedAt>{formatDate(post.createdAt)}</CreatedAt>
                 <ViewCount>조회 {post.viewCount}</ViewCount>
                 {session?.user.id === post?.authorId && (
-                  <EditButton
-                    href={{
-                      pathname: '/write',
-                      query: {
-                        postId: post.id,
-                        isEditMode: true,
-                        mainCategory: post.mainCategory,
-                        ...(post.subCategory && {
-                          subCategory: post.subCategory,
-                        }),
-                      },
-                    }}
-                  >
-                    수정
-                  </EditButton>
-                )}
-                {session?.user.id === post?.authorId && (
-                  <DeleteButton
-                    onClick={() => {
-                      setDeleteModal(true)
-                    }}
-                  >
-                    삭제
-                  </DeleteButton>
+                  <>
+                    {' '}
+                    <EditButton
+                      href={{
+                        pathname: '/write',
+                        query: {
+                          postId: post.id,
+                          isEditMode: true,
+                          mainCategory: post.mainCategory,
+                          ...(post.subCategory && {
+                            subCategory: post.subCategory,
+                          }),
+                        },
+                      }}
+                    >
+                      수정
+                    </EditButton>
+                    <DeleteButton
+                      onClick={() => {
+                        setDeleteModal(true)
+                      }}
+                    >
+                      삭제
+                    </DeleteButton>
+                  </>
                 )}
               </DetailInfo>
             </InfoWrapper>

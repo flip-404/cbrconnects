@@ -46,7 +46,7 @@ model Post {
   searchFullText String       @map("search_full_text")
 
   authorId Int
-  author   User       @relation(fields: [authorId], references: [id])
+  author   User       @relation(fields: [authorId], references: [id], onDelete: Cascade)
   comments Comment[]
   likes    PostLike[]
 
@@ -63,10 +63,10 @@ model Comment {
   author   User @relation(fields: [authorId], references: [id])
 
   postId Int
-  post   Post @relation(fields: [postId], references: [id])
+  post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   parentId Int?
-  parent   Comment?  @relation("CommentToComment", fields: [parentId], references: [id])
+  parent   Comment?  @relation("CommentToComment", fields: [parentId], references: [id], onDelete: Cascade)
   replies  Comment[] @relation("CommentToComment")
 
   likes CommentLike[]
@@ -81,7 +81,7 @@ model PostLike {
   user   User @relation(fields: [userId], references: [id])
 
   postId Int
-  post   Post @relation(fields: [postId], references: [id])
+  post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
 
   @@unique([userId, postId])
 }
@@ -93,7 +93,7 @@ model CommentLike {
   user   User @relation(fields: [userId], references: [id])
 
   commentId Int
-  comment   Comment @relation(fields: [commentId], references: [id])
+  comment   Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
 
   @@unique([userId, commentId])
 }

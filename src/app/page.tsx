@@ -37,12 +37,6 @@ export default function Home() {
             href="/community"
             lable="커뮤니티"
           />
-          <MainPostList
-            mainCategory="community"
-            subCategory="business"
-            href="/community/business"
-            lable="업소록"
-          />
           <MainPostList mainCategory="job" href="/job" lable="구인/구직" />
           <MainPostList mainCategory="market" href="/market" lable="쿼카마켓" />
           <MainPostList
@@ -93,9 +87,9 @@ const GridSection = styled.div`
 `
 const GridContainer = styled.div`
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(2, 1fr);
   justify-items: center;
-  gap: 20px;
+  gap: 30px;
   width: 100%;
   max-width: 1200px;
 `
