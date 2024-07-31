@@ -31,7 +31,7 @@ function SignIn() {
   const handleKakaoLogin = async () => {
     await signIn('kakao', {
       redirect: true,
-      callbackUrl: '/',
+      callbackUrl: '/complete-profile',
     })
   }
 

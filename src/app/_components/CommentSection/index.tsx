@@ -19,6 +19,7 @@ function CommentSection({
   isLoggedIn: boolean
 }) {
   const [commentToReply, setCommentToReply] = useState<null | number>(null)
+  const [openMoreMenu, setOpenMoreMenu] = useState<null | number>(null)
 
   if (!comments)
     return (
@@ -29,14 +30,24 @@ function CommentSection({
     setCommentToReply(commentId)
   }
 
+  const handdleMoreMenu = (commentId: number | null) => {
+    setOpenMoreMenu(commentId === openMoreMenu ? null : commentId)
+  }
+
   return (
-    <Container>
+    <Container
+      onClick={() => {
+        handdleMoreMenu(null)
+      }}
+    >
       {comments.map((comment: CommentWithRelations) => (
         <CommentBox
           handdleLikeComment={handdleLikeComment}
           selectReplyComment={selectReplyComment}
           handdleWriteComment={handdleWriteComment}
+          handdleMoreMenu={handdleMoreMenu}
           commentToReply={commentToReply}
+          openMoreMenu={openMoreMenu}
           key={comment.id}
           comment={comment}
         />

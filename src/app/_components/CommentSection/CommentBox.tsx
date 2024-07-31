@@ -3,20 +3,25 @@ import formatDate from '@/utils/formatData'
 import styled from 'styled-components'
 import LikeIcon from '@/assets/like_icon.svg'
 import { useSession } from 'next-auth/react'
+import MoreIcon_ from '@/assets/more_icon.svg'
 import WriteCommentBox from './WriteCommentBox'
 
 function CommentBox({
   handdleLikeComment,
   selectReplyComment,
   handdleWriteComment,
+  handdleMoreMenu,
   commentToReply,
+  openMoreMenu,
   comment,
   parentId = null,
 }: {
   handdleLikeComment: (commmentId: number, parentId: null | number) => void
   selectReplyComment?: (commmentId: number) => void
   handdleWriteComment?: (content: string, parentId: null | number) => void
+  handdleMoreMenu: (commmentId: number) => void
   commentToReply?: null | number
+  openMoreMenu: null | number
   comment: CommentWithRelations
   parentId?: null | number
 }) {
@@ -42,7 +47,6 @@ function CommentBox({
               답글쓰기
             </Reply>
           )}
-
           <LikeWrapper $isLiked={isLiked}>
             <LikeIcon
               onClick={() => {
@@ -53,6 +57,21 @@ function CommentBox({
             />{' '}
             {comment.likes?.length}
           </LikeWrapper>
+          <MoreMenu onClick={(e) => e.stopPropagation()}>
+            <MoreIcon
+              width={24}
+              height={24}
+              onClick={() => {
+                handdleMoreMenu(comment.id)
+              }}
+            />
+            {openMoreMenu === comment.id && (
+              <ControlWrapper>
+                <CommentControl>수정</CommentControl>
+                <CommentControl>삭제</CommentControl>
+              </ControlWrapper>
+            )}
+          </MoreMenu>
         </CommentDetail>
         {comment.replies?.length !== 0 &&
           comment.replies?.map((reply) => (
@@ -60,6 +79,8 @@ function CommentBox({
               key={reply.id}
               comment={reply}
               handdleLikeComment={handdleLikeComment}
+              handdleMoreMenu={handdleMoreMenu}
+              openMoreMenu={openMoreMenu}
               parentId={comment.id}
             />
           ))}
@@ -110,6 +131,7 @@ const CommentAuthor = styled.div`
 `
 
 const CommentDetail = styled.div`
+  position: relative;
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -144,5 +166,34 @@ const LikeWrapper = styled.div<{ $isLiked: boolean }>`
       stroke: red;
       fill: red;
     }
+  }
+`
+
+const MoreMenu = styled.div`
+  position: relative;
+`
+const MoreIcon = styled(MoreIcon_)`
+  cursor: pointer;
+`
+
+const ControlWrapper = styled.div`
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  border: 1px solid black;
+  left: 50%;
+  transform: translateX(-50%);
+  top: 100%;
+  background-color: white;
+`
+
+const CommentControl = styled.div`
+  white-space: nowrap;
+  font-size: 14px;
+  font-weight: 500;
+  padding: 2px 4px;
+  cursor: pointer;
+  &:hover {
+    opacity: 0.5;
   }
 `

@@ -19,6 +19,7 @@ function CompleteProfile() {
           defaultValues={{
             email: data?.user.email || '',
             userName: data?.user.userName,
+            profileImage: data?.user.profileImage,
             authType: data?.user.authType,
             kakaoId: data?.user.kakaoId || null,
             googleId: data?.user.googleId || null,
