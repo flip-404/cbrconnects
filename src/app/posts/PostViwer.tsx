@@ -13,6 +13,7 @@ import Link from 'next/link'
 import { useState } from 'react'
 import CommentSection from '../_components/CommentSection'
 import NotificationModal from '../_components/NotificationModal'
+import MoreMenu from '../_components/MoreMenu'
 
 function PostViewer() {
   const searchParams = useSearchParams()
@@ -22,6 +23,7 @@ function PostViewer() {
   const [deleteModal, setDeleteModal] = useState(false)
   const { data: session } = useSession()
   const router = useRouter()
+  const [openMoreMenu, setOpenMoreMenu] = useState<null | number>(null)
 
   const {
     data: post,
@@ -204,6 +206,10 @@ function PostViewer() {
     })
   }
 
+  const handdleMoreMenu = (targetId: number | null) => {
+    setOpenMoreMenu(targetId === openMoreMenu ? null : targetId)
+  }
+
   if (error) return <div>Failed to load post</div>
   if (!post) return <div>Loading...</div>
 
@@ -215,7 +221,11 @@ function PostViewer() {
   )!
 
   return (
-    <Container>
+    <Container
+      onClick={() => {
+        handdleMoreMenu(null)
+      }}
+    >
       <ContentBox>
         <div>
           <CategoryLink
@@ -237,29 +247,19 @@ function PostViewer() {
                 <ViewCount>조회 {post.viewCount}</ViewCount>
                 {session?.user.id === post?.authorId && (
                   <>
-                    {' '}
-                    <EditButton
-                      href={{
-                        pathname: '/write',
-                        query: {
-                          postId: post.id,
-                          isEditMode: true,
-                          mainCategory: post.mainCategory,
-                          ...(post.subCategory && {
-                            subCategory: post.subCategory,
-                          }),
-                        },
+                    <MoreMenu
+                      targetId={post.id}
+                      handdleMoreMenu={handdleMoreMenu}
+                      currentId={openMoreMenu}
+                      handleEditButton={() => {
+                        router.push(
+                          `/write?postId=${post.id}&isEditMode=true&mainCategory=${post.mainCategory}${post.subCategory ? `&subCategory=${post.subCategory}` : ''}`,
+                        )
                       }}
-                    >
-                      수정
-                    </EditButton>
-                    <DeleteButton
-                      onClick={() => {
+                      handleDeleteButton={() => {
                         setDeleteModal(true)
                       }}
-                    >
-                      삭제
-                    </DeleteButton>
+                    />
                   </>
                 )}
               </DetailInfo>
@@ -427,29 +427,5 @@ const LikeWrapper = styled.div<{ $isLiked: boolean }>`
       stroke: red;
       fill: red;
     }
-  }
-`
-
-const EditButton = styled(Link)`
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  text-decoration: none;
-  color: #799cfe;
-  font-size: 10px;
-  &:hover {
-    opacity: 0.7;
-  }
-`
-
-const DeleteButton = styled.div`
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  text-decoration: none;
-  color: rgb(255, 107, 107);
-  font-size: 10px;
-  &:hover {
-    opacity: 0.7;
   }
 `

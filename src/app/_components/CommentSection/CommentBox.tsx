@@ -3,8 +3,8 @@ import formatDate from '@/utils/formatData'
 import styled from 'styled-components'
 import LikeIcon from '@/assets/like_icon.svg'
 import { useSession } from 'next-auth/react'
-import MoreIcon_ from '@/assets/more_icon.svg'
 import WriteCommentBox from './WriteCommentBox'
+import MoreMenu from '../MoreMenu'
 
 function CommentBox({
   handdleLikeComment,
@@ -19,7 +19,7 @@ function CommentBox({
   handdleLikeComment: (commmentId: number, parentId: null | number) => void
   selectReplyComment?: (commmentId: number) => void
   handdleWriteComment?: (content: string, parentId: null | number) => void
-  handdleMoreMenu: (commmentId: number) => void
+  handdleMoreMenu: (commmentId: null | number) => void
   commentToReply?: null | number
   openMoreMenu: null | number
   comment: CommentWithRelations
@@ -57,21 +57,11 @@ function CommentBox({
             />{' '}
             {comment.likes?.length}
           </LikeWrapper>
-          <MoreMenu onClick={(e) => e.stopPropagation()}>
-            <MoreIcon
-              width={24}
-              height={24}
-              onClick={() => {
-                handdleMoreMenu(comment.id)
-              }}
-            />
-            {openMoreMenu === comment.id && (
-              <ControlWrapper>
-                <CommentControl>수정</CommentControl>
-                <CommentControl>삭제</CommentControl>
-              </ControlWrapper>
-            )}
-          </MoreMenu>
+          <MoreMenu
+            targetId={comment.id}
+            handdleMoreMenu={handdleMoreMenu}
+            currentId={openMoreMenu}
+          />
         </CommentDetail>
         {comment.replies?.length !== 0 &&
           comment.replies?.map((reply) => (
@@ -169,31 +159,31 @@ const LikeWrapper = styled.div<{ $isLiked: boolean }>`
   }
 `
 
-const MoreMenu = styled.div`
-  position: relative;
-`
-const MoreIcon = styled(MoreIcon_)`
-  cursor: pointer;
-`
+// const MoreMenu = styled.div`
+//   position: relative;
+// `
+// const MoreIcon = styled(MoreIcon_)`
+//   cursor: pointer;
+// `
 
-const ControlWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  position: absolute;
-  border: 1px solid black;
-  left: 50%;
-  transform: translateX(-50%);
-  top: 100%;
-  background-color: white;
-`
+// const ControlWrapper = styled.div`
+//   display: flex;
+//   flex-direction: column;
+//   position: absolute;
+//   border: 1px solid black;
+//   left: 50%;
+//   transform: translateX(-50%);
+//   top: 100%;
+//   background-color: white;
+// `
 
-const CommentControl = styled.div`
-  white-space: nowrap;
-  font-size: 14px;
-  font-weight: 500;
-  padding: 2px 4px;
-  cursor: pointer;
-  &:hover {
-    opacity: 0.5;
-  }
-`
+// const CommentControl = styled.div`
+//   white-space: nowrap;
+//   font-size: 14px;
+//   font-weight: 500;
+//   padding: 2px 4px;
+//   cursor: pointer;
+//   &:hover {
+//     opacity: 0.5;
+//   }
+// `
