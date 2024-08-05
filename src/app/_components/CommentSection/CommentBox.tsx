@@ -196,32 +196,3 @@ const LikeWrapper = styled.div<{ $isLiked: boolean }>`
     }
   }
 `
-
-// const MoreMenu = styled.div`
-//   position: relative;
-// `
-// const MoreIcon = styled(MoreIcon_)`
-//   cursor: pointer;
-// `
-
-// const ControlWrapper = styled.div`
-//   display: flex;
-//   flex-direction: column;
-//   position: absolute;
-//   border: 1px solid black;
-//   left: 50%;
-//   transform: translateX(-50%);
-//   top: 100%;
-//   background-color: white;
-// `
-
-// const CommentControl = styled.div`
-//   white-space: nowrap;
-//   font-size: 14px;
-//   font-weight: 500;
-//   padding: 2px 4px;
-//   cursor: pointer;
-//   &:hover {
-//     opacity: 0.5;
-//   }
-// `
