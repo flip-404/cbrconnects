@@ -7,19 +7,31 @@ import WriteCommentBox from './WriteCommentBox'
 import MoreMenu from '../MoreMenu'
 
 function CommentBox({
-  handdleLikeComment,
+  handleLikeComment,
   selectReplyComment,
-  handdleWriteComment,
-  handdleMoreMenu,
+  handleWriteComment,
+  handleEditComment,
+  handleMoreMenu,
+  onEditMode,
+  offEditMode,
+  isEditMode,
   commentToReply,
   openMoreMenu,
   comment,
   parentId = null,
 }: {
-  handdleLikeComment: (commmentId: number, parentId: null | number) => void
+  handleLikeComment: (commmentId: number, parentId: null | number) => void
   selectReplyComment?: (commmentId: number) => void
-  handdleWriteComment?: (content: string, parentId: null | number) => void
-  handdleMoreMenu: (commmentId: null | number) => void
+  handleWriteComment?: (
+    content: string,
+    parentId: null | number,
+    type: 'edit' | 'write',
+  ) => void
+  handleEditComment: (content: string, commentId: number) => void
+  handleMoreMenu: (commmentId: null | number) => void
+  onEditMode: (commmentId: null | number) => void
+  offEditMode?: () => void
+  isEditMode: number | null
   commentToReply?: null | number
   openMoreMenu: null | number
   comment: CommentWithRelations
@@ -50,7 +62,7 @@ function CommentBox({
           <LikeWrapper $isLiked={isLiked}>
             <LikeIcon
               onClick={() => {
-                handdleLikeComment(comment.id, parentId)
+                handleLikeComment(comment.id, parentId)
               }}
               width={24}
               height={24}
@@ -59,25 +71,51 @@ function CommentBox({
           </LikeWrapper>
           <MoreMenu
             targetId={comment.id}
-            handdleMoreMenu={handdleMoreMenu}
+            handleMoreMenu={handleMoreMenu}
             currentId={openMoreMenu}
+            handleEditButton={() => {
+              onEditMode(comment.id)
+            }}
           />
         </CommentDetail>
+
+        {/* isEditMode === comment.id ? (
+         
+        )  */}
+
         {comment.replies?.length !== 0 &&
-          comment.replies?.map((reply) => (
-            <CommentBox
-              key={reply.id}
-              comment={reply}
-              handdleLikeComment={handdleLikeComment}
-              handdleMoreMenu={handdleMoreMenu}
-              openMoreMenu={openMoreMenu}
-              parentId={comment.id}
-            />
-          ))}
+          comment.replies?.map((reply) =>
+            isEditMode === reply.id ? (
+              <WriteCommentBox
+                key={reply.id}
+                handleWriteComment={handleWriteComment}
+                handleEditComment={handleEditComment}
+                parentId={comment.id}
+                commentId={reply.id}
+                offEditMode={offEditMode}
+                isEditMode
+                prevContent={comment.content}
+              />
+            ) : (
+              <CommentBox
+                key={reply.id}
+                comment={reply}
+                handleLikeComment={handleLikeComment}
+                handleEditComment={handleEditComment}
+                handleMoreMenu={handleMoreMenu}
+                onEditMode={onEditMode}
+                offEditMode={offEditMode}
+                isEditMode={isEditMode}
+                openMoreMenu={openMoreMenu}
+                parentId={comment.id}
+              />
+            ),
+          )}
         {commentToReply === comment.id && (
           <WriteCommentBox
-            handdleWriteComment={handdleWriteComment}
+            handleWriteComment={handleWriteComment}
             parentId={comment.id}
+            isEditMode={false}
           />
         )}
       </CommentWrapper>

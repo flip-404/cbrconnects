@@ -8,19 +8,25 @@ import WriteCommentBox from './WriteCommentBox'
 import LoginRequiredNotice from './LoginRequiredNotice'
 
 function CommentSection({
-  handdleLikeComment,
+  handleLikeComment,
   comments,
-  handdleWriteComment,
+  handleWriteComment,
+  handleEditComment,
   isLoggedIn,
 }: {
-  handdleLikeComment: (commentId: number, parentId: null | number) => void
+  handleLikeComment: (commentId: number, parentId: null | number) => void
   comments?: CommentWithRelations[]
-  handdleWriteComment: (content: string, parentId: number | null) => void
+  handleWriteComment: (
+    content: string,
+    parentId: number | null,
+    type: 'edit' | 'write',
+  ) => void
+  handleEditComment: (content: string, commentId: number) => void
   isLoggedIn: boolean
 }) {
   const [commentToReply, setCommentToReply] = useState<null | number>(null)
   const [openMoreMenu, setOpenMoreMenu] = useState<null | number>(null)
-
+  const [isEditMode, setIsEditMode] = useState<null | number>(null)
   if (!comments)
     return (
       <Container>아직 댓글이 없어요! 첫 댓글의 주인공이 되어주세요</Container>
@@ -30,33 +36,59 @@ function CommentSection({
     setCommentToReply(commentId)
   }
 
-  const handdleMoreMenu = (commentId: number | null) => {
+  const handleMoreMenu = (commentId: number | null) => {
     setOpenMoreMenu(commentId === openMoreMenu ? null : commentId)
+  }
+
+  const onEditMode = (commentId: number | null) => {
+    setIsEditMode(commentId)
+  }
+
+  const offEditMode = () => {
+    setIsEditMode(null)
   }
 
   return (
     <Container
       onClick={() => {
-        handdleMoreMenu(null)
+        handleMoreMenu(null)
       }}
     >
-      {comments.map((comment: CommentWithRelations) => (
-        <CommentBox
-          handdleLikeComment={handdleLikeComment}
-          selectReplyComment={selectReplyComment}
-          handdleWriteComment={handdleWriteComment}
-          handdleMoreMenu={handdleMoreMenu}
-          commentToReply={commentToReply}
-          openMoreMenu={openMoreMenu}
-          key={comment.id}
-          comment={comment}
-        />
-      ))}
+      {comments.map((comment: CommentWithRelations) =>
+        isEditMode === comment.id ? (
+          <WriteCommentBox
+            key={comment.id}
+            handleWriteComment={handleWriteComment}
+            handleEditComment={handleEditComment}
+            parentId={null}
+            commentId={comment.id}
+            offEditMode={offEditMode}
+            isEditMode
+            prevContent={comment.content}
+          />
+        ) : (
+          <CommentBox
+            handleLikeComment={handleLikeComment}
+            selectReplyComment={selectReplyComment}
+            handleWriteComment={handleWriteComment}
+            handleEditComment={handleEditComment}
+            handleMoreMenu={handleMoreMenu}
+            onEditMode={onEditMode}
+            isEditMode={isEditMode}
+            commentToReply={commentToReply}
+            openMoreMenu={openMoreMenu}
+            key={comment.id}
+            comment={comment}
+          />
+        ),
+      )}
 
       {isLoggedIn ? (
         <WriteCommentBox
-          handdleWriteComment={handdleWriteComment}
+          handleWriteComment={handleWriteComment}
           parentId={null}
+          commentId={null}
+          isEditMode={false}
         />
       ) : (
         <LoginRequiredNotice />

@@ -6,7 +6,7 @@ type NullableNumber = number | null
 
 type MoreMenuProps = {
   targetId: NullableNumber
-  handdleMoreMenu: (targetId: NullableNumber) => void
+  handleMoreMenu: (targetId: NullableNumber) => void
   currentId: NullableNumber
   handleEditButton?: any
   handleDeleteButton?: any
@@ -14,7 +14,7 @@ type MoreMenuProps = {
 
 function MoreMenu({
   targetId,
-  handdleMoreMenu,
+  handleMoreMenu,
   currentId,
   handleEditButton,
   handleDeleteButton,
@@ -25,7 +25,7 @@ function MoreMenu({
         width={24}
         height={24}
         onClick={() => {
-          handdleMoreMenu(targetId)
+          handleMoreMenu(targetId)
         }}
       />
       {currentId === targetId && (
@@ -44,6 +44,7 @@ const Container = styled.div`
   position: relative;
   display: flex;
   align-items: center;
+  color: black;
 `
 const MoreIcon = styled(MoreIcon_)`
   cursor: pointer;

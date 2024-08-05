@@ -3,13 +3,27 @@ import { useState } from 'react'
 import styled from 'styled-components'
 
 function WriteCommentBox({
-  handdleWriteComment,
+  handleWriteComment,
+  handleEditComment,
+  offEditMode,
   parentId,
+  commentId,
+  isEditMode,
+  prevContent = '',
 }: {
-  handdleWriteComment?: (content: string, parentId: number | null) => void
+  handleWriteComment?: (
+    content: string,
+    parentId: number | null,
+    type: 'edit' | 'write',
+  ) => void
+  handleEditComment?: (content: string, commentId: number) => void
+  offEditMode?: () => void
   parentId: number | null
+  commentId?: number | null
+  isEditMode: boolean
+  prevContent?: string
 }) {
-  const [content, setContent] = useState('')
+  const [content, setContent] = useState(prevContent)
 
   const { data: session } = useSession()
 
@@ -24,16 +38,26 @@ function WriteCommentBox({
         }}
       />
       <ButtonWrapper>
-        {handdleWriteComment && (
-          <WriteButton
+        {isEditMode && <Button onClick={() => {}}>취소</Button>}
+        {handleWriteComment && (
+          <Button
             onClick={() => {
               const tempContent = content
               setContent('')
-              handdleWriteComment(tempContent, parentId)
+              if (isEditMode && handleEditComment && offEditMode) {
+                handleEditComment(tempContent, commentId!)
+                offEditMode()
+              } else {
+                handleWriteComment(
+                  tempContent,
+                  parentId,
+                  isEditMode ? 'edit' : 'write',
+                )
+              }
             }}
           >
-            등록
-          </WriteButton>
+            {isEditMode ? '수정' : '등록'}
+          </Button>
         )}
       </ButtonWrapper>
     </Container>
@@ -69,7 +93,7 @@ const ButtonWrapper = styled.div`
   justify-content: end;
 `
 
-const WriteButton = styled.button`
+const Button = styled.button`
   cursor: pointer;
   font-size: 16px;
   border: none;

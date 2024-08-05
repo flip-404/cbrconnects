@@ -3,7 +3,7 @@ import styled from 'styled-components'
 import AgreementModal from './AgreementModal'
 
 type CheckBoxProps = {
-  handdleChange: (event: React.ChangeEvent<HTMLInputElement>) => void
+  handleChange: (event: React.ChangeEvent<HTMLInputElement>) => void
   checked: boolean
   name: string
   label: string
@@ -14,7 +14,7 @@ function CheckBox({
   name,
   label,
   checked,
-  handdleChange,
+  handleChange,
   fullText,
 }: CheckBoxProps) {
   const [isModalOpen, setModalOpen] = useState(false)
@@ -29,7 +29,7 @@ function CheckBox({
           id={name}
           name={name}
           checked={checked}
-          onChange={handdleChange}
+          onChange={handleChange}
         />
         <label htmlFor={name}>{label}</label>
       </div>

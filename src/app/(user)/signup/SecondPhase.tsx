@@ -49,7 +49,7 @@ function SecondPhase({
     setProfileImage(imageURL)
   }
 
-  const handdleModalClose = () => {
+  const handleModalClose = () => {
     router.back()
   }
 
@@ -224,14 +224,14 @@ function SecondPhase({
       <SignupButton type="submit">회원가입</SignupButton>{' '}
       {modalStatus === 'success' && (
         <NotificationModal
-          onClose={handdleModalClose}
+          onClose={handleModalClose}
           onCloseLabel="확인"
           label="회원가입이 완료 되었습니다."
         />
       )}
       {modalStatus === 'fail' && (
         <NotificationModal
-          onClose={handdleModalClose}
+          onClose={handleModalClose}
           onCloseLabel="닫기"
           label="회원가입에 실패 하였습니다.."
         />

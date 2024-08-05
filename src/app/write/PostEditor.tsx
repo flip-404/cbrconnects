@@ -166,7 +166,7 @@ function PostEditor() {
     }
   }
 
-  const handdleWritePost = async () => {
+  const handleWritePost = async () => {
     setIsLoading(true)
     setTimeout(() => {
       setIsLoading(false)
@@ -206,7 +206,7 @@ function PostEditor() {
         <CategoryWrapper>
           {firstNavItem.label} - {secondNavItem?.label}
         </CategoryWrapper>
-        <WriteButton onClick={handdleWritePost}>글 작성</WriteButton>
+        <WriteButton onClick={handleWritePost}>글 작성</WriteButton>
       </Header>
       <TitleWrapper>
         <TitleLabel htmlFor="titleLabelInput">제목</TitleLabel>

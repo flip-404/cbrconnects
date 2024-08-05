@@ -61,4 +61,31 @@ async function POST(request: NextRequest) {
     return new NextResponse(JSON.stringify([]), { status: 500 })
   }
 }
-export { GET, POST }
+
+async function PUT(request: NextRequest) {
+  const body = await request.json()
+  const { commentId, content } = body
+
+  if (!commentId || !content) {
+    return new NextResponse(
+      JSON.stringify({ error: 'Missing required fields' }),
+      { status: 400 },
+    )
+  }
+
+  try {
+    const updatedComment = await prisma.comment.update({
+      where: { id: commentId },
+      data: { content },
+    })
+
+    return new NextResponse(JSON.stringify(updatedComment), { status: 200 })
+  } catch (error) {
+    return new NextResponse(
+      JSON.stringify({ error: 'Comment not found or could not be updated' }),
+      { status: 500 },
+    )
+  }
+}
+
+export { GET, POST, PUT }

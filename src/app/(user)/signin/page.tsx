@@ -19,7 +19,7 @@ function SignIn() {
     mode: 'onBlur',
   })
 
-  const handdleCredentialsLogin = async (formData: SignInForm) => {
+  const handleCredentialsLogin = async (formData: SignInForm) => {
     await signIn('credentials', {
       userAuthId: formData.userAuthId,
       password: formData.password,
@@ -46,7 +46,7 @@ function SignIn() {
     <SignInContainer>
       <SignInBox>
         <Title>로그인</Title>
-        <LoginForm onSubmit={handleSubmit(handdleCredentialsLogin)}>
+        <LoginForm onSubmit={handleSubmit(handleCredentialsLogin)}>
           <div>
             <AuthInput
               id="id"

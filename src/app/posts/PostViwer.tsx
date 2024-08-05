@@ -35,7 +35,7 @@ function PostViewer() {
     fetcher,
   )
 
-  const handdleLikePost = async () => {
+  const handleLikePost = async () => {
     if (!session || !post) {
       setRequireLoginModal(true)
       return
@@ -66,7 +66,7 @@ function PostViewer() {
     postMutate()
   }
 
-  const handdleLikeComment = (commentId: number, parentId: null | number) => {
+  const handleLikeComment = (commentId: number, parentId: null | number) => {
     if (!session || !comments) {
       setRequireLoginModal(true)
       return
@@ -170,7 +170,7 @@ function PostViewer() {
     })
   }
 
-  const handdleWriteComment = (content: string, parentId: number | null) => {
+  const handleWriteComment = (content: string, parentId: number | null) => {
     const newComment = {
       author: { nickname: session?.user.nickname },
       content,
@@ -179,6 +179,7 @@ function PostViewer() {
       id: Math.random(),
       parentId,
     }
+
     if (parentId) {
       const updatedComments = comments!.map((comment: CommentWithRelations) => {
         if (comment.id === parentId) {
@@ -206,7 +207,22 @@ function PostViewer() {
     })
   }
 
-  const handdleMoreMenu = (targetId: number | null) => {
+  const handleEditComment = (content: string, commentId: number) => {
+    fetch('/api/comments', {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        commentId,
+        content,
+      }),
+    }).then(() => {
+      commentMutate()
+    })
+  }
+
+  const handleMoreMenu = (targetId: number | null) => {
     setOpenMoreMenu(targetId === openMoreMenu ? null : targetId)
   }
 
@@ -223,7 +239,7 @@ function PostViewer() {
   return (
     <Container
       onClick={() => {
-        handdleMoreMenu(null)
+        handleMoreMenu(null)
       }}
     >
       <ContentBox>
@@ -249,7 +265,7 @@ function PostViewer() {
                   <>
                     <MoreMenu
                       targetId={post.id}
-                      handdleMoreMenu={handdleMoreMenu}
+                      handleMoreMenu={handleMoreMenu}
                       currentId={openMoreMenu}
                       handleEditButton={() => {
                         router.push(
@@ -275,7 +291,7 @@ function PostViewer() {
                 (like) => like.userId === session?.user.id,
               )}
             >
-              <LikeIcon onClick={handdleLikePost} width={24} height={24} />{' '}
+              <LikeIcon onClick={handleLikePost} width={24} height={24} />{' '}
               <span>{post.likes.length}</span>
             </LikeWrapper>
 
@@ -285,9 +301,10 @@ function PostViewer() {
           </ReactionSummary>
         </div>
         <CommentSection
-          handdleLikeComment={handdleLikeComment}
+          handleLikeComment={handleLikeComment}
           comments={comments}
-          handdleWriteComment={handdleWriteComment}
+          handleWriteComment={handleWriteComment}
+          handleEditComment={handleEditComment}
           isLoggedIn={Boolean(session?.user.accessToken)}
         />
       </ContentBox>

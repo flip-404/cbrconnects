@@ -36,26 +36,26 @@ function AgreementBox() {
         name="checkAll"
         checked={agreement.allChecked}
         label="체크버튼 전체 동의"
-        handdleChange={handleCheckAll}
+        handleChange={handleCheckAll}
       />
       <CheckBox
         name="ageChecked"
         checked={agreement.ageChecked}
         label="만 14세 이상입니다."
-        handdleChange={handleCheckboxChange}
+        handleChange={handleCheckboxChange}
       />
       <CheckBox
         name="serviceChecked"
         checked={agreement.serviceChecked}
         label="서비스 이용약관에 동의합니다."
-        handdleChange={handleCheckboxChange}
+        handleChange={handleCheckboxChange}
         fullText={Agreement.serviceAgreement}
       />
       <CheckBox
         name="privacyChecked"
         checked={agreement.privacyChecked}
         label="개인정보 수집 및 이용에 동의합니다."
-        handdleChange={handleCheckboxChange}
+        handleChange={handleCheckboxChange}
         fullText={Agreement.privacyAgreement}
       />
     </Container>
