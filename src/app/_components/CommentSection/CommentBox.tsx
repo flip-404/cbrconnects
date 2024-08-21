@@ -3,8 +3,10 @@ import formatDate from '@/utils/formatData'
 import styled from 'styled-components'
 import LikeIcon from '@/assets/like_icon.svg'
 import { useSession } from 'next-auth/react'
+import { useState } from 'react'
 import WriteCommentBox from './WriteCommentBox'
 import MoreMenu from '../MoreMenu'
+import NotificationModal from '../NotificationModal'
 
 function CommentBox({
   handleLikeComment,
@@ -38,10 +40,25 @@ function CommentBox({
   parentId?: null | number
 }) {
   const { data: session } = useSession()
-
+  const [deleteModal, setDeleteModal] = useState(false)
   const isLiked = comment.likes?.some(
     (like) => like.userId === session?.user.id,
   )
+
+  const handleDeletePost = async () => {
+    setDeleteModal(false)
+
+    await fetch(`/api/comments`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        commentId: comment.id,
+      }),
+    })
+  }
+
   return (
     <Container>
       <AuthorProfile />
@@ -76,13 +93,11 @@ function CommentBox({
             handleEditButton={() => {
               onEditMode(comment.id)
             }}
+            handleDeleteButton={() => {
+              setDeleteModal(true)
+            }}
           />
         </CommentDetail>
-
-        {/* isEditMode === comment.id ? (
-         
-        )  */}
-
         {comment.replies?.length !== 0 &&
           comment.replies?.map((reply) =>
             isEditMode === reply.id ? (
@@ -94,7 +109,7 @@ function CommentBox({
                 commentId={reply.id}
                 offEditMode={offEditMode}
                 isEditMode
-                prevContent={comment.content}
+                prevContent={reply.content}
               />
             ) : (
               <CommentBox
@@ -119,6 +134,17 @@ function CommentBox({
           />
         )}
       </CommentWrapper>
+      {deleteModal && (
+        <NotificationModal
+          label="정말 삭제하시겠습니까?"
+          onCheck={handleDeletePost}
+          onCheckLabel="삭제"
+          onClose={() => {
+            setDeleteModal(false)
+          }}
+          onCloseLabel="취소"
+        />
+      )}
     </Container>
   )
 }

@@ -62,8 +62,6 @@ function PostEditor() {
   )
 
   useEffect(() => {
-    console.log('post', post)
-
     if (post) {
       setTitle(post.title)
       setContent(post.content)

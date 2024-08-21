@@ -23,6 +23,7 @@ async function GET(request: NextRequest) {
               select: { id: true, nickname: true },
             },
           },
+          orderBy: { createdAt: 'asc' },
         },
       },
       orderBy: { createdAt: 'asc' },
@@ -88,4 +89,31 @@ async function PUT(request: NextRequest) {
   }
 }
 
-export { GET, POST, PUT }
+async function DELETE(request: NextRequest) {
+  const body = await request.json()
+  const { commentId } = body
+
+  if (!commentId) {
+    return new NextResponse(JSON.stringify({ error: 'Missing commentId' }), {
+      status: 400,
+    })
+  }
+
+  try {
+    await prisma.comment.delete({
+      where: { id: commentId },
+    })
+
+    return new NextResponse(
+      JSON.stringify({ message: 'Comment deleted successfully' }),
+      { status: 200 },
+    )
+  } catch (error) {
+    return new NextResponse(
+      JSON.stringify({ error: 'Comment not found or could not be deleted' }),
+      { status: 500 },
+    )
+  }
+}
+
+export { GET, POST, PUT, DELETE }

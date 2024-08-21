@@ -75,6 +75,7 @@ function CommentSection({
             handleMoreMenu={handleMoreMenu}
             onEditMode={onEditMode}
             isEditMode={isEditMode}
+            offEditMode={offEditMode}
             commentToReply={commentToReply}
             openMoreMenu={openMoreMenu}
             key={comment.id}

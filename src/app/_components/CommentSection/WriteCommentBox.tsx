@@ -38,7 +38,7 @@ function WriteCommentBox({
         }}
       />
       <ButtonWrapper>
-        {isEditMode && <Button onClick={() => {}}>취소</Button>}
+        {isEditMode && <Button onClick={offEditMode}>취소</Button>}
         {handleWriteComment && (
           <Button
             onClick={() => {
