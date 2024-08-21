@@ -54,35 +54,22 @@ function CommentSection({
         handleMoreMenu(null)
       }}
     >
-      {comments.map((comment: CommentWithRelations) =>
-        isEditMode === comment.id ? (
-          <WriteCommentBox
-            key={comment.id}
-            handleWriteComment={handleWriteComment}
-            handleEditComment={handleEditComment}
-            parentId={null}
-            commentId={comment.id}
-            offEditMode={offEditMode}
-            isEditMode
-            prevContent={comment.content}
-          />
-        ) : (
-          <CommentBox
-            handleLikeComment={handleLikeComment}
-            selectReplyComment={selectReplyComment}
-            handleWriteComment={handleWriteComment}
-            handleEditComment={handleEditComment}
-            handleMoreMenu={handleMoreMenu}
-            onEditMode={onEditMode}
-            isEditMode={isEditMode}
-            offEditMode={offEditMode}
-            commentToReply={commentToReply}
-            openMoreMenu={openMoreMenu}
-            key={comment.id}
-            comment={comment}
-          />
-        ),
-      )}
+      {comments.map((comment: CommentWithRelations) => (
+        <CommentBox
+          handleLikeComment={handleLikeComment}
+          selectReplyComment={selectReplyComment}
+          handleWriteComment={handleWriteComment}
+          handleEditComment={handleEditComment}
+          handleMoreMenu={handleMoreMenu}
+          onEditMode={onEditMode}
+          isEditMode={isEditMode}
+          offEditMode={offEditMode}
+          commentToReply={commentToReply}
+          openMoreMenu={openMoreMenu}
+          key={comment.id}
+          comment={comment}
+        />
+      ))}
 
       {isLoggedIn ? (
         <WriteCommentBox

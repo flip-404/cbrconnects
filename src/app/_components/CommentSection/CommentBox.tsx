@@ -63,41 +63,58 @@ function CommentBox({
     <Container>
       <AuthorProfile />
       <CommentWrapper>
-        <CommentAuthor>{comment.author.nickname}</CommentAuthor>
-        <CommentContent>{comment.content}</CommentContent>
-        <CommentDetail>
-          <Date>{formatDate(comment.createdAt)}</Date>
-          {selectReplyComment && (
-            <Reply
-              onClick={() => {
-                selectReplyComment(comment.id)
-              }}
-            >
-              답글쓰기
-            </Reply>
-          )}
-          <LikeWrapper $isLiked={isLiked}>
-            <LikeIcon
-              onClick={() => {
-                handleLikeComment(comment.id, parentId)
-              }}
-              width={24}
-              height={24}
-            />{' '}
-            {comment.likes?.length}
-          </LikeWrapper>
-          <MoreMenu
-            targetId={comment.id}
-            handleMoreMenu={handleMoreMenu}
-            currentId={openMoreMenu}
-            handleEditButton={() => {
-              onEditMode(comment.id)
-            }}
-            handleDeleteButton={() => {
-              setDeleteModal(true)
-            }}
+        {isEditMode === comment.id ? (
+          <WriteCommentBox
+            key={comment.id}
+            handleWriteComment={handleWriteComment}
+            handleEditComment={handleEditComment}
+            parentId={null}
+            commentId={comment.id}
+            offEditMode={offEditMode}
+            isEditMode
+            prevContent={comment.content}
           />
-        </CommentDetail>
+        ) : (
+          <>
+            {' '}
+            <CommentAuthor>{comment.author.nickname}</CommentAuthor>
+            <CommentContent>{comment.content}</CommentContent>
+            <CommentDetail>
+              <Date>{formatDate(comment.createdAt)}</Date>
+              {selectReplyComment && (
+                <Reply
+                  onClick={() => {
+                    selectReplyComment(comment.id)
+                  }}
+                >
+                  답글쓰기
+                </Reply>
+              )}
+              <LikeWrapper $isLiked={isLiked}>
+                <LikeIcon
+                  onClick={() => {
+                    handleLikeComment(comment.id, parentId)
+                  }}
+                  width={24}
+                  height={24}
+                />{' '}
+                {comment.likes?.length}
+              </LikeWrapper>
+              <MoreMenu
+                targetId={comment.id}
+                handleMoreMenu={handleMoreMenu}
+                currentId={openMoreMenu}
+                handleEditButton={() => {
+                  onEditMode(comment.id)
+                }}
+                handleDeleteButton={() => {
+                  setDeleteModal(true)
+                }}
+              />
+            </CommentDetail>
+          </>
+        )}
+
         {comment.replies?.length !== 0 &&
           comment.replies?.map((reply) =>
             isEditMode === reply.id ? (
