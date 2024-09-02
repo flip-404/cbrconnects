@@ -24,7 +24,7 @@ const NavsData = [
     ],
   },
   {
-    label: '구인/구직',
+    label: '구인구직',
     href: '/job',
     id: 'job',
     submenu: [

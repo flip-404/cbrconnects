@@ -1,11 +1,14 @@
 'use client'
 
+// 완
 import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import styled from 'styled-components'
+import NavsData from '@/mocks/NavsData'
 import SearchBar from './SearchBar'
+import NavButton from './NavButton'
 
 function HeaderSection() {
   const router = useRouter()
@@ -14,12 +17,18 @@ function HeaderSection() {
 
   return (
     <Container>
-      <StyledLink href="/">
-        <span>캔버라</span>
-        커넥트
-      </StyledLink>
-      <SearchBar />
+      <StyledLink href="/">캔버라 커넥트</StyledLink>
+      {NavsData.map((link) => (
+        <NavButton
+          key={link.id}
+          id={link.id}
+          label={link.label}
+          href={link.href}
+          submenu={link.submenu}
+        />
+      ))}
 
+      <SearchBar />
       {session && session.user ? (
         <ProfileWrapper
           onClick={() => {}}
@@ -59,7 +68,7 @@ function HeaderSection() {
             router.push('/signin')
           }}
         >
-          가입 · 로그인
+          로그인
         </LoginButton>
       )}
     </Container>
@@ -70,8 +79,7 @@ export default HeaderSection
 
 const Container = styled.div`
   display: flex;
-  height: 96px;
-  justify-content: center;
+  height: 72px;
   align-items: center;
   gap: 20px;
 `
@@ -79,12 +87,10 @@ const Container = styled.div`
 const StyledLink = styled(Link)`
   font-size: 32px;
   font-weight: 700;
-  color: #3b4890;
+  color: #000000;
   text-decoration: none;
-
-  span {
-    color: #3b4890;
-  }
+  padding-left: 88px;
+  padding-right: 41px;
 `
 
 const LoginButton = styled.button`

@@ -211,7 +211,7 @@ function PostEditor() {
         <TitleInput
           id="titleInput"
           placeholder="게시글 제목을 입력해주세요"
-          onChange={handleTitleChange} // 변경된 부분
+          onChange={handleTitleChange}
           value={title}
         />
       </TitleWrapper>

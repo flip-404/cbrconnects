@@ -4,14 +4,17 @@ import type { SelectedOption } from './SearchBar'
 function SearchFilterButton({
   handleOptionClick,
   handleKeyPress,
+  searchType,
 }: {
   handleOptionClick: (option: SelectedOption) => void
   handleKeyPress: (event: React.KeyboardEvent, option: SelectedOption) => void
+  searchType: SelectedOption
 }) {
   return (
     <DropdownWrapper>
       <DropdownMenu
         role="button"
+        $isActive={searchType.type === 'default'}
         tabIndex={0}
         onClick={() =>
           handleOptionClick({
@@ -30,6 +33,7 @@ function SearchFilterButton({
       </DropdownMenu>
       <DropdownMenu
         role="button"
+        $isActive={searchType.type === 'title'}
         tabIndex={0}
         onClick={() =>
           handleOptionClick({
@@ -48,6 +52,7 @@ function SearchFilterButton({
       </DropdownMenu>
       <DropdownMenu
         role="button"
+        $isActive={searchType.type === 'content'}
         tabIndex={0}
         onClick={() =>
           handleOptionClick({
@@ -69,27 +74,34 @@ function SearchFilterButton({
 }
 
 const DropdownWrapper = styled.div`
+  z-index: 99;
   position: absolute;
   left: 50%;
   transform: translateX(-50%);
-  top: 100%;
+  top: 48px;
   background-color: white;
-  border: 1px solid #ccc;
-  font-size: 14px;
-  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
+  width: 132px;
+  padding: 10px;
+
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-radius: 4px;
 `
 
-const DropdownMenu = styled.div`
+const DropdownMenu = styled.div<{ $isActive: boolean }>`
   z-index: 50;
-  font-size: 1rem;
-  font-weight: 600;
-  padding: 8px 16px;
+  display: flex;
+  align-items: center;
+  font-family: Pretendard;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 16.71px;
   white-space: nowrap;
+  padding: 6px 4px;
   cursor: pointer;
-
-  &:hover {
-    background-color: #e5e5e5;
-  }
+  background-color: ${(props) => (props.$isActive ? '#EFEFEF' : 'transparent')};
+  border-radius: 4px;
 `
 
 export default SearchFilterButton

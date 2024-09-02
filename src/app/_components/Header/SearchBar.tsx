@@ -1,7 +1,10 @@
 'use client'
 
+// 완
 import styled from 'styled-components'
 import SearchIcon from '@/assets/search_icon.svg'
+import DropdownIcon from '@/assets/dropdown_icon.svg'
+import SeparatorIcon from '@/assets/separator_icon.svg'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import SearchFilterButton from './SearchFilterButton'
@@ -52,22 +55,8 @@ function SearchBar() {
 
   return (
     <SearchContainer>
-      <SelectedButton
-        type="button"
-        className="dropdown-toggle"
-        onClick={toggleDropdown}
-      >
-        {searchType.label}
-
-        {isOpen && (
-          <SearchFilterButton
-            handleOptionClick={handleOptionClick}
-            handleKeyPress={handleKeyPress}
-          />
-        )}
-      </SelectedButton>
       <SearchInput
-        placeholder="검색어를 입력해주세요"
+        placeholder="커넥트에서 검색해보세요."
         value={searchTerm}
         onChange={(e) => {
           setSearchTerm(e.target.value)
@@ -75,6 +64,22 @@ function SearchBar() {
         onKeyDown={handleKeyDown}
       />
       <SearchIcon />
+      <SeparatorIcon />
+      <SelectedButton
+        type="button"
+        className="dropdown-toggle"
+        onClick={toggleDropdown}
+      >
+        {searchType.label}
+        {isOpen && (
+          <SearchFilterButton
+            handleOptionClick={handleOptionClick}
+            handleKeyPress={handleKeyPress}
+            searchType={searchType}
+          />
+        )}
+        <DropdownIcon />
+      </SelectedButton>
     </SearchContainer>
   )
 }
@@ -82,36 +87,52 @@ function SearchBar() {
 export default SearchBar
 
 const SearchContainer = styled.div`
+  width: 373px;
+  height: 38px;
+  padding: 0px 10px;
+  border-radius: 999px;
   display: flex;
   align-items: center;
+  background: #ecf0fe;
   gap: 10px;
-  padding: 10px;
-  border: 2px solid #e5e7eb;
-  border-radius: 16px;
-  flex: 0.5;
-
   svg {
     cursor: pointer;
   }
 `
 
 const SearchInput = styled.input`
-  flex: 1;
+  background: inherit;
   outline: none;
   border: none;
+  flex: 1;
+
+  font-family: Pretendard;
+  font-size: 14px;
+  font-weight: 500;
+
+  text-align: left;
+  color: black;
+
+  &::placeholder {
+    font-family: Pretendard;
+    font-size: 14px;
+    font-weight: 500;
+
+    text-align: left;
+    color: #929eca;
+  }
 `
 
 const SelectedButton = styled.button`
   position: relative;
-  z-index: 50;
-  font-size: 1rem;
-  font-weight: 600;
-  padding: 8px 16px;
-  white-space: nowrap;
-  background-color: transparent;
-  border: 1px solid black;
+  padding: 0px;
   cursor: pointer;
-  &:hover {
-    background-color: #e5e5e5;
-  }
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  background: transparent;
+  border: none;
+  font-family: Pretendard;
+  font-size: 14px;
+  font-weight: 500;
 `
