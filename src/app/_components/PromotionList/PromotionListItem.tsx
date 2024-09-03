@@ -1,13 +1,14 @@
 import styled from 'styled-components'
 import Image, { StaticImageData } from 'next/image'
 import SeparatorIcon from '@/assets/small_separetor_icon.svg'
+
 type PostType = {
   imgSrc: StaticImageData
   title: string
   createdAt: string
 }
 
-const PromotionListItem = ({ post }: { post: PostType }) => {
+export default function PromotionListItem({ post }: { post: PostType }) {
   return (
     <Container>
       <Thumbnail src={post.imgSrc} alt="업소 홍보 이미지" />
@@ -20,8 +21,6 @@ const PromotionListItem = ({ post }: { post: PostType }) => {
     </Container>
   )
 }
-
-export default PromotionListItem
 
 const Container = styled.div`
   flex: 0.25;

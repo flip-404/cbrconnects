@@ -4,7 +4,7 @@ import TempImg1 from './1.png'
 import TempImg2 from './2.png'
 import Inquiry from './Inquiry'
 
-const PromotionList = () => {
+export default function PromotionList() {
   return (
     <Container>
       <Header>
@@ -13,15 +13,13 @@ const PromotionList = () => {
       </Header>
       <Body>
         {MockData.map((data) => (
-          <PromotionListItem key={data.title} post={data}></PromotionListItem>
+          <PromotionListItem key={data.title} post={data} />
         ))}
       </Body>
       <Inquiry />
     </Container>
   )
 }
-
-export default PromotionList
 
 const Container = styled.div`
   width: 100%;

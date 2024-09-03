@@ -8,7 +8,11 @@ import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import styled from 'styled-components'
 
-export default function FirstDepthLayout() {
+export default function FirstDepthLayout({
+  children,
+}: {
+  children: React.ReactNode
+}) {
   const pathname = usePathname()
   const firstNavItem: NavsDataType = NavsData.find(
     (item) => item.href === pathname,
@@ -30,7 +34,7 @@ export default function FirstDepthLayout() {
         <PromotionList />
       </BodySection>
       <SidebarSection>dsadasdas</SidebarSection>
-
+      {children}
       {/* <CenteredContainer> */}
       {/* {firstNavItem.submenu?.length !== 0 ? (
           firstNavItem.submenu!.map((secondNavItem) => (
@@ -87,14 +91,14 @@ const SidebarSection = styled.div`
   display: flex;
 `
 
-const CenteredContainer = styled.div`
-  width: 70vw;
-  background-color: white;
-  padding: 40px;
-  border-radius: 25px;
-  box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  justify-items: center;
-  gap: 4rem;
-`
+// const CenteredContainer = styled.div`
+//   width: 70vw;
+//   background-color: white;
+//   padding: 40px;
+//   border-radius: 25px;
+//   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
+//   display: grid;
+//   grid-template-columns: 1fr 1fr;
+//   justify-items: center;
+//   gap: 4rem;
+// `

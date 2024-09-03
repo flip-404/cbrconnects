@@ -6,9 +6,9 @@ import fetcher from '@/utils/fetcher'
 import { PostWithRelations } from '@/types'
 import useSWR from 'swr'
 import { useState } from 'react'
-import PostListItem from './PostListItem'
 import LeftArrowIcon from '@/assets/leftArrow_icon.svg'
 import RightArrowIcon from '@/assets/rightArrow_icon.svg'
+import PostListItem from './PostListItem'
 
 function TempPostList({
   mainCategory,

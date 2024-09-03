@@ -1,7 +1,7 @@
 import styled from 'styled-components'
 import QuestionCircle from '@/assets/questionCircle.svg'
 
-const Inquiry = () => {
+export default function Inquiry() {
   return (
     <Container>
       <QuestionCircle />
@@ -9,8 +9,6 @@ const Inquiry = () => {
     </Container>
   )
 }
-
-export default Inquiry
 
 const Container = styled.div`
   margin-top: 24px;
