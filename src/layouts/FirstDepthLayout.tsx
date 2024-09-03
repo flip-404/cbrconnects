@@ -1,26 +1,36 @@
 'use client'
 
-import FixedPostList from '@/app/_components/FixedPostList'
-import PostList from '@/app/_components/PostList'
+import SubCategoryBar from '@/app/_components/SubCategoryBar'
+import TempPostList from '@/app/_components/TempPostList'
 import NavsData, { NavsDataType } from '@/mocks/NavsData'
 import { usePathname } from 'next/navigation'
+import { useState } from 'react'
 import styled from 'styled-components'
 
-export default function FirstDepthLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function FirstDepthLayout() {
   const pathname = usePathname()
   const firstNavItem: NavsDataType = NavsData.find(
     (item) => item.href === pathname,
   )!
+  const [subCategory, setSubCategory] = useState('all')
 
   return (
     <LayoutWrapper>
-      <FixedPostList href="/posts" label="공지사항" />
-      <CenteredContainer>
-        {firstNavItem.submenu?.length !== 0 ? (
+      <BodySection>
+        <SubCategoryBar
+          pathname={pathname}
+          subCategory={subCategory}
+          changeSubCategory={setSubCategory}
+        />
+        <TempPostList
+          mainCategory={firstNavItem.id}
+          subCategory={subCategory}
+        />
+      </BodySection>
+      <SidebarSection>dsadasdas</SidebarSection>
+
+      {/* <CenteredContainer> */}
+      {/* {firstNavItem.submenu?.length !== 0 ? (
           firstNavItem.submenu!.map((secondNavItem) => (
             <PostList
               key={secondNavItem.id}
@@ -51,23 +61,28 @@ export default function FirstDepthLayout({
               id: firstNavItem.id,
             }}
           />
-        )}
-        {}
-        {children}
-      </CenteredContainer>
+        )} */}
+
+      {/* {children}
+      </CenteredContainer> */}
     </LayoutWrapper>
   )
 }
 
 const LayoutWrapper = styled.div`
-  padding: 40px 0px;
-  background-color: #eff0f3;
+  margin-top: 8px;
+  display: flex;
+  padding-left: 320px;
+`
+
+const BodySection = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: 100vw;
-  min-height: 60vh;
-  gap: 40px;
+  width: 50vw;
+`
+
+const SidebarSection = styled.div`
+  display: flex;
 `
 
 const CenteredContainer = styled.div`
@@ -76,7 +91,6 @@ const CenteredContainer = styled.div`
   padding: 40px;
   border-radius: 25px;
   box-shadow: 0 5px 10px rgba(0, 0, 0, 0.3);
-
   display: grid;
   grid-template-columns: 1fr 1fr;
   justify-items: center;

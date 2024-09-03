@@ -1,6 +1,5 @@
 'use client'
 
-import FixedPostList from '@/app/_components/FixedPostList'
 import PostList from '@/app/_components/PostList'
 import NavsData, { NavsDataType } from '@/mocks/NavsData'
 import { usePathname } from 'next/navigation'
@@ -22,9 +21,7 @@ export default function SecondDepthLayout({
 
   return (
     <LayoutWrapper>
-      <Container>
-        <FixedPostList href="/posts" label="공지사항" />
-      </Container>
+      <Container />
       <CenteredContainer>
         <PostList
           href={secondNavItem?.href}

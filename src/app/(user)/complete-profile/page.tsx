@@ -14,7 +14,6 @@ function CompleteProfile() {
     <SignUpContainer>
       <SignUpForm>
         <Title>회원가입</Title>
-
         <SecondPhase
           defaultValues={{
             email: data?.user.email || '',

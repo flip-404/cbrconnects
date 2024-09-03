@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import type { SelectedOption } from './SearchBar'
 
+// 완
 function SearchFilterButton({
   handleOptionClick,
   handleKeyPress,

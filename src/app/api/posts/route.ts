@@ -36,12 +36,18 @@ const fetchPostById = async (postId: number) => {
   return updatedPost
 }
 
-const fetchPosts = async (whereQuery: Prisma.PostWhereInput) => {
+const fetchPosts = async (
+  whereQuery: Prisma.PostWhereInput,
+  page: number,
+  limit: number,
+) => {
   return prisma.post.findMany({
     where: whereQuery,
     orderBy: {
       createdAt: 'desc',
     },
+    skip: (page - 1) * limit,
+    take: limit,
     include: {
       author: true,
       comments: true,
@@ -53,6 +59,9 @@ const fetchPosts = async (whereQuery: Prisma.PostWhereInput) => {
 async function GET(request: NextRequest) {
   const url = new URL(request.url)
   const { mainCategory, subCategory, postId } = getPostQueryParams(url)
+  const page = parseInt(url.searchParams.get('page') || '1', 10)
+  const limit = parseInt(url.searchParams.get('limit') || '40', 10)
+
   if (postId) {
     try {
       const postIdNumber = parseInt(postId, 10)
@@ -78,7 +87,7 @@ async function GET(request: NextRequest) {
   }
 
   try {
-    const posts = await fetchPosts(whereQuery)
+    const posts = await fetchPosts(whereQuery, page, limit)
     return new NextResponse(JSON.stringify(posts), { status: 200 })
   } catch (error) {
     return new NextResponse(JSON.stringify([]), { status: 500 })

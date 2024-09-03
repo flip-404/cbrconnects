@@ -4,13 +4,12 @@ import Image from 'next/image'
 import styled from 'styled-components'
 import TempImage from './tempEventImg.png'
 import MainPostList from './_components/MainPostList'
-import FixedPostList from './_components/FixedPostList'
+
 import CalendarWidget from './_components/CalendarWidget'
 
 export default function Home() {
   return (
     <Container>
-      <FixedPostList href="/posts" label="공지사항" />
       <MainBannerSection>
         <ImageWrapper>
           <StyledImage
