@@ -1,5 +1,6 @@
 'use client'
 
+import PromotionList from '@/app/_components/PromotionList'
 import SubCategoryBar from '@/app/_components/SubCategoryBar'
 import TempPostList from '@/app/_components/TempPostList'
 import NavsData, { NavsDataType } from '@/mocks/NavsData'
@@ -26,6 +27,7 @@ export default function FirstDepthLayout() {
           mainCategory={firstNavItem.id}
           subCategory={subCategory}
         />
+        <PromotionList />
       </BodySection>
       <SidebarSection>dsadasdas</SidebarSection>
 
