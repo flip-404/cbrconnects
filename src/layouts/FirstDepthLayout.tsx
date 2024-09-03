@@ -1,5 +1,6 @@
 'use client'
 
+import NotificationBox from '@/app/_components/NotificationBox'
 import PromotionList from '@/app/_components/PromotionList'
 import SubCategoryBar from '@/app/_components/SubCategoryBar'
 import TempPostList from '@/app/_components/TempPostList'
@@ -33,7 +34,9 @@ export default function FirstDepthLayout({
         />
         <PromotionList />
       </BodySection>
-      <SidebarSection>dsadasdas</SidebarSection>
+      <SidebarSection>
+        <NotificationBox />
+      </SidebarSection>
       {children}
       {/* <CenteredContainer> */}
       {/* {firstNavItem.submenu?.length !== 0 ? (
@@ -78,6 +81,7 @@ export default function FirstDepthLayout({
 const LayoutWrapper = styled.div`
   margin-top: 8px;
   display: flex;
+  gap: 70px;
   padding-left: 320px;
 `
 
@@ -88,7 +92,7 @@ const BodySection = styled.div`
 `
 
 const SidebarSection = styled.div`
-  display: flex;
+  margin-top: 24px;
 `
 
 // const CenteredContainer = styled.div`
