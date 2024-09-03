@@ -2,6 +2,7 @@ import styled from 'styled-components'
 import PromotionListItem from './PromotionListItem'
 import TempImg1 from './1.png'
 import TempImg2 from './2.png'
+import Inquiry from './Inquiry'
 
 const PromotionList = () => {
   return (
@@ -15,6 +16,7 @@ const PromotionList = () => {
           <PromotionListItem key={data.title} post={data}></PromotionListItem>
         ))}
       </Body>
+      <Inquiry />
     </Container>
   )
 }

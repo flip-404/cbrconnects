@@ -1,0 +1,22 @@
+import styled from 'styled-components'
+import QuestionCircle from '@/assets/questionCircle.svg'
+
+const Inquiry = () => {
+  return (
+    <Container>
+      <QuestionCircle />
+      우리가게 홍보 글 쓰고 싶어요!
+    </Container>
+  )
+}
+
+export default Inquiry
+
+const Container = styled.div`
+  margin-top: 24px;
+  width: 100%;
+  height: 44px;
+  display: flex;
+  gap: 6px;
+  align-items: center;
+`
