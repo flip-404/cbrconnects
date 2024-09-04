@@ -1,10 +1,11 @@
 import styled from 'styled-components'
 import Link from 'next/link'
 import NoticeMoreIcon from '@/assets/noticeMore_icon.svg'
+
 export default function NotificationBox() {
   return (
     <Container>
-      <StyledLink href={'/'}>
+      <StyledLink href="/">
         🔥공지사항 <NoticeMoreIcon />
       </StyledLink>
       <Body>
