@@ -56,6 +56,12 @@ const fetchPosts = async (
   })
 }
 
+const fetchPostCount = async (whereQuery: Prisma.PostWhereInput) => {
+  return prisma.post.count({
+    where: whereQuery,
+  })
+}
+
 async function GET(request: NextRequest) {
   const url = new URL(request.url)
   const { mainCategory, subCategory, postId } = getPostQueryParams(url)
@@ -88,7 +94,11 @@ async function GET(request: NextRequest) {
 
   try {
     const posts = await fetchPosts(whereQuery, page, limit)
-    return new NextResponse(JSON.stringify(posts), { status: 200 })
+    const totalCount = await fetchPostCount(whereQuery)
+
+    return new NextResponse(JSON.stringify({ posts, totalCount }), {
+      status: 200,
+    })
   } catch (error) {
     return new NextResponse(JSON.stringify([]), { status: 500 })
   }
