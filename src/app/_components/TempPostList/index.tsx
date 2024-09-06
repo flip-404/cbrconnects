@@ -29,7 +29,7 @@ function TempPostList({
 
   const { data } = useSWR(`/api/posts${query ? `?${query}` : ''}`, fetcher)
   const { posts, totalCount } = data || { posts: [], totalCount: 0 }
-
+  if (posts.length === 0) return <NoPosts>아직 게시글이 없어요</NoPosts>
   return (
     <Container>
       {posts?.map((post: PostWithRelations) => (
@@ -87,6 +87,7 @@ const Container = styled.div`
   width: 100%;
   height: 500px;
   padding-bottom: 100px;
+  min-height: 408px;
 `
 const Pagination = styled.div`
   display: flex;
@@ -115,4 +116,17 @@ const PaginationNumber = styled.button<{ disabled: boolean }>`
   font-size: 13px;
   font-weight: 600;
   padding: 3px 8px;
+`
+
+const NoPosts = styled.span`
+  display: flex;
+  color: #999999;
+  justify-content: center;
+  align-items: center;
+  font-family: Apple SD Gothic Neo;
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 24px;
+  text-align: center;
+  min-height: 578px;
 `
