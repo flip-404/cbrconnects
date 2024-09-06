@@ -3,7 +3,6 @@
 import Image from 'next/image'
 import styled from 'styled-components'
 import TempImage from './tempEventImg.png'
-import MainPostList from './_components/MainPostList'
 
 import CalendarWidget from './_components/CalendarWidget'
 
@@ -29,22 +28,6 @@ export default function Home() {
         </ImageWrapper>
         <CalendarWidget />
       </MainBannerSection>
-      <GridSection>
-        <GridContainer>
-          <MainPostList
-            mainCategory="community"
-            href="/community"
-            lable="커뮤니티"
-          />
-          <MainPostList mainCategory="job" href="/job" lable="구인/구직" />
-          <MainPostList mainCategory="market" href="/market" lable="쿼카마켓" />
-          <MainPostList
-            mainCategory="rentshare"
-            href="/rentshare"
-            lable="렌트/쉐어"
-          />
-        </GridContainer>
-      </GridSection>
     </Container>
   )
 }
@@ -76,19 +59,4 @@ const ImageWrapper = styled.div`
 
 const StyledImage = styled(Image)`
   border: 1px solid #e2e8f0;
-`
-const GridSection = styled.div`
-  background-color: white;
-  padding: 20px;
-  border-radius: 25px;
-  width: 100%;
-  max-width: 1200px;
-`
-const GridContainer = styled.div`
-  display: grid;
-  grid-template-columns: repeat(2, 1fr);
-  justify-items: center;
-  gap: 30px;
-  width: 100%;
-  max-width: 1200px;
 `

@@ -1,13 +1,12 @@
 import styled from 'styled-components'
-import CloseIcon from '@/assets/close_icon.svg'
-import AuthInput from '../AuthInput'
 import { SignInForm } from '@/app/api/(user)/signin/route'
 import { useForm } from 'react-hook-form'
 import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
-import LoginInput from './LoginInput'
 import KakaoIcon from '@/assets/kakao_icon.svg'
 import GoogleIcon from '@/assets/google_icon.svg'
+import CloseIcon from '@/assets/close_icon.svg'
+import LoginInput from './LoginInput'
 
 function LoginModal({ toggleModal }: { toggleModal: () => void }) {
   const router = useRouter()
@@ -57,7 +56,7 @@ function LoginModal({ toggleModal }: { toggleModal: () => void }) {
               required: '아이디를 입력해 주세요',
             })}
             isError={Boolean(errors.userAuthId)}
-            errorMessage={errors.userAuthId?.message!}
+            errorMessage={errors.userAuthId?.message || ''}
           />
           <LoginInput
             id="password"
@@ -67,7 +66,7 @@ function LoginModal({ toggleModal }: { toggleModal: () => void }) {
               required: '비밀번호를 입력해 주세요',
             })}
             isError={Boolean(errors.password)}
-            errorMessage={errors.password?.message!}
+            errorMessage={errors.password?.message || ''}
           />
           <ExtraFeatureContainer>
             <CheckboxWrapper>
@@ -249,11 +248,11 @@ const SignUpButton = styled.button`
   position: relative;
   text-align: center;
   padding: 19px 22px;
-  background: #363636;
-  border: none;
+  background: transparent;
+  border: 1px solid #c1c1c1;
   border-radius: 7px;
   font-family: Pretendard;
   font-size: 16px;
   font-weight: 700;
-  color: #f1f1f1;
+  color: #222222;
 `

@@ -3,7 +3,6 @@
 // 완
 import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
-import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import styled from 'styled-components'
 import NavsData from '@/mocks/NavsData'
@@ -12,7 +11,6 @@ import NavButton from './NavButton'
 import LoginModal from '../LoginModal'
 
 function Header() {
-  const router = useRouter()
   const { data: session } = useSession()
   const [isDropdownVisible, setIsDropdownVisible] = useState(false)
   const [loginModalOpen, setLoginModalOpen] = useState(false)

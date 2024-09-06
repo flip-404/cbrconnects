@@ -36,7 +36,6 @@ function TempPostList({
       {posts?.map((post: PostWithRelations) => (
         <PostListItem key={post.id} post={post} />
       ))}
-
       {subCategory !== 'all' && (
         <Pagination>
           <PaginationButton
@@ -61,6 +60,7 @@ function TempPostList({
                   {pageNumber}
                 </PaginationNumber>
               )
+            return null
           })}
 
           <PaginationButton
