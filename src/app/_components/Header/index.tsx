@@ -9,11 +9,17 @@ import styled from 'styled-components'
 import NavsData from '@/mocks/NavsData'
 import SearchBar from './SearchBar'
 import NavButton from './NavButton'
+import LoginModal from '../LoginModal'
 
 function Header() {
   const router = useRouter()
   const { data: session } = useSession()
   const [isDropdownVisible, setIsDropdownVisible] = useState(false)
+  const [loginModalOpen, setLoginModalOpen] = useState(false)
+
+  const toggleLoginModal = () => {
+    setLoginModalOpen(!loginModalOpen)
+  }
 
   return (
     <Container>
@@ -62,15 +68,11 @@ function Header() {
           )}
         </ProfileWrapper>
       ) : (
-        <LoginButton
-          type="button"
-          onClick={() => {
-            router.push('/signin')
-          }}
-        >
+        <LoginButton type="button" onClick={toggleLoginModal}>
           로그인
         </LoginButton>
       )}
+      {loginModalOpen && <LoginModal toggleModal={toggleLoginModal} />}
     </Container>
   )
 }

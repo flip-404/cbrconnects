@@ -43,25 +43,25 @@ function MainPostList({
   if (error) return <div>Failed to load posts</div>
   let content
 
-  if (!posts) {
-    content = <SkeletonPostItem />
-  } else if (posts.length === 0) {
-    content = <EmptyBox />
-  } else {
-    content = posts.map((post) => (
-      <ListItem
-        key={post.id}
-        onClick={() => {
-          handleMoveToPost(post.id)
-        }}
-      >
-        <Title>
-          {post.title} {isNew(post.createdAt) && <NewChip>&nbsp;[new]</NewChip>}
-        </Title>
-        <CreatedAt>{formatDate(post.createdAt)}</CreatedAt>
-      </ListItem>
-    ))
-  }
+  // if (!posts) {
+  //   content = <SkeletonPostItem />
+  // } else if (posts.length === 0) {
+  //   content = <EmptyBox />
+  // } else {
+  //   content = posts.map((post) => (
+  //     <ListItem
+  //       key={post.id}
+  //       onClick={() => {
+  //         handleMoveToPost(post.id)
+  //       }}
+  //     >
+  //       <Title>
+  //         {post.title} {isNew(post.createdAt) && <NewChip>&nbsp;[new]</NewChip>}
+  //       </Title>
+  //       <CreatedAt>{formatDate(post.createdAt)}</CreatedAt>
+  //     </ListItem>
+  //   ))
+  // }
 
   return (
     <CardContainer>
