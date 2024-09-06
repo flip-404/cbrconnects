@@ -44,20 +44,23 @@ function TempPostList({
             onClick={() => setPage(page - 1)}
           >
             <LeftArrowIcon />
-            {[...Array(4)].map((_, idx) => {
-              const pageNumber = Math.floor((page - 1) / 4) * 4 + idx + 1
-              return (
-                <PaginationNumber
-                  key={pageNumber}
-                  type="button"
-                  disabled={page === pageNumber}
-                  onClick={() => setPage(pageNumber)}
-                >
-                  {pageNumber}
-                </PaginationNumber>
-              )
-            })}
           </PaginationButton>
+          {[...Array(4)].map((_, idx) => {
+            const pageNumber = page + idx
+            return (
+              <PaginationNumber
+                key={pageNumber}
+                type="button"
+                disabled={page === pageNumber}
+                onClick={() => {
+                  console.log('pageNumber 바꾼당 ', pageNumber)
+                  setPage(pageNumber)
+                }}
+              >
+                {pageNumber}
+              </PaginationNumber>
+            )
+          })}
           <PaginationButton
             disabled={page === 4}
             type="button"
@@ -84,16 +87,31 @@ const Container = styled.div`
   height: 500px;
   padding-bottom: 100px;
 `
-const Pagination = styled.div``
+const Pagination = styled.div`
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 14px;
+`
 
 const PaginationButton = styled.button<{ disabled: boolean }>`
   background: transparent;
   border: none;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  padding: 0px;
 `
 
 const PaginationNumber = styled.button<{ disabled: boolean }>`
   background: transparent;
   border: none;
   cursor: pointer;
+  display: flex;
+  align-items: center;
+  font-family: Open Sans;
+  font-size: 13px;
+  font-weight: 600;
+
+  padding: 3px 8px;
 `
