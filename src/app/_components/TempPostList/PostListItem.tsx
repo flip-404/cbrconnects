@@ -9,10 +9,21 @@ import LikeIcon from '@/assets/like_icon.svg'
 import NewIcon from '@/assets/new_icon.svg'
 import CommentIcon from '@/assets/comment_icon.svg'
 import isNew from '@/utils/isNew'
+import { useRouter } from 'next/navigation'
 
 function PostListItem({ post }: { post: PostWithRelations }) {
+  const router = useRouter()
+
+  const handleMoveToPost = (postId: number) => {
+    router.push(`/posts?postId=${postId}`)
+  }
+
   return (
-    <Container>
+    <Container
+      onClick={() => {
+        handleMoveToPost(post.id)
+      }}
+    >
       <Body>
         <Title>
           <CategoryChip>
@@ -55,6 +66,7 @@ export default PostListItem
 const Container = styled.div`
   display: flex;
   justify-content: space-between;
+  cursor: pointer;
 `
 
 const Body = styled.div`

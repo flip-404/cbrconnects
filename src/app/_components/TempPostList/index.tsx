@@ -29,6 +29,7 @@ function TempPostList({
 
   const { data } = useSWR(`/api/posts${query ? `?${query}` : ''}`, fetcher)
   const { posts, totalCount } = data || { posts: [], totalCount: 0 }
+
   if (posts.length === 0) return <NoPosts>아직 게시글이 없어요</NoPosts>
   return (
     <Container>
