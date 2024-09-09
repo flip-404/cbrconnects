@@ -44,8 +44,8 @@ function AgreementBox({
       <AllCheckWrapper>
         <CheckBox
           name="checkAll"
-          checked={allChecked} // 계산된 allChecked 사용
-          label="체크버튼 전체 동의"
+          checked={allChecked}
+          label="모두 동의합니다."
           handleChange={handleCheckAll}
         />
       </AllCheckWrapper>

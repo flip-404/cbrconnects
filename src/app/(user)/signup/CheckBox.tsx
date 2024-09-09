@@ -54,9 +54,13 @@ const Container = styled.div`
 `
 
 const ShowAgreement = styled.p`
-  font-weight: 400;
-  font-size: 14px;
-  color: #3b4859;
+  font-family: Pretendard;
+  font-size: 18px;
+  font-weight: 500;
+  color: #979797;
+  text-decoration: underline;
+  margin: 0px;
+
   cursor: pointer;
 
   &:hover {
