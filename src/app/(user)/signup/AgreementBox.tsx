@@ -1,21 +1,26 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import Agreement from '@/mocks/AgreementData'
 import styled from 'styled-components'
 import CheckBox from './CheckBox'
 
-function AgreementBox() {
+function AgreementBox({
+  setAllAgreementChecked,
+}: {
+  setAllAgreementChecked: (checked: boolean) => void
+}) {
   const [agreement, setAgreement] = useState({
-    allChecked: false,
     ageChecked: false,
     serviceChecked: false,
     privacyChecked: false,
   })
 
+  const allChecked =
+    agreement.ageChecked && agreement.serviceChecked && agreement.privacyChecked
+
   const handleCheckAll = (event: React.ChangeEvent<HTMLInputElement>) => {
     const isChecked = event.target.checked
 
     setAgreement({
-      allChecked: isChecked,
       serviceChecked: isChecked,
       privacyChecked: isChecked,
       ageChecked: isChecked,
@@ -30,14 +35,21 @@ function AgreementBox() {
     }))
   }
 
+  useEffect(() => {
+    setAllAgreementChecked(allChecked)
+  }, [allChecked, setAllAgreementChecked])
+
   return (
     <Container>
-      <CheckBox
-        name="checkAll"
-        checked={agreement.allChecked}
-        label="체크버튼 전체 동의"
-        handleChange={handleCheckAll}
-      />
+      <AllCheckWrapper>
+        <CheckBox
+          name="checkAll"
+          checked={allChecked} // 계산된 allChecked 사용
+          label="체크버튼 전체 동의"
+          handleChange={handleCheckAll}
+        />
+      </AllCheckWrapper>
+
       <CheckBox
         name="ageChecked"
         checked={agreement.ageChecked}
@@ -65,7 +77,13 @@ function AgreementBox() {
 export default AgreementBox
 
 const Container = styled.div`
-  background-color: #f8f9fb;
-  padding: 1rem;
-  border-radius: 10px;
+  margin-top: 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`
+
+const AllCheckWrapper = styled.div`
+  padding-bottom: 16px;
+  border-bottom: 1px solid #e7e7e7;
 `

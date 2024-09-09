@@ -2,76 +2,72 @@
 
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import SecondPhase from './SecondPhase'
-import { SignUpContainer, SignUpForm, Title } from './styledCompoents'
+import SignUpForm from './SignUpForm'
+import Phase from './Phase'
+import CompletionBox from './CompletionBox'
 
 function SignUp() {
   const [phase, setPhase] = useState(0)
+  const [userName, setUserName] = useState('')
 
-  const renderSignUpPhase = () => {
-    switch (phase) {
-      case 0:
-        return (
-          <SignUpForm>
-            <Title>회원가입</Title>
-            <KakaoButton>카카오로 회원가입하기</KakaoButton>
-            <GoogleButton>구글로 회원가입하기</GoogleButton>
-            <Divider>------또는------</Divider>
-            <IdPasswordButton onClick={() => setPhase(1)}>
-              ID/PASSWORD로 가입하기
-            </IdPasswordButton>
-          </SignUpForm>
-        )
-      case 1:
-        return (
-          <SignUpForm>
-            <Title>회원가입</Title>
-            <SecondPhase
-              defaultValues={{
-                authType: 'credentials',
-                kakaoId: null,
-                googleId: null,
-              }}
-            />
-          </SignUpForm>
-        )
-      default:
-        return <div />
-    }
+  const handleNextPhase = () => {
+    setPhase(1)
   }
 
-  return <SignUpContainer>{renderSignUpPhase()}</SignUpContainer>
+  const onChangeUserName = (value: string) => {
+    setUserName(value)
+  }
+
+  return (
+    <Container>
+      <Section>
+        <Header>
+          <Title>회원가입</Title>
+          <Phase phase={phase} />
+        </Header>
+        {phase === 0 ? (
+          <SignUpForm
+            defaultValues={{
+              authType: 'credentials',
+              kakaoId: null,
+              googleId: null,
+            }}
+            onChangeUserName={onChangeUserName}
+            handleNextPhase={handleNextPhase}
+          />
+        ) : (
+          <CompletionBox userName={userName} />
+        )}
+      </Section>
+    </Container>
+  )
 }
 
 export default SignUp
 
-const Button = styled.button`
-  width: 200px;
-  padding: 10px;
-  margin: 10px 0;
-  border: none;
-  border-radius: 5px;
-  font-size: 16px;
-  cursor: pointer;
+const Container = styled.div`
+  background-color: white;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 `
 
-const KakaoButton = styled(Button)`
-  background-color: #fee500;
-  color: #000;
+const Section = styled.section`
+  width: 33vw;
 `
 
-const GoogleButton = styled(Button)`
-  background-color: #db4437;
-  color: #fff;
+const Header = styled.section`
+  margin-top: 55px;
+  position: relative;
+  display: flex;
+  justify-content: center;
 `
 
-const IdPasswordButton = styled(Button)`
-  background-color: #4285f4;
-  color: #fff;
-`
-
-const Divider = styled.div`
-  margin: 20px 0;
-  font-size: 14px;
-  color: #aaa;
+const Title = styled.h1`
+  margin: 0px;
+  font-family: Pretendard;
+  font-size: 40px;
+  font-weight: 800;
+  line-height: 48px;
+  text-align: left;
 `

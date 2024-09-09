@@ -45,7 +45,9 @@ function BirthdaySelector({ control, errors }: { control: any; errors: any }) {
 
   return (
     <Container>
-      <StyledLabel>생년월일</StyledLabel>
+      <Label>
+        생년월일 <span>*</span>
+      </Label>
       <SelectWrapper>
         <Controller
           name="dateOfBirth.year"
@@ -100,22 +102,35 @@ export default BirthdaySelector
 const Container = styled.div`
   display: flex;
   flex-direction: column;
+  gap: 10px;
 `
 
 const SelectWrapper = styled.div`
   display: flex;
-  gap: 10px;
+  gap: 14px;
 `
 
-const StyledLabel = styled.label`
-  font-size: 1.25rem;
-  color: #475467;
-  font-weight: 600;
-  line-height: 1.875rem;
+const Label = styled.label`
+  font-family: Pretendard;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 21.48px;
+  color: black;
+
+  span {
+    font-family: Pretendard;
+    font-size: 18px;
+    font-weight: 700;
+    line-height: 21.48px;
+    color: #1e42ff;
+  }
 `
 
 const StyledSelect = styled.select`
   width: auto;
-  height: 2rem;
-  font-weight: 600;
+  padding: 10px;
+  font-family: Pretendard;
+  font-size: 16px;
+  font-weight: 500;
+  text-align: left;
 `

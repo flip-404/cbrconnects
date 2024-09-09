@@ -3,7 +3,7 @@ import * as bcrypt from 'bcrypt'
 import prisma from '@/libs/prisma'
 import { NextResponse } from 'next/server'
 
-export interface SignUpForm {
+export interface SignUpBody {
   userAuthId: string
   userName: string
   email: string
@@ -22,7 +22,7 @@ export interface SignUpForm {
   profileImage: string | null
 }
 
-type RequestBody = SignUpForm
+type RequestBody = SignUpBody
 
 async function POST(request: Request) {
   const body: RequestBody = await request.json()

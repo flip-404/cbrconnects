@@ -22,7 +22,7 @@ function LoginModal({ toggleModal }: { toggleModal: () => void }) {
     await signIn('credentials', {
       userAuthId: formData.userAuthId,
       password: formData.password,
-      redirect: true,
+      redirect: false,
       callbackUrl: '/',
     })
   }

@@ -23,7 +23,7 @@ function CheckBox({
   }
   return (
     <Container>
-      <div>
+      <CheckboxWrapper type={name}>
         <input
           type="checkbox"
           id={name}
@@ -31,8 +31,10 @@ function CheckBox({
           checked={checked}
           onChange={handleChange}
         />
-        <label htmlFor={name}>{label}</label>
-      </div>
+        <label htmlFor={name}>
+          {label} {name !== 'checkAll' && <span>(필수)</span>}
+        </label>
+      </CheckboxWrapper>
       {fullText && (
         <ShowAgreement onClick={toggleModal}>전문보기</ShowAgreement>
       )}
@@ -59,5 +61,31 @@ const ShowAgreement = styled.p`
 
   &:hover {
     opacity: 0.5;
+  }
+`
+
+const CheckboxWrapper = styled.div<{ type: string }>`
+  display: flex;
+  align-items: center;
+  gap: 14px;
+
+  input {
+    width: 24px;
+    height: 24px;
+    border-radius: 3px;
+    border: 1px solid #d8d8d8;
+    margin: 0px;
+  }
+
+  label {
+    font-family: Pretendard;
+    font-size: 18px;
+    font-weight: ${(props) => (props.type === 'checkAll' ? '500' : '400')};
+    text-align: left;
+    color: black;
+  }
+
+  span {
+    color: #1b3be6;
   }
 `
