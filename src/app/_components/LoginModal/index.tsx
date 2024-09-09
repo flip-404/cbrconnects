@@ -112,14 +112,13 @@ const ModalOverlay = styled.div`
   width: 100%;
   height: 100%;
   background: rgba(0, 0, 0, 0.5);
-
+  z-index: 99;
   display: flex;
   justify-content: center;
   align-items: center;
 `
 
 const Modal = styled.div`
-  z-index: 999;
   border-radius: 12px;
   background: white;
   width: 33vw;
