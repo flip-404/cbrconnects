@@ -7,5 +7,5 @@ export default function RentShareLayout({
 }: {
   children: React.ReactNode
 }) {
-  return <LayoutByDepth href="/rentshare">{children}</LayoutByDepth>
+  return <LayoutByDepth>{children}</LayoutByDepth>
 }

@@ -7,5 +7,5 @@ export default function CommunityLayout({
 }: {
   children: React.ReactNode
 }) {
-  return <LayoutByDepth href="/community">{children}</LayoutByDepth>
+  return <LayoutByDepth>{children}</LayoutByDepth>
 }

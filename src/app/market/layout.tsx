@@ -7,5 +7,5 @@ export default function MarketLayout({
 }: {
   children: React.ReactNode
 }) {
-  return <LayoutByDepth href="/market">{children}</LayoutByDepth>
+  return <LayoutByDepth>{children}</LayoutByDepth>
 }
