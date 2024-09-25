@@ -37,7 +37,7 @@ const NavLink = styled(Link)<{ $isActive: boolean }>`
   font-weight: 800;
 
   text-align: left;
-  color: ${(props) => (props.$isActive ? 'black' : '#787878')};
+  color: ${(props) => (props.$isActive ? 'white' : '#a7a7a7')};
 
   &:hover {
     cursor: pointer;

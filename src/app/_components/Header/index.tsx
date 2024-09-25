@@ -82,12 +82,16 @@ const Container = styled.div`
   height: 72px;
   align-items: center;
   gap: 20px;
+  background-color: #2b2b2b;
 `
 
 const StyledLink = styled(Link)`
   font-size: 32px;
   font-weight: 700;
-  color: #000000;
+  background: linear-gradient(92.69deg, #83adff -10.62%, #a174ff 111.39%);
+  background-clip: text;
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
   text-decoration: none;
   padding-left: 88px;
   padding-right: 41px;
