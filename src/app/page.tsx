@@ -99,6 +99,7 @@ const LayoutWrapper = styled.div`
   display: flex;
   gap: 70px;
   padding-left: 320px;
+  padding-bottom: 100px;
 `
 
 const BodySection = styled.div`
