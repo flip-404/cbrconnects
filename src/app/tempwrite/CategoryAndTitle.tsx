@@ -1,12 +1,6 @@
 import styled from 'styled-components'
-import NavsData from '@/mocks/NavsData'
-import { useEffect, useState } from 'react'
+import { useEffect } from 'react'
 import CategorySelect from './CategorySelect'
-
-type Category = {
-  mainCategory: string | null
-  subCategory: string | null
-}
 
 function CategoryAndTitle({
   mainCategory,

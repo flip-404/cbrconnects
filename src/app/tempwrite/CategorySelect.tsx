@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import BottomArrowIcon from '@/assets/bottomArrow_icon.svg'
-import NavsData, { NavsDataType } from '@/mocks/NavsData'
+import NavsData from '@/mocks/NavsData'
 import { useState, useMemo } from 'react'
 import Options from './Options'
 
@@ -25,13 +25,11 @@ function CategorySelect({
     mainCategory === '쿼카마켓' && type === 'subCategory'
 
   const categories = useMemo(() => {
-    if (type === 'mainCategory') {
-      return NavsData.map((cg) => cg.label)
-    } else {
-      return NavsData.find((cg) => cg.label === mainCategory)?.submenu.map(
-        (cg) => cg.label,
-      )
-    }
+    if (type === 'mainCategory') return NavsData.map((cg) => cg.label)
+
+    return NavsData.find((cg) => cg.label === mainCategory)?.submenu.map(
+      (cg) => cg.label,
+    )
   }, [type, mainCategory])
 
   const renderLabel = () => {

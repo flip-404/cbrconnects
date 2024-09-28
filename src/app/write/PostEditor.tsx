@@ -114,7 +114,6 @@ function PostEditor() {
     () => ({
       toolbar: {
         container: [
-          [{ font: [] }],
           [{ size: ['small', false, 'large', 'huge'] }], // 텍스트 크기 옵션 추가
           ['bold', 'italic', 'underline', 'strike'],
           [
@@ -140,7 +139,6 @@ function PostEditor() {
   )
 
   const formats = [
-    'font',
     'size',
     'bold',
     'italic',

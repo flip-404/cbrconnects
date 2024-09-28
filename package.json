@@ -12,6 +12,9 @@
   "dependencies": {
     "@prisma/client": "^5.15.1",
     "@svgr/webpack": "^8.1.0",
+    "@tinymce/tinymce-react": "^5.1.1",
+    "@toast-ui/editor": "^3.2.2",
+    "@toast-ui/react-editor": "^3.2.3",
     "bcrypt": "^5.1.1",
     "html-react-parser": "^5.1.10",
     "jsonwebtoken": "^9.0.2",
@@ -21,6 +24,7 @@
     "postgres": "^3.4.4",
     "quill-image-drop-module": "^1.0.3",
     "quill-image-resize-module-react": "^3.0.0",
+    "raw-loader": "^4.0.2",
     "react": "^18",
     "react-calendar": "^5.0.0",
     "react-dom": "^18",
@@ -28,7 +32,8 @@
     "react-quill": "^2.0.0",
     "styled-components": "^6.1.11",
     "swiper": "^11.1.4",
-    "swr": "^2.2.5"
+    "swr": "^2.2.5",
+    "tinymce": "^7.3.0"
   },
   "devDependencies": {
     "@swc/plugin-styled-components": "^2.0.8",

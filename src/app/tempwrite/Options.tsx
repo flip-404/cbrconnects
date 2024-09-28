@@ -1,4 +1,3 @@
-import { useState } from 'react'
 import styled from 'styled-components'
 import CheckIcon from '@/assets/check_icon.svg'
 
@@ -19,6 +18,7 @@ function Options({
     <Container>
       {categories?.map((label) => (
         <Option
+          key={label}
           onClick={() => {
             if (selectedCg !== label) {
               onCgChange(label)
