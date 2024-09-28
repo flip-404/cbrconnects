@@ -109,10 +109,6 @@ const BodySection = styled.div`
   gap: 24px;
 `
 
-const SidebarSection = styled.div`
-  margin-top: 24px;
-`
-
 const EventSection = styled.div`
   display: flex;
   justify-content: space-evenly;

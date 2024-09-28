@@ -1,8 +1,8 @@
 import styled from 'styled-components'
-import NotificationBox from '../NotificationBox'
-import CalendarWidget from '../CalendarWidget'
 import WriteIcon from '@/assets/write_icon.svg'
 import ArrowIcon from '@/assets/home-icon-aside-notice-more.svg'
+import NotificationBox from '../NotificationBox'
+import CalendarWidget from '../CalendarWidget'
 
 function Sidebar() {
   return (

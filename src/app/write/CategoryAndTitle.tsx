@@ -46,7 +46,7 @@ function CategoryAndTitle({
           onChange={(e) => {
             if (e.target.value.length < 100) onTitleChange(e.target.value)
           }}
-        ></TitleInput>
+        />
       </TitleWrapper>
     </Container>
   )

@@ -14,11 +14,11 @@ import { ImageDrop } from 'quill-image-drop-module'
 import ReactQuill, { Quill } from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 
+import { findIdByLabel } from '@/utils/getCategoryInfo'
 import formats from './default'
 import Header from './Header'
 import CategoryAndTitle from './CategoryAndTitle'
 import NotificationModal from '../_components/NotificationModal'
-import { findIdByLabel } from '@/utils/getCategoryInfo'
 
 Quill.register('modules/imageResize', ImageResize)
 Quill.register('modules/imageDrop', ImageDrop)
@@ -120,11 +120,11 @@ function PostEditor() {
     if (!title) {
       setErrorModal('제목은 필수 입력입니다.')
       return
-    } else if (!content) {
+    }
+    if (!content) {
       setErrorModal('본문은 필수 입력입니다.')
       return
     }
-
     if (mainCategory !== '쿼카마켓' && (!mainCategory || !subCategory)) {
       setErrorModal('게시판을 선택해 주세요.')
       return
