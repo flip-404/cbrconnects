@@ -1,0 +1,46 @@
+import styled from 'styled-components'
+import NotificationBox from '../NotificationBox'
+import CalendarWidget from '../CalendarWidget'
+import WriteIcon from '@/assets/write_icon.svg'
+import ArrowIcon from '@/assets/home-icon-aside-notice-more.svg'
+
+function Sidebar() {
+  return (
+    <SidebarSection>
+      <WritePageButton>
+        <LabelWrapper>
+          <WriteIcon />
+          게시글 작성하기
+        </LabelWrapper>
+        <ArrowIcon />
+      </WritePageButton>
+      <NotificationBox />
+      <CalendarWidget />
+    </SidebarSection>
+  )
+}
+
+export default Sidebar
+
+const SidebarSection = styled.div`
+  margin-top: 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+`
+
+const WritePageButton = styled.button`
+  all: unset;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 10px 24px 10px 13px;
+  background: linear-gradient(91.21deg, #ecf0fe -7.76%, #cad6ff 104.27%);
+  border-radius: 14px;
+  cursor: pointer;
+`
+
+const LabelWrapper = styled.div`
+  display: flex;
+  align-items: center;
+`

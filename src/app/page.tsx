@@ -6,9 +6,8 @@ import CommunityIcon from '@/assets/mainTabs/community_icon.svg'
 import JobIcon from '@/assets/mainTabs/job_icon.svg'
 import MarketIcon from '@/assets/mainTabs/market_icon.svg'
 import RentShareIcon from '@/assets/mainTabs/rentshare_icon.svg'
-import CalendarWidget from './_components/CalendarWidget'
-import NotificationBox from './_components/NotificationBox'
 import PromotionList from './_components/PromotionList'
+import Sidebar from './_components/Sidebar'
 
 const tabData = [
   { id: 0, icon: <CommunityIcon />, label: '커뮤니티' },
@@ -90,10 +89,7 @@ export default function Home() {
         </BoardSection>
         <PromotionList />
       </BodySection>
-      <SidebarSection>
-        <NotificationBox />
-        <CalendarWidget />
-      </SidebarSection>
+      <Sidebar />
     </LayoutWrapper>
   )
 }

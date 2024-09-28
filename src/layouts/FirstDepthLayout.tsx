@@ -1,8 +1,7 @@
 'use client'
 
-import CalendarWidget from '@/app/_components/CalendarWidget'
-import NotificationBox from '@/app/_components/NotificationBox'
 import PromotionList from '@/app/_components/PromotionList'
+import Sidebar from '@/app/_components/Sidebar'
 import SubCategoryBar from '@/app/_components/SubCategoryBar'
 import TempPostList from '@/app/_components/TempPostList'
 import NavsData, { NavsDataType } from '@/mocks/NavsData'
@@ -35,10 +34,7 @@ export default function FirstDepthLayout({
         />
         <PromotionList />
       </BodySection>
-      <SidebarSection>
-        <NotificationBox />
-        <CalendarWidget />
-      </SidebarSection>
+      <Sidebar />
       {children}
     </LayoutWrapper>
   )
@@ -55,8 +51,4 @@ const BodySection = styled.div`
   display: flex;
   flex-direction: column;
   width: 50vw;
-`
-
-const SidebarSection = styled.div`
-  margin-top: 24px;
 `
