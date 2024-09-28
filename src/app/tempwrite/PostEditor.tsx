@@ -7,11 +7,12 @@
 import styled from 'styled-components'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
-import { useEffect, useMemo, useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
 import ImageResize from 'quill-image-resize-module-react'
 import { ImageDrop } from 'quill-image-drop-module'
 import ReactQuill, { Quill } from 'react-quill'
+import 'react-quill/dist/quill.snow.css'
 
 import formats from './default'
 import Header from './Header'
@@ -206,6 +207,7 @@ const Container = styled.div`
 const QuillContainer = styled.div`
   width: 80vw;
   height: 60%;
+  background-color: white;
 
   .ql-editor {
     height: 40rem;
