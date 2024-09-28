@@ -5,18 +5,20 @@
 'use client'
 
 import styled from 'styled-components'
-import { useRouter, useSearchParams } from 'next/navigation'
-import NavsData, { NavsDataType } from '@/mocks/NavsData'
+import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
-import { Suspense, useEffect, useMemo, useRef, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
 import ImageResize from 'quill-image-resize-module-react'
 import { ImageDrop } from 'quill-image-drop-module'
 import ReactQuill, { Quill } from 'react-quill'
-import fetcher from '@/utils/fetcher'
-import useSWR from 'swr'
-import { PostWithRelations } from '@/types'
+import 'react-quill/dist/quill.snow.css'
+
+import formats from './default'
+import Header from './Header'
+import CategoryAndTitle from './CategoryAndTitle'
 import NotificationModal from '../_components/NotificationModal'
+import { findIdByLabel } from '@/utils/getCategoryInfo'
 
 Quill.register('modules/imageResize', ImageResize)
 Quill.register('modules/imageDrop', ImageDrop)
@@ -47,33 +49,9 @@ function PostEditor() {
   const [content, setContent] = useState('')
   const quillRef = useRef<ReactQuill>()
   const [thumbnail, setThumbnail] = useState(null)
-
-  const searchParams = useSearchParams()
-
-  const mainCategory = searchParams.get('mainCategory')
-  const subCategory = searchParams.get('subCategory')
-  const isEditMode = searchParams.get('isEditMode') === 'true'
-  const postId = searchParams.get('postId')
-
-  const { data: post } = useSWR<PostWithRelations>(
-    isEditMode ? `/api/posts?postId=${postId}` : null,
-    fetcher,
-  )
-
-  useEffect(() => {
-    if (post) {
-      setTitle(post.title)
-      setContent(post.content)
-    }
-  }, [post])
-
-  const firstNavItem: NavsDataType = NavsData.find(
-    (item) => item.id === mainCategory,
-  )!
-
-  const secondNavItem: NavsDataType = firstNavItem.submenu!.find(
-    (item) => item.id === subCategory,
-  )!
+  const [mainCategory, setMainCateogy] = useState<null | string>(null)
+  const [subCategory, setSubCategory] = useState<null | string>(null)
+  const [errorModal, setErrorModal] = useState<null | string>(null)
 
   const imageHandler = async () => {
     const input = document.createElement('input')
@@ -138,50 +116,37 @@ function PostEditor() {
     [],
   )
 
-  const formats = [
-    'size',
-    'bold',
-    'italic',
-    'underline',
-    'strike',
-    'list',
-    'bullet',
-    'indent',
-    'link',
-    'image',
-    'align',
-    'color',
-    'background',
-  ]
-  const handleTitleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.value.length > 100) {
-      alert('제목은 100자 이하로 작성해주세요.')
-    } else {
-      setTitle(e.target.value)
-    }
-  }
-
   const handleWritePost = async () => {
+    if (!title) {
+      setErrorModal('제목은 필수 입력입니다.')
+      return
+    } else if (!content) {
+      setErrorModal('본문은 필수 입력입니다.')
+      return
+    }
+
+    if (mainCategory !== '쿼카마켓' && (!mainCategory || !subCategory)) {
+      setErrorModal('게시판을 선택해 주세요.')
+      return
+    }
+
     setIsLoading(true)
     setTimeout(() => {
       setIsLoading(false)
       router.back()
     }, 2000)
 
-    const method = isEditMode ? 'PUT' : 'POST'
-
     await fetch('/api/posts', {
-      method,
+      method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        postId: post?.id,
         title,
         content,
         userId: session?.user.id,
-        mainCategory: firstNavItem.id,
-        ...(secondNavItem && { subCategory: secondNavItem.id }),
+        mainCategory: findIdByLabel(mainCategory),
+        subCategory: findIdByLabel(subCategory),
         thumbnail,
         isNotice: false,
       }),
@@ -194,37 +159,34 @@ function PostEditor() {
 
   return (
     <Container>
-      {isLoading && (
-        <NotificationModal label="게시글을 작성 중 입니다. 잠시만 기다려주세요" />
-      )}
-      <Header>
-        <CategoryWrapper>
-          {firstNavItem.label} - {secondNavItem?.label}
-        </CategoryWrapper>
-        <WriteButton onClick={handleWritePost}>글 작성</WriteButton>
-      </Header>
-      <TitleWrapper>
-        <TitleLabel htmlFor="titleLabelInput">제목</TitleLabel>
-        <TitleInput
-          id="titleInput"
-          placeholder="게시글 제목을 입력해주세요"
-          onChange={handleTitleChange}
-          value={title}
+      <Header onClickWrite={handleWritePost} />
+      <CategoryAndTitle
+        mainCategory={mainCategory}
+        subCategory={subCategory}
+        title={title}
+        onMainCgChange={setMainCateogy}
+        onSubCgChange={setSubCategory}
+        onTitleChange={setTitle}
+      />
+      <QuillContainer>
+        <DynamicReactQuill
+          forwardedRef={quillRef}
+          theme="snow"
+          modules={modules}
+          formats={formats}
+          value={content}
+          onChange={handleChange}
         />
-      </TitleWrapper>
-      <Suspense fallback={<div>Loading...</div>}>
-        {' '}
-        <QuillContainer>
-          <DynamicReactQuill
-            forwardedRef={quillRef}
-            theme="snow"
-            modules={modules}
-            formats={formats}
-            value={content}
-            onChange={handleChange}
-          />
-        </QuillContainer>
-      </Suspense>
+      </QuillContainer>
+      {errorModal && (
+        <NotificationModal
+          label={errorModal}
+          onCheck={() => {
+            setErrorModal(null)
+          }}
+          onCheckLabel="확인"
+        />
+      )}
     </Container>
   )
 }
@@ -232,59 +194,19 @@ function PostEditor() {
 export default PostEditor
 
 const Container = styled.div`
+  background-color: #fafafa;
   display: flex;
   flex-direction: column;
-  gap: 20px;
-  width: 100vw;
-  height: 100vh;
-  padding-top: 50px;
   align-items: center;
-`
-
-const Header = styled.div`
-  width: 80%;
-  display: flex;
-  justify-content: space-between;
-`
-
-const TitleWrapper = styled.div`
-  display: flex;
-  align-items: center;
-  width: 80%;
-  gap: 1rem;
-`
-const TitleLabel = styled.label``
-
-const TitleInput = styled.input`
-  flex: 1;
-  font-size: 20px;
-  font-weight: 700;
-  padding: 1rem;
-`
-
-const CategoryWrapper = styled.div`
-  font-size: 24px;
-  font-weight: bold;
-`
-
-const WriteButton = styled.button`
-  padding: 10px 15px;
-  background-color: rgba(136, 137, 209, 0.12);
-  color: #2a50da;
-  font-size: 18px;
-  border: none;
-  cursor: pointer;
-  font-size: 20px;
-  font-weight: 700;
-
-  &:hover {
-    opacity: 0.8;
-  }
+  gap: 30px;
+  min-height: 80vh;
+  padding-bottom: 100px;
 `
 
 const QuillContainer = styled.div`
-  width: 80%;
+  width: 80vw;
   height: 60%;
+  background-color: white;
 
   .ql-editor {
     height: 40rem;

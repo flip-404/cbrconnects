@@ -25,12 +25,14 @@ function CategoryAndTitle({
     <Container>
       <SelectWrapper>
         <CategorySelect
+          defaultLabel="게시판을 선택해 주세요."
           type="mainCategory"
           mainCategory={mainCategory}
           subCategory={subCategory}
           onCgChange={onMainCgChange}
         />
         <CategorySelect
+          defaultLabel="카테고리를 선택해 주세요."
           type="subCategory"
           mainCategory={mainCategory}
           subCategory={subCategory}
@@ -42,7 +44,7 @@ function CategoryAndTitle({
           value={title}
           placeholder="제목을 입력해 주세요."
           onChange={(e) => {
-            onTitleChange(e.target.value)
+            if (e.target.value.length < 100) onTitleChange(e.target.value)
           }}
         ></TitleInput>
       </TitleWrapper>

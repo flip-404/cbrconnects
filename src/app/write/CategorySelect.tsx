@@ -5,11 +5,13 @@ import { useState, useMemo } from 'react'
 import Options from './Options'
 
 function CategorySelect({
+  defaultLabel,
   type,
   mainCategory,
   subCategory,
   onCgChange,
 }: {
+  defaultLabel: string
   type: 'mainCategory' | 'subCategory'
   mainCategory: null | string
   subCategory: null | string
@@ -22,7 +24,8 @@ function CategorySelect({
   }
 
   const isSubCategoryDisabled =
-    mainCategory === '쿼카마켓' && type === 'subCategory'
+    (!mainCategory && type === 'subCategory') ||
+    (mainCategory === '쿼카마켓' && type === 'subCategory')
 
   const categories = useMemo(() => {
     if (type === 'mainCategory') return NavsData.map((cg) => cg.label)
@@ -34,9 +37,8 @@ function CategorySelect({
 
   const renderLabel = () => {
     if (type === 'subCategory' && mainCategory === '쿼카마켓') return '쿼카마켓'
-    if (type === 'mainCategory')
-      return mainCategory || '게시판을 선택해 주세요.'
-    return subCategory || '게시판을 선택해 주세요.'
+    if (type === 'mainCategory') return mainCategory || defaultLabel
+    return subCategory || defaultLabel
   }
 
   return (

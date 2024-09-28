@@ -8,7 +8,7 @@ import formatDate from '@/utils/formatData'
 import ViewIcon from '@/assets/view_icon.svg'
 import LikeIcon_ from '@/assets/like_icon.svg'
 import CommentIcon from '@/assets/comment_icon.svg'
-import findLabelById from '@/utils/findLabelById'
+import { findLabelById } from '@/utils/getCategoryInfo'
 import stripHtmlTags from '@/utils/stripHtmlTags'
 
 type Post = {

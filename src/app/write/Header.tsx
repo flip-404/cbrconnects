@@ -1,16 +1,25 @@
 import styled from 'styled-components'
 import WriteIcon from '@/assets/write_icon.svg'
+import { useRouter } from 'next/navigation'
 
 type Props = { onClickWrite: () => void }
 
 function Header({ onClickWrite }: Props) {
+  const router = useRouter()
+
   return (
     <Container>
       <Title>
         <WriteIcon /> 게시글 작성하기
       </Title>
       <ButtonWrapper>
-        <CancleButton>취소</CancleButton>
+        <CancleButton
+          onClick={() => {
+            router.back()
+          }}
+        >
+          취소
+        </CancleButton>
         <WriteButton onClick={onClickWrite}>등록</WriteButton>
       </ButtonWrapper>
     </Container>

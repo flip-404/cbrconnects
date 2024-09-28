@@ -98,15 +98,15 @@ const StyledLink = styled(Link)`
 `
 
 const LoginButton = styled.button`
-  padding: 10px 20px;
-  border: 2px solid black;
-  border-radius: 100px;
+  padding: 5px 10px;
+  border-radius: 4px;
   font-size: 14px;
   font-weight: 700;
-  background-color: transparent;
+  background-color: white;
   cursor: pointer;
+  border: 1px solid #ecf0fe;
   &:hover {
-    opacity: 0.6;
+    opacity: 0.9;
   }
 `
 
