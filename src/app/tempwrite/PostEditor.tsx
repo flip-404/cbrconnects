@@ -7,7 +7,7 @@
 import styled from 'styled-components'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
 import ImageResize from 'quill-image-resize-module-react'
 import { ImageDrop } from 'quill-image-drop-module'
@@ -16,6 +16,7 @@ import ReactQuill, { Quill } from 'react-quill'
 import formats from './default'
 import Header from './Header'
 import CategoryAndTitle from './CategoryAndTitle'
+import NotificationModal from '../_components/NotificationModal'
 
 Quill.register('modules/imageResize', ImageResize)
 Quill.register('modules/imageDrop', ImageDrop)
@@ -48,6 +49,7 @@ function PostEditor() {
   const [thumbnail, setThumbnail] = useState(null)
   const [mainCategory, setMainCateogy] = useState<null | string>(null)
   const [subCategory, setSubCategory] = useState<null | string>(null)
+  const [errorModal, setErrorModal] = useState<null | string>(null)
 
   const imageHandler = async () => {
     const input = document.createElement('input')
@@ -121,6 +123,14 @@ function PostEditor() {
   }
 
   const handleWritePost = async () => {
+    if (!title) {
+      setErrorModal('제목은 필수 입력입니다.')
+      return
+    } else if (!content) {
+      setErrorModal('본문은 필수 입력입니다.')
+      return
+    }
+
     setIsLoading(true)
     setTimeout(() => {
       setIsLoading(false)
@@ -150,12 +160,14 @@ function PostEditor() {
 
   return (
     <Container>
-      <Header />
+      <Header onClickWrite={handleWritePost} />
       <CategoryAndTitle
         mainCategory={mainCategory}
         subCategory={subCategory}
+        title={title}
         onMainCgChange={setMainCateogy}
         onSubCgChange={setSubCategory}
+        onTitleChange={setTitle}
       />
       <QuillContainer>
         <DynamicReactQuill
@@ -167,6 +179,15 @@ function PostEditor() {
           onChange={handleChange}
         />
       </QuillContainer>
+      {errorModal && (
+        <NotificationModal
+          label={errorModal}
+          onCheck={() => {
+            setErrorModal(null)
+          }}
+          onCheckLabel="확인"
+        />
+      )}
     </Container>
   )
 }

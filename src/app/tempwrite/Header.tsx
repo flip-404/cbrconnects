@@ -1,7 +1,9 @@
 import styled from 'styled-components'
 import WriteIcon from '@/assets/write_icon.svg'
 
-function Header() {
+type Props = { onClickWrite: () => void }
+
+function Header({ onClickWrite }: Props) {
   return (
     <Container>
       <Title>
@@ -9,7 +11,7 @@ function Header() {
       </Title>
       <ButtonWrapper>
         <CancleButton>취소</CancleButton>
-        <WriteButton>등록</WriteButton>
+        <WriteButton onClick={onClickWrite}>등록</WriteButton>
       </ButtonWrapper>
     </Container>
   )
