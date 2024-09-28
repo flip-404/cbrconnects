@@ -3,11 +3,18 @@ import WriteIcon from '@/assets/write_icon.svg'
 import ArrowIcon from '@/assets/home-icon-aside-notice-more.svg'
 import NotificationBox from '../NotificationBox'
 import CalendarWidget from '../CalendarWidget'
+import { useRouter } from 'next/navigation'
 
 function Sidebar() {
+  const router = useRouter()
+
   return (
     <SidebarSection>
-      <WritePageButton>
+      <WritePageButton
+        onClick={() => {
+          router.push('/write')
+        }}
+      >
         <LabelWrapper>
           <WriteIcon />
           게시글 작성하기
