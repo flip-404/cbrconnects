@@ -10,6 +10,7 @@ import NewIcon from '@/assets/new_icon.svg'
 import CommentIcon from '@/assets/comment_icon.svg'
 import isNew from '@/utils/isNew'
 import { useRouter } from 'next/navigation'
+import { findLabelById } from '@/utils/getCategoryInfo'
 
 function PostListItem({ post }: { post: PostWithRelations }) {
   const router = useRouter()
@@ -27,7 +28,9 @@ function PostListItem({ post }: { post: PostWithRelations }) {
       <Body>
         <Title>
           <CategoryChip>
-            {post.subCategory ? post.subCategory : post.mainCategory}
+            {post.subCategory
+              ? findLabelById(post.subCategory)
+              : findLabelById(post.mainCategory)}
           </CategoryChip>
           {post.title}
           {isNew(post.createdAt) && <NewIcon />}

@@ -11,67 +11,58 @@ import RightArrowIcon from '@/assets/rightArrow_icon.svg'
 import PostListItem from './PostListItem'
 
 function TempPostList({
-  mainCategory,
-  subCategory,
+  posts,
+  page,
+  totalCount,
+  onPageChage,
 }: {
-  mainCategory: string
-  subCategory: string
+  posts: PostWithRelations[]
+  page: number
+  totalCount: number
+  onPageChage: (pageNum: number) => void
 }) {
-  const [page, setPage] = useState(1)
-  const limit = subCategory !== 'all' ? 10 : 6
-
-  const query = buildQuery({
-    mainCategory,
-    subCategory: subCategory !== 'all' && subCategory,
-    page: `${page}`,
-    limit: `${limit}`,
-  })
-
-  const { data } = useSWR(`/api/posts${query ? `?${query}` : ''}`, fetcher)
-  const { posts, totalCount } = data || { posts: [], totalCount: 0 }
-
+  if (!posts) return '불러오는 중 입니다'
   if (posts.length === 0) return <NoPosts>아직 게시글이 없어요</NoPosts>
   return (
     <Container>
       {posts?.map((post: PostWithRelations) => (
         <PostListItem key={post.id} post={post} />
       ))}
-      {subCategory !== 'all' && (
-        <Pagination>
-          <PaginationButton
-            type="button"
-            disabled={page === 1}
-            onClick={() => setPage(page - 1)}
-          >
-            <LeftArrowIcon />
-          </PaginationButton>
-          {[...Array(4)].map((_, idx) => {
-            const pageNumber = Math.floor((page - 1) / 4) * 4 + idx + 1
-            if (Math.floor(totalCount / 10 + 1) >= pageNumber)
-              return (
-                <PaginationNumber
-                  key={pageNumber}
-                  type="button"
-                  disabled={page === pageNumber}
-                  onClick={() => {
-                    setPage(pageNumber)
-                  }}
-                >
-                  {pageNumber}
-                </PaginationNumber>
-              )
-            return null
-          })}
 
-          <PaginationButton
-            disabled={page === Math.floor(totalCount / 10 + 1)}
-            type="button"
-            onClick={() => setPage(page + 1)}
-          >
-            <RightArrowIcon />
-          </PaginationButton>
-        </Pagination>
-      )}
+      <Pagination>
+        <PaginationButton
+          type="button"
+          disabled={page === 1}
+          onClick={() => onPageChage(page - 1)}
+        >
+          <LeftArrowIcon />
+        </PaginationButton>
+        {[...Array(4)].map((_, idx) => {
+          const pageNumber = Math.floor((page - 1) / 4) * 4 + idx + 1
+          if (Math.floor(totalCount / 10 + 1) >= pageNumber)
+            return (
+              <PaginationNumber
+                key={pageNumber}
+                type="button"
+                disabled={page === pageNumber}
+                onClick={() => {
+                  onPageChage(pageNumber)
+                }}
+              >
+                {pageNumber}
+              </PaginationNumber>
+            )
+          return null
+        })}
+
+        <PaginationButton
+          disabled={page === Math.floor(totalCount / 10 + 1)}
+          type="button"
+          onClick={() => onPageChage(page + 1)}
+        >
+          <RightArrowIcon />
+        </PaginationButton>
+      </Pagination>
     </Container>
   )
 }

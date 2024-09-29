@@ -1,65 +1,69 @@
 import prisma from '@/libs/prisma'
+import { Prisma } from '@prisma/client'
 import { NextRequest, NextResponse } from 'next/server'
 
-async function GET() {
-  return new NextResponse(JSON.stringify([]), { status: 500 })
-}
-
-async function POST(request: NextRequest) {
-  const body = await request.json()
-
-  const { searchTerm, searchType } = body
+async function GET(request: NextRequest) {
+  const url = new URL(request.url)
+  const searchTerm = url.searchParams.get('searchTerm') || ''
+  const searchType = url.searchParams.get('searchType') || 'fulltext'
+  const page = parseInt(url.searchParams.get('page') || '1', 10)
+  const limit = parseInt(url.searchParams.get('limit') || '10', 10)
 
   let posts = []
 
-  switch (searchType) {
-    case 'title':
-      posts = await prisma.post.findMany({
-        where: {
-          searchTitle: {
-            contains: searchTerm,
-            mode: 'insensitive',
-          },
-        },
-        include: {
-          author: true,
-          comments: true,
-          likes: true,
-        },
-      })
-      break
-    case 'content':
-      posts = await prisma.post.findMany({
-        where: {
-          searchContent: {
-            contains: searchTerm,
-            mode: 'insensitive',
-          },
-        },
-        include: {
-          author: true,
-          comments: true,
-          likes: true,
-        },
-      })
-      break
-    default:
-      posts = await prisma.post.findMany({
-        where: {
-          searchFullText: {
-            contains: searchTerm,
-            mode: 'insensitive',
-          },
-        },
-        include: {
-          author: true,
-          comments: true,
-          likes: true,
-        },
-      })
-      break
+  const whereQuery: Prisma.PostWhereInput = {
+    ...(searchType === 'title' && {
+      searchTitle: {
+        contains: searchTerm,
+        mode: 'insensitive',
+      },
+    }),
+    ...(searchType === 'content' && {
+      searchContent: {
+        contains: searchTerm,
+        mode: 'insensitive',
+      },
+    }),
+    ...(searchType === 'fulltext' && {
+      searchFullText: {
+        contains: searchTerm,
+        mode: 'insensitive',
+      },
+    }),
   }
-  return new NextResponse(JSON.stringify(posts), { status: 201 })
+
+  try {
+    posts = await prisma.post.findMany({
+      where: {
+        ...whereQuery,
+      },
+      include: {
+        author: true,
+        comments: true,
+        likes: true,
+      },
+      orderBy: {
+        createdAt: 'desc',
+      },
+      skip: (page - 1) * limit,
+      take: limit,
+    })
+
+    const totalCount = await prisma.post.count({
+      where: {
+        ...whereQuery,
+      },
+    })
+
+    return new NextResponse(JSON.stringify({ posts, totalCount }), {
+      status: 200,
+    })
+  } catch (error) {
+    return new NextResponse(
+      JSON.stringify({ error: 'Failed to fetch posts' }),
+      { status: 500 },
+    )
+  }
 }
 
-export { GET, POST }
+export { GET }

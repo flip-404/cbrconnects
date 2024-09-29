@@ -15,18 +15,18 @@ function SearchFilterButton({
     <DropdownWrapper>
       <DropdownMenu
         role="button"
-        $isActive={searchType.type === 'default'}
+        $isActive={searchType.type === 'fullText'}
         tabIndex={0}
         onClick={() =>
           handleOptionClick({
             label: '전체',
-            type: 'default',
+            type: 'fullText',
           })
         }
         onKeyDown={(event) =>
           handleKeyPress(event, {
             label: '전체',
-            type: 'default',
+            type: 'fullText',
           })
         }
       >

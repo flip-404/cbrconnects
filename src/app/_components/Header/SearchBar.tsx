@@ -19,7 +19,7 @@ function SearchBar() {
   const [isOpen, setIsOpen] = useState(false)
   const [searchType, setSearchType] = useState<SelectedOption>({
     label: '전체',
-    type: 'default',
+    type: 'fulltext',
   })
   const [searchTerm, setSearchTerm] = useState('')
 

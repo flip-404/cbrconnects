@@ -5,9 +5,12 @@ import Sidebar from '@/app/_components/Sidebar'
 import SubCategoryBar from '@/app/_components/SubCategoryBar'
 import TempPostList from '@/app/_components/TempPostList'
 import NavsData, { NavsDataType } from '@/mocks/NavsData'
+import fetcher from '@/utils/fetcher'
+import buildQuery from '@/utils/queryUtils'
 import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import styled from 'styled-components'
+import useSWR from 'swr'
 
 export default function FirstDepthLayout({
   children,
@@ -19,6 +22,22 @@ export default function FirstDepthLayout({
     (item) => item.href === pathname,
   )!
   const [subCategory, setSubCategory] = useState('all')
+  const [page, setPage] = useState(1)
+  const limit = 10
+
+  const query = buildQuery({
+    mainCategory: firstNavItem.id,
+    subCategory: subCategory === 'all' ? false : subCategory,
+    page: `${page}`,
+    limit: `${limit}`,
+  })
+
+  const { data } = useSWR(`/api/posts${query ? `?${query}` : ''}`, fetcher)
+  const { posts, totalCount } = data || { posts: [], totalCount: 0 }
+
+  const handlePageChange = (pageNum: number) => {
+    setPage(pageNum)
+  }
 
   return (
     <LayoutWrapper>
@@ -28,9 +47,12 @@ export default function FirstDepthLayout({
           subCategory={subCategory}
           changeSubCategory={setSubCategory}
         />
+
         <TempPostList
-          mainCategory={firstNavItem.id}
-          subCategory={subCategory}
+          posts={posts}
+          page={page}
+          totalCount={totalCount}
+          onPageChage={handlePageChange}
         />
         <PromotionList />
       </BodySection>
