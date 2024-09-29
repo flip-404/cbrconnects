@@ -3,31 +3,10 @@
 import { useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import styled from 'styled-components'
-import TempPostList from '../_components/TempPostList'
 import useSWR from 'swr'
 import fetcher from '@/utils/fetcher'
 import Sidebar from '../_components/Sidebar'
-
-type Post = {
-  mainCategory: string
-  subCategory: string
-  thumbnail: string
-  id: number
-  title: string
-  content: string
-  createdAt: Date
-  viewCount: number
-  author: {
-    nickname: string
-  }
-  comments: {
-    id: number
-    content: string
-  }[]
-  likes: {
-    id: number
-  }[]
-}
+import TempPostList from '../_components/TempPostList'
 
 function SearchResult() {
   const params = useSearchParams()
