@@ -1,11 +1,7 @@
 'use client'
 
 import styled from 'styled-components'
-import buildQuery from '@/utils/queryUtils'
-import fetcher from '@/utils/fetcher'
 import { PostWithRelations } from '@/types'
-import useSWR from 'swr'
-import { useState } from 'react'
 import LeftArrowIcon from '@/assets/leftArrow_icon.svg'
 import RightArrowIcon from '@/assets/rightArrow_icon.svg'
 import PostListItem from './PostListItem'
