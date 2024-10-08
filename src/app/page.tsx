@@ -161,6 +161,7 @@ const BoardTitle = styled.div`
 
 const BoardBody = styled.div`
   display: flex;
+  gap: 20px;
 `
 
 const Tabs = styled.div`
