@@ -46,6 +46,8 @@ const Container = styled.div`
   position: relative;
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid #d8d8d8;
 `
 
 const SubCategory = styled.div<{ $isActive: boolean }>`
