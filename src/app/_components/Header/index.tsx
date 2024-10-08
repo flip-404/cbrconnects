@@ -49,6 +49,9 @@ function Header() {
           {session.user.nickname}님
           {isDropdownVisible && (
             <DropdownMenu>
+              <DropdownLink scroll={false} prefetch href="/myInfo">
+                내 정보
+              </DropdownLink>
               <DropdownLink
                 scroll={false}
                 prefetch
@@ -58,9 +61,6 @@ function Header() {
                 }}
               >
                 로그아웃
-              </DropdownLink>
-              <DropdownLink scroll={false} prefetch href="/">
-                1:1 문의
               </DropdownLink>
             </DropdownMenu>
           )}
