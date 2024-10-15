@@ -35,7 +35,6 @@ function CalendarWidget() {
           minDetail="year" // 10년단위 년도 숨기기
         />
       </CalendarWrapper>
-      <EventContainer>이벤트 영역</EventContainer>
     </Container>
   )
 }
@@ -43,11 +42,6 @@ function CalendarWidget() {
 export default CalendarWidget
 
 const Container = styled.div``
-
-const EventContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-`
 
 const CalendarWrapper = styled.div`
   display: flex;

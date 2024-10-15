@@ -4,6 +4,7 @@ import WriteIcon from '@/assets/write_icon.svg'
 import ArrowIcon from '@/assets/home-icon-aside-notice-more.svg'
 import NotificationBox from '../NotificationBox'
 import CalendarWidget from '../CalendarWidget'
+import EventContainer from '../EventContainer'
 
 function Sidebar() {
   const router = useRouter()
@@ -23,6 +24,7 @@ function Sidebar() {
       </WritePageButton>
       <NotificationBox />
       <CalendarWidget />
+      <EventContainer />
     </SidebarSection>
   )
 }
