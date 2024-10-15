@@ -15,11 +15,11 @@ function PostList({
   if (isLoading) {
     // Show 10 skeletons if loading
     return (
-      <Container>
+      <SkeletonContainer>
         {Array.from({ length: 10 }, (_, index) => (
           <PostListItemSkeleton key={index} />
         ))}
-      </Container>
+      </SkeletonContainer>
     )
   }
   if (!posts) return '불러오는 중 입니다'
@@ -34,6 +34,19 @@ function PostList({
 }
 
 export default PostList
+
+const SkeletonContainer = styled.div`
+  flex: 1;
+  position: relative;
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  padding: 13px 0px;
+  gap: 12px;
+  width: 100%;
+  height: 500px;
+  min-height: 408px;
+`
 
 const Container = styled.div`
   flex: 1;

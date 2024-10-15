@@ -53,7 +53,7 @@ const SkeletonBody = styled.div`
   display: flex;
   flex-direction: column;
   gap: 6px;
-  padding: 0px;
+  padding: 7px 0px;
 `
 
 const SkeletonTitleWrapper = styled.div`
@@ -97,16 +97,6 @@ const SkeletonRightWrapper = styled.div`
   display: flex;
   align-items: center;
   gap: 12px;
-`
-
-const SkeletonInfo = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 20px;
-  width: 45%;
-  height: 14px;
-  background: #e0e0e0;
-  border-radius: 4px;
 `
 
 const SkeletonSeparator = styled.div`

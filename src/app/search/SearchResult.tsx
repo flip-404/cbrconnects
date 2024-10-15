@@ -7,6 +7,7 @@ import useSWR from 'swr'
 import fetcher from '@/utils/fetcher'
 import Sidebar from '../_components/Sidebar'
 import PostList from '../_components/PostList'
+import PostPagination from '../_components/PostPagination'
 
 function SearchResult() {
   const params = useSearchParams()
@@ -22,7 +23,7 @@ function SearchResult() {
     limit: limit.toString(),
   }).toString()
 
-  const { data } = useSWR(`/api/search?${query}`, fetcher)
+  const { data, isLoading } = useSWR(`/api/search?${query}`, fetcher)
   const { posts, totalCount } = data || { posts: [], totalCount: 0 }
 
   console.log('posts, totalCount', posts, totalCount)
@@ -37,13 +38,14 @@ function SearchResult() {
         <Title>
           {`'${searchTerm}'`}의 검색결과 <span> {posts.length}</span>
         </Title>
-        <PostList
-          posts={posts}
-          page={page}
+        <PostList posts={posts} isLoading={isLoading} />
+        <PostPagination
+          curPage={page}
           totalCount={totalCount}
-          onPageChage={handlePageChange}
+          handlePageChange={handlePageChange}
         />
       </BodySection>
+
       <Sidebar />
     </LayoutWrapper>
   )
