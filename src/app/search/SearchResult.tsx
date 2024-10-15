@@ -6,7 +6,7 @@ import styled from 'styled-components'
 import useSWR from 'swr'
 import fetcher from '@/utils/fetcher'
 import Sidebar from '../_components/Sidebar'
-import TempPostList from '../_components/TempPostList'
+import PostList from '../_components/PostList'
 
 function SearchResult() {
   const params = useSearchParams()
@@ -37,7 +37,7 @@ function SearchResult() {
         <Title>
           {`'${searchTerm}'`}의 검색결과 <span> {posts.length}</span>
         </Title>
-        <TempPostList
+        <PostList
           posts={posts}
           page={page}
           totalCount={totalCount}

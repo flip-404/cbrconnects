@@ -11,6 +11,7 @@ import useSWR from 'swr'
 import fetcher from '@/utils/fetcher'
 import { PostWithRelations } from '@/types'
 import { formatDateToFullYear } from '@/utils/formatDate'
+import { useRouter } from 'next/navigation'
 import PromotionList from './_components/PromotionList'
 import Sidebar from './_components/Sidebar'
 
@@ -25,6 +26,7 @@ const tabData = [
 export default function Home() {
   const [boardTab, setBoardTab] = useState(0)
   const { data: postsByCategory, error } = useSWR(`/api/main?limit=5`, fetcher)
+  const router = useRouter()
 
   if (!postsByCategory) {
     return <div>Loading...</div>
@@ -33,6 +35,10 @@ export default function Home() {
   // Error state
   if (error) {
     return <div>Error: {error.message}</div>
+  }
+
+  const handleMoveToPost = (postId: number) => {
+    router.push(`/posts?postId=${postId}`)
   }
 
   return (
@@ -63,7 +69,7 @@ export default function Home() {
             <Board>
               {postsByCategory[tabData[boardTab].category].map(
                 (post: PostWithRelations, index: number) => (
-                  <Post key={post.id}>
+                  <Post key={post.id} onClick={() => handleMoveToPost(post.id)}>
                     <Number>{index + 1}</Number>
                     <Content>
                       <Title>{post.title}</Title>
@@ -182,6 +188,7 @@ const Post = styled.div`
   align-items: center;
   gap: 16px;
   padding: 20px 18px 20px 18px;
+  cursor: pointer;
 
   &:not(:last-child) {
     border-bottom: 1px solid #d5d5d580;

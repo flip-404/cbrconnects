@@ -3,7 +3,7 @@
 import PromotionList from '@/app/_components/PromotionList'
 import Sidebar from '@/app/_components/Sidebar'
 import SubCategoryBar from '@/app/_components/SubCategoryBar'
-import TempPostList from '@/app/_components/TempPostList'
+import PostList from '@/app/_components/PostList'
 import NavsData, { NavsDataType } from '@/mocks/NavsData'
 import fetcher from '@/utils/fetcher'
 import buildQuery from '@/utils/queryUtils'
@@ -47,8 +47,7 @@ export default function FirstDepthLayout({
           subCategory={subCategory}
           changeSubCategory={setSubCategory}
         />
-
-        <TempPostList
+        <PostList
           posts={posts}
           page={page}
           totalCount={totalCount}

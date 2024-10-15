@@ -6,7 +6,7 @@ import LeftArrowIcon from '@/assets/leftArrow_icon.svg'
 import RightArrowIcon from '@/assets/rightArrow_icon.svg'
 import PostListItem from './PostListItem'
 
-function TempPostList({
+function PostList({
   posts,
   page,
   totalCount,
@@ -63,7 +63,7 @@ function TempPostList({
   )
 }
 
-export default TempPostList
+export default PostList
 
 const Container = styled.div`
   flex: 1;
