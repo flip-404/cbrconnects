@@ -6,7 +6,7 @@ export default function NotificationBox() {
   return (
     <Container>
       <StyledLink href="/">
-        🔥공지사항 <NoticeMoreIcon />
+        공지사항 <NoticeMoreIcon />
       </StyledLink>
       <Body>
         <div>[제22대 국회의원 재외선거] 캔버라 투표소 정보</div>
