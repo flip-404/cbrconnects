@@ -11,6 +11,7 @@ import { usePathname } from 'next/navigation'
 import { useState } from 'react'
 import styled from 'styled-components'
 import useSWR from 'swr'
+import PostPagination from '@/app/_components/PostPagination'
 
 export default function FirstDepthLayout({
   children,
@@ -32,7 +33,10 @@ export default function FirstDepthLayout({
     limit: `${limit}`,
   })
 
-  const { data } = useSWR(`/api/posts${query ? `?${query}` : ''}`, fetcher)
+  const { data, isLoading } = useSWR(
+    `/api/posts${query ? `?${query}` : ''}`,
+    fetcher,
+  )
   const { posts, totalCount } = data || { posts: [], totalCount: 0 }
 
   const handlePageChange = (pageNum: number) => {
@@ -47,11 +51,11 @@ export default function FirstDepthLayout({
           subCategory={subCategory}
           changeSubCategory={setSubCategory}
         />
-        <PostList
-          posts={posts}
-          page={page}
+        <PostList posts={posts} isLoading={isLoading} />
+        <PostPagination
+          curPage={page}
           totalCount={totalCount}
-          onPageChage={handlePageChange}
+          handlePageChange={handlePageChange}
         />
         <PromotionList />
       </BodySection>

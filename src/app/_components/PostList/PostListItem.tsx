@@ -27,7 +27,9 @@ function PostListItem({ post }: { post: PostWithRelations }) {
     >
       <Body>
         <Title>
-          <CategoryChip>
+          <CategoryChip
+            $category={post.subCategory ? post.subCategory : post.mainCategory}
+          >
             {post.subCategory
               ? findLabelById(post.subCategory)
               : findLabelById(post.mainCategory)}
@@ -76,7 +78,6 @@ const Body = styled.div`
   display: flex;
   flex-direction: column;
   gap: 6px;
-  padding: 13px 0px;
 `
 
 const Title = styled.div`
@@ -88,8 +89,21 @@ const Title = styled.div`
   font-weight: 500;
 `
 
-const CategoryChip = styled.span`
-  color: #3e65f1;
+const CategoryChip = styled.span<{ $category: string }>`
+  color: ${(props) => {
+    switch (props.$category) {
+      case 'freeboard':
+        return '#AF52DE'
+      case 'business':
+        return '#AF52DE'
+      case 'club':
+        return '#AF52DE'
+      case 'parse':
+        return '#AF52DE'
+      default:
+        return '#0099FF'
+    }
+  }};
 `
 
 const PostDetail = styled.div`
