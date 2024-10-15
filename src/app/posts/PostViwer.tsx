@@ -6,7 +6,7 @@ import parse from 'html-react-parser'
 import { useRouter, useSearchParams } from 'next/navigation'
 import useSWR from 'swr'
 import { useSession } from 'next-auth/react'
-import formatDate from '@/utils/formatData'
+import { formatDateToMonth } from '@/utils/formatDate'
 import { CommentLike } from '@prisma/client'
 import LikeIcon from '@/assets/like_icon.svg'
 import Link from 'next/link'
@@ -259,7 +259,7 @@ function PostViewer() {
             <InfoWrapper>
               <AuthorNickname>{post.author.nickname}</AuthorNickname>
               <DetailInfo>
-                <CreatedAt>{formatDate(post.createdAt)}</CreatedAt>
+                <CreatedAt>{formatDateToMonth(post.createdAt)}</CreatedAt>
                 <ViewCount>조회 {post.viewCount}</ViewCount>
                 {session?.user.id === post?.authorId && (
                   <>

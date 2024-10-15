@@ -7,19 +7,33 @@ import CommunityIcon from '@/assets/mainTabs/community_icon.svg'
 import JobIcon from '@/assets/mainTabs/job_icon.svg'
 import MarketIcon from '@/assets/mainTabs/market_icon.svg'
 import RentShareIcon from '@/assets/mainTabs/rentshare_icon.svg'
+import useSWR from 'swr'
+import fetcher from '@/utils/fetcher'
+import { PostWithRelations } from '@/types'
+import { formatDateToFullYear } from '@/utils/formatDate'
 import PromotionList from './_components/PromotionList'
 import Sidebar from './_components/Sidebar'
 
 const tabData = [
-  { id: 0, icon: <RecentIcon />, label: '최신글' },
-  { id: 1, icon: <CommunityIcon />, label: '커뮤니티' },
-  { id: 2, icon: <JobIcon />, label: '구인/구직' },
-  { id: 3, icon: <MarketIcon />, label: '쿼카마켓' },
-  { id: 4, icon: <RentShareIcon />, label: '렌트/쉐어' },
+  { id: 0, icon: <RecentIcon />, label: '최신글', category: 'all' },
+  { id: 1, icon: <CommunityIcon />, label: '커뮤니티', category: 'community' },
+  { id: 2, icon: <JobIcon />, label: '구인/구직', category: 'job' },
+  { id: 3, icon: <MarketIcon />, label: '쿼카마켓', category: 'market' },
+  { id: 4, icon: <RentShareIcon />, label: '렌트/쉐어', category: 'rentshare' },
 ]
 
 export default function Home() {
   const [boardTab, setBoardTab] = useState(0)
+  const { data: postsByCategory, error } = useSWR(`/api/main?limit=5`, fetcher)
+
+  if (!postsByCategory) {
+    return <div>Loading...</div>
+  }
+
+  // Error state
+  if (error) {
+    return <div>Error: {error.message}</div>
+  }
 
   return (
     <LayoutWrapper>
@@ -47,51 +61,17 @@ export default function Home() {
               ))}
             </Tabs>
             <Board>
-              <Post>
-                <Number>1</Number>
-                <Content>
-                  <Title>눈썹 시술 하는 곳 추천부탁드립니다!</Title>
-                  <Detail>
-                    2024-08-12 <span>|</span> 13시간 전
-                  </Detail>
-                </Content>
-              </Post>
-              <Post>
-                <Number>2</Number>
-                <Content>
-                  <Title>눈썹 시술 하는 곳 추천부탁드립니다!</Title>
-                  <Detail>
-                    2024-08-12 <span>|</span> 13시간 전
-                  </Detail>
-                </Content>
-              </Post>
-              <Post>
-                <Number>3</Number>
-                <Content>
-                  <Title>눈썹 시술 하는 곳 추천부탁드립니다!</Title>
-                  <Detail>
-                    2024-08-12 <span>|</span> 13시간 전
-                  </Detail>
-                </Content>
-              </Post>
-              <Post>
-                <Number>4</Number>
-                <Content>
-                  <Title>눈썹 시술 하는 곳 추천부탁드립니다!</Title>
-                  <Detail>
-                    2024-08-12 <span>|</span> 13시간 전
-                  </Detail>
-                </Content>
-              </Post>
-              <Post>
-                <Number>5</Number>
-                <Content>
-                  <Title>눈썹 시술 하는 곳 추천부탁드립니다!</Title>
-                  <Detail>
-                    2024-08-12 <span>|</span> 13시간 전
-                  </Detail>
-                </Content>
-              </Post>
+              {postsByCategory[tabData[boardTab].category].map(
+                (post: PostWithRelations, index: number) => (
+                  <Post key={post.id}>
+                    <Number>{index + 1}</Number>
+                    <Content>
+                      <Title>{post.title}</Title>
+                      <Detail>{formatDateToFullYear(post.createdAt)}</Detail>
+                    </Content>
+                  </Post>
+                ),
+              )}
             </Board>
           </BoardBody>
         </BoardSection>

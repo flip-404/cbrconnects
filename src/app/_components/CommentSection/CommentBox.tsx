@@ -1,5 +1,5 @@
 import { CommentWithRelations } from '@/types'
-import formatDate from '@/utils/formatData'
+import { formatDateToMonth } from '@/utils/formatDate'
 import styled from 'styled-components'
 import LikeIcon from '@/assets/like_icon.svg'
 import { useSession } from 'next-auth/react'
@@ -80,7 +80,7 @@ function CommentBox({
             <CommentAuthor>{comment.author.nickname}</CommentAuthor>
             <CommentContent>{comment.content}</CommentContent>
             <CommentDetail>
-              <Date>{formatDate(comment.createdAt)}</Date>
+              <Date>{formatDateToMonth(comment.createdAt)}</Date>
               {selectReplyComment && (
                 <Reply
                   onClick={() => {

@@ -3,7 +3,7 @@
 import React from 'react'
 import useSWR from 'swr'
 import fetcher from '@/utils/fetcher'
-import formatDate from '@/utils/formatData'
+import { formatDateToMonth } from '@/utils/formatDate'
 import { useRouter } from 'next/navigation'
 import type { PostWithRelations } from '@/types'
 import styled from 'styled-components'
@@ -48,7 +48,7 @@ function PostListBody({ query }: PostListBodyProps) {
           </PostTitle>
           <MetaInfo>
             <span>{post.author.nickname}</span>·
-            <span>{formatDate(post.createdAt)}</span>·
+            <span>{formatDateToMonth(post.createdAt)}</span>·
             <span>조회수 {post.viewCount}</span>·
             <span>{post.likes.length}</span>
           </MetaInfo>

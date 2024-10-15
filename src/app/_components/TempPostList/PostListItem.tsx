@@ -1,7 +1,7 @@
 'use client'
 
 import { PostWithRelations } from '@/types'
-import formatDate from '@/utils/formatData'
+import { formatDateToMonth } from '@/utils/formatDate'
 import styled from 'styled-components'
 import SmallSeparatorIcon from '@/assets/small_separetor_icon.svg'
 import ViewIcon from '@/assets/view_icon.svg'
@@ -39,7 +39,7 @@ function PostListItem({ post }: { post: PostWithRelations }) {
           <LeftWrapper>
             {post.author.nickname}
             <SmallSeparatorIcon />
-            {formatDate(post.createdAt)}
+            {formatDateToMonth(post.createdAt)}
           </LeftWrapper>
           <RightWrapper>
             <Counting>
