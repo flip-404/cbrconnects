@@ -4,9 +4,27 @@ import { useSession } from 'next-auth/react'
 import styled from 'styled-components'
 import EmptyProfile from '@/assets/empty_profileImg_icon.svg'
 import UpdateImageIcon from '@/assets/update_profile.svg'
+import { useState } from 'react'
+import EditInfo from './EditInfo'
+import MyPosts from './MyPosts'
+import MyComments from './MyComments'
 
 function MyInfo() {
   const { data: session } = useSession()
+  const [tab, setTab] = useState(0)
+
+  const renderTabs = () => {
+    switch (tab) {
+      case 0:
+        return <EditInfo />
+      case 1:
+        return <MyPosts />
+      case 2:
+        return <MyComments />
+      default:
+        return <EditInfo />
+    }
+  }
 
   if (session && session.user)
     return (
@@ -37,12 +55,18 @@ function MyInfo() {
             내가 작성한 댓글 <span>4개</span>
           </MyPosting>
           <Tabs>
-            <Tab $active>내 정보 수정</Tab>
-            <Tab>작성한 게시글</Tab>
-            <Tab>작성한 댓글</Tab>
+            <Tab $active={tab === 0} onClick={() => setTab(0)}>
+              내 정보 수정
+            </Tab>
+            <Tab $active={tab === 1} onClick={() => setTab(1)}>
+              작성한 게시글
+            </Tab>
+            <Tab $active={tab === 2} onClick={() => setTab(2)}>
+              작성한 댓글
+            </Tab>
           </Tabs>
         </LeftSideBar>
-        <Body>ㅇㅇ</Body>
+        <Body>{renderTabs()}</Body>
       </Container>
     )
   return <></>
@@ -51,11 +75,12 @@ function MyInfo() {
 export default MyInfo
 
 const Container = styled.div`
+  margin-top: 80px;
   padding-top: 36px;
   padding-bottom: 85px;
   padding-left: 88px;
   display: flex;
-  gap: 180px;
+  gap: 57px;
 `
 
 const LeftSideBar = styled.div`
@@ -141,6 +166,7 @@ const Tabs = styled.div`
 `
 
 const Tab = styled.div<{ $active?: boolean }>`
+  cursor: pointer;
   font-family: NanumSquare Neo;
   font-size: 20px;
   font-weight: 700;

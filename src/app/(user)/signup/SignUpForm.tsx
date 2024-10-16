@@ -7,9 +7,9 @@ import { useForm } from 'react-hook-form'
 import type { SignUpBody } from '@/app/api/(user)/signup/route'
 import NotificationModal from '@/app/_components/NotificationModal'
 import { useRouter } from 'next/navigation'
+import GenderSelector from '@/app/_components/GenderSelector'
+import BirthdaySelector from '@/app/_components/BirthdaySelector'
 import AgreementBox from './AgreementBox'
-import BirthdaySelector from './BirthdaySelector'
-import GenderSelector from './GenderSelector'
 import ImageSelector from './ImageSelector'
 
 function SignUpForm({

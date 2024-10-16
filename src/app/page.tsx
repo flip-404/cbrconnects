@@ -89,7 +89,7 @@ export default function Home() {
 }
 
 const LayoutWrapper = styled.div`
-  margin-top: 8px;
+  margin-top: 80px;
   display: flex;
   gap: 70px;
   padding-left: 320px;

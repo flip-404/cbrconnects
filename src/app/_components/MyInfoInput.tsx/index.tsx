@@ -16,7 +16,7 @@ type Props = {
   disabled?: boolean
 }
 
-function SignupInput({
+function MyInfoInput({
   id,
   register,
   placeholder,
@@ -34,11 +34,7 @@ function SignupInput({
 
   return (
     <Container>
-      {label && (
-        <Label>
-          {label} <span>*</span>
-        </Label>
-      )}
+      {label && <Label>{label}</Label>}
       <InputWrapper>
         <StyledInput
           type={passwordOn ? 'text' : type}
@@ -63,7 +59,7 @@ function SignupInput({
   )
 }
 
-export default SignupInput
+export default MyInfoInput
 
 const Container = styled.div`
   display: flex;
@@ -76,15 +72,7 @@ const Label = styled.label`
   font-size: 18px;
   font-weight: 500;
   line-height: 21.48px;
-  color: black;
-
-  span {
-    font-family: Pretendard;
-    font-size: 18px;
-    font-weight: 700;
-    line-height: 21.48px;
-    color: #1e42ff;
-  }
+  color: #282e38;
 `
 
 const InputWrapper = styled.div`
@@ -116,12 +104,14 @@ const ErrorMessage = styled.div`
 
 const StyledInput = styled.input<{
   $isError: boolean | undefined
+  disabled: boolean | undefined
 }>`
   display: flex;
   flex: 1;
-  background: transparent;
-  border-radius: 4px;
-  padding: 20px 30px;
+  background: ${(props) =>
+    props.disabled ? '1px solid #C1C7D1' : 'transparent'};
+  border-radius: 8px;
+  padding: 10px 12px;
   border: ${(props) =>
     props.$isError ? '0.87px solid #FC5555' : '1px solid #D8D8D8'};
 
@@ -134,7 +124,7 @@ const StyledInput = styled.input<{
     font-family: Pretendard;
     font-size: 18px;
     font-weight: 500;
-    color: #878787;
+    color: #8390a2;
   }
 
   :focus {

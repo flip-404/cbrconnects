@@ -194,6 +194,7 @@ function PostEditor() {
 export default PostEditor
 
 const Container = styled.div`
+  margin-top: 80px;
   background-color: #fafafa;
   display: flex;
   flex-direction: column;

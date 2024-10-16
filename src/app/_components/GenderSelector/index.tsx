@@ -1,9 +1,9 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /* eslint-disable no-plusplus */
 
-import ErrorMessage from '@/app/_components/ErrorMessage'
 import { Controller } from 'react-hook-form'
 import styled from 'styled-components'
+import ErrorMessage from '../ErrorMessage'
 
 function GenderSelector({ control, errors }: { control: any; errors: any }) {
   return (
