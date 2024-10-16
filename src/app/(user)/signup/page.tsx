@@ -46,6 +46,7 @@ function SignUp() {
 export default SignUp
 
 const Container = styled.div`
+  margin-top: 72px;
   background-color: white;
   display: flex;
   flex-direction: column;

@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react'
 import styled from 'styled-components'
 import parse from 'html-react-parser'
 import LikeIcon from '@/assets/like_icon.svg'
-import ViewIcon from '@/assets/view_icon.svg'
+import CommentIcon from '@/assets/comment_icon.svg'
 import Link from 'next/link'
 import { findLabelById } from '@/utils/getCategoryInfo'
 import CommentSection from '../_components/CommentSection'
@@ -32,7 +32,6 @@ function PostViewer() {
   if (!post) return <div>Loading...</div>
   if (error) return <div>Failed to load post</div>
 
-  console.log('post?.mainCategory', post?.mainCategory)
   const mainCategory = findLabelById(post?.mainCategory)
   const subCategory = findLabelById(post?.subCategory)
 
@@ -66,7 +65,7 @@ function PostViewer() {
             <LikeIcon onClick={handleLikePost} /> {post.likes.length}
           </LikeWrapper>
           <CommentCount>
-            <ViewIcon /> {comments?.length}
+            <CommentIcon /> {comments?.length}
           </CommentCount>
         </ReactionSummary>
 
@@ -151,6 +150,7 @@ const LikeWrapper = styled.div<{ $isLiked: boolean }>`
   display: flex;
   gap: 6px;
   align-items: center;
+  cursor: pointer;
   path {
     stroke: ${(props) => props.$isLiked && '#ff4d4d'};
     fill: ${(props) => props.$isLiked && '#ff4d4d'};
