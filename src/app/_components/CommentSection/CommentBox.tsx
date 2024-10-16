@@ -1,5 +1,5 @@
 import { CommentWithRelations } from '@/types'
-import { formatDateToMonth } from '@/utils/formatDate'
+import { formatDateToFullYear } from '@/utils/formatDate'
 import styled from 'styled-components'
 import LikeIcon from '@/assets/like_icon.svg'
 import { useSession } from 'next-auth/react'
@@ -61,7 +61,6 @@ function CommentBox({
 
   return (
     <Container>
-      <AuthorProfile />
       <CommentWrapper>
         {isEditMode === comment.id ? (
           <WriteCommentBox
@@ -77,44 +76,57 @@ function CommentBox({
         ) : (
           <>
             {' '}
-            <CommentAuthor>{comment.author.nickname}</CommentAuthor>
-            <CommentContent>{comment.content}</CommentContent>
-            <CommentDetail>
-              <Date>{formatDateToMonth(comment.createdAt)}</Date>
-              {selectReplyComment && (
-                <Reply
-                  onClick={() => {
-                    selectReplyComment(comment.id)
-                  }}
-                >
-                  답글쓰기
-                </Reply>
-              )}
-              <LikeWrapper $isLiked={isLiked}>
-                <LikeIcon
-                  onClick={() => {
-                    handleLikeComment(comment.id, parentId)
-                  }}
-                  width={24}
-                  height={24}
-                />{' '}
-                {comment.likes?.length}
-              </LikeWrapper>
-              <MoreMenu
-                targetId={comment.id}
-                handleMoreMenu={handleMoreMenu}
-                currentId={openMoreMenu}
-                handleEditButton={() => {
-                  onEditMode(comment.id)
-                }}
-                handleDeleteButton={() => {
-                  setDeleteModal(true)
-                }}
+            <CommentItem $isReply={parentId !== null}>
+              <AuthorProfile />
+              <ContentSection>
+                <CommentHeader>
+                  <div>
+                    <span>{comment.author.nickname}</span>
+                    {formatDateToFullYear(comment.createdAt, true)}
+                  </div>
+                  <MoreMenu
+                    targetId={comment.id}
+                    handleMoreMenu={handleMoreMenu}
+                    currentId={openMoreMenu}
+                    handleEditButton={() => {
+                      onEditMode(comment.id)
+                    }}
+                    handleDeleteButton={() => {
+                      setDeleteModal(true)
+                    }}
+                  />
+                </CommentHeader>
+                <CommentBody>{comment.content}</CommentBody>
+                <CommentFooter>
+                  {selectReplyComment && (
+                    <Reply
+                      onClick={() => {
+                        selectReplyComment(comment.id)
+                      }}
+                    >
+                      답글 남기기
+                    </Reply>
+                  )}
+                  <LikeWrapper $isLiked={isLiked}>
+                    <LikeIcon
+                      onClick={() => {
+                        handleLikeComment(comment.id, parentId)
+                      }}
+                    />{' '}
+                    {comment.likes?.length}
+                  </LikeWrapper>
+                </CommentFooter>
+              </ContentSection>
+            </CommentItem>
+            {commentToReply === comment.id && (
+              <WriteCommentBox
+                handleWriteComment={handleWriteComment}
+                parentId={comment.id}
+                isEditMode={false}
               />
-            </CommentDetail>
+            )}
           </>
         )}
-
         {comment.replies?.length !== 0 &&
           comment.replies?.map((reply) =>
             isEditMode === reply.id ? (
@@ -143,13 +155,6 @@ function CommentBox({
               />
             ),
           )}
-        {commentToReply === comment.id && (
-          <WriteCommentBox
-            handleWriteComment={handleWriteComment}
-            parentId={comment.id}
-            isEditMode={false}
-          />
-        )}
       </CommentWrapper>
       {deleteModal && (
         <NotificationModal
@@ -171,18 +176,28 @@ export default CommentBox
 const Container = styled.div`
   display: flex;
   gap: 1rem;
-  padding: 14px 20px;
-  &:not(:last-child) {
-    border-bottom: 1px solid #ccc;
-  }
 `
 
-const AuthorProfile = styled.div`
-  width: 36px;
-  height: 36px;
-  background-color: #e1e1e1;
+const CommentItem = styled.div<{ $isReply: boolean }>`
+  display: flex;
+  gap: 30px;
 
+  padding: ${(props) => (props.$isReply ? '24px 60px' : '24px 10px')};
+  border-bottom: 1px solid #ccc;
+`
+const AuthorProfile = styled.div`
+  margin: 6px;
+  width: 39px;
+  height: 39px;
+  background-color: #e1e1e1;
   border-radius: 990px;
+`
+
+const ContentSection = styled.div`
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
 `
 
 const CommentWrapper = styled.div`
@@ -192,39 +207,20 @@ const CommentWrapper = styled.div`
   gap: 0.3rem;
 `
 
-const CommentContent = styled.div`
-  font-size: 15px;
-  font-weight: 500;
-`
-const CommentAuthor = styled.div`
-  font-size: 13px;
-  font-weight: 700;
-`
-
-const CommentDetail = styled.div`
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  font-size: 13px;
-  font-weight: 400;
-`
-
-const Date = styled.div`
-  font-size: 13px;
-  font-weight: 400;
-`
-
 const Reply = styled.div`
   cursor: pointer;
-
-  font-size: 13px;
-  font-weight: 400;
+  font-family: Pretendard;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 16.71px;
+  text-align: left;
+  color: #878787;
 `
 
 const LikeWrapper = styled.div<{ $isLiked: boolean }>`
   cursor: pointer;
   display: flex;
+  gap: 5px;
   align-items: center;
 
   path {
@@ -238,4 +234,48 @@ const LikeWrapper = styled.div<{ $isLiked: boolean }>`
       fill: red;
     }
   }
+`
+
+const CommentHeader = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: Pretendard;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 16.71px;
+  text-align: left;
+  color: #878787;
+
+  span {
+    color: #222222;
+
+    &::after {
+      content: '|';
+      margin: 0 6px;
+      color: #d9d9d9;
+    }
+  }
+`
+
+const CommentBody = styled.div`
+  display: flex;
+  font-family: Pretendard;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 22px;
+  text-align: left;
+  color: #222222;
+`
+
+const CommentFooter = styled.div`
+  margin-top: 5px;
+  display: flex;
+  font-family: Pretendard;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 16.71px;
+  text-align: left;
+  color: #878787;
+  gap: 10px;
 `

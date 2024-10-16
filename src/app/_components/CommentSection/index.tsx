@@ -54,6 +54,16 @@ function CommentSection({
         handleMoreMenu(null)
       }}
     >
+      {isLoggedIn ? (
+        <WriteCommentBox
+          handleWriteComment={handleWriteComment}
+          parentId={null}
+          commentId={null}
+          isEditMode={false}
+        />
+      ) : (
+        <LoginRequiredNotice />
+      )}
       {comments.map((comment: CommentWithRelations) => (
         <CommentBox
           handleLikeComment={handleLikeComment}
@@ -70,17 +80,6 @@ function CommentSection({
           comment={comment}
         />
       ))}
-
-      {isLoggedIn ? (
-        <WriteCommentBox
-          handleWriteComment={handleWriteComment}
-          parentId={null}
-          commentId={null}
-          isEditMode={false}
-        />
-      ) : (
-        <LoginRequiredNotice />
-      )}
     </Container>
   )
 }

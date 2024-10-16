@@ -9,11 +9,12 @@ import { useSession } from 'next-auth/react'
 import { formatDateToMonth } from '@/utils/formatDate'
 import { CommentLike } from '@prisma/client'
 import LikeIcon from '@/assets/like_icon.svg'
+import CommentIcon from '@/assets/comment_icon.svg'
+import ViewIcon from '@/assets/view_icon.svg'
 import Link from 'next/link'
 import { useState } from 'react'
 import CommentSection from '../_components/CommentSection'
 import NotificationModal from '../_components/NotificationModal'
-import MoreMenu from '../_components/MoreMenu'
 
 function PostViewer() {
   const searchParams = useSearchParams()
@@ -242,64 +243,69 @@ function PostViewer() {
         handleMoreMenu(null)
       }}
     >
-      <ContentBox>
-        <div>
-          <CategoryLink
-            href={
-              secondNavItem
-                ? `/${firstNavItem.id}/${secondNavItem.id}`
-                : `/${firstNavItem.id}`
-            }
+      {session?.user.id === post?.authorId && (
+        <UDWrapper>
+          <UDButton
+            onClick={() => {
+              router.push(
+                `/write?postId=${post.id}&isEditMode=true&mainCategory=${post.mainCategory}${post.subCategory ? `&subCategory=${post.subCategory}` : ''}`,
+              )
+            }}
           >
-            {`${firstNavItem.label}${secondNavItem ? ` - ${secondNavItem.label}` : ''} >`}
-          </CategoryLink>
-          <Title>{post?.title}</Title>
-          <PostDetail>
-            <AuthorProfile />
-            <InfoWrapper>
-              <AuthorNickname>{post.author.nickname}</AuthorNickname>
-              <DetailInfo>
-                <CreatedAt>{formatDateToMonth(post.createdAt)}</CreatedAt>
-                <ViewCount>조회 {post.viewCount}</ViewCount>
-                {session?.user.id === post?.authorId && (
-                  <>
-                    <MoreMenu
-                      targetId={post.id}
-                      handleMoreMenu={handleMoreMenu}
-                      currentId={openMoreMenu}
-                      handleEditButton={() => {
-                        router.push(
-                          `/write?postId=${post.id}&isEditMode=true&mainCategory=${post.mainCategory}${post.subCategory ? `&subCategory=${post.subCategory}` : ''}`,
-                        )
-                      }}
-                      handleDeleteButton={() => {
-                        setDeleteModal(true)
-                      }}
-                    />
-                  </>
-                )}
-              </DetailInfo>
-            </InfoWrapper>
-          </PostDetail>
-        </div>
+            수정
+          </UDButton>
+          <UDButton
+            onClick={() => {
+              setDeleteModal(true)
+            }}
+          >
+            삭제
+          </UDButton>
+        </UDWrapper>
+      )}
 
-        <div>
-          {parse(post!.content)}
-          <ReactionSummary>
-            <LikeWrapper
-              $isLiked={post.likes.some(
-                (like) => like.userId === session?.user.id,
-              )}
-            >
-              <LikeIcon onClick={handleLikePost} width={24} height={24} />{' '}
-              <span>{post.likes.length}</span>
-            </LikeWrapper>
+      <ContentBox>
+        <CategoryLink
+          href={
+            secondNavItem
+              ? `/${firstNavItem.id}/${secondNavItem.id}`
+              : `/${firstNavItem.id}`
+          }
+        >
+          {`${firstNavItem.label}${secondNavItem ? ` > ${secondNavItem.label}` : ''}`}
+        </CategoryLink>
+        <Title>{post?.title}</Title>
+        <PostDetail>
+          {post.author.nickname} <span />
+          {formatDateToMonth(post.createdAt)}
+          <div>
+            <CountWrapper>
+              <ViewIcon /> {post.viewCount}
+            </CountWrapper>
+            <CountWrapper>
+              <LikeIcon /> {post.likes.length}
+            </CountWrapper>
+            <CountWrapper>
+              <CommentIcon /> {post.comments.length}
+            </CountWrapper>
+          </div>
+        </PostDetail>
 
-            <CommentCount>
-              댓글 <span>{comments?.length}</span>
-            </CommentCount>
-          </ReactionSummary>
-        </div>
+        <Content>{parse(post!.content)}</Content>
+        <ReactionSummary>
+          <LikeWrapper
+            $isLiked={post.likes.some(
+              (like) => like.userId === session?.user.id,
+            )}
+          >
+            <LikeIcon onClick={handleLikePost} /> {post.likes.length}
+          </LikeWrapper>
+          <CommentCount>
+            <ViewIcon />
+            {comments?.length}
+          </CommentCount>
+        </ReactionSummary>
+
         <CommentSection
           handleLikeComment={handleLikeComment}
           comments={comments}
@@ -317,7 +323,6 @@ function PostViewer() {
           onCloseLabel="확인"
         />
       )}
-
       {loadingModal && (
         <NotificationModal label="삭제 중 입니다. 잠시만 기다려주세요." />
       )}
@@ -339,110 +344,123 @@ function PostViewer() {
 export default PostViewer
 
 const Container = styled.div`
-  width: 100%;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  padding-top: 24px;
 `
+
+const UDWrapper = styled.div`
+  display: flex;
+  justify-content: end;
+  gap: 12px;
+  margin-bottom: 14px;
+`
+
+const UDButton = styled.button`
+  all: unset;
+  border-radius: 7px;
+  display: flex;
+  padding: 8px 18px;
+  font-family: Pretendard;
+  font-size: 14px;
+  font-weight: 500;
+  background: #d9e1fd;
+`
+
 const ContentBox = styled.div`
-  margin: 4rem 0rem;
-  width: 80%;
-  border-radius: 8px;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
-  padding: 3rem;
-  overflow-wrap: break-word;
-  white-space: pre-wrap;
+  padding: 28px 18px;
+  border: 1px solid #dfdfdf;
+  border-radius: 16px;
 `
 
 const CategoryLink = styled(Link)`
-  font-size: 13px;
+  padding: 6px 8px;
+  font-family: Pretendard;
+  font-size: 14px;
   font-weight: 400;
-  color: #3b4890;
-
+  color: #878787;
   text-decoration: none;
 `
 const Title = styled.h1`
+  font-family: Pretendard;
+  font-size: 20px;
+  font-weight: 500;
+  color: #222222;
+
+  padding: 4px 8px;
   margin: 0;
 `
 
 const PostDetail = styled.div`
+  padding: 6px 8px;
   display: flex;
   align-items: center;
-  gap: 0.5rem;
+  font-family: Pretendard;
+  font-size: 14px;
+  font-weight: 500;
+  color: #878787;
+
+  span {
+    &::after {
+      content: '|';
+      margin: 0 6px;
+      color: #d9d9d9;
+    }
+  }
+
+  & > div {
+    margin-left: 16px;
+    display: flex;
+    gap: 12px;
+  }
 `
 
-const InfoWrapper = styled.div`
+const CountWrapper = styled.div`
   display: flex;
-  flex-direction: column;
-`
-
-const AuthorNickname = styled.div`
-  font-size: 13px;
-  font-weight: 700;
-`
-
-const DetailInfo = styled.div`
-  display: flex;
+  gap: 4px;
   align-items: center;
-  font-size: 12px;
-  color: #979797;
-  gap: 1rem;
-`
-const CreatedAt = styled.span`
-  display: flex;
 `
 
-const ViewCount = styled.span`
-  display: flex;
-  font-size: 12px;
-`
-
-const AuthorProfile = styled.div`
-  width: 36px;
-  height: 36px;
-  background-color: #e1e1e1;
-
-  border-radius: 990px;
+const Content = styled.div`
+  padding: 10px;
+  font-family: Pretendard;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 28px;
+  text-align: left;
+  color: #444444;
+  border-bottom: 1px solid #d9d9d9;
 `
 
 const ReactionSummary = styled.div`
+  margin-top: 13px;
   display: flex;
   align-items: center;
-  gap: 1rem;
+  gap: 12px;
+  font-family: Pretendard;
+  font-size: 16px;
+  font-weight: 500;
+  color: #878787;
 `
 
 const CommentCount = styled.span`
   display: flex;
+  gap: 6px;
   align-items: center;
-  font-size: 13px;
-  font-weight: 400;
-
-  span {
-    margin-left: 0.3rem;
-    font-weight: 700;
-  }
 `
 
 const LikeWrapper = styled.div<{ $isLiked: boolean }>`
-  cursor: pointer;
   display: flex;
+  gap: 6px;
   align-items: center;
-  span {
-    font-size: 13px;
-    margin-left: 0.3rem;
-    font-weight: 700;
-  }
 
   path {
-    stroke: ${(props) => props.$isLiked && 'red'};
-    fill: ${(props) => props.$isLiked && 'red'};
+    stroke: ${(props) => props.$isLiked && '#ff4d4d'};
+    fill: ${(props) => props.$isLiked && '#ff4d4d'};
   }
 
   &:hover {
     path {
-      stroke: red;
-      fill: red;
+      stroke: #ff4d4d;
+      fill: #ff4d4d;
     }
   }
 `

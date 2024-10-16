@@ -1,16 +1,7 @@
-import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 import styled from 'styled-components'
 
-function WriteCommentBox({
-  handleWriteComment,
-  handleEditComment,
-  offEditMode,
-  parentId,
-  commentId,
-  isEditMode,
-  prevContent = '',
-}: {
+interface WriteCommentBoxProps {
   handleWriteComment?: (
     content: string,
     parentId: number | null,
@@ -22,43 +13,44 @@ function WriteCommentBox({
   commentId?: number | null
   isEditMode: boolean
   prevContent?: string
-}) {
+}
+
+function WriteCommentBox({
+  handleWriteComment,
+  handleEditComment,
+  offEditMode,
+  parentId,
+  commentId,
+  isEditMode,
+  prevContent = '',
+}: WriteCommentBoxProps) {
   const [content, setContent] = useState(prevContent)
 
-  const { data: session } = useSession()
+  const handleSubmit = () => {
+    const tempContent = content
+    setContent('')
+
+    if (isEditMode && handleEditComment && offEditMode) {
+      handleEditComment(tempContent, commentId!)
+      offEditMode()
+    } else if (handleWriteComment) {
+      handleWriteComment(tempContent, parentId, isEditMode ? 'edit' : 'write')
+    }
+  }
 
   return (
     <Container>
-      <Author>{session?.user.nickname}</Author>
+      <Label>댓글 남기기</Label>
       <Input
-        placeholder="댓글을 남겨보세요"
+        placeholder="댓글을 작성해주세요."
         value={content}
-        onChange={(e) => {
-          setContent(e.target.value)
-        }}
+        onChange={(e) => setContent(e.target.value)}
       />
       <ButtonWrapper>
         {isEditMode && <Button onClick={offEditMode}>취소</Button>}
-        {handleWriteComment && (
-          <Button
-            onClick={() => {
-              const tempContent = content
-              setContent('')
-              if (isEditMode && handleEditComment && offEditMode) {
-                handleEditComment(tempContent, commentId!)
-                offEditMode()
-              } else {
-                handleWriteComment(
-                  tempContent,
-                  parentId,
-                  isEditMode ? 'edit' : 'write',
-                )
-              }
-            }}
-          >
-            {isEditMode ? '수정' : '등록'}
-          </Button>
-        )}
+        <Button onClick={handleSubmit}>
+          {isEditMode ? '수정하기' : '등록하기'}
+        </Button>
       </ButtonWrapper>
     </Container>
   )
@@ -69,34 +61,47 @@ export default WriteCommentBox
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  margin: 12px 0px 12px 0px;
-  border: 2px solid rgba(0, 0, 0, 0.1);
-  border-radius: 12px;
-  padding: 15px;
-  font-size: 13px;
-  gap: 0.5rem;
+  padding: 24px 10px;
+  gap: 8px;
 `
 
-const Author = styled.span`
-  font-size: 13px;
-  font-weight: 600;
+const Label = styled.span`
+  font-family: Pretendard;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 16.71px;
+  text-align: left;
+  color: #7a7a7a;
 `
 
-const Input = styled.input`
-  border: none;
-  outline: none;
-  font-size: 15px;
+const Input = styled.textarea`
+  all: unset;
+  padding: 7.76px;
+  border-radius: 5.17px;
+  background: #f9f9f9;
+  border: 0.65px solid #bfbfbf;
+  min-height: 60px;
+
+  &:focus {
+    background: white;
+    outline: 0.65px solid #436af5;
+  }
 `
 
 const ButtonWrapper = styled.div`
   display: flex;
-  justify-content: end;
+  justify-content: flex-end;
 `
 
 const Button = styled.button`
+  all: unset;
   cursor: pointer;
-  font-size: 16px;
-  border: none;
-  background: transparent;
-  font-weight: 700;
+  padding: 7.5px 18px;
+  background: #d9e1fd;
+  font-family: Pretendard;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 16.71px;
+  color: #222222;
+  border-radius: 7px;
 `
