@@ -13,7 +13,6 @@ function PostList({
   isLoading: boolean
 }) {
   if (isLoading) {
-    // Show 10 skeletons if loading
     return (
       <SkeletonContainer>
         {Array.from({ length: 10 }, (_, index) => (

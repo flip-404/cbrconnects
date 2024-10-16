@@ -94,12 +94,25 @@ const CategoryChip = styled.span<{ $category: string }>`
     switch (props.$category) {
       case 'freeboard':
         return '#AF52DE'
-      case 'business':
-        return '#AF52DE'
+      case 'news':
+        return '#5A75FF'
       case 'club':
+        return '#4F4AE8'
+      case 'yesmigration':
+        return '#1836D1'
+      case 'parcel':
+        return '#0099FF'
+      case 'business':
+        return '#1196AD'
+      case 'offer':
+        return '#5A75FF'
+      case 'search':
+        return '#0099FF'
+      case 'rent':
+        return '#4F4AE8'
+      case 'share':
         return '#AF52DE'
-      case 'parse':
-        return '#AF52DE'
+
       default:
         return '#0099FF'
     }
