@@ -181,15 +181,3 @@ const Board = styled.div`
   border-radius: 16px;
   border: 1px solid #e4e4e4;
 `
-
-const Post = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  padding: 20px 18px 20px 18px;
-  cursor: pointer;
-
-  &:not(:last-child) {
-    border-bottom: 1px solid #d5d5d580;
-  }
-`

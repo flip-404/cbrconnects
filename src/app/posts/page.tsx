@@ -1,7 +1,7 @@
 'use client'
 
 import { Suspense } from 'react'
-import PostViewer from './PostViwer'
+import PostViewer from './PostViewer'
 
 function Posts() {
   return (

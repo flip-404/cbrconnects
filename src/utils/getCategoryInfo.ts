@@ -1,6 +1,7 @@
 import NavsData from '@/mocks/NavsData'
 
-export function findLabelById(id: string) {
+export function findLabelById(id: string | null) {
+  if (!id) return ''
   let label = ''
 
   NavsData.forEach((item) => {
