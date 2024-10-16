@@ -10,10 +10,11 @@ import RentShareIcon from '@/assets/mainTabs/rentshare_icon.svg'
 import useSWR from 'swr'
 import fetcher from '@/utils/fetcher'
 import { PostWithRelations } from '@/types'
-import { formatDateToFullYear } from '@/utils/formatDate'
 import { useRouter } from 'next/navigation'
 import PromotionList from './_components/PromotionList'
 import Sidebar from './_components/Sidebar'
+import MainPost from './_components/MainPost'
+import MainPostSkeleton from './_components/MainPost/MainPostSkeleton'
 
 const tabData = [
   { id: 0, icon: <RecentIcon />, label: '최신글', category: 'all' },
@@ -25,17 +26,11 @@ const tabData = [
 
 export default function Home() {
   const [boardTab, setBoardTab] = useState(0)
-  const { data: postsByCategory, error } = useSWR(`/api/main?limit=5`, fetcher)
+  const { data: postsByCategory, isLoading } = useSWR(
+    `/api/main?limit=5`,
+    fetcher,
+  )
   const router = useRouter()
-
-  if (!postsByCategory) {
-    return <div>Loading...</div>
-  }
-
-  // Error state
-  if (error) {
-    return <div>Error: {error.message}</div>
-  }
 
   const handleMoveToPost = (postId: number) => {
     router.push(`/posts?postId=${postId}`)
@@ -51,7 +46,7 @@ export default function Home() {
 
         <BoardSection>
           <BoardTitle>
-            인기 급상승 게시글 <span>오늘 00시 기준</span>
+            최근 올라온 게시글 <span>오늘 00시 기준</span>
           </BoardTitle>
           <BoardBody>
             <Tabs>
@@ -67,17 +62,21 @@ export default function Home() {
               ))}
             </Tabs>
             <Board>
-              {postsByCategory[tabData[boardTab].category].map(
-                (post: PostWithRelations, index: number) => (
-                  <Post key={post.id} onClick={() => handleMoveToPost(post.id)}>
-                    <Number>{index + 1}</Number>
-                    <Content>
-                      <Title>{post.title}</Title>
-                      <Detail>{formatDateToFullYear(post.createdAt)}</Detail>
-                    </Content>
-                  </Post>
-                ),
+              {isLoading ? (
+                <MainPostSkeleton />
+              ) : (
+                postsByCategory[tabData[boardTab].category].map(
+                  (post: PostWithRelations, index: number) => (
+                    <MainPost
+                      key={post.id}
+                      handleMoveToPost={handleMoveToPost}
+                      post={post}
+                      index={index}
+                    />
+                  ),
+                )
               )}
+              {}
             </Board>
           </BoardBody>
         </BoardSection>
@@ -193,34 +192,4 @@ const Post = styled.div`
   &:not(:last-child) {
     border-bottom: 1px solid #d5d5d580;
   }
-`
-
-const Number = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  background: #e2e8fd;
-  width: 28px;
-  height: 28px;
-  border-radius: 999px;
-`
-
-const Content = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 6px;
-`
-
-const Title = styled.div`
-  font-family: Pretendard;
-  font-size: 16px;
-  font-weight: 500;
-  color: #222222;
-`
-
-const Detail = styled.div`
-  font-family: Pretendard;
-  font-size: 14px;
-  font-weight: 400;
-  color: #878787;
 `
