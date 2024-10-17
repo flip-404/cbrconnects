@@ -28,8 +28,7 @@ function PostViewer() {
   const [requireLoginModal, setRequireLoginModal] = useState(false)
   const [deleteModal, setDeleteModal] = useState(false)
 
-  if (isPostLoading) return <PostViewerSkeleton />
-  if (!post) return <div>Loading...</div>
+  if (isPostLoading || !post) return <PostViewerSkeleton />
   if (error) return <div>Failed to load post</div>
 
   const mainCategory = findLabelById(post?.mainCategory)
