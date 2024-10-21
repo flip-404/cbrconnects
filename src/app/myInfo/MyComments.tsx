@@ -1,9 +1,10 @@
 'use client'
 
+import { CommentWithRelations } from '@/types'
 import styled from 'styled-components'
 
-function MyComments() {
-  return <Container />
+function MyComments({ comments }: { comments: CommentWithRelations[] }) {
+  return <Container>{comments.length}</Container>
 }
 
 export default MyComments

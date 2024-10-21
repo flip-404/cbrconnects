@@ -1,35 +1,55 @@
 import prisma from '@/libs/prisma'
 import { NextRequest, NextResponse } from 'next/server'
 
+async function getCommentsBypostId(postId: number) {
+  return prisma.comment.findMany({
+    where: { postId, parentId: null },
+    include: {
+      likes: true,
+      author: {
+        select: { id: true, nickname: true },
+      },
+      replies: {
+        include: {
+          likes: true,
+          author: {
+            select: { id: true, nickname: true },
+          },
+        },
+        orderBy: { createdAt: 'asc' },
+      },
+    },
+    orderBy: { createdAt: 'asc' },
+  })
+}
+
+async function getCommentsByAuthorId(authorId: number) {
+  return prisma.comment.findMany({
+    where: { authorId },
+    orderBy: { createdAt: 'asc' },
+  })
+}
+
 async function GET(request: NextRequest) {
   const url = new URL(request.url)
   const postId = url.searchParams.get('postId')
+  const authorId = url.searchParams.get('authorId')
 
-  if (!postId) return new NextResponse(JSON.stringify([]), { status: 400 })
-  const postIdNumber = parseInt(postId, 10)
+  if (!postId && !authorId)
+    return new NextResponse(JSON.stringify([]), { status: 400 })
 
   try {
-    const comments = await prisma.comment.findMany({
-      where: { postId: postIdNumber, parentId: null },
-      include: {
-        likes: true,
-        author: {
-          select: { id: true, nickname: true },
-        },
-        replies: {
-          include: {
-            likes: true,
-            author: {
-              select: { id: true, nickname: true },
-            },
-          },
-          orderBy: { createdAt: 'asc' },
-        },
-      },
-      orderBy: { createdAt: 'asc' },
-    })
-
-    return new NextResponse(JSON.stringify(comments), { status: 200 })
+    let comments
+    if (postId) {
+      comments = await getCommentsBypostId(parseInt(postId, 10))
+      return new NextResponse(JSON.stringify(comments), { status: 200 })
+    }
+    if (authorId) {
+      comments = await getCommentsByAuthorId(parseInt(authorId, 10))
+      console.log('comments', comments)
+      return new NextResponse(JSON.stringify(comments), { status: 200 })
+    }
+    return new NextResponse(JSON.stringify([]), { status: 400 })
   } catch (error) {
     return new NextResponse(JSON.stringify([]), { status: 500 })
   }

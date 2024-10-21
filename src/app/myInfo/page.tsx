@@ -4,14 +4,39 @@ import { useSession } from 'next-auth/react'
 import styled from 'styled-components'
 import EmptyProfile from '@/assets/empty_profileImg_icon.svg'
 import UpdateImageIcon from '@/assets/update_profile.svg'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
+import useSWR from 'swr'
+import fetcher from '@/utils/fetcher'
 import EditInfo from './EditInfo'
 import MyPosts from './MyPosts'
 import MyComments from './MyComments'
 
+const useMyPosts = (authorId: number | undefined) => {
+  const { data, error } = useSWR(`/api/posts?authorId=${authorId}`, fetcher)
+  return {
+    posts: data?.posts,
+    isLoading: !error && !data,
+    isError: error,
+  }
+}
+
+const useMyComments = (authorId: number | undefined) => {
+  const { data: comments, error } = useSWR(
+    `/api/comments?authorId=${authorId}`,
+    fetcher,
+  )
+  return {
+    comments,
+    isLoading: !error && !comments,
+    isError: error,
+  }
+}
+
 function MyInfo() {
   const { data: session } = useSession()
   const [tab, setTab] = useState(0)
+  const { posts } = useMyPosts(session?.user.id)
+  const { comments } = useMyComments(session?.user.id)
 
   const renderTabs = () => {
     switch (tab) {
@@ -20,11 +45,16 @@ function MyInfo() {
       case 1:
         return <MyPosts />
       case 2:
-        return <MyComments />
+        return <MyComments comments={comments} />
       default:
         return <EditInfo />
     }
   }
+
+  useEffect(() => {
+    console.log('posts', posts)
+    console.log(comments)
+  }, [posts, comments])
 
   if (session && session.user)
     return (
@@ -49,10 +79,10 @@ function MyInfo() {
             {session!.user.nickname} 님
           </UserProfile>
           <MyPosting>
-            내가 작성한 게시글 <span>5개</span>
+            내가 작성한 게시글 <span>{posts?.length}개</span>
           </MyPosting>
           <MyPosting>
-            내가 작성한 댓글 <span>4개</span>
+            내가 작성한 댓글 <span>{comments?.length}개</span>
           </MyPosting>
           <Tabs>
             <Tab $active={tab === 0} onClick={() => setTab(0)}>
