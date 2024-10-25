@@ -2,8 +2,8 @@
 
 import { useSession } from 'next-auth/react'
 import styled from 'styled-components'
-import EmptyProfile from '@/assets/empty_profileImg_icon.svg'
-import UpdateImageIcon from '@/assets/update_profile.svg'
+import EmptyProfile from '@/assets/desktop/empty_profileImg_icon.svg'
+import UpdateImageIcon from '@/assets/desktop/update_profile.svg'
 import { useEffect, useState } from 'react'
 import useSWR from 'swr'
 import fetcher from '@/utils/fetcher'

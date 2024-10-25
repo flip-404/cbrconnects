@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import PhaseLineIcon from '@/assets/phaseLine_icon.svg'
+import PhaseLineIcon from '@/assets/desktop/phaseLine_icon.svg'
 
 export default function Phase({ phase }: { phase: number }) {
   return (

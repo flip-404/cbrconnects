@@ -10,6 +10,9 @@
     "postinstall": "prisma generate"
   },
   "dependencies": {
+    "@emotion/react": "^11.13.3",
+    "@emotion/styled": "^11.13.0",
+    "@mui/material": "^6.1.5",
     "@prisma/client": "^5.15.1",
     "@svgr/webpack": "^8.1.0",
     "@tinymce/tinymce-react": "^5.1.1",
@@ -29,8 +32,10 @@
     "react-calendar": "^5.0.0",
     "react-dom": "^18.3.1",
     "react-hook-form": "^7.52.0",
+    "react-is": "^18.3.1",
     "react-quill": "^2.0.0",
     "styled-components": "^6.1.11",
+    "stylis": "^4.3.4",
     "swiper": "^11.1.4",
     "swr": "^2.2.5",
     "tinymce": "^7.3.0"

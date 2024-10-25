@@ -2,15 +2,16 @@
 
 import styled from 'styled-components'
 import { useState } from 'react'
-import RecentIcon from '@/assets/mainTabs/recent_icon.svg'
-import CommunityIcon from '@/assets/mainTabs/community_icon.svg'
-import JobIcon from '@/assets/mainTabs/job_icon.svg'
-import MarketIcon from '@/assets/mainTabs/market_icon.svg'
-import RentShareIcon from '@/assets/mainTabs/rentshare_icon.svg'
+import RecentIcon from '@/assets/desktop/mainTabs/recent_icon.svg'
+import CommunityIcon from '@/assets/desktop/mainTabs/community_icon.svg'
+import JobIcon from '@/assets/desktop/mainTabs/job_icon.svg'
+import MarketIcon from '@/assets/desktop/mainTabs/market_icon.svg'
+import RentShareIcon from '@/assets/desktop/mainTabs/rentshare_icon.svg'
 import useSWR from 'swr'
 import fetcher from '@/utils/fetcher'
 import { PostWithRelations } from '@/types'
 import { useRouter } from 'next/navigation'
+import { useMediaQuery } from '@mui/material'
 import PromotionList from './_components/PromotionList'
 import Sidebar from './_components/Sidebar'
 import MainPost from './_components/MainPost'
@@ -25,25 +26,30 @@ const tabData = [
 ]
 
 export default function Home() {
+  const isMobile = useMediaQuery('(max-width:768px)')
   const [boardTab, setBoardTab] = useState(0)
   const { data: postsByCategory, isLoading } = useSWR(
     `/api/main?limit=5`,
     fetcher,
   )
+
   const router = useRouter()
 
   const handleMoveToPost = (postId: number) => {
     router.push(`/posts?postId=${postId}`)
   }
 
-  return (
+  console.log('isMobile', isMobile)
+
+  return isMobile ? (
+    <></>
+  ) : (
     <LayoutWrapper>
       <BodySection>
         <EventSection>
           <FirstEventImage src="/FirstEventImage.png" alt="캔버라커넥트" />
           <SecondEventImage src="/SecondEventImage.png" alt="캔버라커넥트" />
         </EventSection>
-
         <BoardSection>
           <BoardTitle>
             최근 올라온 게시글 <span>오늘 00시 기준</span>

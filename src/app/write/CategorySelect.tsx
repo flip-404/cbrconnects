@@ -1,7 +1,7 @@
 import styled from 'styled-components'
-import BottomArrowIcon from '@/assets/bottomArrow_icon.svg'
 import NavsData from '@/mocks/NavsData'
 import { useState, useMemo } from 'react'
+import BottomArrowIcon from '@/assets/desktop/bottomArrow_icon.svg'
 import Options from './Options'
 
 function CategorySelect({

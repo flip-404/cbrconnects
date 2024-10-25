@@ -3,7 +3,7 @@ import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import type { NavsDataType } from '@/mocks/NavsData'
 import styled from 'styled-components'
-import DotIcon from '@/assets/dot_icon.svg'
+import DotIcon from '@/assets/desktop/dot_icon.svg'
 
 function NavButton({ label, href }: NavsDataType) {
   const pathname = usePathname()

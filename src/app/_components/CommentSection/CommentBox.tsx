@@ -1,7 +1,7 @@
 import { CommentWithRelations } from '@/types'
 import { formatDateToFullYear } from '@/utils/formatDate'
 import styled from 'styled-components'
-import LikeIcon from '@/assets/like_icon.svg'
+import LikeIcon from '@/assets/desktop/like_icon.svg'
 import { useSession } from 'next-auth/react'
 import { useState } from 'react'
 import WriteCommentBox from './WriteCommentBox'

@@ -1,8 +1,8 @@
 'use client'
 
 import styled from 'styled-components'
-import InstaIcon from '@/assets/footer_insta_icon.svg'
-import KakaoIcon from '@/assets/footer_kakao_icon.svg'
+import InstaIcon from '@/assets/desktop/footer_insta_icon.svg'
+import KakaoIcon from '@/assets/desktop/footer_kakao_icon.svg'
 
 function Footer() {
   return (

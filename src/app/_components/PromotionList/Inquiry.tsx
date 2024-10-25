@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import QuestionCircle from '@/assets/questionCircle.svg'
+import QuestionCircle from '@/assets/desktop/questionCircle.svg'
 
 export default function Inquiry() {
   return (

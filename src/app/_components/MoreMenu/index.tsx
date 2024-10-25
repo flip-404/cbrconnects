@@ -1,6 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import styled from 'styled-components'
-import MoreIcon_ from '@/assets/more_icon.svg'
+import MoreIcon_ from '@/assets/desktop/more_icon.svg'
 
 type NullableNumber = number | null
 

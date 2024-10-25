@@ -1,8 +1,8 @@
 /* eslint-disable react/jsx-props-no-spreading */
 import type { UseFormRegisterReturn } from 'react-hook-form'
 import styled from 'styled-components'
-import VisibilityOnIcon from '@/assets/visibilityOn_icon.svg'
-import VisibilityOffIcon from '@/assets/visibilityOff_icon.svg'
+import VisibilityOnIcon from '@/assets/desktop/visibilityOn_icon.svg'
+import VisibilityOffIcon from '@/assets/desktop/visibilityOff_icon.svg'
 import { useState } from 'react'
 
 type Props = {

@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import CheckIcon from '@/assets/check_icon.svg'
+import CheckIcon from '@/assets/desktop/check_icon.svg'
 
 type Props = {
   selectedCg: null | string

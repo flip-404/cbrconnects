@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import PlusIcon from '@/assets/plus_icon.svg'
+import PlusIcon from '@/assets/desktop/plus_icon.svg'
 
 export default function ImageSelector({
   handleImageChange,

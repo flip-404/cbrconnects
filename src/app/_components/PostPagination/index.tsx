@@ -1,7 +1,7 @@
 'use client'
 
-import LeftArrowIcon from '@/assets/leftArrow_icon.svg'
-import RightArrowIcon from '@/assets/rightArrow_icon.svg'
+import LeftArrowIcon from '@/assets/desktop/leftArrow_icon.svg'
+import RightArrowIcon from '@/assets/desktop/rightArrow_icon.svg'
 import styled from 'styled-components'
 
 export default function PostPagination({

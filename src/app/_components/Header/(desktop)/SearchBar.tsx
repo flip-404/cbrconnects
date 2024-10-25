@@ -2,9 +2,9 @@
 
 // 완
 import styled from 'styled-components'
-import SearchIcon from '@/assets/search_icon.svg'
-import DropdownIcon from '@/assets/dropdown_icon.svg'
-import SeparatorIcon from '@/assets/separator_icon.svg'
+import SearchIcon from '@/assets/desktop/search_icon.svg'
+import DropdownIcon from '@/assets/desktop/dropdown_icon.svg'
+import SeparatorIcon from '@/assets/desktop/separator_icon.svg'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import SearchFilterButton from './SearchFilterButton'

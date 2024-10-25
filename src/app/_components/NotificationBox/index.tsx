@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import Link from 'next/link'
-import NoticeMoreIcon from '@/assets/noticeMore_icon.svg'
+import NoticeMoreIcon from '@/assets/desktop/noticeMore_icon.svg'
 
 export default function NotificationBox() {
   return (

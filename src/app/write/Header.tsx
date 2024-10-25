@@ -1,5 +1,5 @@
 import styled from 'styled-components'
-import WriteIcon from '@/assets/write_icon.svg'
+import WriteIcon from '@/assets/desktop/write_icon.svg'
 import { useRouter } from 'next/navigation'
 
 type Props = { onClickWrite: () => void }

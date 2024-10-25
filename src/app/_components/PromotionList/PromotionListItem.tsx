@@ -1,6 +1,6 @@
 import styled from 'styled-components'
 import Image, { StaticImageData } from 'next/image'
-import SeparatorIcon from '@/assets/small_separetor_icon.svg'
+import SeparatorIcon from '@/assets/desktop/small_separetor_icon.svg'
 
 type PostType = {
   imgSrc: StaticImageData
