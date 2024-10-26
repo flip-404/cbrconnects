@@ -2,32 +2,51 @@
 
 import styled from 'styled-components'
 import SearchIcon from '@/assets/mobile/search.svg'
+import { useState } from 'react'
+import SearchModal from './SearchModal'
 
 function MobileHeader() {
-  return (
-    <MobileHeaderContainer>
+  const [isSearchBarOn, setIsSearchBarOn] = useState(false)
+
+  return !isSearchBarOn ? (
+    <MobileHeaderContainer isSearchBarOn={isSearchBarOn}>
       <MobileLogo>캔버라 커넥트</MobileLogo>
       <ButtonWrapper>
-        <SearchIcon />
+        <SearchButton
+          onClick={() => {
+            setIsSearchBarOn(true)
+          }}
+        >
+          <SearchIcon />
+        </SearchButton>
         <MobileSigninButton>로그인</MobileSigninButton>
       </ButtonWrapper>
     </MobileHeaderContainer>
+  ) : (
+    <SearchModal
+      offSearchModal={() => {
+        setIsSearchBarOn(false)
+      }}
+    />
   )
 }
 
 export default MobileHeader
 
-const MobileHeaderContainer = styled.div`
+const MobileHeaderContainer = styled.div<{ isSearchBarOn: boolean }>`
   position: fixed;
   top: 0;
-  width: 100%;
+  left: 0;
+  width: 100vw;
+  box-sizing: border-box; /* padding이 너비를 초과하지 않도록 */
   z-index: 1000;
   display: flex;
   height: 56px;
   align-items: center;
   justify-content: space-between;
   background-color: #282e38;
-  padding: 10px 20px;
+  padding: ${(props) =>
+    props.isSearchBarOn ? '10px 20px' : '9px 11px 9px 21px'};
 `
 
 const MobileLogo = styled.div`
@@ -43,7 +62,15 @@ const MobileLogo = styled.div`
 
 const ButtonWrapper = styled.div`
   display: flex;
+  align-items: center;
   gap: 12px;
+`
+
+const SearchButton = styled.button`
+  all: unset;
+  display: flex;
+  align-items: center;
+  cursor: pointer;
 `
 
 const MobileSigninButton = styled.button`
@@ -53,4 +80,5 @@ const MobileSigninButton = styled.button`
   height: 24px;
   border-radius: 4px;
   background: #ecf0fe33;
+  cursor: pointer;
 `
