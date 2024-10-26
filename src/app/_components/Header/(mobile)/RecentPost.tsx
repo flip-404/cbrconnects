@@ -16,7 +16,7 @@ function RecentPost() {
       <Title>최근글</Title>
       <PostBox>
         {mockData.map((post, idx) => (
-          <Post>
+          <Post key={post}>
             <Number>{idx + 1}</Number>
             {post.length > 40 ? `${post.substring(0, 40)}...` : post}
           </Post>
