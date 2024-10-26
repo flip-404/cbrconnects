@@ -2,14 +2,26 @@
 
 import styled from 'styled-components'
 import SearchIcon from '@/assets/mobile/search.svg'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
+import RecentSearch from './RecentSearch'
+import RecentPost from './RecentPost'
 
 function SearchModal({ offSearchModal }: { offSearchModal: () => void }) {
   const [searchTerm, setSearchTerm] = useState('')
+  const [recentSearches, setRecentSearches] = useState<string[]>([])
+
   const router = useRouter()
 
   const handleSearch = () => {
+    if (!searchTerm) return
+
+    const updatedSearches = [
+      searchTerm,
+      ...recentSearches.filter((term) => term !== searchTerm),
+    ]
+    setRecentSearches(updatedSearches)
+    localStorage.setItem('recentSearches', JSON.stringify(updatedSearches))
     router.push(`/search?searchTerm=${searchTerm}&searchType=fulltext`)
   }
 
@@ -19,6 +31,18 @@ function SearchModal({ offSearchModal }: { offSearchModal: () => void }) {
       handleSearch()
     }
   }
+
+  const deleteSearchTerm = (term: string) => {
+    const updatedSearches = recentSearches.filter((search) => search !== term)
+    setRecentSearches(updatedSearches)
+    localStorage.setItem('recentSearches', JSON.stringify(updatedSearches))
+  }
+
+  useEffect(() => {
+    const storedSearches = localStorage.getItem('recentSearches')
+    const parsedSearches = storedSearches ? JSON.parse(storedSearches) : []
+    setRecentSearches(parsedSearches)
+  }, [])
 
   return (
     <Container>
@@ -38,7 +62,13 @@ function SearchModal({ offSearchModal }: { offSearchModal: () => void }) {
         </InputWrapper>
         <CancelButton onClick={offSearchModal}>취소</CancelButton>
       </Header>
-      <RecentSearch />
+      {recentSearches.length && (
+        <RecentSearch
+          recentSearches={recentSearches}
+          deleteSearchTerm={deleteSearchTerm}
+        />
+      )}
+
       <RecentPost />
     </Container>
   )
@@ -55,6 +85,8 @@ const Container = styled.div`
   z-index: 1000;
   display: flex;
   flex-direction: column;
+  gap: 20px;
+  background-color: #282e38;
 `
 
 const Header = styled.div`
@@ -65,7 +97,6 @@ const Header = styled.div`
   align-items: center;
   gap: 12px;
   justify-content: space-between;
-  background-color: #282e38;
 `
 
 const InputWrapper = styled.div`
@@ -112,7 +143,3 @@ const CancelButton = styled.div`
   line-height: 19.09px;
   color: white;
 `
-
-const RecentSearch = styled.div``
-
-const RecentPost = styled.div``
