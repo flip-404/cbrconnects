@@ -3,8 +3,8 @@
 import styled from 'styled-components'
 import SearchIcon from '@/assets/mobile/search.svg'
 import { useState } from 'react'
-import SearchModal from './SearchModal'
 import { useRouter } from 'next/navigation'
+import SearchModal from './SearchModal'
 
 function MobileHeader() {
   const [isSearchBarOn, setIsSearchBarOn] = useState(false)
