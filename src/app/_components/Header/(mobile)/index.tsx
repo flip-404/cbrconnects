@@ -4,13 +4,21 @@ import styled from 'styled-components'
 import SearchIcon from '@/assets/mobile/search.svg'
 import { useState } from 'react'
 import SearchModal from './SearchModal'
+import { useRouter } from 'next/navigation'
 
 function MobileHeader() {
   const [isSearchBarOn, setIsSearchBarOn] = useState(false)
+  const router = useRouter()
 
   return !isSearchBarOn ? (
     <MobileHeaderContainer isSearchBarOn={isSearchBarOn}>
-      <MobileLogo>캔버라 커넥트</MobileLogo>
+      <MobileLogo
+        onClick={() => {
+          router.push('/')
+        }}
+      >
+        캔버라 커넥트
+      </MobileLogo>
       <ButtonWrapper>
         <SearchButton
           onClick={() => {
@@ -50,6 +58,7 @@ const MobileHeaderContainer = styled.div<{ isSearchBarOn: boolean }>`
 `
 
 const MobileLogo = styled.div`
+  cursor: pointer;
   font-family: NanumSquare Neo;
   font-size: 18px;
   font-weight: 800;

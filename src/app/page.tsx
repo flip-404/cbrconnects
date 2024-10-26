@@ -39,10 +39,8 @@ export default function Home() {
     router.push(`/posts?postId=${postId}`)
   }
 
-  console.log('isMobile', isMobile)
-
   return isMobile ? (
-    <></>
+    <>dddsdsd</>
   ) : (
     <LayoutWrapper>
       <BodySection>
