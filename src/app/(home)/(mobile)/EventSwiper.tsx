@@ -46,7 +46,8 @@ export default function EventSwiper() {
         style={{ transform: `translateX(-${currentSlide * 100}%)` }}
       >
         {images.map((src, index) => (
-          <Slide key={src}>
+          // eslint-disable-next-line react/no-array-index-key
+          <Slide key={src + index}>
             <EventImage src={src} alt={`이벤트 이미지 ${index + 1}`} />
           </Slide>
         ))}
