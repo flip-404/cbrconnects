@@ -1,28 +1,14 @@
 'use client'
 
 import styled from 'styled-components'
-import { useRouter } from 'next/navigation'
-import fetcher from '@/utils/fetcher'
-import useSWR from 'swr'
-import { useState } from 'react'
+import NotificationBox from '@/app/_components/NotificationBox'
 import EventSwiper from './EventSwiper'
 
 export default function MobileHome() {
-  const [boardTab, setBoardTab] = useState(0)
-  const { data: postsByCategory, isLoading } = useSWR(
-    `/api/main?limit=5`,
-    fetcher,
-  )
-
-  const router = useRouter()
-
-  const handleMoveToPost = (postId: number) => {
-    router.push(`/posts?postId=${postId}`)
-  }
-
   return (
     <Container>
       <EventSwiper />
+      <NotificationBox />
     </Container>
   )
 }
