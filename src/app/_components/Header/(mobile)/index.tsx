@@ -11,7 +11,7 @@ function MobileHeader() {
   const router = useRouter()
 
   return !isSearchBarOn ? (
-    <MobileHeaderContainer isSearchBarOn={isSearchBarOn}>
+    <MobileHeaderContainer $isSearchBarOn={isSearchBarOn}>
       <MobileLogo
         onClick={() => {
           router.push('/')
@@ -41,7 +41,7 @@ function MobileHeader() {
 
 export default MobileHeader
 
-const MobileHeaderContainer = styled.div<{ isSearchBarOn: boolean }>`
+const MobileHeaderContainer = styled.div<{ $isSearchBarOn: boolean }>`
   position: fixed;
   top: 0;
   left: 0;
@@ -54,7 +54,7 @@ const MobileHeaderContainer = styled.div<{ isSearchBarOn: boolean }>`
   justify-content: space-between;
   background-color: #282e38;
   padding: ${(props) =>
-    props.isSearchBarOn ? '10px 20px' : '9px 11px 9px 21px'};
+    props.$isSearchBarOn ? '10px 20px' : '9px 11px 9px 21px'};
 `
 
 const MobileLogo = styled.div`
