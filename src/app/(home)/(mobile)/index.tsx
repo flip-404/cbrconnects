@@ -2,6 +2,7 @@
 
 import styled from 'styled-components'
 import NotificationBox from '@/app/_components/NotificationBox'
+import PromotionList from '@/app/_components/PromotionList'
 import EventSwiper from './EventSwiper'
 
 export default function MobileHome() {
@@ -9,6 +10,7 @@ export default function MobileHome() {
     <Container>
       <EventSwiper />
       <NotificationBox />
+      <PromotionList />
     </Container>
   )
 }

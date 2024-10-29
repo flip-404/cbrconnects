@@ -17,4 +17,15 @@ const Container = styled.div`
   display: flex;
   gap: 6px;
   align-items: center;
+  box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    background: #eef1f6;
+    border-radius: 8px;
+    padding-left: 16px;
+    font-family: Pretendard;
+    font-size: 16px;
+    font-weight: 500;
+    color: #5e5e5e;
+  }
 `

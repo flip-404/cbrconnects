@@ -23,6 +23,10 @@ export default function PromotionList() {
 
 const Container = styled.div`
   width: 100%;
+  box-sizing: border-box;
+  @media (max-width: 768px) {
+    padding: 16px;
+  }
 `
 
 const Header = styled.div`
@@ -36,26 +40,37 @@ const Title = styled.span`
   font-family: Apple SD Gothic Neo;
   font-size: 20px;
   font-weight: 700;
-
   color: black;
+  @media (max-width: 768px) {
+    font-family: NanumSquare Neo;
+    font-size: 16px;
+  }
 `
 
 const MoreButton = styled.button`
   cursor: pointer;
   border: none;
   background: transparent;
-
   font-family: Apple SD Gothic Neo;
   font-size: 14px;
   font-weight: 400;
   color: #949494;
+
+  @media (max-width: 768px) {
+    font-size: 12px;
+  }
 `
 
 const Body = styled.div`
   margin-top: 9px;
-  display: flex;
+  display: grid;
   gap: 14px;
-  justify-content: space-between;
+  grid-template-columns: repeat(4, 1fr);
+  grid-template-rows: 1fr;
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    grid-template-rows: repeat(4, 1fr);
+  }
 `
 
 const MockData = [

@@ -12,28 +12,50 @@ export default function PromotionListItem({ post }: { post: PostType }) {
   return (
     <Container>
       <Thumbnail src={post.imgSrc} alt="업소 홍보 이미지" />
-      <Title>{post.title}</Title>
-      <Detail>
-        업소홍보
-        <SeparatorIcon />
-        {post.createdAt}
-      </Detail>
+      <Content>
+        <Title>{post.title}</Title>
+        <Detail>
+          업소홍보
+          <SeparatorIcon />
+          {post.createdAt}
+        </Detail>
+      </Content>
     </Container>
   )
 }
 
 const Container = styled.div`
-  flex: 0.25;
+  display: flex;
+  flex-direction: column;
+
+  @media (max-width: 768px) {
+    flex-direction: row;
+    gap: 12px;
+  }
 `
 
 const Thumbnail = styled(Image)`
-  width: 204px;
+  width: 100%;
   height: 115px;
   border-radius: 12px;
+  @media (max-width: 768px) {
+    height: 100%;
+    width: 130px;
+  }
+`
+
+const Content = styled.div`
+  padding-top: 12px;
+  padding-bottom: 12px;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  @media (max-width: 768px) {
+    justify-content: space-between;
+  }
 `
 
 const Title = styled.span`
-  margin-top: 12px;
   font-family: Apple SD Gothic Neo;
   font-size: 16px;
   font-weight: 600;
