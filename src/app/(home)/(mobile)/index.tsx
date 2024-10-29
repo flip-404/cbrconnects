@@ -3,8 +3,8 @@
 import styled from 'styled-components'
 import NotificationBox from '@/app/_components/NotificationBox'
 import PromotionList from '@/app/_components/PromotionList'
-import EventSwiper from './EventSwiper'
 import MobileSubHeader from '@/app/_components/MobileSubHeader'
+import EventSwiper from './EventSwiper'
 
 export default function MobileHome() {
   return (
