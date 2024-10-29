@@ -4,10 +4,12 @@ import styled from 'styled-components'
 import NotificationBox from '@/app/_components/NotificationBox'
 import PromotionList from '@/app/_components/PromotionList'
 import EventSwiper from './EventSwiper'
+import MobileSubHeader from '@/app/_components/MobileSubHeader'
 
 export default function MobileHome() {
   return (
     <Container>
+      <MobileSubHeader pathname={'/'} />
       <EventSwiper />
       <NotificationBox />
       <PromotionList />
@@ -16,5 +18,7 @@ export default function MobileHome() {
 }
 
 const Container = styled.div`
-  padding-top: 56px;
+  padding-top: 108px;
+
+  position: relative;
 `

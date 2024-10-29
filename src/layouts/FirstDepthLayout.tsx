@@ -49,21 +49,18 @@ export default function FirstDepthLayout({
   return isMobile ? (
     <LayoutWrapper>
       <MobileSubHeader pathname={pathname} />
-      <BodySection>
-        <SubCategoryBar
-          pathname={pathname}
-          subCategory={subCategory}
-          changeSubCategory={setSubCategory}
-        />
-        <PostList posts={posts} isLoading={isLoading} />
-        <PostPagination
-          curPage={page}
-          totalCount={totalCount}
-          handlePageChange={handlePageChange}
-        />
-        <PromotionList />
-      </BodySection>
-      <Sidebar />
+      <SubCategoryBar
+        pathname={pathname}
+        subCategory={subCategory}
+        changeSubCategory={setSubCategory}
+      />
+      <PostList posts={posts} isLoading={isLoading} />
+      <PostPagination
+        curPage={page}
+        totalCount={totalCount}
+        handlePageChange={handlePageChange}
+      />
+      <PromotionList />
       {children}
     </LayoutWrapper>
   ) : (
@@ -97,7 +94,7 @@ const LayoutWrapper = styled.div`
 
   @media (max-width: 768px) {
     display: block;
-    margin-top: 56px;
+    margin-top: 108px;
     padding-left: 0;
     padding-bottom: 100px;
   }

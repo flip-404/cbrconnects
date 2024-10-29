@@ -24,6 +24,10 @@ function MobileSubHeader({ pathname }: { pathname: string }) {
 export default MobileSubHeader
 
 const Container = styled.div`
+  z-index: 999;
+  position: fixed;
+  top: 56px;
+  left: 0px;
   width: 100%;
   height: 52px;
   background: #282e38;
@@ -31,6 +35,7 @@ const Container = styled.div`
   align-items: center;
   grid-template-columns: repeat(4, 1fr);
   grid-template-rows: 1fr;
+  box-sizing: border-box;
 `
 
 const NavButton = styled(Link)<{ $isActive: boolean }>`

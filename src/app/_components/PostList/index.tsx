@@ -43,8 +43,12 @@ const SkeletonContainer = styled.div`
   padding: 13px 0px;
   gap: 12px;
   width: 100%;
-  height: 500px;
-  min-height: 408px;
+  box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    padding-left: 16px;
+    padding-right: 12px;
+  }
 `
 
 const Container = styled.div`
@@ -56,8 +60,13 @@ const Container = styled.div`
   padding: 13px 0px;
   gap: 26px;
   width: 100%;
-  height: 500px;
-  min-height: 408px;
+  box-sizing: border-box;
+
+  @media (max-width: 768px) {
+    padding-left: 16px;
+    padding-right: 12px;
+    height: auto;
+  }
 `
 
 const NoPosts = styled.span`

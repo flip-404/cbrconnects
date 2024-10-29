@@ -72,6 +72,7 @@ const Container = styled.div`
   display: flex;
   justify-content: space-between;
   cursor: pointer;
+  font-family: Pretendard;
 `
 
 const Body = styled.div`
@@ -87,6 +88,10 @@ const Title = styled.div`
   color: #474747;
   font-size: 16px;
   font-weight: 500;
+
+  @media (max-width: 768px) {
+    font-size: 15px;
+  }
 `
 
 const CategoryChip = styled.span<{ $category: string }>`
@@ -126,6 +131,11 @@ const PostDetail = styled.div`
   font-weight: 500;
   color: #878787;
   align-items: center;
+  @media (max-width: 768px) {
+    font-size: 12px;
+    font-weight: 400;
+    color: #a2acb9;
+  }
 `
 
 const LeftWrapper = styled.div`
