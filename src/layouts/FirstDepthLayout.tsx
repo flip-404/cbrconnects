@@ -12,6 +12,8 @@ import { useState } from 'react'
 import styled from 'styled-components'
 import useSWR from 'swr'
 import PostPagination from '@/app/_components/PostPagination'
+import { useMediaQuery } from '@mui/material'
+import MobileSubHeader from '@/app/_components/MobileSubHeader'
 
 export default function FirstDepthLayout({
   children,
@@ -24,6 +26,7 @@ export default function FirstDepthLayout({
   )!
   const [subCategory, setSubCategory] = useState('all')
   const [page, setPage] = useState(1)
+  const isMobile = useMediaQuery('(max-width:768px)')
   const limit = 10
 
   const query = buildQuery({
@@ -43,7 +46,27 @@ export default function FirstDepthLayout({
     setPage(pageNum)
   }
 
-  return (
+  return isMobile ? (
+    <LayoutWrapper>
+      <MobileSubHeader pathname={pathname} />
+      <BodySection>
+        <SubCategoryBar
+          pathname={pathname}
+          subCategory={subCategory}
+          changeSubCategory={setSubCategory}
+        />
+        <PostList posts={posts} isLoading={isLoading} />
+        <PostPagination
+          curPage={page}
+          totalCount={totalCount}
+          handlePageChange={handlePageChange}
+        />
+        <PromotionList />
+      </BodySection>
+      <Sidebar />
+      {children}
+    </LayoutWrapper>
+  ) : (
     <LayoutWrapper>
       <BodySection>
         <SubCategoryBar
@@ -71,6 +94,13 @@ const LayoutWrapper = styled.div`
   gap: 70px;
   padding-left: 320px;
   padding-bottom: 100px;
+
+  @media (max-width: 768px) {
+    display: block;
+    margin-top: 56px;
+    padding-left: 0;
+    padding-bottom: 100px;
+  }
 `
 
 const BodySection = styled.div`
