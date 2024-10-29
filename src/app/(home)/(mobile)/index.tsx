@@ -9,7 +9,7 @@ import MobileSubHeader from '@/app/_components/MobileSubHeader'
 export default function MobileHome() {
   return (
     <Container>
-      <MobileSubHeader pathname={'/'} />
+      <MobileSubHeader pathname="/" />
       <EventSwiper />
       <NotificationBox />
       <PromotionList />
