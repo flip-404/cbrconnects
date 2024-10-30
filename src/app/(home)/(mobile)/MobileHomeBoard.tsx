@@ -40,7 +40,7 @@ export default function MobileHomeBoard({
         slidesToScroll={1}
         infinite
         draggable={false}
-        autoplay={true}
+        autoplay
         autoplaySpeed={5000}
         dots
       >
