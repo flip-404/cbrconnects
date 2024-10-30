@@ -9,7 +9,7 @@ import { Post } from '@prisma/client'
 import { useEffect, useState } from 'react'
 import { findLabelById } from '@/utils/getCategoryInfo'
 
-type postsByCategoryType = {
+type PostsByCategoryType = {
   all: Post[]
   community: Post[]
   job: Post[]
@@ -20,7 +20,7 @@ type postsByCategoryType = {
 export default function MobileHomeBoard({
   postsByCategory,
 }: {
-  postsByCategory: postsByCategoryType
+  postsByCategory: PostsByCategoryType
 }) {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0)
 
@@ -28,15 +28,6 @@ export default function MobileHomeBoard({
     setCurrentSlideIndex(swiper.activeIndex)
   }
 
-  useEffect(() => {
-    console.log('currentSlideIndex', currentSlideIndex)
-    if (postsByCategory) {
-      console.log(
-        'tabData[currentSlideIndex].category',
-        tabData[currentSlideIndex].category,
-      )
-    }
-  }, [currentSlideIndex])
   return (
     <Container>
       <Title>
@@ -53,7 +44,7 @@ export default function MobileHomeBoard({
           tabData.map((tab) => {
             return (
               <>
-                {postsByCategory[tab.category as keyof postsByCategoryType].map(
+                {postsByCategory[tab.category as keyof PostsByCategoryType].map(
                   (post, postIndex) => (
                     <PostItem key={post.id} $category={post.subCategory}>
                       <Number>{postIndex + 1}</Number>

@@ -6,11 +6,11 @@ import useSWR from 'swr'
 import fetcher from '@/utils/fetcher'
 import { PostWithRelations } from '@/types'
 import { useRouter } from 'next/navigation'
+import { tabData } from '@/mocks/tabData'
 import PromotionList from '../../_components/PromotionList'
 import Sidebar from '../../_components/Sidebar'
 import MainPost from '../../_components/MainPost'
 import MainPostSkeleton from '../../_components/MainPost/MainPostSkeleton'
-import { tabData } from '@/mocks/tabData'
 
 export default function DesktopHome() {
   const [boardTab, setBoardTab] = useState(0)
