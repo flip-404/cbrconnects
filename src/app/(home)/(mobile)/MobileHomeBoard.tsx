@@ -4,9 +4,9 @@ import styled from 'styled-components'
 import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
-import { tabData } from '@/mocks/tabData'
+import TabData from '@/mocks/tabData'
 import { Post } from '@prisma/client'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { findLabelById } from '@/utils/getCategoryInfo'
 
 type PostsByCategoryType = {
@@ -19,19 +19,17 @@ type PostsByCategoryType = {
 
 export default function MobileHomeBoard({
   postsByCategory,
+  handleMoveToPost,
 }: {
   postsByCategory: PostsByCategoryType
+  handleMoveToPost: (PostId: number) => void
 }) {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0)
-
-  const handleSlideChange = (swiper: any) => {
-    setCurrentSlideIndex(swiper.activeIndex)
-  }
 
   return (
     <Container>
       <Title>
-        {tabData[currentSlideIndex].label} {tabData[currentSlideIndex].icon}
+        {TabData[currentSlideIndex].label} {TabData[currentSlideIndex].icon}
       </Title>
       <StyledSlider
         afterChange={(index) => setCurrentSlideIndex(index)}
@@ -41,12 +39,16 @@ export default function MobileHomeBoard({
         dots
       >
         {postsByCategory &&
-          tabData.map((tab) => {
+          TabData.map((tab) => {
             return (
               <>
                 {postsByCategory[tab.category as keyof PostsByCategoryType].map(
                   (post, postIndex) => (
-                    <PostItem key={post.id} $category={post.subCategory}>
+                    <PostItem
+                      key={post.id}
+                      $category={post.subCategory}
+                      onClick={() => handleMoveToPost(post.id)}
+                    >
                       <Number>{postIndex + 1}</Number>
                       <span>
                         {post.subCategory

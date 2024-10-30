@@ -6,7 +6,7 @@ import useSWR from 'swr'
 import fetcher from '@/utils/fetcher'
 import { PostWithRelations } from '@/types'
 import { useRouter } from 'next/navigation'
-import { tabData } from '@/mocks/tabData'
+import TabData from '@/mocks/tabData'
 import PromotionList from '../../_components/PromotionList'
 import Sidebar from '../../_components/Sidebar'
 import MainPost from '../../_components/MainPost'
@@ -38,7 +38,7 @@ export default function DesktopHome() {
           </BoardTitle>
           <BoardBody>
             <Tabs>
-              {tabData.map((tab) => (
+              {TabData.map((tab) => (
                 <Tab
                   key={tab.id}
                   onClick={() => setBoardTab(tab.id)}
@@ -53,7 +53,7 @@ export default function DesktopHome() {
               {isLoading ? (
                 <MainPostSkeleton />
               ) : (
-                postsByCategory[tabData[boardTab].category].map(
+                postsByCategory[TabData[boardTab].category].map(
                   (post: PostWithRelations, index: number) => (
                     <MainPost
                       key={post.id}

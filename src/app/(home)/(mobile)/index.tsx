@@ -1,22 +1,18 @@
 'use client'
 
+import { useRouter } from 'next/navigation'
 import styled from 'styled-components'
 import NotificationBox from '@/app/_components/NotificationBox'
 import PromotionList from '@/app/_components/PromotionList'
 import MobileSubHeader from '@/app/_components/MobileSubHeader'
-import EventSwiper from './EventSwiper'
-import MobileHomeBoard from './MobileHomeBoard'
-import { useState } from 'react'
 import useSWR from 'swr'
 import fetcher from '@/utils/fetcher'
-import { useRouter } from 'next/navigation'
+
+import MobileHomeBoard from './MobileHomeBoard'
+import EventSwiper from './EventSwiper'
 
 export default function MobileHome() {
-  const [boardTab, setBoardTab] = useState(0)
-  const { data: postsByCategory, isLoading } = useSWR(
-    `/api/main?limit=5`,
-    fetcher,
-  )
+  const { data: postsByCategory } = useSWR(`/api/main?limit=5`, fetcher)
 
   const router = useRouter()
 
@@ -29,7 +25,10 @@ export default function MobileHome() {
       <MobileSubHeader pathname="/" />
       <EventSwiper />
       <NotificationBox />
-      <MobileHomeBoard postsByCategory={postsByCategory} />
+      <MobileHomeBoard
+        postsByCategory={postsByCategory}
+        handleMoveToPost={handleMoveToPost}
+      />
       <PromotionList />
     </Container>
   )
