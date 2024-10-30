@@ -35,7 +35,10 @@ export default function MobileHome() {
 }
 
 const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
   padding-top: 108px;
-
+  padding-bottom: 100px;
   position: relative;
 `

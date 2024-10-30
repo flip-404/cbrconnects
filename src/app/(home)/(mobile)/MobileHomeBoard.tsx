@@ -29,13 +29,19 @@ export default function MobileHomeBoard({
   return (
     <Container>
       <Title>
-        {TabData[currentSlideIndex].label} {TabData[currentSlideIndex].icon}
+        {currentSlideIndex === 0
+          ? '최근 올라온 게시글'
+          : TabData[currentSlideIndex].label}
+        {TabData[currentSlideIndex].icon}
       </Title>
       <StyledSlider
         afterChange={(index) => setCurrentSlideIndex(index)}
         slidesToShow={1}
         slidesToScroll={1}
         infinite
+        draggable={false}
+        autoplay={true}
+        autoplaySpeed={5000}
         dots
       >
         {postsByCategory &&
@@ -68,7 +74,6 @@ export default function MobileHomeBoard({
 }
 
 const Container = styled.div`
-  padding-top: 108px;
   position: relative;
   padding-left: 16px;
   padding-right: 16px;
@@ -124,6 +129,7 @@ const StyledSlider = styled(Slider)`
 `
 
 const PostItem = styled.div<{ $category: string | null }>`
+  cursor: pointer;
   display: flex;
   padding-top: 12px;
   padding-bottom: 12px;
