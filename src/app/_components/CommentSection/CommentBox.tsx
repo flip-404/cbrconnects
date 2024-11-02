@@ -75,13 +75,6 @@ function CommentBox({
     />
   )
 
-  console.log('comment.author.id', comment.author.id)
-  console.log('postAuthorId', postAuthorId)
-  console.log(
-    'comment.author.id === postAuthorI',
-    comment.author.id === postAuthorId,
-  )
-
   const renderCommentBody = () => (
     <>
       <CommentItem
