@@ -34,6 +34,8 @@ const PostDetailWrapper = styled.div`
   color: #878787;
 
   @media (max-width: 768px) {
+    padding: 9px 10px;
+    margin-bottom: 15px;
     font-family: Pretendard;
     font-size: 12px;
     font-weight: 400;
