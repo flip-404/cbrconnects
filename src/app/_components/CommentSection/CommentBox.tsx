@@ -1,3 +1,5 @@
+'use client'
+
 import { CommentWithRelations } from '@/types'
 import { formatDateToFullYear } from '@/utils/formatDate'
 import styled from 'styled-components'
@@ -7,6 +9,25 @@ import { useState } from 'react'
 import WriteCommentBox from './WriteCommentBox'
 import MoreMenu from '../MoreMenu'
 import NotificationModal from '../NotificationModal'
+
+interface CommentBoxProps {
+  handleLikeComment: (commentId: number, parentId: null | number) => void
+  selectReplyComment?: (commentId: number) => void
+  handleWriteComment?: (
+    content: string,
+    parentId: null | number,
+    type: 'edit' | 'write',
+  ) => void
+  handleEditComment: (content: string, commentId: number) => void
+  handleMoreMenu: (commentId: null | number) => void
+  onEditMode: (commentId: null | number) => void
+  offEditMode?: () => void
+  isEditMode: number | null
+  commentToReply?: null | number
+  openMoreMenu: null | number
+  comment: CommentWithRelations
+  parentId?: null | number
+}
 
 function CommentBox({
   handleLikeComment,
@@ -21,24 +42,7 @@ function CommentBox({
   openMoreMenu,
   comment,
   parentId = null,
-}: {
-  handleLikeComment: (commmentId: number, parentId: null | number) => void
-  selectReplyComment?: (commmentId: number) => void
-  handleWriteComment?: (
-    content: string,
-    parentId: null | number,
-    type: 'edit' | 'write',
-  ) => void
-  handleEditComment: (content: string, commentId: number) => void
-  handleMoreMenu: (commmentId: null | number) => void
-  onEditMode: (commmentId: null | number) => void
-  offEditMode?: () => void
-  isEditMode: number | null
-  commentToReply?: null | number
-  openMoreMenu: null | number
-  comment: CommentWithRelations
-  parentId?: null | number
-}) {
+}: CommentBoxProps) {
   const { data: session } = useSession()
   const [deleteModal, setDeleteModal] = useState(false)
   const isLiked = comment.likes?.some(
@@ -47,123 +51,98 @@ function CommentBox({
 
   const handleDeletePost = async () => {
     setDeleteModal(false)
-
     await fetch(`/api/comments`, {
       method: 'DELETE',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        commentId: comment.id,
-      }),
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ commentId: comment.id }),
     })
   }
+
+  const renderWriteCommentBox = (isEdit: boolean, content: string) => (
+    <WriteCommentBox
+      key={comment.id}
+      handleWriteComment={handleWriteComment}
+      handleEditComment={handleEditComment}
+      parentId={parentId}
+      commentId={comment.id}
+      offEditMode={offEditMode}
+      isEditMode={isEdit}
+      prevContent={content}
+    />
+  )
+
+  const renderCommentBody = () => (
+    <>
+      <CommentItem $isReply={parentId !== null}>
+        <AuthorProfile />
+        <ContentSection>
+          <CommentHeader>
+            <div>
+              <span>{comment.author.nickname}</span>
+              {formatDateToFullYear(comment.createdAt, true)}
+            </div>
+            <MoreMenu
+              targetId={comment.id}
+              handleMoreMenu={handleMoreMenu}
+              currentId={openMoreMenu}
+              handleEditButton={() => onEditMode(comment.id)}
+              handleDeleteButton={() => setDeleteModal(true)}
+            />
+          </CommentHeader>
+          <CommentBody>{comment.content}</CommentBody>
+          <CommentFooter>
+            {selectReplyComment && (
+              <Reply onClick={() => selectReplyComment(comment.id)}>
+                답글 남기기
+              </Reply>
+            )}
+            <LikeWrapper $isLiked={isLiked}>
+              <LikeIcon
+                onClick={() => handleLikeComment(comment.id, parentId)}
+              />{' '}
+              {comment.likes?.length}
+            </LikeWrapper>
+          </CommentFooter>
+        </ContentSection>
+      </CommentItem>
+      {commentToReply === comment.id && renderWriteCommentBox(false, '')}
+    </>
+  )
+
+  const renderReplies = () =>
+    comment.replies?.map((reply) =>
+      isEditMode === reply.id ? (
+        renderWriteCommentBox(true, reply.content)
+      ) : (
+        <CommentBox
+          key={reply.id}
+          comment={reply}
+          handleLikeComment={handleLikeComment}
+          handleEditComment={handleEditComment}
+          handleMoreMenu={handleMoreMenu}
+          onEditMode={onEditMode}
+          offEditMode={offEditMode}
+          isEditMode={isEditMode}
+          openMoreMenu={openMoreMenu}
+          parentId={comment.id}
+        />
+      ),
+    )
 
   return (
     <Container>
       <CommentWrapper>
-        {isEditMode === comment.id ? (
-          <WriteCommentBox
-            key={comment.id}
-            handleWriteComment={handleWriteComment}
-            handleEditComment={handleEditComment}
-            parentId={null}
-            commentId={comment.id}
-            offEditMode={offEditMode}
-            isEditMode
-            prevContent={comment.content}
-          />
-        ) : (
-          <>
-            {' '}
-            <CommentItem $isReply={parentId !== null}>
-              <AuthorProfile />
-              <ContentSection>
-                <CommentHeader>
-                  <div>
-                    <span>{comment.author.nickname}</span>
-                    {formatDateToFullYear(comment.createdAt, true)}
-                  </div>
-                  <MoreMenu
-                    targetId={comment.id}
-                    handleMoreMenu={handleMoreMenu}
-                    currentId={openMoreMenu}
-                    handleEditButton={() => {
-                      onEditMode(comment.id)
-                    }}
-                    handleDeleteButton={() => {
-                      setDeleteModal(true)
-                    }}
-                  />
-                </CommentHeader>
-                <CommentBody>{comment.content}</CommentBody>
-                <CommentFooter>
-                  {selectReplyComment && (
-                    <Reply
-                      onClick={() => {
-                        selectReplyComment(comment.id)
-                      }}
-                    >
-                      답글 남기기
-                    </Reply>
-                  )}
-                  <LikeWrapper $isLiked={isLiked}>
-                    <LikeIcon
-                      onClick={() => {
-                        handleLikeComment(comment.id, parentId)
-                      }}
-                    />{' '}
-                    {comment.likes?.length}
-                  </LikeWrapper>
-                </CommentFooter>
-              </ContentSection>
-            </CommentItem>
-            {commentToReply === comment.id && (
-              <WriteCommentBox
-                handleWriteComment={handleWriteComment}
-                parentId={comment.id}
-                isEditMode={false}
-              />
-            )}
-          </>
-        )}
-        {comment.replies?.length !== 0 &&
-          comment.replies?.map((reply) =>
-            isEditMode === reply.id ? (
-              <WriteCommentBox
-                key={reply.id}
-                handleWriteComment={handleWriteComment}
-                handleEditComment={handleEditComment}
-                parentId={comment.id}
-                commentId={reply.id}
-                offEditMode={offEditMode}
-                isEditMode
-                prevContent={reply.content}
-              />
-            ) : (
-              <CommentBox
-                key={reply.id}
-                comment={reply}
-                handleLikeComment={handleLikeComment}
-                handleEditComment={handleEditComment}
-                handleMoreMenu={handleMoreMenu}
-                onEditMode={onEditMode}
-                offEditMode={offEditMode}
-                isEditMode={isEditMode}
-                openMoreMenu={openMoreMenu}
-                parentId={comment.id}
-              />
-            ),
-          )}
+        {isEditMode === comment.id
+          ? renderWriteCommentBox(true, comment.content)
+          : renderCommentBody()}
+        {renderReplies()}
       </CommentWrapper>
       {deleteModal && (
         <NotificationModal
           label="정말 삭제하시겠습니까?"
           onCheck={handleDeletePost}
           onCheckLabel="삭제"
-          onClose={() => {
-            setDeleteModal(false)
-          }}
+          onClose={() => setDeleteModal(false)}
           onCloseLabel="취소"
         />
       )}
@@ -173,6 +152,7 @@ function CommentBox({
 
 export default CommentBox
 
+// 스타일 컴포넌트
 const Container = styled.div`
   display: flex;
   gap: 1rem;
@@ -181,10 +161,10 @@ const Container = styled.div`
 const CommentItem = styled.div<{ $isReply: boolean }>`
   display: flex;
   gap: 30px;
-
   padding: ${(props) => (props.$isReply ? '24px 60px' : '24px 10px')};
   border-bottom: 1px solid #ccc;
 `
+
 const AuthorProfile = styled.div`
   margin: 6px;
   width: 39px;
@@ -212,8 +192,6 @@ const Reply = styled.div`
   font-family: Pretendard;
   font-size: 14px;
   font-weight: 500;
-  line-height: 16.71px;
-  text-align: left;
   color: #878787;
 `
 
@@ -222,12 +200,10 @@ const LikeWrapper = styled.div<{ $isLiked: boolean }>`
   display: flex;
   gap: 5px;
   align-items: center;
-
   path {
     stroke: ${(props) => props.$isLiked && 'red'};
     fill: ${(props) => props.$isLiked && 'red'};
   }
-
   &:hover {
     path {
       stroke: red;
@@ -243,13 +219,9 @@ const CommentHeader = styled.div`
   font-family: Pretendard;
   font-size: 14px;
   font-weight: 500;
-  line-height: 16.71px;
-  text-align: left;
   color: #878787;
-
   span {
     color: #222222;
-
     &::after {
       content: '|';
       margin: 0 6px;
@@ -259,13 +231,17 @@ const CommentHeader = styled.div`
 `
 
 const CommentBody = styled.div`
-  display: flex;
   font-family: Pretendard;
   font-size: 16px;
   font-weight: 500;
-  line-height: 22px;
-  text-align: left;
   color: #222222;
+
+  @media (max-width: 768px) {
+    font-family: Pretendard;
+    font-size: 14px;
+    font-weight: 500;
+    color: #14171c;
+  }
 `
 
 const CommentFooter = styled.div`
@@ -274,8 +250,6 @@ const CommentFooter = styled.div`
   font-family: Pretendard;
   font-size: 14px;
   font-weight: 500;
-  line-height: 16.71px;
-  text-align: left;
   color: #878787;
   gap: 10px;
 `

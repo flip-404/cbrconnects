@@ -2,21 +2,30 @@
 
 import Sidebar from '@/app/_components/Sidebar'
 import styled from 'styled-components'
+import { useMediaQuery } from '@mui/material'
 
 export default function FirstDepthLayout({
   children,
 }: {
   children: React.ReactNode
 }) {
-  return (
-    <LayoutWrapper>
+  const isMobile = useMediaQuery('(max-width:768px)')
+
+  return isMobile ? (
+    <MobileLayout>{children}</MobileLayout>
+  ) : (
+    <DesktopLayout>
       <BodySection>{children}</BodySection>
       <Sidebar />
-    </LayoutWrapper>
+    </DesktopLayout>
   )
 }
 
-const LayoutWrapper = styled.div`
+const MobileLayout = styled.div`
+  margin-top: 56px;
+`
+
+const DesktopLayout = styled.div`
   margin-top: 80px;
   display: flex;
   gap: 70px;

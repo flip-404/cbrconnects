@@ -3,17 +3,12 @@
 import styled from 'styled-components'
 import { CommentWithRelations } from '@/types'
 import { useState } from 'react'
+import { useMediaQuery } from '@mui/material'
 import CommentBox from './CommentBox'
 import WriteCommentBox from './WriteCommentBox'
 import LoginRequiredNotice from './LoginRequiredNotice'
 
-function CommentSection({
-  handleLikeComment,
-  comments,
-  handleWriteComment,
-  handleEditComment,
-  isLoggedIn,
-}: {
+interface CommentSectionProps {
   handleLikeComment: (commentId: number, parentId: null | number) => void
   comments?: CommentWithRelations[]
   handleWriteComment: (
@@ -23,63 +18,77 @@ function CommentSection({
   ) => void
   handleEditComment: (content: string, commentId: number) => void
   isLoggedIn: boolean
-}) {
+}
+
+function CommentSection({
+  handleLikeComment,
+  comments,
+  handleWriteComment,
+  handleEditComment,
+  isLoggedIn,
+}: CommentSectionProps) {
   const [commentToReply, setCommentToReply] = useState<null | number>(null)
   const [openMoreMenu, setOpenMoreMenu] = useState<null | number>(null)
   const [isEditMode, setIsEditMode] = useState<null | number>(null)
+  const isMobile = useMediaQuery('(max-width:768px)')
+
   if (!comments)
     return (
       <Container>아직 댓글이 없어요! 첫 댓글의 주인공이 되어주세요</Container>
     )
 
-  const selectReplyComment = (commentId: number) => {
-    setCommentToReply(commentId)
+  const toggleMoreMenu = (commentId: number | null) => {
+    setOpenMoreMenu((prev) => (prev === commentId ? null : commentId))
   }
 
-  const handleMoreMenu = (commentId: number | null) => {
-    setOpenMoreMenu(commentId === openMoreMenu ? null : commentId)
-  }
-
-  const onEditMode = (commentId: number | null) => {
-    setIsEditMode(commentId)
-  }
-
-  const offEditMode = () => {
-    setIsEditMode(null)
-  }
-
-  return (
-    <Container
-      onClick={() => {
-        handleMoreMenu(null)
-      }}
-    >
-      {isLoggedIn ? (
+  const renderWriteCommentSection = () => {
+    if (isLoggedIn)
+      return (
         <WriteCommentBox
           handleWriteComment={handleWriteComment}
           parentId={null}
           commentId={null}
           isEditMode={false}
         />
-      ) : (
-        <LoginRequiredNotice />
-      )}
-      {comments.map((comment: CommentWithRelations) => (
-        <CommentBox
-          handleLikeComment={handleLikeComment}
-          selectReplyComment={selectReplyComment}
+      )
+
+    if (isMobile) {
+      return (
+        <WriteCommentBox
           handleWriteComment={handleWriteComment}
-          handleEditComment={handleEditComment}
-          handleMoreMenu={handleMoreMenu}
-          onEditMode={onEditMode}
-          isEditMode={isEditMode}
-          offEditMode={offEditMode}
-          commentToReply={commentToReply}
-          openMoreMenu={openMoreMenu}
-          key={comment.id}
-          comment={comment}
+          parentId={null}
+          commentId={null}
+          isEditMode={false}
+          disabled
         />
-      ))}
+      )
+    }
+
+    return <LoginRequiredNotice />
+  }
+
+  const renderCommentList = () =>
+    comments.map((comment) => (
+      <CommentBox
+        key={comment.id}
+        comment={comment}
+        handleLikeComment={handleLikeComment}
+        selectReplyComment={setCommentToReply}
+        handleWriteComment={handleWriteComment}
+        handleEditComment={handleEditComment}
+        handleMoreMenu={toggleMoreMenu}
+        onEditMode={setIsEditMode}
+        offEditMode={() => setIsEditMode(null)}
+        isEditMode={isEditMode}
+        commentToReply={commentToReply}
+        openMoreMenu={openMoreMenu}
+      />
+    ))
+
+  return (
+    <Container onClick={() => toggleMoreMenu(null)}>
+      {renderWriteCommentSection()}
+      {renderCommentList()}
     </Container>
   )
 }

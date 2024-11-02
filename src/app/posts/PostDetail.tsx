@@ -27,10 +27,18 @@ export default function PostDetail({ post }: { post: PostWithRelations }) {
 const PostDetailWrapper = styled.div`
   padding: 6px 8px;
   display: flex;
+  align-items: center;
   font-family: Pretendard;
   font-size: 14px;
   font-weight: 500;
   color: #878787;
+
+  @media (max-width: 768px) {
+    font-family: Pretendard;
+    font-size: 12px;
+    font-weight: 400;
+    border-bottom: 1px solid #d9d9d9;
+  }
 
   span {
     &::after {
@@ -43,6 +51,7 @@ const PostDetailWrapper = styled.div`
   & > div {
     margin-left: 16px;
     display: flex;
+    align-items: center;
     gap: 12px;
   }
 `

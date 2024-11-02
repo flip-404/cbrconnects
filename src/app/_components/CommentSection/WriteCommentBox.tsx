@@ -13,6 +13,7 @@ interface WriteCommentBoxProps {
   commentId?: number | null
   isEditMode: boolean
   prevContent?: string
+  disabled?: boolean
 }
 
 function WriteCommentBox({
@@ -23,6 +24,7 @@ function WriteCommentBox({
   commentId,
   isEditMode,
   prevContent = '',
+  disabled = false,
 }: WriteCommentBoxProps) {
   const [content, setContent] = useState(prevContent)
 
@@ -42,13 +44,14 @@ function WriteCommentBox({
     <Container>
       <Label>댓글 남기기</Label>
       <Input
-        placeholder="댓글을 작성해주세요."
+        disabled={disabled}
+        placeholder={disabled ? '로그인이 필요합니다.' : '댓글을 작성해주세요.'}
         value={content}
         onChange={(e) => setContent(e.target.value)}
       />
       <ButtonWrapper>
         {isEditMode && <Button onClick={offEditMode}>취소</Button>}
-        <Button onClick={handleSubmit}>
+        <Button disabled={disabled} onClick={handleSubmit}>
           {isEditMode ? '수정하기' : '등록하기'}
         </Button>
       </ButtonWrapper>
@@ -74,7 +77,7 @@ const Label = styled.span`
   color: #7a7a7a;
 `
 
-const Input = styled.textarea`
+const Input = styled.textarea<{ disabled: boolean }>`
   all: unset;
   padding: 7.76px;
   border-radius: 5.17px;
@@ -93,7 +96,7 @@ const ButtonWrapper = styled.div`
   justify-content: flex-end;
 `
 
-const Button = styled.button`
+const Button = styled.button<{ disabled?: boolean }>`
   all: unset;
   cursor: pointer;
   padding: 7.5px 18px;
@@ -104,4 +107,13 @@ const Button = styled.button`
   line-height: 16.71px;
   color: #222222;
   border-radius: 7px;
+
+  ${(props) =>
+    props.disabled && {
+      ...{
+        cursor: 'default',
+        background: '#C1C7D1',
+        color: '#EEF1F6',
+      },
+    }}
 `
