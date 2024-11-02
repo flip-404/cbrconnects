@@ -18,6 +18,7 @@ interface CommentSectionProps {
   ) => void
   handleEditComment: (content: string, commentId: number) => void
   isLoggedIn: boolean
+  postAuthorId: number
 }
 
 function CommentSection({
@@ -26,6 +27,7 @@ function CommentSection({
   handleWriteComment,
   handleEditComment,
   isLoggedIn,
+  postAuthorId,
 }: CommentSectionProps) {
   const [commentToReply, setCommentToReply] = useState<null | number>(null)
   const [openMoreMenu, setOpenMoreMenu] = useState<null | number>(null)
@@ -82,6 +84,7 @@ function CommentSection({
         isEditMode={isEditMode}
         commentToReply={commentToReply}
         openMoreMenu={openMoreMenu}
+        postAuthorId={postAuthorId}
       />
     ))
 
@@ -95,4 +98,8 @@ function CommentSection({
 
 export default CommentSection
 
-const Container = styled.section``
+const Container = styled.section`
+  @media (max-width: 768px) {
+    border-bottom: 1px solid #ccc;
+  }
+`

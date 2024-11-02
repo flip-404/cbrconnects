@@ -6,6 +6,7 @@ import styled from 'styled-components'
 import LikeIcon from '@/assets/desktop/like_icon.svg'
 import { useSession } from 'next-auth/react'
 import { useState } from 'react'
+import { useMediaQuery } from '@mui/material'
 import WriteCommentBox from './WriteCommentBox'
 import MoreMenu from '../MoreMenu'
 import NotificationModal from '../NotificationModal'
@@ -27,6 +28,7 @@ interface CommentBoxProps {
   openMoreMenu: null | number
   comment: CommentWithRelations
   parentId?: null | number
+  postAuthorId: number
 }
 
 function CommentBox({
@@ -42,9 +44,11 @@ function CommentBox({
   openMoreMenu,
   comment,
   parentId = null,
+  postAuthorId,
 }: CommentBoxProps) {
   const { data: session } = useSession()
   const [deleteModal, setDeleteModal] = useState(false)
+  const isMobile = useMediaQuery('(max-width:768px)')
   const isLiked = comment.likes?.some(
     (like) => like.userId === session?.user.id,
   )
@@ -71,16 +75,41 @@ function CommentBox({
     />
   )
 
+  console.log('comment.author.id', comment.author.id)
+  console.log('postAuthorId', postAuthorId)
+  console.log(
+    'comment.author.id === postAuthorI',
+    comment.author.id === postAuthorId,
+  )
+
   const renderCommentBody = () => (
     <>
-      <CommentItem $isReply={parentId !== null}>
+      <CommentItem
+        $hasReply={Boolean(comment.replies)}
+        $isReply={parentId !== null}
+      >
         <AuthorProfile />
         <ContentSection>
           <CommentHeader>
-            <div>
-              <span>{comment.author.nickname}</span>
-              {formatDateToFullYear(comment.createdAt, true)}
-            </div>
+            {isMobile ? (
+              <div>
+                {comment.author.nickname}
+                {comment.author.id === postAuthorId && (
+                  <AuthorChip>작성자</AuthorChip>
+                )}
+              </div>
+            ) : (
+              <div>
+                <span>
+                  {comment.author.nickname}
+                  {comment.author.id === postAuthorId && (
+                    <AuthorChip>작성자</AuthorChip>
+                  )}
+                </span>
+                {formatDateToFullYear(comment.createdAt, true)}
+              </div>
+            )}
+
             <MoreMenu
               targetId={comment.id}
               handleMoreMenu={handleMoreMenu}
@@ -91,6 +120,7 @@ function CommentBox({
           </CommentHeader>
           <CommentBody>{comment.content}</CommentBody>
           <CommentFooter>
+            {isMobile && formatDateToFullYear(comment.createdAt, true)}
             {selectReplyComment && (
               <Reply onClick={() => selectReplyComment(comment.id)}>
                 답글 남기기
@@ -125,12 +155,13 @@ function CommentBox({
           isEditMode={isEditMode}
           openMoreMenu={openMoreMenu}
           parentId={comment.id}
+          postAuthorId={postAuthorId}
         />
       ),
     )
 
   return (
-    <Container>
+    <Container $isReply={parentId !== null}>
       <CommentWrapper>
         {isEditMode === comment.id
           ? renderWriteCommentBox(true, comment.content)
@@ -152,17 +183,28 @@ function CommentBox({
 
 export default CommentBox
 
-// 스타일 컴포넌트
-const Container = styled.div`
+const Container = styled.div<{ $isReply: boolean }>`
   display: flex;
   gap: 1rem;
+  border-top: ${(props) => !props.$isReply && '1px solid #ccc'};
+  @media (max-width: 768px) {
+    border-top: ${(props) => !props.$isReply && '1px solid #ccc'};
+  }
 `
 
-const CommentItem = styled.div<{ $isReply: boolean }>`
+const CommentItem = styled.div<{ $isReply: boolean; $hasReply: boolean }>`
   display: flex;
-  gap: 30px;
-  padding: ${(props) => (props.$isReply ? '24px 60px' : '24px 10px')};
-  border-bottom: 1px solid #ccc;
+  gap: 16px;
+  padding: ${(props) =>
+    props.$isReply ? '24px 0px 24px 60px' : '24px 0px 24px 10px'};
+  border-bottom: none;
+
+  @media (max-width: 768px) {
+    gap: 10px;
+    border-bottom: none;
+    padding: ${(props) =>
+      props.$isReply ? '12px 0px 12px 60px' : '24px 10px'};
+  }
 `
 
 const AuthorProfile = styled.div`
@@ -200,6 +242,7 @@ const LikeWrapper = styled.div<{ $isLiked: boolean }>`
   display: flex;
   gap: 5px;
   align-items: center;
+
   path {
     stroke: ${(props) => props.$isLiked && 'red'};
     fill: ${(props) => props.$isLiked && 'red'};
@@ -220,13 +263,29 @@ const CommentHeader = styled.div`
   font-size: 14px;
   font-weight: 500;
   color: #878787;
+
+  div {
+    display: flex;
+    align-items: center;
+  }
+
   span {
+    display: flex;
+    align-items: center;
+
     color: #222222;
     &::after {
       content: '|';
       margin: 0 6px;
       color: #d9d9d9;
     }
+  }
+
+  @media (max-width: 768px) {
+    font-family: Pretendard;
+    font-size: 12px;
+    font-weight: 500;
+    color: #14171c;
   }
 `
 
@@ -252,4 +311,21 @@ const CommentFooter = styled.div`
   font-weight: 500;
   color: #878787;
   gap: 10px;
+`
+
+const AuthorChip = styled.div`
+  margin-left: 6px;
+  padding: 3px 9px;
+  color: #436af5;
+  background: #d9e1fd;
+  border-radius: 14px;
+  font-family: Pretendard;
+  font-size: 14px;
+  font-weight: 600;
+
+  @media (max-width: 768px) {
+    padding: 3.5px 4.5px;
+    font-size: 11px;
+    font-weight: 600;
+  }
 `

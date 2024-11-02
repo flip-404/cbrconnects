@@ -65,16 +65,15 @@ function PostViewer() {
             <CommentIcon /> {comments?.length}
           </CommentCount>
         </ReactionSummary>
-
         <CommentSection
           handleLikeComment={handleLikeComment}
           comments={comments}
           handleWriteComment={handleWriteComment}
           handleEditComment={handleEditComment}
           isLoggedIn={Boolean(session?.user.accessToken)}
+          postAuthorId={post.authorId}
         />
       </ContentBox>
-
       {requireLoginModal && (
         <NotificationModal
           label="로그인이 필요한 서비스 입니다"
