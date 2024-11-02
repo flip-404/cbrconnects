@@ -89,6 +89,9 @@ const Input = styled.textarea<{ disabled: boolean }>`
     background: white;
     outline: 0.65px solid #436af5;
   }
+
+  @media (max-width: 768px) {
+  }
 `
 
 const ButtonWrapper = styled.div`
@@ -107,6 +110,11 @@ const Button = styled.button<{ disabled?: boolean }>`
   line-height: 16.71px;
   color: #222222;
   border-radius: 7px;
+
+  @media (max-width: 768px) {
+    background: #64748b;
+    color: #eef1f6;
+  }
 
   ${(props) =>
     props.disabled && {

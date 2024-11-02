@@ -81,7 +81,14 @@ function CommentBox({
         $hasReply={Boolean(comment.replies)}
         $isReply={parentId !== null}
       >
-        <AuthorProfile />
+        <ProfileWrapper>
+          {comment.author.profileImage ? (
+            <AuthorProfile src={comment.author.profileImage} />
+          ) : (
+            ''
+          )}
+        </ProfileWrapper>
+
         <ContentSection>
           <CommentHeader>
             {isMobile ? (
@@ -200,11 +207,22 @@ const CommentItem = styled.div<{ $isReply: boolean; $hasReply: boolean }>`
   }
 `
 
-const AuthorProfile = styled.div`
+const ProfileWrapper = styled.div`
+  border: none;
   margin: 6px;
   width: 39px;
   height: 39px;
   background-color: #e1e1e1;
+  border-radius: 990px;
+
+  @media (max-width: 768px) {
+  }
+`
+
+const AuthorProfile = styled.img`
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
   border-radius: 990px;
 `
 
