@@ -3,7 +3,7 @@
 import { PostWithRelations } from '@/types'
 import styled from 'styled-components'
 import { formatDateToFullYear } from '@/utils/formatDate'
-import { extractTextFromHtml } from '@/utils/extractTextFromHtml'
+import extractTextFromHtml from '@/utils/extractTextFromHtml'
 
 type MyPostsProps = {
   posts: PostWithRelations[]
@@ -17,9 +17,8 @@ function MyPosts({ posts }: MyPostsProps) {
         const contentText = extractTextFromHtml(post.content)
         const truncatedContent =
           contentText.length > 50
-            ? contentText.substring(0, 70) + '...'
+            ? `${contentText.substring(0, 70)}...`
             : contentText
-
         return (
           <Post key={post.id}>
             <PostHeader>
