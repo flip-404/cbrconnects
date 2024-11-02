@@ -4,7 +4,7 @@ import { useSession } from 'next-auth/react'
 import styled from 'styled-components'
 import EmptyProfile from '@/assets/desktop/empty_profileImg_icon.svg'
 import UpdateImageIcon from '@/assets/desktop/update_profile.svg'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import useSWR from 'swr'
 import fetcher from '@/utils/fetcher'
 import EditInfo from './EditInfo'
@@ -12,9 +12,13 @@ import MyPosts from './MyPosts'
 import MyComments from './MyComments'
 
 const useMyPosts = (authorId: number | undefined) => {
-  const { data, error } = useSWR(`/api/posts?authorId=${authorId}`, fetcher)
+  console.log('authorId', authorId)
+  const { data, error } = useSWR(
+    authorId ? `/api/posts?authorId=${authorId}` : null,
+    fetcher,
+  )
   return {
-    posts: data?.posts,
+    posts: data?.posts || [],
     isLoading: !error && !data,
     isError: error,
   }
@@ -22,7 +26,7 @@ const useMyPosts = (authorId: number | undefined) => {
 
 const useMyComments = (authorId: number | undefined) => {
   const { data: comments, error } = useSWR(
-    `/api/comments?authorId=${authorId}`,
+    authorId ? `/api/comments?authorId=${authorId}` : null,
     fetcher,
   )
   return {
@@ -43,18 +47,13 @@ function MyInfo() {
       case 0:
         return <EditInfo />
       case 1:
-        return <MyPosts />
+        return <MyPosts posts={posts} />
       case 2:
         return <MyComments comments={comments} />
       default:
         return <EditInfo />
     }
   }
-
-  useEffect(() => {
-    console.log('posts', posts)
-    console.log(comments)
-  }, [posts, comments])
 
   if (session && session.user)
     return (

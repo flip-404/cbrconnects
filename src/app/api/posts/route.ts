@@ -6,6 +6,7 @@ type GetPostQuery = {
   mainCategory?: MainCategory
   subCategory?: SubCategory
   postId?: string
+  authorId?: string
 }
 
 const getPostQueryParams = (url: URL): GetPostQuery => {
@@ -16,7 +17,17 @@ const getPostQueryParams = (url: URL): GetPostQuery => {
   return { mainCategory, subCategory, postId }
 }
 
-const fetchPostById = async (postId: number) => {
+const fetchPostByAuthorId = async (authorId: number) => {
+  const updatedPost = await prisma.post.findMany({
+    where: {
+      authorId,
+    },
+  })
+
+  return updatedPost
+}
+
+const fetchPostByPostId = async (postId: number) => {
   const updatedPost = await prisma.post.update({
     where: {
       id: postId,
@@ -64,14 +75,33 @@ const fetchPostCount = async (whereQuery: Prisma.PostWhereInput) => {
 
 async function GET(request: NextRequest) {
   const url = new URL(request.url)
-  const { mainCategory, subCategory, postId } = getPostQueryParams(url)
+  const { mainCategory, subCategory, postId, authorId } =
+    getPostQueryParams(url)
   const page = parseInt(url.searchParams.get('page') || '1', 10)
   const limit = parseInt(url.searchParams.get('limit') || '40', 10)
+  if (authorId) {
+    try {
+      const AuthorIdNumber = parseInt(authorId, 10)
+      const post = await fetchPostByAuthorId(AuthorIdNumber)
+      if (!post) {
+        return new NextResponse(JSON.stringify({ error: 'Post not found' }), {
+          status: 404,
+        })
+      }
+
+      return new NextResponse(JSON.stringify(post), { status: 200 })
+    } catch (error) {
+      return new NextResponse(
+        JSON.stringify({ error: 'Failed to fetch post' }),
+        { status: 500 },
+      )
+    }
+  }
 
   if (postId) {
     try {
       const postIdNumber = parseInt(postId, 10)
-      const post = await fetchPostById(postIdNumber)
+      const post = await fetchPostByPostId(postIdNumber)
       if (!post) {
         return new NextResponse(JSON.stringify({ error: 'Post not found' }), {
           status: 404,
