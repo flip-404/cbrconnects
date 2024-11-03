@@ -1,4 +1,4 @@
-# 캔버라커넥트 (호주 한인 커뮤니티 - 1인 외주 개발)
+# 캔버라커넥트 (호주 한인 커뮤니티 - 1인 개발)
 
 프로젝트 기간: 2024.06.10 ~ 2024.08.14 <br/>인원: 1인 개발
 <br/>사용 기술: Next.JS, Next-Auth, SWR, Prisma, PostgreSQL, Typescript, Tailwind, kakao API, Google API
