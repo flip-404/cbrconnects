@@ -11,36 +11,14 @@ import EditInfo from './EditInfo'
 import MyPosts from './MyPosts'
 import MyComments from './MyComments'
 
-const useMyPosts = (authorId: number | undefined) => {
-  console.log('authorId', authorId)
-  const { data, error } = useSWR(
-    authorId ? `/api/posts?authorId=${authorId}` : null,
-    fetcher,
-  )
-  return {
-    posts: data?.posts || [],
-    isLoading: !error && !data,
-    isError: error,
-  }
-}
-
-const useMyComments = (authorId: number | undefined) => {
-  const { data: comments, error } = useSWR(
-    authorId ? `/api/comments?authorId=${authorId}` : null,
-    fetcher,
-  )
-  return {
-    comments,
-    isLoading: !error && !comments,
-    isError: error,
-  }
-}
-
 function MyInfo() {
   const { data: session } = useSession()
   const [tab, setTab] = useState(0)
-  const { posts } = useMyPosts(session?.user.id)
-  const { comments } = useMyComments(session?.user.id)
+  const { data } = useSWR(
+    session?.user.id ? `/api/myInfo?authorId=${session?.user.id}` : null,
+    fetcher,
+  )
+  const { posts = [], comments = [] } = data || {}
 
   const renderTabs = () => {
     switch (tab) {

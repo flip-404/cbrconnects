@@ -10,6 +10,8 @@ type MyPostsProps = {
 }
 
 function MyPosts({ posts }: MyPostsProps) {
+  console.log('posts', posts)
+
   return (
     <Container>
       <Count>총 {posts.length}개</Count>
