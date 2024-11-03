@@ -8,8 +8,7 @@ import { useState } from 'react'
 import useSWR from 'swr'
 import fetcher from '@/utils/fetcher'
 import EditInfo from './EditInfo'
-import MyPosts from './MyPosts'
-import MyComments from './MyComments'
+import ActivityForm from './ActivityForm'
 
 function MyInfo() {
   const { data: session } = useSession()
@@ -19,15 +18,16 @@ function MyInfo() {
     fetcher,
   )
   const { posts = [], comments = [] } = data || {}
+  console.log('comments', comments)
 
   const renderTabs = () => {
     switch (tab) {
       case 0:
         return <EditInfo />
       case 1:
-        return <MyPosts posts={posts} />
+        return <ActivityForm data={posts} type="POST" />
       case 2:
-        return <MyComments comments={comments} />
+        return <ActivityForm data={comments} type="COMMENT" />
       default:
         return <EditInfo />
     }

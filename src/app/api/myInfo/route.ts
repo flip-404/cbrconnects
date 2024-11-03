@@ -4,7 +4,6 @@ import { NextRequest, NextResponse } from 'next/server'
 async function GET(request: NextRequest) {
   const url = new URL(request.url)
   const authorId = url.searchParams.get('authorId') as string | undefined
-  console.log('authorId입니다', authorId)
 
   if (!authorId)
     return new NextResponse(JSON.stringify([]), {
@@ -28,6 +27,14 @@ async function GET(request: NextRequest) {
         orderBy: {
           createdAt: 'desc',
         },
+        include: {
+          post: {
+            select: {
+              id: true,
+              title: true,
+            },
+          },
+        },
       }),
     ])
     return new NextResponse(JSON.stringify({ posts, comments }), {
@@ -40,4 +47,11 @@ async function GET(request: NextRequest) {
   }
 }
 
-export { GET }
+async function POST(request: NextRequest) {
+  const url = new URL(request.url)
+  return new NextResponse(JSON.stringify({ url }), {
+    status: 500,
+  })
+}
+
+export { GET, POST }

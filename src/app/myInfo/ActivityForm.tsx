@@ -1,31 +1,49 @@
 'use client'
 
-import { PostWithRelations } from '@/types'
+import { CommentWithRelations, PostWithRelations } from '@/types'
 import styled from 'styled-components'
 import { formatDateToFullYear } from '@/utils/formatDate'
 import extractTextFromHtml from '@/utils/extractTextFromHtml'
+import { useRouter } from 'next/navigation'
 
-type MyPostsProps = {
-  posts: PostWithRelations[]
+type ActivityFormProps = {
+  data: PostWithRelations[] | CommentWithRelations[]
+  type: string
 }
 
-function MyPosts({ posts }: MyPostsProps) {
-  console.log('posts', posts)
+function ActivityForm({ data, type }: ActivityFormProps) {
+  const router = useRouter()
 
+  const handleMoveToPost = (postId: number) => {
+    router.push(`/posts?postId=${postId}`)
+  }
   return (
     <Container>
-      <Count>총 {posts.length}개</Count>
-      {posts.map((post) => {
-        const contentText = extractTextFromHtml(post.content)
+      <Count>총 {data.length}개</Count>
+      {data.map((item) => {
+        const contentText = extractTextFromHtml(item.content)
         const truncatedContent =
           contentText.length > 50
             ? `${contentText.substring(0, 70)}...`
             : contentText
         return (
-          <Post key={post.id}>
+          <Post
+            key={item.id}
+            onClick={() => {
+              handleMoveToPost(
+                type === 'POST'
+                  ? (item as PostWithRelations).id
+                  : (item as CommentWithRelations).post.id,
+              )
+            }}
+          >
             <PostHeader>
-              <span>{post.title}</span>
-              {formatDateToFullYear(post.createdAt)}
+              <span>
+                {type === 'POST'
+                  ? (item as PostWithRelations).title
+                  : (item as CommentWithRelations).post.title}
+              </span>
+              {formatDateToFullYear(item.createdAt)}
             </PostHeader>
             <Content>{truncatedContent}</Content>
           </Post>
@@ -35,10 +53,10 @@ function MyPosts({ posts }: MyPostsProps) {
   )
 }
 
-export default MyPosts
+export default ActivityForm
 
 const Container = styled.div`
-  max-width: 890px;
+  min-width: 890px;
   border: 1px solid #e0e3e8;
   border-radius: 8px;
   padding: 42px 94px 42px 42px;
@@ -60,6 +78,7 @@ const Post = styled.div`
   flex-direction: column;
   gap: 12px;
   border-bottom: 1px solid #a2acb9;
+  cursor: pointer;
 `
 
 const PostHeader = styled.div`

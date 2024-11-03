@@ -16,6 +16,7 @@ export type CommentWithRelations = Comment & {
   author: User
   likes: CommentLike[]
   replies: CommentWithRelations[]
+  post: Post
 }
 
 export type CommentResponse = {
