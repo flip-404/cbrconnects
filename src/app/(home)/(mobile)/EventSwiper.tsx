@@ -4,6 +4,8 @@
 
 import { useState, useEffect, useRef } from 'react'
 import styled from 'styled-components'
+import CaretLeftIcon from '@/assets/mobile/caretLeft.svg'
+import CaretRightIcon from '@/assets/mobile/caretRight.svg'
 
 const images = [
   '/SecondEventImage.png',
@@ -52,8 +54,12 @@ export default function EventSwiper() {
           </Slide>
         ))}
       </SlideWrapper>
-      <NavButton onClick={prevSlide}>‹</NavButton>
-      <NavButton onClick={nextSlide}>›</NavButton>
+      <NavButton onClick={prevSlide}>
+        <CaretLeftIcon />
+      </NavButton>
+      <NavButton onClick={nextSlide}>
+        <CaretRightIcon />
+      </NavButton>
       <Pagination>
         {currentSlide + 1} / {images.length}
       </Pagination>
@@ -91,10 +97,10 @@ const EventImage = styled.img`
 `
 
 const NavButton = styled.button`
+  all: unset;
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
-  background: rgba(0, 0, 0, 0.5);
   color: white;
   border: none;
   padding: 10px;
