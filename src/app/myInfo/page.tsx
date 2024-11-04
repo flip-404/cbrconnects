@@ -18,7 +18,6 @@ function MyInfo() {
     fetcher,
   )
   const { posts = [], comments = [] } = data || {}
-  console.log('comments', comments)
 
   const renderTabs = () => {
     switch (tab) {
@@ -36,43 +35,45 @@ function MyInfo() {
   if (session && session.user)
     return (
       <Container>
-        <LeftSideBar>
-          <UserProfile>
-            <ImageWrapper>
-              <ImageLabel htmlFor="profile-image">
-                {session!.user.profileImage ? (
-                  <>
-                    <ProfileImage
-                      src={session!.user.profileImage || EmptyProfile}
-                      alt="Profile"
-                    />
-                  </>
-                ) : (
-                  <EmptyProfile />
-                )}
-              </ImageLabel>
-              <UpdateImageIcon />
-            </ImageWrapper>
-            {session!.user.nickname} 님
-          </UserProfile>
-          <MyPosting>
-            내가 작성한 게시글 <span>{posts?.length}개</span>
-          </MyPosting>
-          <MyPosting>
-            내가 작성한 댓글 <span>{comments?.length}개</span>
-          </MyPosting>
-          <Tabs>
-            <Tab $active={tab === 0} onClick={() => setTab(0)}>
-              내 정보 수정
-            </Tab>
-            <Tab $active={tab === 1} onClick={() => setTab(1)}>
-              작성한 게시글
-            </Tab>
-            <Tab $active={tab === 2} onClick={() => setTab(2)}>
-              작성한 댓글
-            </Tab>
-          </Tabs>
-        </LeftSideBar>
+        <div>
+          <LeftSideBar>
+            <UserProfile>
+              <ImageWrapper>
+                <ImageLabel htmlFor="profile-image">
+                  {session!.user.profileImage ? (
+                    <>
+                      <ProfileImage
+                        src={session!.user.profileImage || EmptyProfile}
+                        alt="Profile"
+                      />
+                    </>
+                  ) : (
+                    <EmptyProfile />
+                  )}
+                </ImageLabel>
+                <UpdateImageIcon />
+              </ImageWrapper>
+              {session!.user.nickname} 님
+            </UserProfile>
+            <MyPosting>
+              내가 작성한 게시글 <span>{posts?.length}개</span>
+            </MyPosting>
+            <MyPosting>
+              내가 작성한 댓글 <span>{comments?.length}개</span>
+            </MyPosting>
+            <Tabs>
+              <Tab $active={tab === 0} onClick={() => setTab(0)}>
+                내 정보 수정
+              </Tab>
+              <Tab $active={tab === 1} onClick={() => setTab(1)}>
+                작성한 게시글
+              </Tab>
+              <Tab $active={tab === 2} onClick={() => setTab(2)}>
+                작성한 댓글
+              </Tab>
+            </Tabs>
+          </LeftSideBar>
+        </div>
         <Body>{renderTabs()}</Body>
       </Container>
     )
