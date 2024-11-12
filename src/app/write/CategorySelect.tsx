@@ -25,7 +25,8 @@ function CategorySelect({
 
   const isSubCategoryDisabled =
     (!mainCategory && type === 'subCategory') ||
-    (mainCategory === '쿼카마켓' && type === 'subCategory')
+    (mainCategory === '쿼카마켓' && type === 'subCategory') ||
+    (mainCategory === '업소록' && type === 'subCategory')
 
   const categories = useMemo(() => {
     if (type === 'mainCategory') return NavsData.map((cg) => cg.label)
@@ -37,6 +38,7 @@ function CategorySelect({
 
   const renderLabel = () => {
     if (type === 'subCategory' && mainCategory === '쿼카마켓') return '쿼카마켓'
+    if (type === 'subCategory' && mainCategory === '업소록') return '업소록'
     if (type === 'mainCategory') return mainCategory || defaultLabel
     return subCategory || defaultLabel
   }

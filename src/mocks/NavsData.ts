@@ -20,7 +20,6 @@ const NavsData = [
         href: '/community/yesmigration',
       },
       { id: 'parcel', label: '한인전문택배', href: '/community/parcel' },
-      { id: 'business', label: '업소록', href: '/community/business' },
     ],
   },
   {
@@ -41,6 +40,12 @@ const NavsData = [
       { id: 'rent', label: '렌트', href: '/rentshare/rent' },
       { id: 'share', label: '쉐어', href: '/rentshare/share' },
     ],
+  },
+  {
+    label: '업소록',
+    href: '/business',
+    id: 'business',
+    submenu: [],
   },
 ]
 

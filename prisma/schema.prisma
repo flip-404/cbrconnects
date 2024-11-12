@@ -103,6 +103,7 @@ enum MainCategory {
   job
   market
   rentshare
+  business
 }
 
 enum SubCategory {
@@ -113,7 +114,6 @@ enum SubCategory {
   news
   yesmigration
   parcel
-  business
   offer
   search
   rent
