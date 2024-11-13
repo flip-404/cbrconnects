@@ -33,7 +33,7 @@ const Container = styled.div`
   background: #282e38;
   display: grid;
   align-items: center;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   grid-template-rows: 1fr;
   box-sizing: border-box;
 `

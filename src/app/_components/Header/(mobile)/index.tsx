@@ -4,9 +4,11 @@ import styled from 'styled-components'
 import SearchIcon from '@/assets/mobile/search.svg'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import { useSession } from 'next-auth/react'
 import SearchModal from './SearchModal'
 
 function MobileHeader() {
+  const { data: session } = useSession()
   const [isSearchBarOn, setIsSearchBarOn] = useState(false)
   const router = useRouter()
 
@@ -19,7 +21,7 @@ function MobileHeader() {
       >
         캔버라 커넥트
       </MobileLogo>
-      <ButtonWrapper>
+      <ButtonWrapper $isLogin={Boolean(session?.user)}>
         <SearchButton
           onClick={() => {
             setIsSearchBarOn(true)
@@ -27,7 +29,13 @@ function MobileHeader() {
         >
           <SearchIcon />
         </SearchButton>
-        <MobileSigninButton>로그인</MobileSigninButton>
+        {session?.user ? (
+          <ProfileWrapper>
+            <img src={session?.user.profileImage} />
+          </ProfileWrapper>
+        ) : (
+          <MobileSigninButton>로그인</MobileSigninButton>
+        )}
       </ButtonWrapper>
     </MobileHeaderContainer>
   ) : (
@@ -69,10 +77,10 @@ const MobileLogo = styled.div`
   text-decoration: none;
 `
 
-const ButtonWrapper = styled.div`
+const ButtonWrapper = styled.div<{ $isLogin: boolean }>`
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: ${(props) => (props.$isLogin ? '18px' : '12px')};
 `
 
 const SearchButton = styled.button`
@@ -90,4 +98,16 @@ const MobileSigninButton = styled.button`
   border-radius: 4px;
   background: #ecf0fe33;
   cursor: pointer;
+`
+
+const ProfileWrapper = styled.div`
+  width: 28px;
+  height: 28px;
+  border-radius: 50%; /* 동그란 모양으로 */
+  overflow: hidden; /* 이미지가 원을 벗어나지 않도록 */
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover; /* 이미지가 원에 맞게 잘리도록 */
+  }
 `

@@ -8,6 +8,7 @@ import MobileSubHeader from '@/app/_components/MobileSubHeader'
 import useSWR from 'swr'
 import fetcher from '@/utils/fetcher'
 
+import MobileWriteButton from '@/app/_components/MobileWriteButton'
 import MobileHomeBoard from './MobileHomeBoard'
 import EventSwiper from './EventSwiper'
 
@@ -30,6 +31,7 @@ export default function MobileHome() {
         handleMoveToPost={handleMoveToPost}
       />
       <PromotionList />
+      <MobileWriteButton />
     </Container>
   )
 }
