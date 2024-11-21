@@ -27,7 +27,8 @@
     "**/*.tsx",
     ".next/types/**/*.ts",
     "next.config.mjs",
-    "prisma/**/*.ts"
+    "prisma/**/*.ts",
+    "src/app/_components/MyInfoInput"
   ],
   "exclude": ["node_modules"]
 }

@@ -6,7 +6,7 @@ type PaginationProps = {
   currentPage: number
   totalPages: number
   onPageChange: (page: number) => void
-  maxPageButtons?: number // 한 번에 표시할 페이지 버튼 수 (기본값 4)
+  maxPageButtons?: number
 }
 
 function Pagination({

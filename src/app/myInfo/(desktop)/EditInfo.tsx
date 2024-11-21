@@ -2,7 +2,7 @@
 
 import styled from 'styled-components'
 import { useForm } from 'react-hook-form'
-import MyInfoInput from '../_components/MyInfoInput.tsx'
+import MyInfoInput from '@/app/_components/MyInfoInput'
 
 function EditInfo() {
   const { register } = useForm({

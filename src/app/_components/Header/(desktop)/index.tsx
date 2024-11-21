@@ -89,6 +89,7 @@ const Container = styled.div`
 `
 
 const StyledLink = styled(Link)`
+  white-space: nowrap;
   font-size: 32px;
   font-weight: 700;
   background: linear-gradient(92.69deg, #83adff -10.62%, #a174ff 111.39%);
