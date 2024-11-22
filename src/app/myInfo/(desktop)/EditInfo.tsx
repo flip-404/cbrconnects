@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import { useForm } from 'react-hook-form'
 import MyInfoInput from '@/app/_components/MyInfoInput'
 import { useState } from 'react'
+import { useSession } from 'next-auth/react'
 import EditPasswordModal from '../EditPasswordModal'
 
 function EditInfo() {
@@ -11,6 +12,7 @@ function EditInfo() {
   const { register } = useForm({
     mode: 'onBlur',
   })
+  const { data: session } = useSession()
 
   const onPasswordModal = () => {
     setPasswordModal(true)
@@ -31,18 +33,22 @@ function EditInfo() {
           register={register('id')}
           isError={false}
           errorMessage=""
+          defaultValue={session?.user.userAuthId}
         />
       </InputWrapper>
-      <EditPasswordButton onClick={onPasswordModal}>
-        비밀번호 변경
-      </EditPasswordButton>
-
+      <ButtonWrapper>
+        <EditPasswordButton onClick={onPasswordModal}>
+          비밀번호 변경
+        </EditPasswordButton>
+      </ButtonWrapper>
       <MyInfoInput
         id="username"
         label="이름"
         register={register('password')}
         isError={false}
         errorMessage=""
+        defaultValue={session?.user.userName}
+        disabled
       />
       <MyInfoInput
         id="email"
@@ -50,6 +56,8 @@ function EditInfo() {
         register={register('email')}
         isError={false}
         errorMessage=""
+        defaultValue={session?.user.email}
+        disabled
       />
       <MyInfoInput
         id="nickname"
@@ -57,6 +65,8 @@ function EditInfo() {
         register={register('nickname')}
         isError={false}
         errorMessage=""
+        defaultValue={session?.user.nickname}
+        disabled
       />
     </Container>
   )
@@ -79,4 +89,22 @@ const InputWrapper = styled.div`
   flex-direction: column;
   gap: 16px;
 `
-const EditPasswordButton = styled.button``
+
+const ButtonWrapper = styled.div`
+  display: flex;
+  justify-content: end;
+`
+
+const EditPasswordButton = styled.button`
+  all: unset;
+  cursor: pointer;
+  padding: 10px 12px;
+  border-radius: 8px;
+  background: #eef1f6;
+  font-family: Pretendard;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 24px;
+  text-align: center;
+  color: #282e38;
+`

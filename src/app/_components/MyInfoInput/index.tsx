@@ -14,6 +14,7 @@ type Props = {
   label?: string
   type?: string
   disabled?: boolean
+  defaultValue?: string
 }
 
 function MyInfoInput({
@@ -25,6 +26,7 @@ function MyInfoInput({
   label,
   type = 'text',
   disabled = false,
+  defaultValue = '',
 }: Props) {
   const [passwordOn, setPasswordOn] = useState(false)
 
@@ -37,6 +39,7 @@ function MyInfoInput({
       {label && <Label>{label}</Label>}
       <InputWrapper>
         <StyledInput
+          defaultValue={defaultValue}
           type={passwordOn ? 'text' : type}
           id={id}
           placeholder={placeholder}
