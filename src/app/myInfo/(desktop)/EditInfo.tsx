@@ -3,14 +3,26 @@
 import styled from 'styled-components'
 import { useForm } from 'react-hook-form'
 import MyInfoInput from '@/app/_components/MyInfoInput'
+import { useState } from 'react'
+import EditPasswordModal from '../EditPasswordModal'
 
 function EditInfo() {
+  const [passwordModal, setPasswordModal] = useState(false)
   const { register } = useForm({
     mode: 'onBlur',
   })
 
+  const onPasswordModal = () => {
+    setPasswordModal(true)
+  }
+
+  const offPasswordModal = () => {
+    setPasswordModal(false)
+  }
+
   return (
     <Container>
+      {passwordModal && <EditPasswordModal onClose={offPasswordModal} />}
       <InputWrapper>
         <MyInfoInput
           id="id"
@@ -20,34 +32,11 @@ function EditInfo() {
           isError={false}
           errorMessage=""
         />
-        <MyInfoInput
-          id="passwordCheck"
-          type="password"
-          placeholder="기존 비밀번호를 입력해 주세요."
-          register={register('password')}
-          isError={false}
-          errorMessage=""
-        />
       </InputWrapper>
-      <InputWrapper>
-        <MyInfoInput
-          id="password"
-          label="비밀번호(PW) 변경"
-          type="password"
-          placeholder="변경할 비밀번호를 입력해 주세요."
-          register={register('password')}
-          isError={false}
-          errorMessage=""
-        />
-        <MyInfoInput
-          id="passwordCheck"
-          type="password"
-          placeholder="비밀번호를 한번 더 입력해 주세요."
-          register={register('password')}
-          isError={false}
-          errorMessage=""
-        />
-      </InputWrapper>
+      <EditPasswordButton onClick={onPasswordModal}>
+        비밀번호 변경
+      </EditPasswordButton>
+
       <MyInfoInput
         id="username"
         label="이름"
@@ -90,3 +79,4 @@ const InputWrapper = styled.div`
   flex-direction: column;
   gap: 16px;
 `
+const EditPasswordButton = styled.button``

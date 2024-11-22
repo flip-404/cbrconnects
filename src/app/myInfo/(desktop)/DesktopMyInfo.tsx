@@ -13,6 +13,7 @@ import ActivityForm from './ActivityForm'
 function DesktopMyInfo() {
   const { data: session } = useSession()
   const [tab, setTab] = useState(0)
+
   const { data } = useSWR(
     session?.user.id ? `/api/myInfo?authorId=${session?.user.id}` : null,
     fetcher,
