@@ -8,9 +8,11 @@ import PostListItemSkeleton from './PostListItemSkeleton'
 function PostList({
   posts,
   isLoading,
+  isBusiness = false,
 }: {
   posts: PostWithRelations[]
   isLoading: boolean
+  isBusiness?: boolean
 }) {
   if (isLoading) {
     return (
@@ -24,9 +26,9 @@ function PostList({
   if (!posts) return '불러오는 중 입니다'
   if (posts.length === 0) return <NoPosts>아직 게시글이 없어요</NoPosts>
   return (
-    <Container>
+    <Container $isBusiness={isBusiness}>
       {posts?.map((post: PostWithRelations) => (
-        <PostListItem key={post.id} post={post} />
+        <PostListItem isBusiness={isBusiness} key={post.id} post={post} />
       ))}
     </Container>
   )
@@ -51,13 +53,13 @@ const SkeletonContainer = styled.div`
   }
 `
 
-const Container = styled.div`
+const Container = styled.div<{ $isBusiness: boolean }>`
   flex: 1;
   position: relative;
   margin-top: 8px;
   display: flex;
   flex-direction: column;
-  padding: 13px 0px;
+  padding: ${(props) => (props.$isBusiness ? '0px 0px 0px 30px' : '13px 0px')};
   gap: 26px;
   width: 100%;
   box-sizing: border-box;

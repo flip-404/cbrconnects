@@ -13,6 +13,8 @@ import useSWR from 'swr'
 import PostPagination from '@/app/_components/PostPagination'
 import { useMediaQuery } from '@mui/material'
 import MobileSubHeader from '@/app/_components/MobileSubHeader'
+import type { NavsDataType } from '@/mocks/NavsData'
+import LeftSidebar from '../_components/PostList/LeftSidebar'
 
 export default function BusinessLayout({
   children,
@@ -21,16 +23,20 @@ export default function BusinessLayout({
 }) {
   const pathname = usePathname()
   const firstNavItem = NavsData.find((item) => item.href === pathname)!
-  const [subCategory] = useState('all')
+  const [subCategory, setSubCategory] = useState<null | NavsDataType>(null)
   const [page, setPage] = useState(1)
   const isMobile = useMediaQuery('(max-width:768px)')
   const limit = 10
   const query = buildQuery({
-    mainCategoryId: firstNavItem.id,
-    subCategoryId: subCategory === 'all' ? false : subCategory,
+    mainCategoryId: firstNavItem.id.toString(),
+    subCategoryId: subCategory === null ? '' : subCategory.id.toString(),
     page: `${page}`,
     limit: `${limit}`,
   })
+
+  const onChangeSubCate = (subCate: null | NavsDataType) => {
+    setSubCategory(subCate)
+  }
 
   const { data, isLoading } = useSWR(
     `/api/posts${query ? `?${query}` : ''}`,
@@ -45,7 +51,7 @@ export default function BusinessLayout({
   return isMobile ? (
     <LayoutWrapper>
       <MobileSubHeader pathname={pathname} />
-      <PostList posts={posts} isLoading={isLoading} />
+      <PostList isBusiness posts={posts} isLoading={isLoading} />
       <PostPagination
         curPage={page}
         totalCount={totalCount}
@@ -57,7 +63,13 @@ export default function BusinessLayout({
   ) : (
     <LayoutWrapper>
       <BodySection>
-        <PostList posts={posts} isLoading={isLoading} />
+        <Wrapper>
+          <LeftSidebar
+            subCategory={subCategory}
+            onChangeSubCate={onChangeSubCate}
+          />
+          <PostList isBusiness posts={posts} isLoading={isLoading} />
+        </Wrapper>
         <PostPagination
           curPage={page}
           totalCount={totalCount}
@@ -90,4 +102,8 @@ const BodySection = styled.div`
   display: flex;
   flex-direction: column;
   width: 50vw;
+`
+
+const Wrapper = styled.div`
+  display: flex;
 `

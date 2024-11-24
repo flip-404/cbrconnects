@@ -14,9 +14,11 @@ import useComment from '../hooks/useComment'
 import PostDetail from './PostDetail'
 import EditDeleteButtons from './EditDeleteButtons'
 
-function PostViewer() {
+function PostViewer({ modalPostId }: { modalPostId?: number }) {
   const searchParams = useSearchParams()
-  const postId = searchParams.get('postId')
+  const postId = modalPostId
+    ? modalPostId.toString()
+    : searchParams.get('postId')
   const { data: session } = useSession()
 
   const { post, error, handleLikePost, handleDeletePost, isPostLoading } =
@@ -30,10 +32,8 @@ function PostViewer() {
   if (isPostLoading || !post) return <PostViewerSkeleton />
   if (error) return <div>Failed to load post</div>
 
-  console.log('post', post)
-
   return (
-    <Container>
+    <Container $isModal={Boolean(modalPostId)}>
       {session?.user.id === post?.authorId && (
         <UDWrapper>
           <EditDeleteButtons
@@ -92,8 +92,8 @@ function PostViewer() {
 
 export default PostViewer
 
-const Container = styled.div`
-  padding-top: 24px;
+const Container = styled.div<{ $isModal: boolean }>`
+  padding-top: ${(props) => (props.$isModal ? '0px' : '24px')};
 
   @media (max-width: 768px) {
     padding: 0px;

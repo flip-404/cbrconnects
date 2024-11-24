@@ -28,8 +28,8 @@ export default function FirstDepthLayout({
   const limit = 10
 
   const query = buildQuery({
-    mainCategoryId: firstNavItem.id,
-    subCategoryId: subCategory === null ? false : subCategory.id,
+    mainCategoryId: firstNavItem.id.toString(),
+    subCategoryId: subCategory === null ? '' : subCategory.id.toString(),
     page: `${page}`,
     limit: `${limit}`,
   })

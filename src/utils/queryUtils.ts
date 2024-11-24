@@ -1,5 +1,5 @@
 const buildQuery = (
-  paramsObject: Record<string, string | undefined | false | number>,
+  paramsObject: Record<string, string | undefined>,
 ): string => {
   const params = new URLSearchParams()
 

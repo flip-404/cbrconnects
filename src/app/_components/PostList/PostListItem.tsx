@@ -10,60 +10,82 @@ import NewIcon from '@/assets/desktop/new_icon.svg'
 import CommentIcon from '@/assets/desktop/comment_icon.svg'
 import isNew from '@/utils/isNew'
 import { useRouter } from 'next/navigation'
+import { useState } from 'react'
+import PostModal from './PostModal'
 
-function PostListItem({ post }: { post: PostWithRelations }) {
+function PostListItem({
+  post,
+  isBusiness = false,
+}: {
+  post: PostWithRelations
+  isBusiness: boolean
+}) {
   const router = useRouter()
-
   const handleMoveToPost = (postId: number) => {
     router.push(`/posts?postId=${postId}`)
   }
+  const [postModal, setPostModal] = useState(false)
 
   return (
-    <Container
-      onClick={() => {
-        handleMoveToPost(post.id)
-      }}
-    >
-      <Body>
-        <Title>
-          <CategoryChip
-            $category={
-              post.subCategory ? post.subCategory.name : post.mainCategory.name
-            }
-          >
-            {post.subCategory
-              ? post.subCategory.label
-              : post.mainCategory.label}
-          </CategoryChip>
-          {post.title}
-          {isNew(post.createdAt) && <NewIcon />}
-        </Title>
-        <PostDetail>
-          <LeftWrapper>
-            {post.author.nickname}
-            <SmallSeparatorIcon />
-            {formatDateToMonth(post.createdAt)}
-          </LeftWrapper>
-          <RightWrapper>
-            <Counting>
-              <ViewIcon />
-              {post.viewCount}
-            </Counting>
-            <Counting>
-              <LikeIcon />
-              {post.likes.length}
-            </Counting>
-            <Counting>
-              <CommentIcon />
-              {post.comments.length}
-            </Counting>
-          </RightWrapper>
-        </PostDetail>
-      </Body>
-      {post.thumbnail && (
-        <Thumbnail src={post.thumbnail} width={70} height={48} />
+    <>
+      {' '}
+      {postModal && (
+        <PostModal
+          onClose={() => {
+            setPostModal(false)
+          }}
+          postId={post.id}
+        />
       )}
-    </Container>
+      <Container
+        onClick={() => {
+          if (isBusiness) setPostModal(true)
+          else handleMoveToPost(post.id)
+        }}
+      >
+        <Body>
+          <Title>
+            <CategoryChip
+              $category={
+                post.subCategory
+                  ? post.subCategory.name
+                  : post.mainCategory.name
+              }
+            >
+              {post.subCategory
+                ? post.subCategory.label
+                : post.mainCategory.label}
+            </CategoryChip>
+            {post.title}
+            {isNew(post.createdAt) && <NewIcon />}
+          </Title>
+          <PostDetail>
+            <LeftWrapper>
+              {post.author.nickname}
+              <SmallSeparatorIcon />
+              {formatDateToMonth(post.createdAt)}
+            </LeftWrapper>
+            <RightWrapper>
+              <Counting>
+                <ViewIcon />
+                {post.viewCount}
+              </Counting>
+              <Counting>
+                <LikeIcon />
+                {post.likes.length}
+              </Counting>
+              <Counting>
+                <CommentIcon />
+                {post.comments.length}
+              </Counting>
+            </RightWrapper>
+          </PostDetail>
+        </Body>
+        {post.thumbnail && (
+          <Thumbnail src={post.thumbnail} width={70} height={48} />
+        )}
+      </Container>
+    </>
   )
 }
 
