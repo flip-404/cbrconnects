@@ -10,7 +10,7 @@ const tabData = [
   { id: 2, icon: <JobIcon />, label: '구인/구직', category: 'job' },
   { id: 3, icon: <MarketIcon />, label: '쿼카마켓', category: 'market' },
   { id: 4, icon: <RentShareIcon />, label: '렌트/쉐어', category: 'rentshare' },
-  { id: 4, icon: <RentShareIcon />, label: '업소록', category: 'business' },
+  { id: 5, icon: <RentShareIcon />, label: '업소록', category: 'business' },
 ]
 
 export default tabData

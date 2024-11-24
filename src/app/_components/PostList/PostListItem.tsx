@@ -31,7 +31,9 @@ function PostListItem({ post }: { post: PostWithRelations }) {
               post.subCategory ? post.subCategory.name : post.mainCategory.name
             }
           >
-            {post.subCategory ? post.subCategory.name : post.mainCategory.name}
+            {post.subCategory
+              ? post.subCategory.label
+              : post.mainCategory.label}
           </CategoryChip>
           {post.title}
           {isNew(post.createdAt) && <NewIcon />}
