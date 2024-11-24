@@ -106,4 +106,5 @@ const BodySection = styled.div`
 
 const Wrapper = styled.div`
   display: flex;
+  gap: 30px;
 `

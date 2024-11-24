@@ -59,7 +59,7 @@ const Container = styled.div<{ $isBusiness: boolean }>`
   margin-top: 8px;
   display: flex;
   flex-direction: column;
-  padding: ${(props) => (props.$isBusiness ? '0px 0px 0px 30px' : '13px 0px')};
+  padding: ${(props) => (props.$isBusiness ? '0px' : '13px 0px')};
   gap: 26px;
   width: 100%;
   box-sizing: border-box;
@@ -72,6 +72,7 @@ const Container = styled.div<{ $isBusiness: boolean }>`
 `
 
 const NoPosts = styled.span`
+  flex: 1;
   display: flex;
   color: #999999;
   justify-content: center;
