@@ -4,7 +4,7 @@ import PromotionList from '@/app/_components/PromotionList'
 import Sidebar from '@/app/_components/Sidebar'
 import SubCategoryBar from '@/app/_components/SubCategoryBar'
 import PostList from '@/app/_components/PostList'
-import NavsData, { NavsDataType } from '@/mocks/NavsData'
+import NavsData from '@/mocks/NavsData'
 import fetcher from '@/utils/fetcher'
 import buildQuery from '@/utils/queryUtils'
 import { usePathname } from 'next/navigation'
@@ -21,17 +21,15 @@ export default function FirstDepthLayout({
   children: React.ReactNode
 }) {
   const pathname = usePathname()
-  const firstNavItem: NavsDataType = NavsData.find(
-    (item) => item.href === pathname,
-  )!
+  const firstNavItem = NavsData.find((item) => item.href === pathname)!
   const [subCategory, setSubCategory] = useState('all')
   const [page, setPage] = useState(1)
   const isMobile = useMediaQuery('(max-width:768px)')
   const limit = 10
 
   const query = buildQuery({
-    mainCategory: firstNavItem.id,
-    subCategory: subCategory === 'all' ? false : subCategory,
+    mainCategoryId: firstNavItem.id,
+    subCategoryId: subCategory === 'all' ? false : subCategory,
     page: `${page}`,
     limit: `${limit}`,
   })

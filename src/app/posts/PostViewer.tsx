@@ -31,8 +31,7 @@ function PostViewer() {
   if (isPostLoading || !post) return <PostViewerSkeleton />
   if (error) return <div>Failed to load post</div>
 
-  const mainCategory = findLabelById(post?.mainCategory)
-  const subCategory = findLabelById(post?.subCategory)
+  console.log('post', post)
 
   return (
     <Container>
@@ -45,10 +44,8 @@ function PostViewer() {
         </UDWrapper>
       )}
       <ContentBox>
-        <CategoryLink
-          href={`/${post?.mainCategory}/${post?.subCategory ?? ''}`}
-        >
-          {`${mainCategory}${subCategory ? ` > ${subCategory}` : ''}`}
+        <CategoryLink href={`${post?.mainCategory.href}`}>
+          {`${post?.mainCategory.label}${post?.subCategory ? ` > ${post?.subCategory.label}` : ''}`}
         </CategoryLink>
         <Title>{post?.title}</Title>
         <PostDetail post={post} />

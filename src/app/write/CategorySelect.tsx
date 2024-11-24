@@ -3,6 +3,7 @@ import NavsData from '@/mocks/NavsData'
 import { useState, useMemo } from 'react'
 import BottomArrowIcon from '@/assets/desktop/bottomArrow_icon.svg'
 import Options from './Options'
+import type { Category } from './PostEditor'
 
 function CategorySelect({
   defaultLabel,
@@ -13,9 +14,9 @@ function CategorySelect({
 }: {
   defaultLabel: string
   type: 'mainCategory' | 'subCategory'
-  mainCategory: null | string
-  subCategory: null | string
-  onCgChange: (value: null | string) => void
+  mainCategory: Category | null
+  subCategory: Category | null
+  onCgChange: (value: null | Category) => void
 }) {
   const [isOpen, setIsOpen] = useState(false)
 
@@ -25,22 +26,22 @@ function CategorySelect({
 
   const isSubCategoryDisabled =
     (!mainCategory && type === 'subCategory') ||
-    (mainCategory === '쿼카마켓' && type === 'subCategory') ||
-    (mainCategory === '업소록' && type === 'subCategory')
+    (mainCategory?.label === '쿼카마켓' && type === 'subCategory')
 
   const categories = useMemo(() => {
-    if (type === 'mainCategory') return NavsData.map((cg) => cg.label)
+    if (type === 'mainCategory')
+      return NavsData.map((cg) => ({ id: cg.id, label: cg.label }))
 
-    return NavsData.find((cg) => cg.label === mainCategory)?.submenu.map(
-      (cg) => cg.label,
+    return NavsData.find((cg) => cg.label === mainCategory?.label)?.submenu.map(
+      (cg) => ({ id: cg.id, label: cg.label }),
     )
   }, [type, mainCategory])
 
   const renderLabel = () => {
-    if (type === 'subCategory' && mainCategory === '쿼카마켓') return '쿼카마켓'
-    if (type === 'subCategory' && mainCategory === '업소록') return '업소록'
-    if (type === 'mainCategory') return mainCategory || defaultLabel
-    return subCategory || defaultLabel
+    if (type === 'subCategory' && mainCategory?.label === '쿼카마켓')
+      return '쿼카마켓'
+    if (type === 'mainCategory') return mainCategory?.label || defaultLabel
+    return subCategory?.label || defaultLabel
   }
 
   return (
@@ -52,7 +53,9 @@ function CategorySelect({
 
       {isOpen && categories && (
         <Options
-          selectedCg={type === 'mainCategory' ? mainCategory : subCategory}
+          selectedCg={
+            type === 'mainCategory' ? mainCategory?.id : subCategory?.id
+          }
           categories={categories}
           onCgChange={onCgChange}
           toggleDropdown={toggleDropdown}

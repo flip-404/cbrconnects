@@ -1,20 +1,18 @@
 /* eslint-disable import/prefer-default-export */
 import prisma from '@/libs/prisma'
-import { MainCategory } from '@prisma/client'
 import { NextRequest, NextResponse } from 'next/server'
 
-const fetchPostsByCategories = async (
-  categories: MainCategory[],
-  limit: number,
-) => {
+type Catgory = { name: string; categoryId: number }
+
+const fetchPostsByCategories = async (categories: Catgory[], limit: number) => {
   const postsByCategory = await Promise.all(
-    categories.map(async (category) => {
+    categories.map(async ({ categoryId, name }) => {
       const posts = await prisma.post.findMany({
-        where: { mainCategory: category },
+        where: { mainCategoryId: categoryId },
         orderBy: { createdAt: 'desc' },
         take: limit,
       })
-      return { [category]: posts }
+      return { [name]: posts }
     }),
   )
 
@@ -34,20 +32,26 @@ async function GET(request: NextRequest) {
   const url = new URL(request.url)
   const limit = parseInt(url.searchParams.get('limit') || '10', 10)
 
-  const categories: MainCategory[] = ['community', 'job', 'market', 'rentshare']
+  const categories = [
+    { categoryId: 1, name: 'community' },
+    { categoryId: 2, name: 'job' },
+    { categoryId: 3, name: 'market' },
+    { categoryId: 4, name: 'rentshare' },
+    { categoryId: 5, name: 'business' },
+  ]
 
   try {
-    // Execute both fetch functions concurrently
     const [postsByCategory, allPosts] = await Promise.all([
       fetchPostsByCategories(categories, limit),
       fetchAllPosts(limit),
     ])
 
-    postsByCategory.all = allPosts
-
-    return new NextResponse(JSON.stringify(postsByCategory), {
-      status: 200,
-    })
+    return new NextResponse(
+      JSON.stringify({ ...postsByCategory, all: allPosts }),
+      {
+        status: 200,
+      },
+    )
   } catch (error) {
     return new NextResponse(
       JSON.stringify({ error: 'Failed to fetch posts' }),

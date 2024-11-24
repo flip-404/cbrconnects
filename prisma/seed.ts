@@ -1,72 +1,65 @@
-/* eslint-disable no-plusplus */
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const { PrismaClient, MainCategory, SubCategory } = require('@prisma/client')
+const { PrismaClient } = require('@prisma/client')
 
 const prisma = new PrismaClient()
 
 async function main() {
-  const posts = []
-  const now = new Date()
-  const oneYearAgo = new Date(now)
-  oneYearAgo.setFullYear(oneYearAgo.getFullYear() - 1)
+  const mainCategories = [
+    { name: 'community' },
+    { name: 'job' },
+    { name: 'market' },
+    { name: 'rentshare' },
+    { name: 'business' },
+  ]
 
-  // 무작위 날짜 생성 함수
-  function getRandomDate(start: Date, end: Date) {
-    return new Date(
-      start.getTime() + Math.random() * (end.getTime() - start.getTime()),
-    )
+  // Sub Categories
+  const subCategories = {
+    community: ['freeboard', 'club', 'news', 'yesmigration', 'parcel'],
+    job: ['offer', 'search'],
+    rentshare: ['rent', 'share'],
+    business: [
+      'institutions',
+      'construction',
+      'education',
+      'dessert',
+      'restaurant',
+      'market',
+      'marketing',
+      'logistics',
+      'real_estate',
+      'bakery_cafe',
+      'beauty',
+      'automotive',
+      'fitness',
+      'clinic',
+      'apparel',
+    ],
   }
 
-  // 무작위 제목 및 내용 생성 함수
-  function getRandomText(length: number) {
-    const characters =
-      'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789'
-    let result = ''
-    const charactersLength = characters.length
-    for (let i = 0; i < length; i++) {
-      result += characters.charAt(Math.floor(Math.random() * charactersLength))
-    }
-    return result
-  }
-
-  // 게시물 85개 생성
-  for (let i = 0; i < 85; i++) {
-    const title = `Post Title ${i + 1}`
-    const content = `This is the content of post ${i + 1}. ${getRandomText(100)}`
-
-    const thumbnail =
-      Math.random() < 0.5
-        ? 'https://imagedelivery.net/H829JwCpSRZuNsyFvxdguA/bbd3462c-9ef6-4be1-a01b-1becf4020f00/public'
-        : null
-
-    const createdAt = getRandomDate(oneYearAgo, now)
-
-    const isNotice = i < 3
-
-    posts.push({
-      title,
-      content,
-      thumbnail,
-      createdAt,
-      isNotice,
-      mainCategory: MainCategory.community,
-      subCategory: SubCategory.freeboard,
-      authorId: 22,
-      searchTitle: title,
-      searchContent: content,
-      searchFullText: `${title} ${content}`,
+  for (const main of mainCategories) {
+    const createdMain = await prisma.mainCategory.create({
+      data: { name: main.name },
     })
+
+    const subs = subCategories[main.name as keyof typeof subCategories]
+    if (subs) {
+      for (const sub of subs) {
+        await prisma.subCategory.create({
+          data: {
+            name: sub,
+            mainCategoryId: createdMain.id,
+          },
+        })
+      }
+    }
   }
 
-  await prisma.post.createMany({ data: posts })
+  console.log('Seeding completed!')
 }
 
 main()
-  .then(() => {
-    console.log('Seeding completed successfully.')
-  })
   .catch((e) => {
-    console.error('Seeding failed:', e)
+    console.error(e)
+    process.exit(1)
   })
   .finally(async () => {
     await prisma.$disconnect()

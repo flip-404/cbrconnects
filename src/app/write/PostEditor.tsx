@@ -23,6 +23,8 @@ import NotificationModal from '../_components/NotificationModal'
 Quill.register('modules/imageResize', ImageResize)
 Quill.register('modules/imageDrop', ImageDrop)
 
+export type Category = { id: number; label: string }
+
 const DynamicReactQuill = dynamic(
   async () => {
     const { default: RQ } = await import('react-quill')
@@ -49,8 +51,8 @@ function PostEditor() {
   const [content, setContent] = useState('')
   const quillRef = useRef<ReactQuill>()
   const [thumbnail, setThumbnail] = useState(null)
-  const [mainCategory, setMainCateogy] = useState<null | string>(null)
-  const [subCategory, setSubCategory] = useState<null | string>(null)
+  const [mainCategory, setMainCateogy] = useState<Category | null>(null)
+  const [subCategory, setSubCategory] = useState<Category | null>(null)
   const [errorModal, setErrorModal] = useState<null | string>(null)
 
   const imageHandler = async () => {
@@ -125,7 +127,7 @@ function PostEditor() {
       setErrorModal('본문은 필수 입력입니다.')
       return
     }
-    if (mainCategory !== '쿼카마켓' && (!mainCategory || !subCategory)) {
+    if (mainCategory?.label !== '쿼카마켓' && (!mainCategory || !subCategory)) {
       setErrorModal('게시판을 선택해 주세요.')
       return
     }
@@ -145,9 +147,9 @@ function PostEditor() {
         title,
         content,
         userId: session?.user.id,
-        mainCategory: findIdByLabel(mainCategory),
-        subCategory: findIdByLabel(subCategory),
-        thumbnail,
+        mainCategoryId: mainCategory.id,
+        subCategoryId: subCategory?.id,
+        thumbnail: thumbnail || undefined,
         isNotice: false,
       }),
     })

@@ -1,10 +1,11 @@
 import styled from 'styled-components'
 import CheckIcon from '@/assets/desktop/check_icon.svg'
+import type { Category } from './PostEditor'
 
 type Props = {
-  selectedCg: null | string
-  categories: string[] | undefined
-  onCgChange: (value: null | string) => void
+  selectedCg: number | undefined
+  categories: Category[]
+  onCgChange: (value: null | Category) => void
   toggleDropdown: () => void
 }
 
@@ -16,19 +17,19 @@ function Options({
 }: Props) {
   return (
     <Container>
-      {categories?.map((label) => (
+      {categories?.map((category) => (
         <Option
-          key={label}
+          key={category.id}
           onClick={() => {
-            if (selectedCg !== label) {
-              onCgChange(label)
+            if (selectedCg !== category.id) {
+              onCgChange(category)
             }
             toggleDropdown()
           }}
-          $selected={selectedCg === label}
+          $selected={selectedCg === category.id}
         >
-          {label}
-          {selectedCg === label && <CheckIcon />}
+          {category.label}
+          {selectedCg === category.id && <CheckIcon />}
         </Option>
       ))}
     </Container>

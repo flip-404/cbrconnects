@@ -1,20 +1,24 @@
 import prisma from '@/libs/prisma'
-import { MainCategory, Prisma, SubCategory } from '@prisma/client'
+import { Prisma } from '@prisma/client'
 import { NextRequest, NextResponse } from 'next/server'
 
 type GetPostQuery = {
-  mainCategory?: MainCategory
-  subCategory?: SubCategory
+  mainCategoryId?: number
+  subCategoryId?: number
   postId?: string
   authorId?: string
 }
 
 const getPostQueryParams = (url: URL): GetPostQuery => {
-  const mainCategory = url.searchParams.get('mainCategory') as MainCategory
-  const subCategory = url.searchParams.get('subCategory') as SubCategory
+  const mainCategoryId = url.searchParams.get('mainCategoryId')
+    ? Number(url.searchParams.get('mainCategoryId'))
+    : undefined
+  const subCategoryId = url.searchParams.get('subCategoryId')
+    ? Number(url.searchParams.get('subCategoryId'))
+    : undefined
   const postId = url.searchParams.get('postId') as string | undefined
 
-  return { mainCategory, subCategory, postId }
+  return { mainCategoryId, subCategoryId, postId }
 }
 
 const fetchPostByPostId = async (postId: number) => {
@@ -31,6 +35,8 @@ const fetchPostByPostId = async (postId: number) => {
       author: true,
       comments: true,
       likes: true,
+      mainCategory: true,
+      subCategory: true,
     },
   })
 
@@ -53,6 +59,8 @@ const fetchPosts = async (
       author: true,
       comments: true,
       likes: true,
+      mainCategory: true, // Added to include main category data
+      subCategory: true, // Added to include subcategory data
     },
   })
 }
@@ -65,10 +73,9 @@ const fetchPostCount = async (whereQuery: Prisma.PostWhereInput) => {
 
 async function GET(request: NextRequest) {
   const startTime = performance.now()
-  console.log('엥')
 
   const url = new URL(request.url)
-  const { mainCategory, subCategory, postId } = getPostQueryParams(url)
+  const { mainCategoryId, subCategoryId, postId } = getPostQueryParams(url)
   const page = parseInt(url.searchParams.get('page') || '1', 10)
   const limit = parseInt(url.searchParams.get('limit') || '40', 10)
 
@@ -83,7 +90,6 @@ async function GET(request: NextRequest) {
       }
       const endTime = performance.now()
       console.log(`fetchPosts duration: ${endTime - startTime} ms`)
-      console.log('뭐여')
       return new NextResponse(JSON.stringify(post), { status: 200 })
     } catch (error) {
       return new NextResponse(
@@ -94,8 +100,8 @@ async function GET(request: NextRequest) {
   }
 
   const whereQuery: Prisma.PostWhereInput = {
-    ...(mainCategory ? { mainCategory } : {}),
-    ...(subCategory ? { subCategory } : {}),
+    ...(mainCategoryId ? { mainCategoryId } : {}),
+    ...(subCategoryId ? { subCategoryId } : {}),
   }
 
   try {
@@ -117,13 +123,13 @@ async function POST(request: NextRequest) {
     title,
     content,
     userId,
-    mainCategory,
-    subCategory,
+    mainCategoryId, // Changed to mainCategoryId
+    subCategoryId, // Changed to subCategoryId
     thumbnail,
     isNotice,
   } = body
 
-  if (!title || !content || !userId || !mainCategory) {
+  if (!title || !content || !userId || !mainCategoryId) {
     return new NextResponse(
       JSON.stringify({ error: 'Missing required fields' }),
       { status: 400 },
@@ -136,8 +142,8 @@ async function POST(request: NextRequest) {
         title,
         content,
         authorId: userId,
-        mainCategory,
-        subCategory,
+        mainCategoryId, // Changed to mainCategoryId
+        subCategoryId, // Changed to subCategoryId
         thumbnail,
         isNotice,
         searchTitle: title,
@@ -159,13 +165,13 @@ async function PUT(request: NextRequest) {
     title,
     content,
     userId,
-    mainCategory,
-    subCategory,
+    mainCategoryId, // Changed to mainCategoryId
+    subCategoryId, // Changed to subCategoryId
     thumbnail,
     isNotice,
   } = body
 
-  if (!title || !content || !userId || !mainCategory || !postId) {
+  if (!title || !content || !userId || !mainCategoryId || !postId) {
     return new NextResponse(
       JSON.stringify({ error: 'Missing required fields' }),
       { status: 400 },
@@ -179,8 +185,8 @@ async function PUT(request: NextRequest) {
         title,
         content,
         authorId: userId,
-        mainCategory,
-        subCategory,
+        mainCategoryId, // Changed to mainCategoryId
+        subCategoryId, // Changed to subCategoryId
         thumbnail,
         isNotice,
         searchTitle: title,

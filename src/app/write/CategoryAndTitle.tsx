@@ -1,6 +1,7 @@
 import styled from 'styled-components'
 import { useEffect } from 'react'
 import CategorySelect from './CategorySelect'
+import type { Category } from './PostEditor'
 
 function CategoryAndTitle({
   mainCategory,
@@ -10,11 +11,11 @@ function CategoryAndTitle({
   onSubCgChange,
   onTitleChange,
 }: {
-  mainCategory: string | null
-  subCategory: string | null
+  mainCategory: Category | null
+  subCategory: Category | null
   title: string
-  onMainCgChange: (value: null | string) => void
-  onSubCgChange: (value: null | string) => void
+  onMainCgChange: (value: null | Category) => void
+  onSubCgChange: (value: null | Category) => void
   onTitleChange: (value: string) => void
 }) {
   useEffect(() => {

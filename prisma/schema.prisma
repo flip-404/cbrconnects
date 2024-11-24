@@ -8,6 +8,26 @@ datasource db {
   directUrl = env("DIRECT_URL")
 }
 
+model MainCategory {
+  id    Int     @id @default(autoincrement())
+  name  String  @unique
+  href  String?
+  label String?
+
+  subCategories SubCategory[]
+  posts         Post[]
+}
+
+model SubCategory {
+  id             Int          @id @default(autoincrement())
+  name           String       @unique
+  label          String?
+  mainCategoryId Int
+  mainCategory   MainCategory @relation(fields: [mainCategoryId], references: [id], onDelete: Cascade)
+
+  posts Post[]
+}
+
 model User {
   id               Int      @id @default(autoincrement())
   email            String   @unique
@@ -36,8 +56,10 @@ model Post {
   content        String
   viewCount      Int          @default(0)
   isNotice       Boolean      @default(false)
-  mainCategory   MainCategory
-  subCategory    SubCategory?
+  mainCategoryId Int
+  mainCategory   MainCategory @relation(fields: [mainCategoryId], references: [id], onDelete: Cascade)
+  subCategoryId  Int?
+  subCategory    SubCategory? @relation(fields: [subCategoryId], references: [id], onDelete: Cascade)
   thumbnail      String?
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
@@ -50,7 +72,7 @@ model Post {
   comments Comment[]
   likes    PostLike[]
 
-  @@index([mainCategory, subCategory])
+  @@index([mainCategoryId, subCategoryId])
 }
 
 model Comment {
@@ -96,26 +118,4 @@ model CommentLike {
   comment   Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
 
   @@unique([userId, commentId])
-}
-
-enum MainCategory {
-  community
-  job
-  market
-  rentshare
-  business
-}
-
-enum SubCategory {
-  notification
-  event
-  freeboard
-  club
-  news
-  yesmigration
-  parcel
-  offer
-  search
-  rent
-  share
 }
