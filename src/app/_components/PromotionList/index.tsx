@@ -1,15 +1,23 @@
 import styled from 'styled-components'
+import { useRouter } from 'next/navigation'
 import PromotionListItem from './PromotionListItem'
 import TempImg1 from './1.png'
 import TempImg2 from './2.png'
 import Inquiry from './Inquiry'
 
 export default function PromotionList() {
+  const router = useRouter()
   return (
     <Container>
       <Header>
         <Title>이런 곳은 어때요?</Title>
-        <MoreButton>더보기</MoreButton>
+        <MoreButton
+          onClick={() => {
+            router.push('/business')
+          }}
+        >
+          더보기
+        </MoreButton>
       </Header>
       <Body>
         {MockData.map((data) => (

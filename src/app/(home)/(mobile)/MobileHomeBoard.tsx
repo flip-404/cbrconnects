@@ -25,7 +25,6 @@ export default function MobileHomeBoard({
   handleMoveToPost: (PostId: number) => void
 }) {
   const [currentSlideIndex, setCurrentSlideIndex] = useState(0)
-
   return (
     <Container>
       <Title>
@@ -58,8 +57,8 @@ export default function MobileHomeBoard({
                       <Number>{postIndex + 1}</Number>
                       <span>
                         {post.subCategory
-                          ? post.subCategory.name
-                          : post.mainCategory.name}
+                          ? post.subCategory.label
+                          : post.mainCategory.label}
                       </span>
                       {post.title}
                     </PostItem>

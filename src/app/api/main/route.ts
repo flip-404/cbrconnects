@@ -11,6 +11,10 @@ const fetchPostsByCategories = async (categories: Catgory[], limit: number) => {
         where: { mainCategoryId: categoryId },
         orderBy: { createdAt: 'desc' },
         take: limit,
+        include: {
+          mainCategory: true,
+          subCategory: true,
+        },
       })
       return { [name]: posts }
     }),
@@ -23,6 +27,10 @@ const fetchAllPosts = async (limit: number) => {
   const allPosts = await prisma.post.findMany({
     orderBy: { createdAt: 'desc' },
     take: limit,
+    include: {
+      mainCategory: true,
+      subCategory: true,
+    },
   })
 
   return allPosts

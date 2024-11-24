@@ -43,6 +43,8 @@ async function GET(request: NextRequest) {
         author: true,
         comments: true,
         likes: true,
+        mainCategory: true,
+        subCategory: true,
       },
       orderBy: {
         createdAt: 'desc',

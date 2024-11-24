@@ -68,6 +68,15 @@ const NavsData = [
       { id: 48, label: '의류', href: '/business/share' },
     ],
   },
+  {
+    label: '공지사항',
+    href: '/notice',
+    id: 6,
+    submenu: [
+      { id: 49, label: '공지사항', href: '/job/offer' },
+      { id: 50, label: '이벤트', href: '/job/search' },
+    ],
+  },
 ]
 
 export default NavsData

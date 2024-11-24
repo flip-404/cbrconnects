@@ -7,16 +7,19 @@ import Link from 'next/link'
 function MobileSubHeader({ pathname }: { pathname: string }) {
   return (
     <Container>
-      {NavsData.map((link) => (
-        <NavButton
-          $isActive={pathname === link.href}
-          key={link.id}
-          href={link.href}
-          scroll={false}
-        >
-          {link.label}
-        </NavButton>
-      ))}
+      {NavsData.map((link) => {
+        if (link.label === '공지사항') return <></>
+        return (
+          <NavButton
+            $isActive={pathname === link.href}
+            key={link.id}
+            href={link.href}
+            scroll={false}
+          >
+            {link.label}
+          </NavButton>
+        )
+      })}
     </Container>
   )
 }

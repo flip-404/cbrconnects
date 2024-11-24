@@ -22,15 +22,18 @@ function DesktopHeader() {
   return (
     <Container>
       <StyledLink href="/">캔버라 커넥트</StyledLink>
-      {NavsData.map((link) => (
-        <NavButton
-          key={link.id}
-          id={link.id}
-          label={link.label}
-          href={link.href}
-          submenu={link.submenu}
-        />
-      ))}
+      {NavsData.map((link) => {
+        if (link.label === '공지사항') return <></>
+        return (
+          <NavButton
+            key={link.id}
+            id={link.id}
+            label={link.label}
+            href={link.href}
+            submenu={link.submenu}
+          />
+        )
+      })}
       <SearchBar />
       {session && session.user ? (
         <ProfileWrapper

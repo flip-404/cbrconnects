@@ -11,15 +11,15 @@ export default function NotificationBox() {
       <Title>
         {isMobile ? (
           <>
-            캔버라 공지사항{' '}
-            <StyledLink href="/">
+            캔버라 공지사항
+            <StyledLink href="/notice">
               <span>더보기</span>
             </StyledLink>
           </>
         ) : (
           <>
             공지사항
-            <StyledLink href="/">
+            <StyledLink href="/notice">
               <NoticeMoreIcon />
             </StyledLink>
           </>

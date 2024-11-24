@@ -35,25 +35,16 @@ async function main() {
     ],
   }
 
-  for (const main of mainCategories) {
-    const createdMain = await prisma.mainCategory.create({
-      data: { name: main.name },
-    })
+  const createdMain = await prisma.mainCategory.create({
+    data: { name: 'notice' },
+  })
 
-    const subs = subCategories[main.name as keyof typeof subCategories]
-    if (subs) {
-      for (const sub of subs) {
-        await prisma.subCategory.create({
-          data: {
-            name: sub,
-            mainCategoryId: createdMain.id,
-          },
-        })
-      }
-    }
-  }
-
-  console.log('Seeding completed!')
+  await prisma.subCategory.create({
+    data: {
+      name: 'notification',
+      mainCategoryId: createdMain.id,
+    },
+  })
 }
 
 main()
