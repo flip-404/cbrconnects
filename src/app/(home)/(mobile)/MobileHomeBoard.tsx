@@ -5,16 +5,16 @@ import Slider from 'react-slick'
 import 'slick-carousel/slick/slick.css'
 import 'slick-carousel/slick/slick-theme.css'
 import TabData from '@/mocks/tabData'
-import { Post } from '@prisma/client'
 import { useState } from 'react'
-import { findLabelById } from '@/utils/getCategoryInfo'
+import { PostWithRelations } from '@/types'
 
 type PostsByCategoryType = {
-  all: Post[]
-  community: Post[]
-  job: Post[]
-  market: Post[]
-  rentshare: Post[]
+  all: PostWithRelations[]
+  community: PostWithRelations[]
+  job: PostWithRelations[]
+  market: PostWithRelations[]
+  rentshare: PostWithRelations[]
+  business: PostWithRelations[]
 }
 
 export default function MobileHomeBoard({
@@ -52,14 +52,14 @@ export default function MobileHomeBoard({
                   (post, postIndex) => (
                     <PostItem
                       key={post.id}
-                      $category={post.subCategory}
+                      $category={post.subCategory.name}
                       onClick={() => handleMoveToPost(post.id)}
                     >
                       <Number>{postIndex + 1}</Number>
                       <span>
                         {post.subCategory
-                          ? findLabelById(post.subCategory)
-                          : findLabelById(post.mainCategory)}
+                          ? post.subCategory.name
+                          : post.mainCategory.name}
                       </span>
                       {post.title}
                     </PostItem>

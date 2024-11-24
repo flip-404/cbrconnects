@@ -7,8 +7,8 @@ function SubCategoryBar({
   changeSubCategory,
 }: {
   pathname: string
-  subCategory: string
-  changeSubCategory: (subCategory: string) => void
+  subCategory: null | NavsDataType
+  changeSubCategory: (subCategory: null | NavsDataType) => void
 }) {
   const firstNavItem: NavsDataType = NavsData.find(
     (item) => item.href === pathname,
@@ -17,9 +17,9 @@ function SubCategoryBar({
   return (
     <Container>
       <SubCategory
-        $isActive={subCategory === 'all'}
+        $isActive={subCategory === null}
         onClick={() => {
-          changeSubCategory('all')
+          changeSubCategory(null)
         }}
       >
         전체
@@ -28,9 +28,9 @@ function SubCategoryBar({
         firstNavItem.submenu!.map((secondNavItem) => (
           <SubCategory
             key={secondNavItem.id}
-            $isActive={subCategory === secondNavItem.id}
+            $isActive={subCategory?.id === secondNavItem.id}
             onClick={() => {
-              changeSubCategory(secondNavItem.id)
+              changeSubCategory(secondNavItem)
             }}
           >
             {secondNavItem.label}

@@ -2,7 +2,6 @@
 
 import PromotionList from '@/app/_components/PromotionList'
 import Sidebar from '@/app/_components/Sidebar'
-import SubCategoryBar from '@/app/_components/SubCategoryBar'
 import PostList from '@/app/_components/PostList'
 import NavsData from '@/mocks/NavsData'
 import fetcher from '@/utils/fetcher'
@@ -21,13 +20,11 @@ export default function BusinessLayout({
   children: React.ReactNode
 }) {
   const pathname = usePathname()
-  console.log('pathname', pathname)
   const firstNavItem = NavsData.find((item) => item.href === pathname)!
-  const [subCategory, setSubCategory] = useState('all')
+  const [subCategory] = useState('all')
   const [page, setPage] = useState(1)
   const isMobile = useMediaQuery('(max-width:768px)')
   const limit = 10
-  console.log('firstNavItem', firstNavItem)
   const query = buildQuery({
     mainCategoryId: firstNavItem.id,
     subCategoryId: subCategory === 'all' ? false : subCategory,
@@ -48,11 +45,6 @@ export default function BusinessLayout({
   return isMobile ? (
     <LayoutWrapper>
       <MobileSubHeader pathname={pathname} />
-      <SubCategoryBar
-        pathname={pathname}
-        subCategory={subCategory}
-        changeSubCategory={setSubCategory}
-      />
       <PostList posts={posts} isLoading={isLoading} />
       <PostPagination
         curPage={page}

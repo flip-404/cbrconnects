@@ -1,8 +1,8 @@
 export type NavsDataType = {
-  id: string
+  id: number
   label: string
   href: string
-  submenu?: { id: string; label: string; href: string }[]
+  submenu?: { id: number; label: string; href: string }[]
 }
 
 const NavsData = [

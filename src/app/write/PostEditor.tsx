@@ -13,8 +13,6 @@ import ImageResize from 'quill-image-resize-module-react'
 import { ImageDrop } from 'quill-image-drop-module'
 import ReactQuill, { Quill } from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
-
-import { findIdByLabel } from '@/utils/getCategoryInfo'
 import formats from './default'
 import Header from './Header'
 import CategoryAndTitle from './CategoryAndTitle'
