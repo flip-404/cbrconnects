@@ -7,19 +7,16 @@ import Link from 'next/link'
 function MobileSubHeader({ pathname }: { pathname: string }) {
   return (
     <Container>
-      {NavsData.map((link) => {
-        if (link.label === '공지사항') return <></>
-        return (
-          <NavButton
-            $isActive={pathname === link.href}
-            key={link.id}
-            href={link.href}
-            scroll={false}
-          >
-            {link.label}
-          </NavButton>
-        )
-      })}
+      {NavsData.filter((link) => link.label !== '공지사항').map((link) => (
+        <NavButton
+          $isActive={pathname === link.href}
+          key={link.id}
+          href={link.href}
+          scroll={false}
+        >
+          {link.label}
+        </NavButton>
+      ))}
     </Container>
   )
 }
@@ -27,7 +24,7 @@ function MobileSubHeader({ pathname }: { pathname: string }) {
 export default MobileSubHeader
 
 const Container = styled.div`
-  z-index: 999;
+  z-index: 50;
   position: fixed;
   top: 56px;
   left: 0px;

@@ -46,6 +46,7 @@ const Container = styled.section`
   gap: 8px;
 `
 const CateItem = styled.div<{ $isSelected: boolean }>`
+  cursor: pointer;
   padding: 8px;
   gap: 4px;
   border-radius: 4px;

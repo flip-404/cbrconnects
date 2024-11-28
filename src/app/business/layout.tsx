@@ -51,7 +51,13 @@ export default function BusinessLayout({
   return isMobile ? (
     <LayoutWrapper>
       <MobileSubHeader pathname={pathname} />
-      <PostList isBusiness posts={posts} isLoading={isLoading} />
+      <Wrapper>
+        <LeftSidebar
+          subCategory={subCategory}
+          onChangeSubCate={onChangeSubCate}
+        />
+        <PostList isBusiness posts={posts} isLoading={isLoading} />
+      </Wrapper>
       <PostPagination
         curPage={page}
         totalCount={totalCount}
@@ -92,7 +98,7 @@ const LayoutWrapper = styled.div`
 
   @media (max-width: 768px) {
     display: block;
-    margin-top: 108px;
+    margin-top: 118px;
     padding-left: 0;
     padding-bottom: 100px;
   }
@@ -101,10 +107,15 @@ const LayoutWrapper = styled.div`
 const BodySection = styled.div`
   display: flex;
   flex-direction: column;
+  margin-top: 30px;
   width: 50vw;
 `
 
 const Wrapper = styled.div`
   display: flex;
   gap: 30px;
+
+  @media (max-width: 768px) {
+    padding-left: 10px;
+  }
 `
