@@ -10,12 +10,7 @@ import SearchModal from './SearchModal'
 function MobileHeader() {
   const { data: session } = useSession()
   const [isSearchBarOn, setIsSearchBarOn] = useState(false)
-  const [dropdown, setDropdown] = useState(false)
   const router = useRouter()
-
-  useEffect(() => {
-    console.log('dropdown', dropdown)
-  }, [dropdown])
 
   return !isSearchBarOn ? (
     <MobileHeaderContainer $isSearchBarOn={isSearchBarOn}>
@@ -35,26 +30,12 @@ function MobileHeader() {
           <SearchIcon />
         </SearchButton>
         {session?.user ? (
-          <ProfileWrapper onClick={() => setDropdown(true)}>
+          <ProfileWrapper
+            onClick={() => {
+              router.push('/myInfo')
+            }}
+          >
             <img src={session?.user.profileImage} />
-            {dropdown && (
-              <DropdownWrapper>
-                <DropdownMenu
-                  onClick={() => {
-                    router.push('/myInfo')
-                  }}
-                >
-                  내 정보
-                </DropdownMenu>
-                <DropdownMenu
-                  onClick={() => {
-                    signOut()
-                  }}
-                >
-                  로그아웃
-                </DropdownMenu>
-              </DropdownWrapper>
-            )}
           </ProfileWrapper>
         ) : (
           <MobileSigninButton>로그인</MobileSigninButton>
@@ -134,33 +115,5 @@ const ProfileWrapper = styled.div`
     width: 100%;
     height: 100%;
     object-fit: cover;
-  }
-`
-
-const DropdownWrapper = styled.div`
-  position: absolute;
-  display: flex;
-  flex-direction: column;
-  left: 0;
-  top: 100%;
-  background-color: white;
-
-  border: 1px solid #ccc;
-  box-shadow: 0 1px 8px rgba(0, 0, 0, 0.1);
-  z-index: 50;
-`
-
-const DropdownMenu = styled.div`
-  z-index: 50;
-  font-size: 1rem;
-  font-weight: 600;
-
-  min-width: 0;
-  padding: 8px 16px;
-  white-space: nowrap;
-  text-decoration: none;
-
-  &:hover {
-    background-color: #e5e5e5;
   }
 `
