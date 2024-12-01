@@ -2,9 +2,9 @@
 
 import styled from 'styled-components'
 import SearchIcon from '@/assets/mobile/search.svg'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import { useRouter } from 'next/navigation'
-import { signOut, useSession } from 'next-auth/react'
+import { useSession } from 'next-auth/react'
 import SearchModal from './SearchModal'
 
 function MobileHeader() {

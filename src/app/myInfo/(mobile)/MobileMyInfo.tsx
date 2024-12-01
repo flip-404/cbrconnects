@@ -5,10 +5,10 @@ import BackIcon from '@/assets/mobile/back.svg'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import { useSession } from 'next-auth/react'
+import fetcher from '@/utils/fetcher'
+import useSWR from 'swr'
 import EditInfo from '../(desktop)/EditInfo'
 import ActivityForm from '../(desktop)/ActivityForm'
-import useSWR from 'swr'
-import fetcher from '@/utils/fetcher'
 import DefaultTab from '../DefaultTab'
 
 function MobileMyInfo() {
@@ -47,7 +47,7 @@ function MobileMyInfo() {
       case 3:
         return '작성한 댓글'
       default:
-        break
+        return '마이페이지'
     }
   }
 
@@ -62,7 +62,7 @@ function MobileMyInfo() {
       case 3:
         return <ActivityForm data={comments} type="COMMENT" />
       default:
-        break
+        return <DefaultTab tab={tab} onTabChange={onTabChange} />
     }
   }
 
