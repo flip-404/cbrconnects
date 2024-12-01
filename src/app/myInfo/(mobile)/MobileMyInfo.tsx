@@ -36,6 +36,21 @@ function MobileMyInfo() {
     }
   }
 
+  const renderHeaderLabel = () => {
+    switch (tab) {
+      case 0:
+        return '마이페이지'
+      case 1:
+        return '내 정보 수정'
+      case 2:
+        return '작성한 게시글'
+      case 3:
+        return '작성한 댓글'
+      default:
+        break
+    }
+  }
+
   const renderTab = () => {
     switch (tab) {
       case 0:
@@ -55,9 +70,9 @@ function MobileMyInfo() {
     <Container>
       <Header>
         <BackIcon onClick={onBackClick} />
-        마이페이지
+        {renderHeaderLabel()}
       </Header>
-      {renderTab()}
+      <TabWrapper>{renderTab()}</TabWrapper>
     </Container>
   )
 }
@@ -65,16 +80,21 @@ function MobileMyInfo() {
 export default MobileMyInfo
 
 const Container = styled.div`
+  position: relative;
   margin-top: 56px;
+  z-index: 100;
 `
 
 const Header = styled.div`
-  margin-top: 56px;
-  position: relative;
+  z-index: 150;
+  background-color: white;
+  height: 52px;
+  width: 100%;
+  position: fixed;
+  top: 56px;
   display: flex;
   align-items: center;
   justify-content: center;
-  height: 52px;
   font-family: NanumSquare Neo;
   font-size: 16px;
   font-weight: 700;
@@ -88,4 +108,8 @@ const Header = styled.div`
     transform: translateY(-50%);
     left: 10px;
   }
+`
+
+const TabWrapper = styled.div`
+  margin-top: 108px;
 `
