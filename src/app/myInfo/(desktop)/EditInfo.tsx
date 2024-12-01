@@ -82,6 +82,10 @@ const Container = styled.div`
   display: flex;
   flex-direction: column;
   gap: 22px;
+
+  @media (max-width: 768px) {
+    min-width: 375px;
+  }
 `
 
 const InputWrapper = styled.div`

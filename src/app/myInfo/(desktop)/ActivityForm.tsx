@@ -84,6 +84,11 @@ const Container = styled.div`
   padding: 42px 94px 42px 42px;
   display: flex;
   flex-direction: column;
+
+  @media (max-width: 768px) {
+    width: auto;
+    min-width: 375px;
+  }
 `
 
 const Header = styled.div`

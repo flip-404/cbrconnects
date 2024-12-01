@@ -1,6 +1,6 @@
 'use client'
 
-import { useSession } from 'next-auth/react'
+import { signOut, useSession } from 'next-auth/react'
 import styled from 'styled-components'
 import EmptyProfile from '@/assets/desktop/empty_profileImg_icon.svg'
 import UpdateImageIcon from '@/assets/desktop/update_profile.svg'
@@ -63,7 +63,15 @@ function DefaultTab({
           <Tab $active={tab === 3} onClick={() => onTabChange(3)}>
             작성한 댓글 {isMobile && <RightArrow />}
           </Tab>
-          {isMobile && <LogoutButton>로그아웃</LogoutButton>}
+          {isMobile && (
+            <LogoutButton
+              onClick={() => {
+                signOut()
+              }}
+            >
+              로그아웃
+            </LogoutButton>
+          )}
         </Tabs>
       </>
     )
