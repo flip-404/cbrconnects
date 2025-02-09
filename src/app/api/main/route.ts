@@ -54,6 +54,9 @@ async function GET(request: NextRequest) {
       fetchAllPosts(limit),
     ])
 
+    console.log('postsByCategory', postsByCategory)
+    console.log('allPosts', allPosts)
+
     return new NextResponse(
       JSON.stringify({ ...postsByCategory, all: allPosts }),
       {

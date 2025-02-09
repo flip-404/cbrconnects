@@ -29,8 +29,7 @@ export default function DesktopHome() {
     <LayoutWrapper>
       <BodySection>
         <EventSection>
-          <FirstEventImage src="/FirstEventImage.png" alt="캔버라커넥트" />
-          <SecondEventImage src="/SecondEventImage.png" alt="캔버라커넥트" />
+          <EventImage src="/FirstEventImage.png" alt="캔버라커넥트" />
         </EventSection>
         <BoardSection>
           <BoardTitle>
@@ -53,7 +52,7 @@ export default function DesktopHome() {
               {isLoading ? (
                 <MainPostSkeleton />
               ) : (
-                postsByCategory[TabData[boardTab].category].map(
+                postsByCategory[TabData[boardTab].category]?.map(
                   (post: PostWithRelations, index: number) => (
                     <MainPost
                       key={post.id}
@@ -77,16 +76,15 @@ export default function DesktopHome() {
 const LayoutWrapper = styled.div`
   margin-top: 80px;
   display: flex;
-  gap: 70px;
-  padding-left: 320px;
   padding-bottom: 100px;
+  gap: 26px;
 `
 
 const BodySection = styled.div`
+  margin-top: 34px;
   display: flex;
   flex-direction: column;
-  width: 50vw;
-  padding-top: 32px;
+  width: 792px;
   gap: 24px;
 `
 
@@ -95,16 +93,11 @@ const EventSection = styled.div`
   justify-content: space-evenly;
 `
 
-const FirstEventImage = styled.img`
+const EventImage = styled.img`
   object-fit: cover;
-  width: 306px;
-  height: 366px;
-`
-
-const SecondEventImage = styled.img`
-  object-fit: cover;
-  width: 520px;
-  height: 366px;
+  width: 792px;
+  height: 240px;
+  border-radius: 8px;
 `
 
 const BoardSection = styled.div`

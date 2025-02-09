@@ -32,7 +32,7 @@ function Sidebar() {
 export default Sidebar
 
 const SidebarSection = styled.div`
-  margin-top: 24px;
+  margin-top: 34px;
   display: flex;
   flex-direction: column;
   gap: 16px;

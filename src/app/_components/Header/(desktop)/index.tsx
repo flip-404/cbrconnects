@@ -13,11 +13,9 @@ import LoginModal from '../../LoginModal'
 function DesktopHeader() {
   const { data: session } = useSession()
   const [isDropdownVisible, setIsDropdownVisible] = useState(false)
-  const [loginModalOpen, setLoginModalOpen] = useState(false)
-
-  const toggleLoginModal = () => {
-    setLoginModalOpen(!loginModalOpen)
-  }
+  const [loginModalOpen, setLoginModalOpen] = useState<
+    null | 'SIGNIN' | 'SIGNUP'
+  >(null)
 
   return (
     <Container>
@@ -65,11 +63,48 @@ function DesktopHeader() {
           )}
         </ProfileWrapper>
       ) : (
-        <LoginButton type="button" onClick={toggleLoginModal}>
-          로그인
+        <LoginButton
+          type="button"
+          onMouseEnter={() => setIsDropdownVisible(true)}
+          onMouseLeave={() => setIsDropdownVisible(false)}
+        >
+          로그인 · 회원가입
+          {isDropdownVisible && (
+            <DropdownMenu>
+              <DropdownOption
+                onClick={() => {
+                  setLoginModalOpen('SIGNIN')
+                }}
+              >
+                로그인
+              </DropdownOption>
+              <DropdownOption
+                onClick={() => {
+                  setLoginModalOpen('SIGNUP')
+                }}
+              >
+                회원가입
+              </DropdownOption>
+            </DropdownMenu>
+          )}
         </LoginButton>
       )}
-      {loginModalOpen && <LoginModal toggleModal={toggleLoginModal} />}
+      {loginModalOpen === 'SIGNIN' && (
+        <LoginModal
+          type="SIGNIN"
+          closeModal={() => {
+            setLoginModalOpen(null)
+          }}
+        />
+      )}
+      {loginModalOpen === 'SIGNUP' && (
+        <LoginModal
+          type="SIGNUP"
+          closeModal={() => {
+            setLoginModalOpen(null)
+          }}
+        />
+      )}
     </Container>
   )
 }
@@ -77,7 +112,9 @@ function DesktopHeader() {
 export default DesktopHeader
 
 const Container = styled.div`
+  box-sizing: border-box;
   position: fixed;
+  min-width: 1260px;
   top: 0;
   width: 100%;
   z-index: 1000;
@@ -86,6 +123,8 @@ const Container = styled.div`
   align-items: center;
   gap: 20px;
   background-color: #2b2b2b;
+  padding-left: 41px;
+  padding-right: 41px;
 `
 
 const StyledLink = styled(Link)`
@@ -97,11 +136,11 @@ const StyledLink = styled(Link)`
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   text-decoration: none;
-  padding-left: 88px;
-  padding-right: 41px;
 `
 
 const LoginButton = styled.button`
+  position: relative;
+  white-space: nowrap;
   padding: 5px 10px;
   border-radius: 4px;
   font-size: 14px;
@@ -155,6 +194,21 @@ const DropdownMenu = styled.div`
 `
 
 const DropdownLink = styled(Link)`
+  z-index: 50;
+  font-size: 1rem;
+  font-weight: 600;
+
+  min-width: 0;
+  padding: 8px 16px;
+  white-space: nowrap;
+  text-decoration: none;
+
+  &:hover {
+    background-color: #e5e5e5;
+  }
+`
+
+const DropdownOption = styled.div`
   z-index: 50;
   font-size: 1rem;
   font-weight: 600;

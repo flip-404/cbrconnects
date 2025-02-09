@@ -49,7 +49,8 @@ export default DesktopFooter
 
 const Container = styled.div`
   border-top: 1px solid #bbbbbb;
-  padding: 0px 320px;
+  display: flex;
+  justify-content: center;
 `
 
 const Body = styled.div`
@@ -57,13 +58,14 @@ const Body = styled.div`
 `
 
 const SubBody = styled.div`
-  padding: 24px 203px 34px 84px;
+  padding: 24px 34px;
   display: flex;
-  justify-content: space-between;
+
+  gap: 100px;
+  min-width: 1200px;
 `
 
 const Title = styled.div`
-  padding: 13px 8px;
   font-family: NanumSquare Neo;
   font-size: 24px;
   font-weight: 800;
@@ -98,7 +100,7 @@ const SubTab = styled.div`
 
 const SubFooter = styled.div`
   border-top: 1px solid #dfdfdf;
-  padding: 22px 0px 44px 84px;
+  padding: 22px 34px;
   font-family: Inter;
   font-size: 14px;
   font-weight: 400;

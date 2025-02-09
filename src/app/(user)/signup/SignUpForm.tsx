@@ -14,11 +14,11 @@ import ImageSelector from './ImageSelector'
 
 function SignUpForm({
   defaultValues,
-  onChangeUserName,
+  onChangeNickname,
   handleNextPhase,
 }: {
   defaultValues?: Partial<SignUpBody>
-  onChangeUserName: (value: string) => void
+  onChangeNickname: (value: string) => void
   handleNextPhase: () => void
 }) {
   const [modalStatus, setModalStatus] = useState<null | string>(null)
@@ -27,7 +27,6 @@ function SignUpForm({
   const {
     register,
     handleSubmit,
-    control,
     watch,
     formState: { errors },
   } = useForm<SignUpBody>({
@@ -98,20 +97,26 @@ function SignUpForm({
         profileImage={profileImage}
       />
       <SignupInput
-        id="userAuthId"
-        placeholder="아이디를 입력해 주세요."
-        label="아이디(ID)"
-        register={register('userAuthId', {
-          required: '아이디를 입력해 주세요.',
+        disabled={!!defaultValues?.email}
+        id="email"
+        placeholder="이메일을 입력해 주세요."
+        label="이메일"
+        register={register('email', {
+          required: '이메일을 입력해 주세요.',
+          pattern: {
+            value:
+              /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
+            message: '올바른 이메일 주소를 입력하세요.',
+          },
           validate: async (value) => {
             return (
-              (await checkExists(value, 'userAuthId')) ||
-              '이미 존재하는 아이디입니다.'
+              (await checkExists(value, 'email')) ||
+              '이미 존재하는 이메일입니다.'
             )
           },
         })}
-        isError={Boolean(errors.userAuthId)}
-        errorMessage={errors.userAuthId?.message || ''}
+        isError={Boolean(errors.email)}
+        errorMessage={errors.email?.message || ''}
       />
       <PWInputWrapper>
         <SignupInput
@@ -155,45 +160,12 @@ function SignUpForm({
         />
       </PWInputWrapper>
       <SignupInput
-        disabled={!!defaultValues?.userName}
-        id="userName"
-        placeholder="이름을 입력해 주세요."
-        label="이름"
-        register={register('userName', {
-          required: '이름을 입력해 주세요.',
-          onChange: (e) => onChangeUserName(e.target.value),
-        })}
-        isError={Boolean(errors.userName)}
-        errorMessage={errors.userName?.message || ''}
-      />
-      <SignupInput
-        disabled={!!defaultValues?.email}
-        id="email"
-        placeholder="이메일을 입력해 주세요."
-        label="이메일"
-        register={register('email', {
-          required: '이메일을 입력해 주세요.',
-          pattern: {
-            value:
-              /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-            message: '올바른 이메일 주소를 입력하세요.',
-          },
-          validate: async (value) => {
-            return (
-              (await checkExists(value, 'email')) ||
-              '이미 존재하는 이메일입니다.'
-            )
-          },
-        })}
-        isError={Boolean(errors.email)}
-        errorMessage={errors.email?.message || ''}
-      />
-      <SignupInput
         id="nickname"
         placeholder="사용하실 닉네임을 입력해 주세요."
         label="닉네임"
         register={register('nickname', {
           required: '닉네임을 입력해 주세요.',
+          onChange: (e) => onChangeNickname(e.target.value),
           validate: async (value) => {
             return (
               (await checkExists(value, 'nickname')) ||
@@ -204,10 +176,8 @@ function SignUpForm({
         isError={Boolean(errors.nickname)}
         errorMessage={errors.nickname?.message || ''}
       />
-      <GenderSelector control={control} errors={errors} />
-      <BirthdaySelector control={control} errors={errors} />
       <AgreementBox setAllAgreementChecked={setAllAgreementChecked} />
-      <SignupButton type="submit">회원가입</SignupButton>{' '}
+      <SignupButton type="submit">회원가입</SignupButton>
       {modalStatus === 'fail' && (
         <NotificationModal
           onClose={handleModalClose}

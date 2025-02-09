@@ -24,6 +24,7 @@ export default NavButton
 const NavButtonWrapper = styled.div`
   position: relative;
   display: flex;
+  justify-content: center;
   align-items: center;
   height: 72px;
   width: 200px;

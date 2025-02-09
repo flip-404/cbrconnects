@@ -14,7 +14,7 @@ function SignUp() {
     setPhase(1)
   }
 
-  const onChangeUserName = (value: string) => {
+  const onChangeNickname = (value: string) => {
     setUserName(value)
   }
 
@@ -32,7 +32,7 @@ function SignUp() {
               kakaoId: null,
               googleId: null,
             }}
-            onChangeUserName={onChangeUserName}
+            onChangeNickname={onChangeNickname}
             handleNextPhase={handleNextPhase}
           />
         ) : (

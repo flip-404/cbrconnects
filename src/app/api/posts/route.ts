@@ -118,13 +118,14 @@ async function GET(request: NextRequest) {
 
 async function POST(request: NextRequest) {
   const body = await request.json()
+  console.log('POST BODY', body)
 
   const {
     title,
     content,
     userId,
-    mainCategoryId, // Changed to mainCategoryId
-    subCategoryId, // Changed to subCategoryId
+    mainCategoryId,
+    subCategoryId,
     thumbnail,
     isNotice,
   } = body
@@ -142,8 +143,8 @@ async function POST(request: NextRequest) {
         title,
         content,
         authorId: userId,
-        mainCategoryId, // Changed to mainCategoryId
-        subCategoryId, // Changed to subCategoryId
+        mainCategoryId,
+        subCategoryId,
         thumbnail,
         isNotice,
         searchTitle: title,
@@ -153,6 +154,7 @@ async function POST(request: NextRequest) {
     })
     return new NextResponse(JSON.stringify(post), { status: 201 })
   } catch (error) {
+    console.log(error)
     return new NextResponse(JSON.stringify({ error }), { status: 500 })
   }
 }

@@ -58,7 +58,7 @@ const MobileHeaderContainer = styled.div<{ $isSearchBarOn: boolean }>`
   top: 0;
   left: 0;
   width: 100vw;
-  box-sizing: border-box; /* padding이 너비를 초과하지 않도록 */
+  box-sizing: border-box;
   z-index: 1000;
   display: flex;
   height: 56px;
