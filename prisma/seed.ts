@@ -3,15 +3,23 @@ const { PrismaClient } = require('@prisma/client')
 const prisma = new PrismaClient()
 
 async function main() {
-  const mainCategories = [
+  // 1. Main Category 추가
+  for (const category of [
     { name: 'community' },
     { name: 'job' },
     { name: 'market' },
     { name: 'rentshare' },
     { name: 'business' },
-  ]
+    { name: 'notice' },
+  ]) {
+    await prisma.mainCategory.upsert({
+      where: { name: category.name },
+      update: {},
+      create: category,
+    })
+  }
 
-  // Sub Categories
+  // 2. Sub Category 추가
   const subCategories = {
     community: ['freeboard', 'club', 'news', 'yesmigration', 'parcel'],
     job: ['offer', 'search'],
@@ -33,18 +41,29 @@ async function main() {
       'clinic',
       'apparel',
     ],
+    notice: ['notice', 'event'],
   }
 
-  const createdMain = await prisma.mainCategory.create({
-    data: { name: 'notice' },
-  })
+  for (const [mainCategoryName, subCategoryList] of Object.entries(
+    subCategories,
+  )) {
+    const mainCategory = await prisma.mainCategory.findUnique({
+      where: { name: mainCategoryName },
+    })
 
-  await prisma.subCategory.create({
-    data: {
-      name: 'notification',
-      mainCategoryId: createdMain.id,
-    },
-  })
+    if (mainCategory) {
+      for (const subCategoryName of subCategoryList) {
+        await prisma.subCategory.upsert({
+          where: { name: subCategoryName },
+          update: {},
+          create: {
+            name: subCategoryName,
+            mainCategoryId: mainCategory.id,
+          },
+        })
+      }
+    }
+  }
 }
 
 main()
