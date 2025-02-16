@@ -51,7 +51,7 @@ export default function MobileHomeBoard({
                   (post, postIndex) => (
                     <PostItem
                       key={post.id}
-                      $category={post.subCategory.name}
+                      $category={post.subCategory.label}
                       onClick={() => handleMoveToPost(post.id)}
                     >
                       <Number>{postIndex + 1}</Number>

@@ -18,7 +18,7 @@ interface CommentSectionProps {
   ) => void
   handleEditComment: (content: string, commentId: number) => void
   isLoggedIn: boolean
-  postAuthorId: number
+  postAuthorId: string
 }
 
 function CommentSection({

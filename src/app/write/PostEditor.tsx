@@ -19,11 +19,18 @@ import Header from './Header'
 import CategoryAndTitle from './CategoryAndTitle'
 import NotificationModal from '../_components/NotificationModal'
 import useUser from '../hooks/useUser'
+import useSWR from 'swr'
+import fetcher from '@/utils/fetcher'
 
 Quill.register('modules/imageResize', ImageResize)
 Quill.register('modules/imageDrop', ImageDrop)
 
-export type Category = { id: number; label: string }
+export type Category = {
+  id: number
+  label: string
+  name: string
+  subCategories?: Category[]
+}
 
 const DynamicReactQuill = dynamic(
   async () => {
@@ -54,6 +61,8 @@ function PostEditor() {
   const [mainCategory, setMainCateogy] = useState<Category | null>(null)
   const [subCategory, setSubCategory] = useState<Category | null>(null)
   const [errorModal, setErrorModal] = useState<null | string>(null)
+  const { data } = useSWR(`/api/category`, fetcher)
+  const categories = data?.categories
 
   const imageHandler = async () => {
     const input = document.createElement('input')
@@ -139,7 +148,7 @@ function PostEditor() {
     }, 2000)
 
     try {
-      const res = await api.post('/api/posts', {
+      const res = await api.post('/posts', {
         title,
         content,
         userId: user?.user_id,
@@ -159,6 +168,7 @@ function PostEditor() {
     <Container>
       <Header onClickWrite={handleWritePost} />
       <CategoryAndTitle
+        categories={categories}
         mainCategory={mainCategory}
         subCategory={subCategory}
         title={title}

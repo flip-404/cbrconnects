@@ -46,8 +46,8 @@ function PostListItem({
             <CategoryChip
               $category={
                 post.subCategory
-                  ? post.subCategory.name
-                  : post.mainCategory.name
+                  ? post.subCategory.label
+                  : post.mainCategory.label
               }
             >
               {post.subCategory

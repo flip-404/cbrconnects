@@ -328,25 +328,21 @@ model users {
 }
 
 model MainCategory {
-  id    Int     @id @default(autoincrement())
-  name  String  @unique
-  href  String?
-  label String?
-
-  subCategories SubCategory[]
+  id            Int           @id @default(autoincrement())
+  label         String        @unique(map: "MainCategory_name_key")
+  href          String?
   posts         Post[]
+  subCategories SubCategory[]
 
   @@schema("public")
 }
 
 model SubCategory {
   id             Int          @id @default(autoincrement())
-  name           String       @unique
-  label          String?
+  label          String       @unique(map: "SubCategory_name_key")
   mainCategoryId Int
+  posts          Post[]
   mainCategory   MainCategory @relation(fields: [mainCategoryId], references: [id], onDelete: Cascade)
-
-  posts Post[]
 
   @@schema("public")
 }
@@ -357,11 +353,11 @@ model UserInfo {
   userGroup    String        @default("User")
   nickname     String        @unique
   profileImage String?
-  users        users         @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  Post         Post[]
   Comment      Comment[]
-  PostLike     PostLike[]
   CommentLike  CommentLike[]
+  Post         Post[]
+  PostLike     PostLike[]
+  users        users         @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@schema("public")
 }
@@ -370,72 +366,62 @@ model Post {
   id             Int          @id @default(autoincrement())
   title          String
   content        String
+  viewCount      Int          @default(0)
+  isNotice       Boolean      @default(false)
   mainCategoryId Int
-  mainCategory   MainCategory @relation(fields: [mainCategoryId], references: [id], onDelete: Cascade)
   subCategoryId  Int?
-  subCategory    SubCategory? @relation(fields: [subCategoryId], references: [id], onDelete: Cascade)
   thumbnail      String?
   createdAt      DateTime     @default(now())
   updatedAt      DateTime     @updatedAt
   searchTitle    String       @map("search_title")
   searchContent  String       @map("search_content")
   searchFullText String       @map("search_full_text")
-  viewCount      Int          @default(0)
-  isNotice       Boolean      @default(false)
-
-  authorId String   @db.Uuid
-  author   UserInfo @relation(fields: [authorId], references: [user_id], onDelete: Cascade)
-
-  comments Comment[]
-  likes    PostLike[]
+  authorId       String       @db.Uuid
+  comments       Comment[]
+  author         UserInfo     @relation(fields: [authorId], references: [user_id], onDelete: Cascade)
+  mainCategory   MainCategory @relation(fields: [mainCategoryId], references: [id], onDelete: Cascade)
+  subCategory    SubCategory? @relation(fields: [subCategoryId], references: [id], onDelete: Cascade)
+  likes          PostLike[]
 
   @@index([mainCategoryId, subCategoryId])
   @@schema("public")
 }
 
 model Comment {
-  id        Int      @id @default(autoincrement())
+  id        Int           @id @default(autoincrement())
   content   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  authorId String   @db.Uuid
-  author   UserInfo @relation(fields: [authorId], references: [user_id])
-
-  postId Int
-  post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
-
-  parentId Int?
-  parent   Comment?  @relation("CommentToComment", fields: [parentId], references: [id], onDelete: Cascade)
-  replies  Comment[] @relation("CommentToComment")
-
-  likes CommentLike[]
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  postId    Int
+  parentId  Int?
+  authorId  String        @db.Uuid
+  author    UserInfo      @relation(fields: [authorId], references: [user_id])
+  parent    Comment?      @relation("CommentToComment", fields: [parentId], references: [id], onDelete: Cascade)
+  replies   Comment[]     @relation("CommentToComment")
+  post      Post          @relation(fields: [postId], references: [id], onDelete: Cascade)
+  likes     CommentLike[]
 
   @@index([postId])
   @@schema("public")
 }
 
 model PostLike {
-  id Int @id @default(autoincrement())
-
-  userId String   @db.Uuid
-  user   UserInfo @relation(fields: [userId], references: [user_id])
-
+  id     Int      @id @default(autoincrement())
   postId Int
-  post   Post @relation(fields: [postId], references: [id], onDelete: Cascade)
+  userId String   @db.Uuid
+  post   Post     @relation(fields: [postId], references: [id], onDelete: Cascade)
+  user   UserInfo @relation(fields: [userId], references: [user_id])
 
   @@unique([userId, postId])
   @@schema("public")
 }
 
 model CommentLike {
-  id Int @id @default(autoincrement())
-
-  userId String   @db.Uuid
-  user   UserInfo @relation(fields: [userId], references: [user_id])
-
+  id        Int      @id @default(autoincrement())
   commentId Int
-  comment   Comment @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  userId    String   @db.Uuid
+  comment   Comment  @relation(fields: [commentId], references: [id], onDelete: Cascade)
+  user      UserInfo @relation(fields: [userId], references: [user_id])
 
   @@unique([userId, commentId])
   @@schema("public")

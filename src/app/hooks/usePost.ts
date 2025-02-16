@@ -4,9 +4,10 @@ import fetcher from '@/utils/fetcher'
 import { PostWithRelations } from '@/types'
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
+import useUser from './useUser'
 
 export default function usePost(postId: string | null) {
-  const { data: session } = useSession()
+  const { user } = useUser()
   const router = useRouter()
   const [loadingModal, setLoadingModal] = useState(false)
   const [deleteModal, setDeleteModal] = useState(false)
@@ -22,14 +23,14 @@ export default function usePost(postId: string | null) {
   )
 
   const handleLikePost = async () => {
-    if (!session || !post) return
+    if (!user || !post) return
 
-    const isLiked = post.likes.some((like) => like.userId === session.user.id)
+    const isLiked = post.likes.some((like) => like.userId === user.user_id)
     const updatedLikes = isLiked
-      ? post.likes.filter((like) => like.userId !== session.user.id)
+      ? post.likes.filter((like) => like.userId !== user.user_id)
       : [
           ...post.likes,
-          { id: Math.random(), postId: post.id, userId: session.user.id },
+          { id: Math.random(), postId: post.id, userId: user.user_id },
         ]
 
     mutate({ ...post, likes: updatedLikes }, false)
@@ -40,10 +41,10 @@ export default function usePost(postId: string | null) {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         postLikeId: isLiked
-          ? post.likes.find((like) => like.userId === session.user.id)?.id
+          ? post.likes.find((like) => like.userId === user.user_id)?.id
           : null,
         postId: post.id,
-        userId: session.user.id,
+        userId: user.user_id,
       }),
     })
 

@@ -4,6 +4,7 @@ import CategorySelect from './CategorySelect'
 import type { Category } from './PostEditor'
 
 function CategoryAndTitle({
+  categories,
   mainCategory,
   subCategory,
   title,
@@ -11,6 +12,7 @@ function CategoryAndTitle({
   onSubCgChange,
   onTitleChange,
 }: {
+  categories: any
   mainCategory: Category | null
   subCategory: Category | null
   title: string
@@ -26,6 +28,7 @@ function CategoryAndTitle({
     <Container>
       <SelectWrapper>
         <CategorySelect
+          categories={categories}
           defaultLabel="게시판을 선택해 주세요."
           type="mainCategory"
           mainCategory={mainCategory}
@@ -33,6 +36,7 @@ function CategoryAndTitle({
           onCgChange={onMainCgChange}
         />
         <CategorySelect
+          categories={categories}
           defaultLabel="카테고리를 선택해 주세요."
           type="subCategory"
           mainCategory={mainCategory}

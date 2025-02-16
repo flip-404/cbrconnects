@@ -13,13 +13,14 @@ import usePost from '../hooks/usePost'
 import useComment from '../hooks/useComment'
 import PostDetail from './PostDetail'
 import EditDeleteButtons from './EditDeleteButtons'
+import useUser from '../hooks/useUser'
 
 function PostViewer({ modalPostId }: { modalPostId?: number }) {
   const searchParams = useSearchParams()
   const postId = modalPostId
     ? modalPostId.toString()
     : searchParams.get('postId')
-  const { data: session } = useSession()
+  const { user } = useUser()
 
   const { post, error, handleLikePost, handleDeletePost, isPostLoading } =
     usePost(postId)
@@ -34,7 +35,7 @@ function PostViewer({ modalPostId }: { modalPostId?: number }) {
 
   return (
     <Container $isModal={Boolean(modalPostId)}>
-      {session?.user.id === post?.authorId && (
+      {user?.user_id === post?.authorId && (
         <UDWrapper>
           <EditDeleteButtons
             postId={post.id}
@@ -51,9 +52,7 @@ function PostViewer({ modalPostId }: { modalPostId?: number }) {
         <Content>{parse(post!.content)}</Content>
         <ReactionSummary>
           <LikeWrapper
-            $isLiked={post.likes.some(
-              (like) => like.userId === session?.user.id,
-            )}
+            $isLiked={post.likes.some((like) => like.userId === user?.user_id)}
           >
             <LikeIcon onClick={handleLikePost} /> {post.likes.length}
           </LikeWrapper>
@@ -66,7 +65,7 @@ function PostViewer({ modalPostId }: { modalPostId?: number }) {
           comments={comments}
           handleWriteComment={handleWriteComment}
           handleEditComment={handleEditComment}
-          isLoggedIn={Boolean(session?.user.accessToken)}
+          isLoggedIn={Boolean(user)}
           postAuthorId={post.authorId}
         />
       </ContentBox>

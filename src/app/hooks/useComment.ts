@@ -3,17 +3,17 @@ import useSWR from 'swr'
 import fetcher from '@/utils/fetcher'
 import { CommentWithRelations } from '@/types'
 import { CommentLike } from '@prisma/client'
+import useUser from './useUser'
 
 export default function useComment(postId: string | null) {
-  const { data: session } = useSession()
-
+  const { user } = useUser()
   const { data: comments, mutate } = useSWR<CommentWithRelations[]>(
     postId ? `/api/comments?postId=${postId}` : null,
     fetcher,
   )
 
   const handleLikeComment = (commentId: number, parentId: number | null) => {
-    if (!session || !comments) return
+    if (!user || !comments) return
 
     let isLiked: CommentLike | undefined
     let updatedComments
@@ -23,16 +23,14 @@ export default function useComment(postId: string | null) {
       const targetReply = parentComment?.replies.find(
         (reply) => reply.id === commentId,
       )
-      isLiked = targetReply?.likes.find(
-        (like) => like.userId === session.user.id,
-      )
+      isLiked = targetReply?.likes.find((like) => like.userId === user?.user_id)
 
       const updatedReplies = parentComment?.replies.map((reply) => {
         const updatedLikes = isLiked
-          ? reply.likes.filter((like) => like.userId !== session.user.id)
+          ? reply.likes.filter((like) => like.userId !== user?.user_id)
           : [
               ...reply.likes,
-              { id: Math.random(), commentId, userId: session.user.id },
+              { id: Math.random(), commentId, userId: user?.user_id },
             ]
         return reply.id === commentId
           ? { ...reply, likes: updatedLikes }
@@ -47,7 +45,7 @@ export default function useComment(postId: string | null) {
     } else {
       const targetComment = comments.find((comment) => comment.id === commentId)
       isLiked = targetComment?.likes.find(
-        (like) => like.userId === session.user.id,
+        (like) => like.userId === user?.user_id,
       )
 
       updatedComments = comments.map((comment) =>
@@ -55,12 +53,10 @@ export default function useComment(postId: string | null) {
           ? {
               ...comment,
               likes: isLiked
-                ? comment.likes.filter(
-                    (like) => like.userId !== session.user.id,
-                  )
+                ? comment.likes.filter((like) => like.userId !== user?.user_id)
                 : [
                     ...comment.likes,
-                    { id: Math.random(), commentId, userId: session.user.id },
+                    { id: Math.random(), commentId, userId: user?.user_id },
                   ],
             }
           : comment,
@@ -75,7 +71,7 @@ export default function useComment(postId: string | null) {
       body: JSON.stringify({
         commentLikeId: isLiked ? isLiked.id : null,
         commentId,
-        userId: session.user.id,
+        userId: user?.user_id,
       }),
     })
 
@@ -84,7 +80,7 @@ export default function useComment(postId: string | null) {
 
   const handleWriteComment = (content: string, parentId: number | null) => {
     const newComment = {
-      author: { nickname: session?.user.nickname },
+      author: { nickname: user?.nickname },
       content,
       createdAt: new Date(),
       likes: [],
@@ -108,7 +104,7 @@ export default function useComment(postId: string | null) {
       body: JSON.stringify({
         content,
         postId: Number(postId),
-        authorId: session?.user.id,
+        authorId: user?.user_id,
         parentId,
       }),
     })

@@ -28,7 +28,7 @@ interface CommentBoxProps {
   openMoreMenu: null | number
   comment: CommentWithRelations
   parentId?: null | number
-  postAuthorId: number
+  postAuthorId: string
 }
 
 function CommentBox({

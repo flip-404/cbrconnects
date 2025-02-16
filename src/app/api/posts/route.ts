@@ -148,8 +148,11 @@ async function POST(request: NextRequest) {
       },
     })
 
+    console.log('\n\n', post, '\n\n')
+
     return new NextResponse(JSON.stringify(post), { status: 201 })
   } catch (error) {
+    console.log(error)
     return new NextResponse(JSON.stringify({ error }), { status: 500 })
   }
 }
