@@ -25,9 +25,11 @@ async function POST(request: Request) {
       },
     })
 
+    console.log('\n\n', userInfo, '\n\n')
+
     if (userInfo)
       return NextResponse.json(
-        { message: '로그인 완료', userInfo },
+        { message: '로그인 완료', userInfo: { ...userInfo, email, password } },
         { status: 200 },
       )
   }

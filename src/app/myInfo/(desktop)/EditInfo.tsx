@@ -12,7 +12,9 @@ function EditInfo() {
   const { register } = useForm({
     mode: 'onBlur',
   })
+
   const { user } = useUser()
+  console.log('user', user)
 
   const onPasswordModal = () => {
     setPasswordModal(true)
