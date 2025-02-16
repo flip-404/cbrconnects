@@ -41,5 +41,5 @@ export default CommentSection
 
 const ReplySection = styled.div`
   background-color: #f9f9f9;
-  padding-left: 50px;
+  padding: 0px 50px;
 `
