@@ -7,12 +7,12 @@ import { useState } from 'react'
 import { CommentProvider, useComment } from '@/contexts/commentContext'
 import styled from 'styled-components'
 
-interface NewCommentSectionProps {
+interface CommentSectionProps {
   post: PostWithRelations
   comments?: CommentWithRelations[]
 }
 
-function NewCommentSection({ post, comments }: NewCommentSectionProps) {
+function CommentSection({ post, comments }: CommentSectionProps) {
   const { selectedReplyComment } = useComment()
 
   return (
@@ -37,7 +37,7 @@ function NewCommentSection({ post, comments }: NewCommentSectionProps) {
   )
 }
 
-export default NewCommentSection
+export default CommentSection
 
 const ReplySection = styled.div`
   background-color: #f9f9f9;
