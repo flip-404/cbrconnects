@@ -14,7 +14,6 @@ import EventSwiper from './EventSwiper'
 
 export default function MobileHome() {
   const { data: postsByCategory } = useSWR(`/api/main?limit=5`, fetcher)
-  console.log('postsByCategory', postsByCategory)
   const router = useRouter()
 
   const handleMoveToPost = (postId: number) => {

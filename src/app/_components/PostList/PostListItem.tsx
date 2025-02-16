@@ -25,7 +25,6 @@ function PostListItem({
     router.push(`/posts?postId=${postId}`)
   }
   const [postModal, setPostModal] = useState(false)
-  console.log('post', post)
   return (
     <>
       {postModal && (

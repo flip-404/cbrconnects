@@ -4,7 +4,6 @@ import { NextRequest, NextResponse } from 'next/server'
 async function GET(request: NextRequest) {
   const url = new URL(request.url)
   const authorId = url.searchParams.get('authorId') as string | undefined
-  console.log('\n\nauthorId', authorId, '\n\n')
   if (!authorId)
     return new NextResponse(JSON.stringify([]), {
       status: 404,

@@ -17,7 +17,6 @@ function DesktopMyInfo() {
     user?.user_id ? `/api/myInfo?authorId=${user?.user_id}` : null,
     fetcher,
   )
-  console.log('data', data)
 
   const { posts = [], comments = [] } = data || {}
 

@@ -13,10 +13,12 @@ import ImageResize from 'quill-image-resize-module-react'
 import { ImageDrop } from 'quill-image-drop-module'
 import ReactQuill, { Quill } from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
+import api from '@/libs/axiosInstance'
 import formats from './default'
 import Header from './Header'
 import CategoryAndTitle from './CategoryAndTitle'
 import NotificationModal from '../_components/NotificationModal'
+import useUser from '../hooks/useUser'
 
 Quill.register('modules/imageResize', ImageResize)
 Quill.register('modules/imageDrop', ImageDrop)
@@ -44,7 +46,7 @@ const DynamicReactQuill = dynamic(
 function PostEditor() {
   const [isLoading, setIsLoading] = useState(false)
   const router = useRouter()
-  const { data: session } = useSession()
+  const { user } = useUser()
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const quillRef = useRef<ReactQuill>()
@@ -136,21 +138,17 @@ function PostEditor() {
       router.back()
     }, 2000)
 
-    await fetch('/api/posts', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
+    try {
+      const res = await api.post('/api/posts', {
         title,
         content,
-        userId: session?.user.id,
+        userId: user?.user_id,
         mainCategoryId: mainCategory.id,
         subCategoryId: subCategory?.id,
         thumbnail: thumbnail || undefined,
         isNotice: false,
-      }),
-    })
+      })
+    } catch (e) {}
   }
 
   const handleChange = (value: string) => {

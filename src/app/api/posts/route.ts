@@ -72,8 +72,6 @@ const fetchPostCount = async (whereQuery: Prisma.PostWhereInput) => {
 }
 
 async function GET(request: NextRequest) {
-  const startTime = performance.now()
-
   const url = new URL(request.url)
   const { mainCategoryId, subCategoryId, postId } = getPostQueryParams(url)
   const page = parseInt(url.searchParams.get('page') || '1', 10)
@@ -88,8 +86,6 @@ async function GET(request: NextRequest) {
           status: 404,
         })
       }
-      const endTime = performance.now()
-      console.log(`fetchPosts duration: ${endTime - startTime} ms`)
       return new NextResponse(JSON.stringify(post), { status: 200 })
     } catch (error) {
       return new NextResponse(
@@ -118,7 +114,6 @@ async function GET(request: NextRequest) {
 
 async function POST(request: NextRequest) {
   const body = await request.json()
-  console.log('POST BODY', body)
 
   const {
     title,
@@ -152,9 +147,9 @@ async function POST(request: NextRequest) {
         searchFullText: `${title} ${content}`,
       },
     })
+
     return new NextResponse(JSON.stringify(post), { status: 201 })
   } catch (error) {
-    console.log(error)
     return new NextResponse(JSON.stringify({ error }), { status: 500 })
   }
 }

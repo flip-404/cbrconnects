@@ -14,7 +14,6 @@ function EditInfo() {
   })
 
   const { user } = useUser()
-  console.log('user', user)
 
   const onPasswordModal = () => {
     setPasswordModal(true)

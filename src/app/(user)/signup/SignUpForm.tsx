@@ -71,8 +71,6 @@ function SignUpForm({
       profileImage,
     })
 
-    console.log('회원가입 이벤트 res', data)
-
     // if (res.status === 200) {
     //   handleNextPhase()
     // } else {

@@ -23,9 +23,7 @@ async function POST(request: Request) {
       where: {
         user_id: user?.id,
       },
-    })
-
-    console.log('\n\n', userInfo, '\n\n')
+    })('\n\n', userInfo, '\n\n')
 
     if (userInfo)
       return NextResponse.json(

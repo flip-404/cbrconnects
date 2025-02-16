@@ -31,7 +31,6 @@ async function POST(request: Request) {
       .upsert({ user_id: user?.id, nickname, profileImage })
 
     if (profileError) {
-      console.log('Error inserting profile data:', profileError)
     }
 
     if (!error)

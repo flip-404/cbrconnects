@@ -370,8 +370,6 @@ model Post {
   id             Int          @id @default(autoincrement())
   title          String
   content        String
-  viewCount      Int          @default(0)
-  isNotice       Boolean      @default(false)
   mainCategoryId Int
   mainCategory   MainCategory @relation(fields: [mainCategoryId], references: [id], onDelete: Cascade)
   subCategoryId  Int?
@@ -382,6 +380,8 @@ model Post {
   searchTitle    String       @map("search_title")
   searchContent  String       @map("search_content")
   searchFullText String       @map("search_full_text")
+  viewCount      Int          @default(0)
+  isNotice       Boolean      @default(false)
 
   authorId String   @db.Uuid
   author   UserInfo @relation(fields: [authorId], references: [user_id], onDelete: Cascade)

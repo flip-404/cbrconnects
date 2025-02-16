@@ -23,7 +23,6 @@ function LoginModal({ closeModal }: { closeModal: () => void }) {
       data: { userInfo, error },
     } = await api.post('/signin', formData)
     if (error) {
-      console.log('로그인 실패')
     } else {
       login(userInfo)
       closeModal()

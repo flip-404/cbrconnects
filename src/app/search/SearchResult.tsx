@@ -26,8 +26,6 @@ function SearchResult() {
   const { data, isLoading } = useSWR(`/api/search?${query}`, fetcher)
   const { posts, totalCount } = data || { posts: [], totalCount: 0 }
 
-  console.log('posts, totalCount', posts, totalCount)
-
   const handlePageChange = (pageNum: number) => {
     setPage(pageNum)
   }
