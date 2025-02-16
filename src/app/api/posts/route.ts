@@ -33,10 +33,18 @@ const fetchPostByPostId = async (postId: number) => {
     },
     include: {
       author: true,
-      comments: true,
       likes: true,
       mainCategory: true,
       subCategory: true,
+      comments: {
+        where: {
+          parentId: null,
+        },
+        include: {
+          likes: true,
+          replies: true,
+        },
+      },
     },
   })
 

@@ -1,6 +1,5 @@
 import { useState } from 'react'
 import { useSearchParams } from 'next/navigation'
-import { useSession } from 'next-auth/react'
 import styled from 'styled-components'
 import parse from 'html-react-parser'
 import LikeIcon from '@/assets/desktop/like_icon.svg'
@@ -14,6 +13,8 @@ import useComment from '../hooks/useComment'
 import PostDetail from './PostDetail'
 import EditDeleteButtons from './EditDeleteButtons'
 import useUser from '../hooks/useUser'
+import NewCommentSection from './new/newCommentSection'
+import { CommentProvider } from '@/contexts/commentContext'
 
 function PostViewer({ modalPostId }: { modalPostId?: number }) {
   const searchParams = useSearchParams()
@@ -26,6 +27,8 @@ function PostViewer({ modalPostId }: { modalPostId?: number }) {
     usePost(postId)
   const { comments, handleLikeComment, handleWriteComment, handleEditComment } =
     useComment(postId)
+
+  console.log('post', post)
 
   const [requireLoginModal, setRequireLoginModal] = useState(false)
   const [deleteModal, setDeleteModal] = useState(false)
@@ -60,14 +63,10 @@ function PostViewer({ modalPostId }: { modalPostId?: number }) {
             <CommentIcon /> {comments?.length}
           </CommentCount>
         </ReactionSummary>
-        <CommentSection
-          handleLikeComment={handleLikeComment}
-          comments={comments}
-          handleWriteComment={handleWriteComment}
-          handleEditComment={handleEditComment}
-          isLoggedIn={Boolean(user)}
-          postAuthorId={post.authorId}
-        />
+
+        <CommentProvider>
+          <NewCommentSection post={post} comments={comments} />
+        </CommentProvider>
       </ContentBox>
       {requireLoginModal && (
         <NotificationModal

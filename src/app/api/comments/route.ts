@@ -7,13 +7,13 @@ async function getCommentsBypostId(postId: number) {
     include: {
       likes: true,
       author: {
-        select: { id: true, nickname: true, profileImage: true },
+        select: { user_id: true, nickname: true, profileImage: true },
       },
       replies: {
         include: {
           likes: true,
           author: {
-            select: { id: true, nickname: true, profileImage: true },
+            select: { user_id: true, nickname: true, profileImage: true },
           },
         },
         orderBy: { createdAt: 'asc' },
@@ -54,6 +54,8 @@ async function POST(request: NextRequest) {
     )
   }
 
+  console.log('\n\n', parentId, '\n\n')
+
   try {
     const comment = await prisma.comment.create({
       data: {
@@ -73,6 +75,8 @@ async function POST(request: NextRequest) {
 async function PUT(request: NextRequest) {
   const body = await request.json()
   const { commentId, content } = body
+
+  console.log('\n\n', commentId, content, '\n\n')
 
   if (!commentId || !content) {
     return new NextResponse(
@@ -97,8 +101,8 @@ async function PUT(request: NextRequest) {
 }
 
 async function DELETE(request: NextRequest) {
-  const body = await request.json()
-  const { commentId } = body
+  const url = new URL(request.url)
+  const commentId = url.searchParams.get('commentId')
 
   if (!commentId) {
     return new NextResponse(JSON.stringify({ error: 'Missing commentId' }), {
@@ -108,7 +112,7 @@ async function DELETE(request: NextRequest) {
 
   try {
     await prisma.comment.delete({
-      where: { id: commentId },
+      where: { id: parseInt(commentId, 10) },
     })
 
     return new NextResponse(

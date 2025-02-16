@@ -1,65 +1,48 @@
+import useUser from '@/app/hooks/useUser'
+import api from '@/libs/axiosInstance'
+import { PostWithRelations } from '@/types'
 import { useState } from 'react'
 import styled from 'styled-components'
 
-interface WriteCommentBoxProps {
-  handleWriteComment?: (
-    content: string,
-    parentId: number | null,
-    type: 'edit' | 'write',
-  ) => void
-  handleEditComment?: (content: string, commentId: number) => void
-  offEditMode?: () => void
+interface WriteInputProps {
+  post: PostWithRelations
   parentId: number | null
-  commentId?: number | null
-  isEditMode: boolean
-  prevContent?: string
-  disabled?: boolean
 }
 
-function WriteCommentBox({
-  handleWriteComment,
-  handleEditComment,
-  offEditMode,
-  parentId,
-  commentId,
-  isEditMode,
-  prevContent = '',
-  disabled = false,
-}: WriteCommentBoxProps) {
-  const [content, setContent] = useState(prevContent)
+function WriteInput({ post, parentId = null }: WriteInputProps) {
+  const [comment, setComment] = useState('')
+  const { user } = useUser()
 
-  const handleSubmit = () => {
-    const tempContent = content
-    setContent('')
-
-    if (isEditMode && handleEditComment && offEditMode) {
-      handleEditComment(tempContent, commentId!)
-      offEditMode()
-    } else if (handleWriteComment) {
-      handleWriteComment(tempContent, parentId, isEditMode ? 'edit' : 'write')
-    }
+  const onClickWrite = () => {
+    api.post('/comments', {
+      content: comment,
+      postId: post.id,
+      authorId: user?.user_id,
+      parentId,
+    })
   }
 
   return (
     <Container>
-      <Label>댓글 남기기</Label>
+      <Label>{parentId ? '답' : '댓'}글 남기기</Label>
       <Input
-        disabled={disabled}
-        placeholder={disabled ? '로그인이 필요합니다.' : '댓글을 작성해주세요.'}
-        value={content}
-        onChange={(e) => setContent(e.target.value)}
+        disabled={!Boolean(user)}
+        placeholder={
+          !Boolean(user) ? '로그인이 필요합니다.' : '댓글을 작성해주세요.'
+        }
+        value={comment}
+        onChange={(e) => setComment(e.target.value)}
       />
       <ButtonWrapper>
-        {isEditMode && <Button onClick={offEditMode}>취소</Button>}
-        <Button disabled={disabled} onClick={handleSubmit}>
-          {isEditMode ? '수정하기' : '등록하기'}
+        <Button disabled={!Boolean(user)} onClick={onClickWrite}>
+          등록하기
         </Button>
       </ButtonWrapper>
     </Container>
   )
 }
 
-export default WriteCommentBox
+export default WriteInput
 
 const Container = styled.div`
   display: flex;

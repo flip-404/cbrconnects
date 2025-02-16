@@ -29,9 +29,10 @@ async function POST(request: NextRequest) {
 }
 
 async function DELETE(request: NextRequest) {
-  const { commentId, userId, commentLikeId } = await request.json()
+  const url = new URL(request.url)
+  const commentLikeId = url.searchParams.get('commentLikeId')
 
-  if (!commentId || !userId || !commentLikeId) {
+  if (!commentLikeId) {
     return NextResponse.json(
       { error: 'Comment ID and User ID are required' },
       { status: 400 },
