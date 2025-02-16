@@ -1,5 +1,6 @@
 import { NextResponse } from 'next/server'
 import supabase from '@/libs/supabaseClient'
+import prisma from '@/libs/prisma'
 
 export interface SignInBody {
   email: string
@@ -23,7 +24,7 @@ async function POST(request: Request) {
       where: {
         user_id: user?.id,
       },
-    })('\n\n', userInfo, '\n\n')
+    })
 
     if (userInfo)
       return NextResponse.json(
