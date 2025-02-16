@@ -7,8 +7,7 @@ import { useForm } from 'react-hook-form'
 import type { SignUpBody } from '@/app/api/(user)/signup/route'
 import NotificationModal from '@/app/_components/NotificationModal'
 import { useRouter } from 'next/navigation'
-import GenderSelector from '@/app/_components/GenderSelector'
-import BirthdaySelector from '@/app/_components/BirthdaySelector'
+import api from '@/libs/axiosInstance'
 import AgreementBox from './AgreementBox'
 import ImageSelector from './ImageSelector'
 
@@ -59,34 +58,26 @@ function SignUpForm({
   }
 
   const checkExists = async (value: string, type: string) => {
-    const response = await fetch(`/api/exists?${type}=${value}`)
-    const { exists } = await response.json()
-
-    return !exists
+    // const response = await fetch(`/api/exists?${type}=${value}`)
+    // const { exists } = await response.json()
+    // return !exists
   }
 
   const onValid = async (formData: SignUpBody) => {
     if (!allAgreementChecked) return
     setModalStatus('loading')
-    const res = await fetch('/api/signup', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        ...formData,
-        authType: defaultValues?.authType,
-        kakaoId: defaultValues?.kakaoId,
-        googleId: defaultValues?.googleId,
-        profileImage,
-      }),
+    const { data } = await api.post('/signup', {
+      ...formData,
+      profileImage,
     })
 
-    if (res.status === 200) {
-      handleNextPhase()
-    } else {
-      setModalStatus('fail')
-    }
+    console.log('회원가입 이벤트 res', data)
+
+    // if (res.status === 200) {
+    //   handleNextPhase()
+    // } else {
+    //   setModalStatus('fail')
+    // }
   }
 
   return (
@@ -108,12 +99,12 @@ function SignUpForm({
               /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
             message: '올바른 이메일 주소를 입력하세요.',
           },
-          validate: async (value) => {
-            return (
-              (await checkExists(value, 'email')) ||
-              '이미 존재하는 이메일입니다.'
-            )
-          },
+          // validate: async (value) => {
+          //   return (
+          //     (await checkExists(value, 'email')) ||
+          //     '이미 존재하는 이메일입니다.'
+          //   )
+          // },
         })}
         isError={Boolean(errors.email)}
         errorMessage={errors.email?.message || ''}
@@ -166,12 +157,12 @@ function SignUpForm({
         register={register('nickname', {
           required: '닉네임을 입력해 주세요.',
           onChange: (e) => onChangeNickname(e.target.value),
-          validate: async (value) => {
-            return (
-              (await checkExists(value, 'nickname')) ||
-              '이미 존재하는 닉네임입니다.'
-            )
-          },
+          // validate: async (value) => {
+          //   return (
+          //     (await checkExists(value, 'nickname')) ||
+          //     '이미 존재하는 닉네임입니다.'
+          //   )
+          // },
         })}
         isError={Boolean(errors.nickname)}
         errorMessage={errors.nickname?.message || ''}

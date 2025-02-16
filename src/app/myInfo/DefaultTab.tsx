@@ -1,6 +1,5 @@
 'use client'
 
-import { signOut, useSession } from 'next-auth/react'
 import styled from 'styled-components'
 import EmptyProfile from '@/assets/desktop/empty_profileImg_icon.svg'
 import UpdateImageIcon from '@/assets/desktop/update_profile.svg'
@@ -8,6 +7,8 @@ import useSWR from 'swr'
 import fetcher from '@/utils/fetcher'
 import RightArrow from '@/assets/mobile/rightArrow.svg'
 import { useMediaQuery } from '@mui/material'
+import supabase from '@/libs/supabaseClient'
+import useUser from '../hooks/useUser'
 
 function DefaultTab({
   tab,
@@ -16,24 +17,24 @@ function DefaultTab({
   tab: number
   onTabChange: (tab: number) => void
 }) {
-  const { data: session } = useSession()
+  const { user, logout } = useUser()
   const { data } = useSWR(
-    session?.user.id ? `/api/myInfo?authorId=${session?.user.id}` : null,
+    user?.user_id ? `/api/myInfo?authorId=${user?.user_id}` : null,
     fetcher,
   )
   const isMobile = useMediaQuery('(max-width:768px)')
 
   const { posts = [], comments = [] } = data || {}
-  if (session && session.user)
+  if (user)
     return (
       <>
         <UserProfile>
           <ImageWrapper>
             <ImageLabel htmlFor="profile-image">
-              {session!.user.profileImage ? (
+              {user.profileImage ? (
                 <>
                   <ProfileImage
-                    src={session!.user.profileImage || EmptyProfile}
+                    src={user.profileImage || EmptyProfile}
                     alt="Profile"
                   />
                 </>
@@ -43,7 +44,7 @@ function DefaultTab({
             </ImageLabel>
             <UpdateImageIcon />
           </ImageWrapper>
-          {session!.user.nickname} 님
+          {user.nickname} 님
         </UserProfile>
         <MyPostingWrapper>
           <MyPosting>
@@ -66,7 +67,8 @@ function DefaultTab({
           {isMobile && (
             <LogoutButton
               onClick={() => {
-                signOut()
+                supabase.auth.signOut()
+                logout()
               }}
             >
               로그아웃

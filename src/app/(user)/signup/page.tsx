@@ -27,11 +27,6 @@ function SignUp() {
         </Header>
         {phase === 0 ? (
           <SignUpForm
-            defaultValues={{
-              authType: 'credentials',
-              kakaoId: null,
-              googleId: null,
-            }}
             onChangeNickname={onChangeNickname}
             handleNextPhase={handleNextPhase}
           />

@@ -1,22 +1,24 @@
 'use client'
 
-import { useSession } from 'next-auth/react'
 import styled from 'styled-components'
 import { useState } from 'react'
 import useSWR from 'swr'
 import fetcher from '@/utils/fetcher'
+import useUser from '@/app/hooks/useUser'
 import EditInfo from './EditInfo'
 import ActivityForm from './ActivityForm'
 import DefaultTab from '../DefaultTab'
 
 function DesktopMyInfo() {
-  const { data: session } = useSession()
+  const { user } = useUser()
   const [tab, setTab] = useState(1)
 
   const { data } = useSWR(
-    session?.user.id ? `/api/myInfo?authorId=${session?.user.id}` : null,
+    user?.user_id ? `/api/myInfo?authorId=${user?.user_id}` : null,
     fetcher,
   )
+  console.log('data', data)
+
   const { posts = [], comments = [] } = data || {}
 
   const onTabChange = (tabNumber: number) => {
@@ -36,7 +38,7 @@ function DesktopMyInfo() {
     }
   }
 
-  if (session && session.user)
+  if (user)
     return (
       <Container>
         <div>

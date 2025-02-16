@@ -5,7 +5,7 @@ import './globals.css'
 import Header from './_components/Header'
 import Footer from './_components/Footer'
 import Body from './_components/Body'
-import Providers from './_components/Providers'
+import SupabaseProvider from './_components/SupabaseProvider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,11 +23,11 @@ export default function RootLayout({
     <html lang="ko">
       <body className={inter.className}>
         <StyledComponentsRegistry>
-          <Providers>
+          <SupabaseProvider>
             <Header />
             <Body>{children}</Body>
             <Footer />
-          </Providers>
+          </SupabaseProvider>
         </StyledComponentsRegistry>
       </body>
     </html>

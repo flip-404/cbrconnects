@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { useForm } from 'react-hook-form'
 import MyInfoInput from '@/app/_components/MyInfoInput'
 import { useState } from 'react'
-import { useSession } from 'next-auth/react'
+import useUser from '@/app/hooks/useUser'
 import EditPasswordModal from '../EditPasswordModal'
 
 function EditInfo() {
@@ -12,7 +12,7 @@ function EditInfo() {
   const { register } = useForm({
     mode: 'onBlur',
   })
-  const { data: session } = useSession()
+  const { user } = useUser()
 
   const onPasswordModal = () => {
     setPasswordModal(true)
@@ -25,38 +25,18 @@ function EditInfo() {
   return (
     <Container>
       {passwordModal && <EditPasswordModal onClose={offPasswordModal} />}
-      <InputWrapper>
-        <MyInfoInput
-          id="id"
-          disabled
-          label="기존 정보"
-          register={register('id')}
-          isError={false}
-          errorMessage=""
-          defaultValue={session?.user.userAuthId}
-        />
-      </InputWrapper>
       <ButtonWrapper>
         <EditPasswordButton onClick={onPasswordModal}>
           비밀번호 변경
         </EditPasswordButton>
       </ButtonWrapper>
       <MyInfoInput
-        id="username"
-        label="이름"
-        register={register('password')}
-        isError={false}
-        errorMessage=""
-        defaultValue={session?.user.userName}
-        disabled
-      />
-      <MyInfoInput
         id="email"
         label="이메일"
         register={register('email')}
         isError={false}
         errorMessage=""
-        defaultValue={session?.user.email}
+        defaultValue={user?.email}
         disabled
       />
       <MyInfoInput
@@ -65,7 +45,7 @@ function EditInfo() {
         register={register('nickname')}
         isError={false}
         errorMessage=""
-        defaultValue={session?.user.nickname}
+        defaultValue={user?.nickname}
         disabled
       />
     </Container>
@@ -86,12 +66,6 @@ const Container = styled.div`
   @media (max-width: 768px) {
     min-width: 375px;
   }
-`
-
-const InputWrapper = styled.div`
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
 `
 
 const ButtonWrapper = styled.div`

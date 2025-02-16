@@ -1,80 +1,36 @@
-// 리턴값 확인 완료
-import { signJwtAccessToken } from '@/libs/jwt'
-import prisma from '@/libs/prisma'
-import { User } from '@prisma/client'
-import * as bcrypt from 'bcrypt'
+import { NextResponse } from 'next/server'
+import supabase from '@/libs/supabaseClient'
 
-export interface SignInForm {
-  userAuthId: string
-  userName: string
-  password: string
+export interface SignInBody {
   email: string
-  authType: string
-  kakaoId?: string
-  googleId?: string
+  password: string
 }
 
-type RequestBody = SignInForm
-
-async function findUserByCredentials(userAuthId: string, userName: string) {
-  return prisma.user.findFirst({
-    where: { userAuthId, userName },
-  })
-}
-
-async function findUserByKakao(userName: string, kakaoId?: string) {
-  return prisma.user.findFirst({
-    where: { kakaoId, userName },
-  })
-}
-
-async function findUserByGoogle(
-  userName: string,
-  email: string,
-  googleId?: string,
-) {
-  return prisma.user.findFirst({
-    where: { userName, email, googleId },
-  })
-}
-
-function createResponse(user: User) {
-  const { password, ...userWithoutPass } = user
-  const accessToken = signJwtAccessToken(userWithoutPass)
-  return new Response(JSON.stringify({ ...userWithoutPass, accessToken }))
-}
+type RequestBody = SignInBody
 
 async function POST(request: Request) {
-  const body: RequestBody = await request.json()
-  let user
+  const { email, password }: RequestBody = await request.json()
+  const {
+    data: { user },
+    error,
+  } = await supabase.auth.signInWithPassword({
+    email,
+    password,
+  })
 
-  switch (body.authType) {
-    case 'credentials':
-      user = await findUserByCredentials(body.userAuthId, body.userName)
-      if (user && (await bcrypt.compare(body.password, user.password))) {
-        return createResponse(user)
-      }
-      break
+  if (user?.id) {
+    const userInfo = await prisma.userInfo.findUnique({
+      where: {
+        user_id: user?.id,
+      },
+    })
 
-    case 'kakao':
-      user = await findUserByKakao(body.userName, body.kakaoId)
-      if (user) {
-        return createResponse(user)
-      }
-      break
-
-    case 'google':
-      user = await findUserByGoogle(body.userName, body.email, body.googleId)
-      if (user) {
-        return createResponse(user)
-      }
-      break
-
-    default:
-      return new Response(JSON.stringify(null))
+    if (userInfo)
+      return NextResponse.json(
+        { message: '로그인 완료', userInfo },
+        { status: 200 },
+      )
   }
-
-  return new Response(JSON.stringify(null))
+  return NextResponse.json({ message: '로그인 실패', error }, { status: 500 })
 }
-
 export { POST }

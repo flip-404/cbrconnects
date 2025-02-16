@@ -1,17 +1,19 @@
 'use client'
 
 // 완
-import { signOut, useSession } from 'next-auth/react'
 import Link from 'next/link'
 import { useState } from 'react'
 import styled from 'styled-components'
 import NavsData from '@/mocks/NavsData'
+import useUser from '@/app/hooks/useUser'
+import supabase from '@/libs/supabaseClient'
 import SearchBar from './SearchBar'
 import NavButton from './NavButton'
 import LoginModal from '../../LoginModal'
+import SignupModal from '../../SignupModal'
 
 function DesktopHeader() {
-  const { data: session } = useSession()
+  const { user, logout } = useUser()
   const [isDropdownVisible, setIsDropdownVisible] = useState(false)
   const [loginModalOpen, setLoginModalOpen] = useState<
     null | 'SIGNIN' | 'SIGNUP'
@@ -30,20 +32,20 @@ function DesktopHeader() {
         />
       ))}
       <SearchBar />
-      {session && session.user ? (
+      {user ? (
         <ProfileWrapper
           onClick={() => {}}
           onMouseEnter={() => setIsDropdownVisible(true)}
           onMouseLeave={() => setIsDropdownVisible(false)}
         >
           <ImageLabel htmlFor="profile-image">
-            {session.user.profileImage && (
+            {user.profileImage && (
               <>
-                <ProfileImage src={session.user.profileImage} alt="Profile" />
+                <ProfileImage src={user.profileImage} alt="Profile" />
               </>
             )}
           </ImageLabel>
-          {session.user.nickname}님
+          {user.nickname}님
           {isDropdownVisible && (
             <DropdownMenu>
               <DropdownLink scroll={false} prefetch href="/myInfo">
@@ -54,7 +56,8 @@ function DesktopHeader() {
                 prefetch
                 href="/"
                 onClick={() => {
-                  signOut()
+                  supabase.auth.signOut()
+                  logout()
                 }}
               >
                 로그아웃
@@ -91,15 +94,13 @@ function DesktopHeader() {
       )}
       {loginModalOpen === 'SIGNIN' && (
         <LoginModal
-          type="SIGNIN"
           closeModal={() => {
             setLoginModalOpen(null)
           }}
         />
       )}
       {loginModalOpen === 'SIGNUP' && (
-        <LoginModal
-          type="SIGNUP"
+        <SignupModal
           closeModal={() => {
             setLoginModalOpen(null)
           }}
