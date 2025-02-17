@@ -8,40 +8,53 @@ export interface SignUpBody {
   password: string
   nickname: string
   profileImage: string | null
+  provider?: string
 }
 
 type RequestBody = SignUpBody
 
 async function POST(request: Request) {
-  const { email, password, nickname, profileImage }: RequestBody =
+  const { email, password, nickname, profileImage, provider }: RequestBody =
     await request.json()
 
-  const { data, error } = await supabase.auth.signUp({
-    email,
-    password,
-    options: {
-      data: { nickname, profileImage },
-    },
-  })
+  if (provider === 'kakao') {
+    const res = await supabase.auth.signInWithOAuth({
+      provider: 'kakao',
+    })
 
-  if (data) {
-    const { user } = data
-    const { error: profileError } = await supabase
-      .from('UserInfo')
-      .upsert({ user_id: user?.id, nickname, profileImage })
+    const { data } = await supabase.auth.getUser()
+    const session = await supabase.auth.getSession()
 
-    if (profileError) {
-    }
+    console.log('\n\nres', res, '\n\n')
+    console.log('\n\ndata', data, '\n\n')
+    console.log('\n\nsession', session, '\n\n')
 
-    if (!error)
+    return NextResponse.json({ message: '회원가입 완료' }, { status: 200 })
+  } else {
+    const { data, error } = await supabase.auth.signUp({
+      email,
+      password,
+      options: {
+        data: { nickname, profileImage },
+      },
+    })
+
+    if (data) {
+      const { user } = data
+      const { error } = await supabase
+        .from('UserInfo')
+        .upsert({ user_id: user?.id, email, nickname, profileImage })
+
+      if (!error)
+        return NextResponse.json(
+          { message: '회원가입 완료', data },
+          { status: 200 },
+        )
       return NextResponse.json(
-        { message: '회원가입 완료', data },
-        { status: 200 },
+        { message: '회원가입 실패', error },
+        { status: 500 },
       )
-    return NextResponse.json(
-      { message: '회원가입 실패', error },
-      { status: 500 },
-    )
+    }
   }
 }
 export { POST }
