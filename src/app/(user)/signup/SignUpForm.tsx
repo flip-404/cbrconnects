@@ -66,16 +66,16 @@ function SignUpForm({
   const onValid = async (formData: SignUpBody) => {
     if (!allAgreementChecked) return
     setModalStatus('loading')
-    const { data } = await api.post('/signup', {
+    const response = await api.post('/signup', {
       ...formData,
       profileImage,
     })
 
-    // if (res.status === 200) {
-    //   handleNextPhase()
-    // } else {
-    //   setModalStatus('fail')
-    // }
+    if (response.status === 200) {
+      handleNextPhase()
+    } else {
+      setModalStatus('fail')
+    }
   }
 
   return (
