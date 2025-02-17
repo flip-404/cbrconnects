@@ -1,6 +1,6 @@
 'use client'
 
-import LoginModal from '@/app/_components/LoginModal'
+import LoginModal from '@/app/_components/NewComponent/LoginModal'
 import Link from 'next/link'
 import { useState } from 'react'
 import styled from 'styled-components'
@@ -8,8 +8,12 @@ import styled from 'styled-components'
 function CompletionBox({ userName }: { userName: string }) {
   const [loginModalOpen, setLoginModalOpen] = useState(false)
 
-  const toggleLoginModal = () => {
-    setLoginModalOpen(!loginModalOpen)
+  const openModal = () => {
+    setLoginModalOpen(true)
+  }
+
+  const closeModal = () => {
+    setLoginModalOpen(false)
   }
 
   return (
@@ -29,9 +33,9 @@ function CompletionBox({ userName }: { userName: string }) {
       </Body>
       <Footer>
         <HomeButton href="/">메인화면</HomeButton>
-        <LoginButton onClick={toggleLoginModal}>로그인</LoginButton>
+        <LoginButton onClick={openModal}>로그인</LoginButton>
       </Footer>
-      {loginModalOpen && <LoginModal toggleModal={toggleLoginModal} />}
+      {loginModalOpen && <LoginModal closeModal={closeModal} />}
     </Container>
   )
 }

@@ -1,22 +1,38 @@
 import styled from 'styled-components'
-import { SignInForm } from '@/app/api/(user)/signin/route'
 import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
 import KakaoIcon from '@/assets/desktop/kakao_icon.svg'
 import GoogleIcon from '@/assets/desktop/google_icon.svg'
 import CloseIcon from '@/assets/desktop/close_icon.svg'
+import supabase from '@/libs/supabaseClient'
+import api from '@/libs/axiosInstance'
+import useUser from '@/app/hooks/useUser'
+import { useEffect } from 'react'
 
 function SignupModal({ closeModal }: { closeModal: () => void }) {
   const router = useRouter()
+  const { user, login } = useUser()
 
-  const handleKakaoLogin = async () => {
-    await signIn('kakao', {
-      redirect: true,
-      callbackUrl: '/complete-profile',
+  useEffect(() => {
+    console.log('user,user')
+  }, [user])
+
+  const handleKakaoSignup = async () => {
+    // 틀이거 설정했음. 이대로면 될거임
+
+    const res = await supabase.auth.signInWithOAuth({
+      provider: 'kakao',
+      options: { skipBrowserRedirect: true },
     })
+
+    const { data } = await supabase.auth.getUser()
+    const session = await supabase.auth.getSession()
+    console.log('\n\nres', res, '\n\n')
+    console.log('\n\ndata', data, '\n\n')
+    console.log('\n\nsession', session, '\n\n')
   }
 
-  const handleGoogleLogin = async () => {
+  const handleGoogleSignup = async () => {
     await signIn('google', {
       redirect: true,
       callbackUrl: '/',
@@ -31,13 +47,12 @@ function SignupModal({ closeModal }: { closeModal: () => void }) {
         </IconWrapper>
         <H1>캔버라 커넥트</H1>
         <ButtonContainer>
-          {' '}
-          <SocialLoginButton $socialType="kakao" onClick={handleKakaoLogin}>
+          <SocialSignupButton $socialType="kakao" onClick={handleKakaoSignup}>
             <KakaoIcon /> 카카오톡 계정으로 가입하기
-          </SocialLoginButton>
-          <SocialLoginButton $socialType="google" onClick={handleGoogleLogin}>
+          </SocialSignupButton>
+          <SocialSignupButton $socialType="google" onClick={handleGoogleSignup}>
             <GoogleIcon /> 구글 계정으로 가입하기
-          </SocialLoginButton>
+          </SocialSignupButton>
           <SignUpButton
             onClick={() => {
               closeModal()
@@ -100,7 +115,7 @@ const ButtonContainer = styled.div`
   gap: 16px;
 `
 
-const SocialLoginButton = styled.button<{ $socialType: string }>`
+const SocialSignupButton = styled.button<{ $socialType: string }>`
   cursor: pointer;
   position: relative;
   text-align: center;

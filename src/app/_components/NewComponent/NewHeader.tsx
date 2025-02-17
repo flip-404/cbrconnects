@@ -2,8 +2,15 @@
 
 import Link from 'next/link'
 import styled from 'styled-components'
+import LoginModal from './LoginModal'
+import SignupModal from './SignupModal'
+import { useState } from 'react'
 
 function NewHeader() {
+  const [loginModalOpen, setLoginModalOpen] = useState<
+    null | 'SIGNIN' | 'SIGNUP'
+  >(null)
+
   return (
     <Container>
       <LeftSection />
@@ -20,11 +27,38 @@ function NewHeader() {
         </Navigation>
       </CenterSection>
       <RightSection>
+        {/* 모달 부분 리팩토링 필요*/}
         <Features>
-          <Button>로그인</Button>
-          <Button>회원가입</Button>
+          <Button
+            onClick={() => {
+              setLoginModalOpen('SIGNIN')
+            }}
+          >
+            로그인
+          </Button>
+          <Button
+            onClick={() => {
+              setLoginModalOpen('SIGNUP')
+            }}
+          >
+            회원가입
+          </Button>
         </Features>
       </RightSection>
+      {loginModalOpen === 'SIGNIN' && (
+        <LoginModal
+          closeModal={() => {
+            setLoginModalOpen(null)
+          }}
+        />
+      )}
+      {loginModalOpen === 'SIGNUP' && (
+        <SignupModal
+          closeModal={() => {
+            setLoginModalOpen(null)
+          }}
+        />
+      )}
     </Container>
   )
 }
@@ -47,6 +81,7 @@ const CenterSection = styled.div`
   flex: 1;
   display: flex;
   flex-direction: column;
+  gap: 5px;
   justify-content: space-between;
 `
 
@@ -74,6 +109,7 @@ const Navigation = styled.div`
 
   a {
     all: unset;
+    cursor: pointer;
     font-size: 13px;
     font-weight: 600;
   }
@@ -83,6 +119,7 @@ const Features = styled.div``
 
 const Button = styled.button`
   all: unset;
+  cursor: pointer;
   font-size: 12px;
   font-weight: 400;
   margin-left: 20px;

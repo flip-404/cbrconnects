@@ -9,8 +9,8 @@ import useUser from '@/app/hooks/useUser'
 import supabase from '@/libs/supabaseClient'
 import SearchBar from './SearchBar'
 import NavButton from './NavButton'
-import LoginModal from '../../LoginModal'
-import SignupModal from '../../SignupModal'
+import LoginModal from '@/app/_components/NewComponent/LoginModal'
+import SignupModal from '@/app/_components/NewComponent/SignupModal'
 
 function DesktopHeader() {
   const { user, logout } = useUser()

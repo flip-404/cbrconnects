@@ -6,6 +6,7 @@ import Header from './_components/Header'
 import Footer from './_components/Footer'
 import Body from './_components/Body'
 import SupabaseProvider from './_components/SupabaseProvider'
+import NewHeader from './_components/NewComponent/NewHeader'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -24,7 +25,8 @@ export default function RootLayout({
       <body className={inter.className}>
         <StyledComponentsRegistry>
           <SupabaseProvider>
-            <Header />
+            <NewHeader />
+            {/* <Header /> */}
             <Body>{children}</Body>
             <Footer />
           </SupabaseProvider>
