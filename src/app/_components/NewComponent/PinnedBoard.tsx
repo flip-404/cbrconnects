@@ -48,9 +48,6 @@ export default PinnedBoard
 const Container = styled.div`
   padding: 0 20px;
   border-right: 0.5px solid #eaeaea;
-  /* display: flex;
-  justify-content: center;
-  align-items: center; */
 
   &:last-child {
     border-right: none;

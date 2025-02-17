@@ -86,6 +86,16 @@ export default PostBoard
 
 const Container = styled.div`
   padding: 0 40px;
+  border-right: 0.5px solid #eaeaea;
+
+  &:first-child {
+    padding: 0 40px 0 0;
+  }
+
+  &:last-child {
+    padding: 0 0 0 40px;
+    border-right: none;
+  }
 `
 
 const Title = styled(Link)`
@@ -100,6 +110,7 @@ const Posts = styled.ul`
   display: flex;
   flex-direction: column;
   list-style-type: none;
+  margin-bottom: 0;
   padding: 0;
 `
 
