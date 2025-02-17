@@ -4,6 +4,7 @@ import { useMediaQuery } from '@mui/material'
 import PostBoard from './_components/NewComponent/PostBoard'
 import styled from 'styled-components'
 import PinnedBoard from './_components/NewComponent/PinnedBoard'
+import Promotion from './_components/NewComponent/Promotion'
 
 export default function Home() {
   const isMobile = useMediaQuery('(max-width:768px)')
@@ -16,6 +17,7 @@ export default function Home() {
         <PinnedBoard />
         <PinnedBoard isEmpty={true} />
       </Pinned>
+      <Promotion />
       <Boards>
         <PostBoard title="자유게시판" />
         <PostBoard title="쿼카마켓" />
@@ -41,6 +43,7 @@ const Pinned = styled.div`
 `
 
 const Boards = styled.div`
+  margin-top: 40px;
   display: grid;
   grid-template-columns: repeat(3, 1fr);
   width: 1300px;
