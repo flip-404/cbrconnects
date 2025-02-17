@@ -7,6 +7,7 @@ import Footer from './_components/Footer'
 import Body from './_components/Body'
 import SupabaseProvider from './_components/SupabaseProvider'
 import NewHeader from './_components/NewComponent/NewHeader'
+import { saira } from '@/fonts/fontConfig'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -22,12 +23,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className={inter.className}>
+      <body className={saira.className}>
         <StyledComponentsRegistry>
           <SupabaseProvider>
             <NewHeader />
             {/* <Header /> */}
-            <Body>{children}</Body>
+            {/* <Body>{children}</Body> */}
+            {children}
             <Footer />
           </SupabaseProvider>
         </StyledComponentsRegistry>
