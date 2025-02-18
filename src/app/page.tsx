@@ -4,7 +4,9 @@ import { useMediaQuery } from '@mui/material'
 import PostBoard from './NewComponent/PostBoard'
 import styled from 'styled-components'
 import PinnedBoard from './NewComponent/PinnedBoard'
-import Promotion from './NewComponent/Promotion'
+import NewsBoard from './NewComponent/NewsBoard'
+import { useEffect } from 'react'
+import api from '@/libs/axiosInstance'
 
 export default function Home() {
   const isMobile = useMediaQuery('(max-width:768px)')
@@ -17,7 +19,7 @@ export default function Home() {
         <PinnedBoard />
         <PinnedBoard isEmpty={true} />
       </Pinned>
-      <Promotion />
+      <NewsBoard />
       <Boards>
         <PostBoard title="자유게시판" />
         <PostBoard title="쿼카마켓" />
@@ -25,7 +27,6 @@ export default function Home() {
       </Boards>
     </Container>
   )
-  // return isMobile ? <MobileHome /> : <DesktopHome />
 }
 
 const Container = styled.div`
