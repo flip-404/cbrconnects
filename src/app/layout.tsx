@@ -2,12 +2,12 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import StyledComponentsRegistry from '@/libs/registry'
 import './globals.css'
+import { saira } from '@/fonts/fontConfig'
 import Header from './_components/Header'
 import Footer from './_components/Footer'
 import Body from './_components/Body'
 import SupabaseProvider from './_components/SupabaseProvider'
 import NewHeader from './_components/NewComponent/NewHeader'
-import { saira } from '@/fonts/fontConfig'
 
 const inter = Inter({ subsets: ['latin'] })
 
