@@ -427,6 +427,13 @@ model CommentLike {
   @@schema("public")
 }
 
+model Visit {
+  id    Int @id @default(autoincrement())
+  count Int @default(0)
+
+  @@schema("public")
+}
+
 enum aal_level {
   aal1
   aal2

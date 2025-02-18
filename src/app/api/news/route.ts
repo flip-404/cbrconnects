@@ -19,7 +19,6 @@ async function GET() {
     },
   })
 
-  console.log('Crawling data...', data)
   const $ = cheerio.load(data)
   const newsList: NewsItem[] = []
 
@@ -43,10 +42,6 @@ async function GET() {
     if (title && link) {
       newsList.push({ title, image, link })
     }
-
-    console.log('Title:', title)
-    console.log('Image:', image)
-    console.log('Link:', link)
   })
 
   return NextResponse.json(

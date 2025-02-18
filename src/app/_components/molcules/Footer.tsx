@@ -1,8 +1,19 @@
 'use client'
 
+import api from '@/libs/axiosInstance'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 const Footer = () => {
+  const [visitCount, setVisitCount] = useState<number>(0)
+  useEffect(() => {
+    async function getVisitCount() {
+      const res = await api.get('/visit')
+      console.log('res', res)
+    }
+    getVisitCount()
+  }, [])
+
   return (
     <Container>
       <Board>
@@ -33,7 +44,7 @@ const Footer = () => {
         </Content>
         <Visited>
           <p>20,571,588</p>
-          <span>Visits since 20 Dec 2004</span>
+          <span>Visits since 28 Feb 2025</span>
         </Visited>
       </Board>
       <CopyRight>ⓒ CBRCONNECTS ─ Contact ─ Designed by Matdongsan</CopyRight>
