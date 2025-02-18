@@ -5,11 +5,14 @@ import styled from 'styled-components'
 import LoginModal from './LoginModal'
 import SignupModal from './SignupModal'
 import { useState } from 'react'
+import useUser from '../hooks/useUser'
+import supabase from '@/libs/supabaseClient'
 
 function NewHeader() {
   const [loginModalOpen, setLoginModalOpen] = useState<
     null | 'SIGNIN' | 'SIGNUP'
   >(null)
+  const { user, logout } = useUser()
 
   return (
     <Container>
@@ -28,22 +31,42 @@ function NewHeader() {
       </CenterSection>
       <RightSection>
         {/* 모달 부분 리팩토링 필요*/}
-        <Features>
-          <Button
-            onClick={() => {
-              setLoginModalOpen('SIGNIN')
-            }}
-          >
-            로그인
-          </Button>
-          <Button
-            onClick={() => {
-              setLoginModalOpen('SIGNUP')
-            }}
-          >
-            회원가입
-          </Button>
-        </Features>
+        {user ? (
+          <Features>
+            <Button
+              onClick={() => {
+                setLoginModalOpen('SIGNIN')
+              }}
+            >
+              {user.nickname}
+            </Button>
+            <Button
+              onClick={() => {
+                supabase.auth.signOut()
+                logout()
+              }}
+            >
+              로그아웃
+            </Button>
+          </Features>
+        ) : (
+          <Features>
+            <Button
+              onClick={() => {
+                setLoginModalOpen('SIGNIN')
+              }}
+            >
+              로그인
+            </Button>
+            <Button
+              onClick={() => {
+                setLoginModalOpen('SIGNUP')
+              }}
+            >
+              회원가입
+            </Button>
+          </Features>
+        )}
       </RightSection>
       {loginModalOpen === 'SIGNIN' && (
         <LoginModal

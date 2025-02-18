@@ -3,9 +3,9 @@ import { Inter } from 'next/font/google'
 import StyledComponentsRegistry from '@/libs/registry'
 import './globals.css'
 import { saira } from '@/fonts/fontConfig'
-import Footer from './_components/Footer'
 import SupabaseProvider from './_components/SupabaseProvider'
 import NewHeader from './NewComponent/NewHeader'
+import Footer from '@/app/_components/molcules/Footer'
 
 const inter = Inter({ subsets: ['latin'] })
 
