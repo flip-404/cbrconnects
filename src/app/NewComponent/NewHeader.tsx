@@ -97,6 +97,7 @@ const Logo = styled.h1`
   margin: 0;
   a {
     all: unset;
+    cursor: pointer;
     font-family: var(--font-saira);
     letter-spacing: 0.3rem;
   }
