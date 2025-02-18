@@ -5,7 +5,6 @@ import parse from 'html-react-parser'
 import LikeIcon from '@/assets/desktop/like_icon.svg'
 import CommentIcon from '@/assets/desktop/comment_icon.svg'
 import Link from 'next/link'
-import NotificationModal from '../_components/NotificationModal'
 import PostViewerSkeleton from './PostViewerSkeleton'
 import usePost from '../hooks/usePost'
 import useComment from '../hooks/useComment'
@@ -67,22 +66,6 @@ function PostViewer({ modalPostId }: { modalPostId?: number }) {
           <NewCommentSection post={post} comments={comments} />
         </CommentProvider>
       </ContentBox>
-      {requireLoginModal && (
-        <NotificationModal
-          label="로그인이 필요한 서비스 입니다"
-          onClose={() => setRequireLoginModal(false)}
-          onCloseLabel="확인"
-        />
-      )}
-      {deleteModal && (
-        <NotificationModal
-          label="정말 삭제하시겠습니까?"
-          onCheck={handleDeletePost}
-          onCheckLabel="삭제"
-          onClose={() => setDeleteModal(false)}
-          onCloseLabel="취소"
-        />
-      )}
     </Container>
   )
 }

@@ -5,7 +5,6 @@ import { useRef, useState } from 'react'
 import styled from 'styled-components'
 import { useForm } from 'react-hook-form'
 import type { SignUpBody } from '@/app/api/(user)/signup/route'
-import NotificationModal from '@/app/_components/NotificationModal'
 import { useRouter } from 'next/navigation'
 import api from '@/libs/axiosInstance'
 import AgreementBox from './AgreementBox'
@@ -167,7 +166,7 @@ function SignUpForm({
       />
       <AgreementBox setAllAgreementChecked={setAllAgreementChecked} />
       <SignupButton type="submit">회원가입</SignupButton>
-      {modalStatus === 'fail' && (
+      {/* {modalStatus === 'fail' && (
         <NotificationModal
           onClose={handleModalClose}
           onCloseLabel="닫기"
@@ -176,7 +175,7 @@ function SignUpForm({
       )}
       {modalStatus === 'loading' && (
         <NotificationModal label="회원가입 중 입니다. 잠시만 기다려주세요" />
-      )}
+      )} */}
     </StyledForm>
   )
 }
