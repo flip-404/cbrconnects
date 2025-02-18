@@ -1,6 +1,6 @@
 'use client'
 
-import LoginModal from '@/app/_components/NewComponent/LoginModal'
+import LoginModal from '@/app/NewComponent/LoginModal'
 import Link from 'next/link'
 import { useState } from 'react'
 import styled from 'styled-components'

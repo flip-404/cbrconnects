@@ -1,10 +1,10 @@
 'use client'
 
 import { useMediaQuery } from '@mui/material'
-import PostBoard from './_components/NewComponent/PostBoard'
+import PostBoard from './NewComponent/PostBoard'
 import styled from 'styled-components'
-import PinnedBoard from './_components/NewComponent/PinnedBoard'
-import Promotion from './_components/NewComponent/Promotion'
+import PinnedBoard from './NewComponent/PinnedBoard'
+import Promotion from './NewComponent/Promotion'
 
 export default function Home() {
   const isMobile = useMediaQuery('(max-width:768px)')

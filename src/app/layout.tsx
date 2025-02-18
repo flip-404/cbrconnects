@@ -7,7 +7,7 @@ import Header from './_components/Header'
 import Footer from './_components/Footer'
 import Body from './_components/Body'
 import SupabaseProvider from './_components/SupabaseProvider'
-import NewHeader from './_components/NewComponent/NewHeader'
+import NewHeader from './NewComponent/NewHeader'
 
 const inter = Inter({ subsets: ['latin'] })
 
