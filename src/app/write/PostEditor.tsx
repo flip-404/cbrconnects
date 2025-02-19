@@ -151,7 +151,7 @@ function PostEditor() {
       const res = await api.post('/posts', {
         title,
         content,
-        userId: user?.user_id,
+        userId: user?.id,
         mainCategoryId: mainCategory.id,
         subCategoryId: subCategory?.id,
         thumbnail: thumbnail || undefined,

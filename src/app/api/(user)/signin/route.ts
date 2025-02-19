@@ -19,19 +19,19 @@ async function POST(request: Request) {
     password,
   })
 
-  if (user?.id) {
-    const userInfo = await prisma.userInfo.findUnique({
-      where: {
-        user_id: user?.id,
-      },
-    })
+  // if (user?.id) {
+  //   const userInfo = await prisma.userInfo.findUnique({
+  //     where: {
+  //       id: user?.id,
+  //     },
+  //   })
 
-    if (userInfo)
-      return NextResponse.json(
-        { message: '로그인 완료', userInfo: { ...userInfo, email, password } },
-        { status: 200 },
-      )
-  }
-  return NextResponse.json({ message: '로그인 실패', error }, { status: 500 })
+  //   if (userInfo)
+  //     return NextResponse.json(
+  //       { message: '로그인 완료', userInfo: { ...userInfo, email, password } },
+  //       { status: 200 },
+  //     )
+  // }
+  return NextResponse.json({ message: '로그인 실패' }, { status: 200 })
 }
 export { POST }

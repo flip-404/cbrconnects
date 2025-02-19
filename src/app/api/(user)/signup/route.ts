@@ -35,26 +35,16 @@ async function POST(request: Request) {
       email,
       password,
       options: {
-        data: { nickname, profileImage },
+        data: { nickname, profile_image: profileImage },
       },
     })
-
-    if (data) {
-      const { user } = data
-      const { error } = await supabase
-        .from('UserInfo')
-        .upsert({ user_id: user?.id, email, nickname, profileImage })
-
-      if (!error)
-        return NextResponse.json(
-          { message: '회원가입 완료', data },
-          { status: 200 },
-        )
-      return NextResponse.json(
-        { message: '회원가입 실패', error },
-        { status: 500 },
-      )
-    }
+    console.log('email', email)
+    console.log('password', password)
+    console.log('\n\n', data)
+    console.log('\n\n', error)
+    if (!error)
+      return NextResponse.json({ message: '회원가입 완료' }, { status: 200 })
+    else return NextResponse.json({ message: '회원가입 실패' }, { status: 400 })
   }
 }
 export { POST }

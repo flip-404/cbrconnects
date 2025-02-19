@@ -23,15 +23,12 @@ export default function useComment(postId: string | null) {
       const targetReply = parentComment?.replies.find(
         (reply) => reply.id === commentId,
       )
-      isLiked = targetReply?.likes.find((like) => like.userId === user?.user_id)
+      isLiked = targetReply?.likes.find((like) => like.userId === user?.id)
 
       const updatedReplies = parentComment?.replies.map((reply) => {
         const updatedLikes = isLiked
-          ? reply.likes.filter((like) => like.userId !== user?.user_id)
-          : [
-              ...reply.likes,
-              { id: Math.random(), commentId, userId: user?.user_id },
-            ]
+          ? reply.likes.filter((like) => like.userId !== user?.id)
+          : [...reply.likes, { id: Math.random(), commentId, userId: user?.id }]
         return reply.id === commentId
           ? { ...reply, likes: updatedLikes }
           : reply
@@ -44,19 +41,17 @@ export default function useComment(postId: string | null) {
       )
     } else {
       const targetComment = comments.find((comment) => comment.id === commentId)
-      isLiked = targetComment?.likes.find(
-        (like) => like.userId === user?.user_id,
-      )
+      isLiked = targetComment?.likes.find((like) => like.userId === user?.id)
 
       updatedComments = comments.map((comment) =>
         comment.id === commentId
           ? {
               ...comment,
               likes: isLiked
-                ? comment.likes.filter((like) => like.userId !== user?.user_id)
+                ? comment.likes.filter((like) => like.userId !== user?.id)
                 : [
                     ...comment.likes,
-                    { id: Math.random(), commentId, userId: user?.user_id },
+                    { id: Math.random(), commentId, userId: user?.id },
                   ],
             }
           : comment,
@@ -71,7 +66,7 @@ export default function useComment(postId: string | null) {
       body: JSON.stringify({
         commentLikeId: isLiked ? isLiked.id : null,
         commentId,
-        userId: user?.user_id,
+        userId: user?.id,
       }),
     })
 
@@ -104,7 +99,7 @@ export default function useComment(postId: string | null) {
       body: JSON.stringify({
         content,
         postId: Number(postId),
-        authorId: user?.user_id,
+        authorId: user?.id,
         parentId,
       }),
     })

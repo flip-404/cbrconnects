@@ -10,6 +10,7 @@ import api from '@/libs/axiosInstance'
 import AgreementBox from './AgreementBox'
 import ImageSelector from './ImageSelector'
 
+// 닉네임 중복 체크, 이메일 중복 체크, 회원가입 성공 여부에 따라 모달을 띄워주는 컴포넌트 필요
 function SignUpForm({
   defaultValues,
   onChangeNickname,
@@ -20,7 +21,7 @@ function SignUpForm({
   handleNextPhase: () => void
 }) {
   const [modalStatus, setModalStatus] = useState<null | string>(null)
-  const [profileImage, setProfileImage] = useState<null | string>(null)
+  const [profileImage, setProfileImage] = useState<null | string>('')
   const [allAgreementChecked, setAllAgreementChecked] = useState(false)
   const {
     register,

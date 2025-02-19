@@ -14,7 +14,7 @@ function DesktopMyInfo() {
   const [tab, setTab] = useState(1)
 
   const { data } = useSWR(
-    user?.user_id ? `/api/myInfo?authorId=${user?.user_id}` : null,
+    user?.id ? `/api/myInfo?authorId=${user?.id}` : null,
     fetcher,
   )
 

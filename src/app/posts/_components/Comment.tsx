@@ -21,20 +21,20 @@ function Comment({ post, comment }: CommentProps) {
   const [editText, setEditText] = useState<string>(comment.content)
   const [isLiked, setIsLiked] = useState<boolean>(false)
   const { user } = useUser()
-  const isMyComment = comment.authorId === user?.user_id
+  const isMyComment = comment.authorId === user?.id
   const isEditMode = selectedEditComment === comment.id
 
   useEffect(() => {
-    setIsLiked(comment.likes.some((like) => like.userId === user?.user_id))
-  }, [comment, user?.user_id])
+    setIsLiked(comment.likes.some((like) => like.userId === user?.id))
+  }, [comment, user?.id])
 
   const handleLike = (): void => {
     if (isLiked) {
       api.delete(
-        `/likeComment?commentLikeId=${comment.likes.find((like) => like.userId === user?.user_id)?.id}`,
+        `/likeComment?commentLikeId=${comment.likes.find((like) => like.userId === user?.id)?.id}`,
       )
     } else {
-      api.post('/likeComment', { commentId: comment.id, userId: user?.user_id })
+      api.post('/likeComment', { commentId: comment.id, userId: user?.id })
     }
   }
 

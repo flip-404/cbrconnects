@@ -19,7 +19,7 @@ function DefaultTab({
 }) {
   const { user, logout } = useUser()
   const { data } = useSWR(
-    user?.user_id ? `/api/myInfo?authorId=${user?.user_id}` : null,
+    user?.id ? `/api/myInfo?authorId=${user?.id}` : null,
     fetcher,
   )
   const isMobile = useMediaQuery('(max-width:768px)')

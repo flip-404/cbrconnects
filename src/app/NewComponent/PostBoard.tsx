@@ -121,6 +121,7 @@ const Post = styled.li`
     width: 20px;
     font-size: 12px;
     color: #3c3c4399;
+    margin-top: 4px;
     margin-right: 10px;
   }
 

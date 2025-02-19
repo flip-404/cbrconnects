@@ -7,13 +7,13 @@ async function getCommentsBypostId(postId: number) {
     include: {
       likes: true,
       author: {
-        select: { user_id: true, nickname: true, profileImage: true },
+        select: { id: true, nickname: true, profileImage: true },
       },
       replies: {
         include: {
           likes: true,
           author: {
-            select: { user_id: true, nickname: true, profileImage: true },
+            select: { id: true, nickname: true, profileImage: true },
           },
         },
         orderBy: { createdAt: 'asc' },

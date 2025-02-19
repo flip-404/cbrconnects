@@ -36,7 +36,7 @@ function PostViewer({ modalPostId }: { modalPostId?: number }) {
 
   return (
     <Container $isModal={Boolean(modalPostId)}>
-      {user?.user_id === post?.authorId && (
+      {user?.id === post?.authorId && (
         <UDWrapper>
           <EditDeleteButtons
             postId={post.id}
@@ -53,7 +53,7 @@ function PostViewer({ modalPostId }: { modalPostId?: number }) {
         <Content>{parse(post!.content)}</Content>
         <ReactionSummary>
           <LikeWrapper
-            $isLiked={post.likes.some((like) => like.userId === user?.user_id)}
+            $isLiked={post.likes.some((like) => like.userId === user?.id)}
           >
             <LikeIcon onClick={handleLikePost} /> {post.likes.length}
           </LikeWrapper>

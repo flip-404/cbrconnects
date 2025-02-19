@@ -5,14 +5,14 @@ import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 const Footer = () => {
-  const [visitCount, setVisitCount] = useState<number>(0)
-  useEffect(() => {
-    async function getVisitCount() {
-      const res = await api.get('/visit')
-      console.log('res', res)
-    }
-    getVisitCount()
-  }, [])
+  // const [visitCount, setVisitCount] = useState<number>(0)
+  // useEffect(() => {
+  //   async function getVisitCount() {
+  //     const res = await api.get('/visit')
+  //     console.log('res', res)
+  //   }
+  //   getVisitCount()
+  // }, [])
 
   return (
     <Container>
