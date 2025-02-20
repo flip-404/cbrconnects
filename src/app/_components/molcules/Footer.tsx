@@ -1,18 +1,25 @@
 'use client'
 
 import api from '@/libs/axiosInstance'
-import { useEffect, useState } from 'react'
+import { use, useEffect, useState } from 'react'
 import styled from 'styled-components'
 
 const Footer = () => {
-  // const [visitCount, setVisitCount] = useState<number>(0)
-  // useEffect(() => {
-  //   async function getVisitCount() {
-  //     const res = await api.get('/visit')
-  //     console.log('res', res)
-  //   }
-  //   getVisitCount()
-  // }, [])
+  const [visitCount, setVisitCount] = useState<number>(0)
+  useEffect(() => {
+    async function getVisitCount() {
+      const {
+        data: { visit },
+      } = await api.get('/visit')
+      console.log('visit', visit)
+      setVisitCount(visit.count)
+    }
+    getVisitCount()
+  }, [])
+
+  useEffect(() => {
+    console.log('visitCount', visitCount)
+  }, [visitCount])
 
   return (
     <Container>
@@ -43,7 +50,7 @@ const Footer = () => {
           </div>
         </Content>
         <Visited>
-          <p>20,571,588</p>
+          <p>{visitCount.toLocaleString()}</p>
           <span>Visits since 28 Feb 2025</span>
         </Visited>
       </Board>
