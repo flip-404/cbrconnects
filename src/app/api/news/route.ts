@@ -10,7 +10,8 @@ export type NewsItem = {
 }
 
 async function GET() {
-  const URL = 'https://www.sbs.com.au/language/korean/ko'
+  const URL =
+    'https://www.sbs.com.au/language/korean/ko/collection/news-and-features'
 
   const { data } = await axios.get(URL, {
     headers: {
@@ -22,25 +23,25 @@ async function GET() {
   const $ = cheerio.load(data)
   const newsList: NewsItem[] = []
 
-  $("div[data-testid='mock-podcast-episode-card']").each((_, element) => {
-    let image = $(element).find('img').attr('src')
-    if (!image) {
+  $('div.SBS_ShelfItem').each((_, element) => {
+    const link = $(element).find('a').attr('href')
+    if (!link) {
       return
     }
 
     const title = $(element).find('h3').text().trim()
-    let link = $(element).find('a').attr('href') || ''
+    let image = $(element).find('img').attr('src')
 
-    if (link && !link.startsWith('http')) {
-      link = `https://www.sbs.com.au${link}`
-    }
+    const fullLink = link.startsWith('http')
+      ? link
+      : `https://www.sbs.com.au${link}`
+    const fullImage =
+      image && !image.startsWith('http')
+        ? `https://www.sbs.com.au${image}`
+        : image
 
-    if (image && !image.startsWith('http')) {
-      image = `https://www.sbs.com.au${image}`
-    }
-
-    if (title && link) {
-      newsList.push({ title, image, link })
+    if (title && fullLink && fullImage) {
+      newsList.push({ title, image: fullImage, link: fullLink })
     }
   })
 
