@@ -1,28 +1,43 @@
 import { useEffect } from 'react'
 import useUserStore from '@/store/useUserStore'
+import supabase from '@/libs/supabaseClient'
 
 export function useUser() {
   const { user, setUser, clearUser } = useUserStore()
 
-  useEffect(() => {
-    const storedUser = localStorage.getItem('user-storage')
-    if (storedUser) {
-      try {
-        const parsedUser = JSON.parse(storedUser).state.user
-        if (!parsedUser) clearUser()
-        else setUser(parsedUser)
-      } catch (error) {
-        clearUser()
-      }
-    } else {
+  const login = async () => {
+    const { data: sessionData } = await supabase.auth.getSession()
+    const userId = sessionData.session?.user?.id
+
+    if (!userId) {
       clearUser()
+      return
     }
-  }, [clearUser, setUser])
+
+    const { data: userInfo, error } = await supabase
+      .from('userinfo')
+      .select('*')
+      .eq('id', userId)
+      .single()
+
+    if (error || !userInfo) {
+      clearUser()
+    } else {
+      setUser(userInfo)
+      localStorage.setItem(
+        'user-storage',
+        JSON.stringify({ state: { user: userInfo } }),
+      )
+    }
+  }
+  useEffect(() => {
+    login()
+  }, [])
 
   return {
     user,
     isLoggedIn: !!user,
-    login: setUser,
+    login: login,
     logout: clearUser,
   }
 }

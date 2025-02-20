@@ -7,6 +7,7 @@ import CloseIcon from '@/assets/desktop/close_icon.svg'
 import api from '@/libs/axiosInstance'
 import useUser from '@/app/hooks/useUser'
 import LoginInput from './LoginInput'
+import supabase from '@/libs/supabaseClient'
 
 function LoginModal({ closeModal }: { closeModal: () => void }) {
   const {
@@ -19,17 +20,32 @@ function LoginModal({ closeModal }: { closeModal: () => void }) {
   const { login } = useUser()
 
   const handleCredentialsLogin = async (formData: SignInForm) => {
-    const {
-      data: { userInfo, error },
-    } = await api.post('/signin', formData)
-    if (error) {
-    } else {
-      login(userInfo)
+    const { data, error } = await supabase.auth.signInWithPassword({
+      email: formData.email,
+      password: formData.password,
+    })
+    if (!error) {
+      login()
       closeModal()
+    } else {
+      alert('로그인 정보가 올바르지 않습니다.')
     }
   }
 
-  const handleKakaoLogin = async () => {}
+  const handleKakaoLogin = async () => {
+    // toDo, 현재 경로로 리다이렉트 옵션 추가?
+    // 혹은 유지하며 로그인 상태만 업데이트
+    // 그리고 useUser로 빼기??
+    const { data, error } = await supabase.auth.signInWithOAuth({
+      provider: 'kakao',
+    })
+    if (!error) {
+      login()
+      closeModal()
+    } else {
+      alert('카카오 로그인에 실패했습니다.')
+    }
+  }
 
   const handleGoogleLogin = async () => {}
 

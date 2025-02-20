@@ -18,18 +18,15 @@ function SignupModal({ closeModal }: { closeModal: () => void }) {
   }, [user])
 
   const handleKakaoSignup = async () => {
-    // 틀이거 설정했음. 이대로면 될거임
-
-    const res = await supabase.auth.signInWithOAuth({
+    const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'kakao',
-      options: { skipBrowserRedirect: true },
     })
-
-    const { data } = await supabase.auth.getUser()
-    const session = await supabase.auth.getSession()
-    console.log('\n\nres', res, '\n\n')
-    console.log('\n\ndata', data, '\n\n')
-    console.log('\n\nsession', session, '\n\n')
+    if (!error) {
+      login()
+      closeModal()
+    } else {
+      alert('카카오 로그인에 실패했습니다.')
+    }
   }
 
   const handleGoogleSignup = async () => {

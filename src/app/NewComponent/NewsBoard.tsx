@@ -23,10 +23,6 @@ function NewsBoard() {
     newsTest()
   }, [])
 
-  useEffect(() => {
-    console.log(newsList)
-  }, [newsList])
-
   return (
     <Container>
       {newsList.slice(0, 8).map((news, index) => (
