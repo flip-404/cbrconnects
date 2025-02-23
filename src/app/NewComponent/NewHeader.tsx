@@ -7,21 +7,19 @@ import SignupModal from './SignupModal'
 import { useState } from 'react'
 import useUser from '../hooks/useUser'
 import supabase from '@/libs/supabaseClient'
-import { useRouter } from 'next/navigation'
 
-const boardLinks = [
-  { label: '공지사항', category: 'notice' },
-  { label: '자유게시판', category: 'freeboard' },
-  { label: '쿼카마켓', category: 'market' },
-  { label: '구인구직', category: 'job' },
-  { label: '홍보', category: 'promotion' },
+export const boardLinks = [
+  { label: '공지사항', category: 'NOTICE' },
+  { label: '자유게시판', category: 'FREEBOARD' },
+  { label: '쿼카마켓', category: 'MARKET' },
+  { label: '구인구직', category: 'JOB' },
+  { label: '홍보', category: 'PROMOTION' },
 ]
 
 function NewHeader() {
   const [loginModalOpen, setLoginModalOpen] = useState<
     null | 'SIGNIN' | 'SIGNUP'
   >(null)
-  const router = useRouter()
   const { user, logout } = useUser()
 
   return (
@@ -33,7 +31,9 @@ function NewHeader() {
         </Logo>
         <Navigation>
           {boardLinks.map((link) => (
-            <Link href={`/board?category=${link.category}`}>{link.label}</Link>
+            <Link key={link.category} href={`/board?category=${link.category}`}>
+              {link.label}
+            </Link>
           ))}
         </Navigation>
       </CenterSection>

@@ -4,6 +4,8 @@ import { useState } from 'react'
 import styled from 'styled-components'
 import LikeIcon from '@/assets/like.svg'
 import BoardControls from './BoardControls'
+import { useSearchParams } from 'next/navigation'
+import { boardLinks } from '../NewComponent/NewHeader'
 
 const posts = [
   {
@@ -122,18 +124,22 @@ const posts = [
 ]
 
 function Board() {
-  const [tab, setTab] = useState('공지사항')
+  const searchParams = useSearchParams()
+  const category = searchParams.get('category')
+  const [tab, setTab] = useState(category)
 
   return (
     <Container>
       <Tabs>
-        {['공지사항', '자유게시판', '쿼카마켓', '구인구직', '홍보'].map(
-          (item) => (
-            <Tab key={item} onClick={() => setTab(item)} active={tab === item}>
-              {item}
-            </Tab>
-          ),
-        )}
+        {boardLinks.map((item) => (
+          <Tab
+            key={item.category}
+            onClick={() => setTab(item.category)}
+            $active={tab === item.category}
+          >
+            {item.label}
+          </Tab>
+        ))}
       </Tabs>
       <Posts>
         {posts.map((post) => (
@@ -156,7 +162,7 @@ function Board() {
           </Post>
         ))}
       </Posts>
-      <BoardControls></BoardControls>
+      <BoardControls category={category}></BoardControls>
     </Container>
   )
 }
@@ -243,11 +249,11 @@ const Tabs = styled.div`
   color: 3c3c434d;
 `
 
-const Tab = styled.h2<{ active: boolean }>`
+const Tab = styled.h2<{ $active: boolean }>`
   margin: 0;
   font-size: 38px;
   font-weight: 800;
-  color: ${(props) => (props.active ? '#000' : '#3c3c434d')};
+  color: ${(props) => (props.$active ? '#000' : '#3c3c434d')};
   cursor: pointer;
   transition: color 0.3s;
 

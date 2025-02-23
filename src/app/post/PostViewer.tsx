@@ -14,11 +14,9 @@ import useUser from '../hooks/useUser'
 import NewCommentSection from './_components/CommentSection'
 import { CommentProvider } from '@/contexts/commentContext'
 
-function PostViewer({ modalPostId }: { modalPostId?: number }) {
+function PostViewer() {
   const searchParams = useSearchParams()
-  const postId = modalPostId
-    ? modalPostId.toString()
-    : searchParams.get('postId')
+  const postId = searchParams.get('postId')
   const { user } = useUser()
 
   const { post, error, handleLikePost, handleDeletePost, isPostLoading } =
@@ -35,7 +33,7 @@ function PostViewer({ modalPostId }: { modalPostId?: number }) {
   if (error) return <div>Failed to load post</div>
 
   return (
-    <Container $isModal={Boolean(modalPostId)}>
+    <Container>
       {user?.id === post?.authorId && (
         <UDWrapper>
           <EditDeleteButtons

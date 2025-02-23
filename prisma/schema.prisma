@@ -342,33 +342,35 @@ model userinfo {
     @@schema("public")
 }
 
-model category {
-    id    Int    @id @default(autoincrement())
-    label String @unique(map: "category_name_key")
-    posts post[]
+enum CategoryType {
+    NOTICE
+    FREEBOARD
+    MARKET
+    JOB
+    PROMOTION
 
     @@schema("public")
 }
 
 model post {
-    id               Int        @id @default(autoincrement())
+    id               Int          @id @default(autoincrement())
     title            String
     content          String
-    view_count       Int        @default(0)
-    category_id      Int
+    view_count       Int          @default(0)
+    category         CategoryType
     thumbnail        String?
-    created_At       DateTime   @default(now())
-    updated_At       DateTime   @updatedAt
-    search_title     String     @map("search_title")
-    search_content   String     @map("search_content")
-    search_full_text String     @map("search_full_text")
-    author_Id        String     @db.Uuid
+    created_At       DateTime     @default(now())
+    updated_At       DateTime     @updatedAt
+    search_title     String       @map("search_title")
+    search_content   String       @map("search_content")
+    search_full_text String       @map("search_full_text")
+    search_author    String       @map("search_author")
+    author_Id        String       @db.Uuid
     comments         comment[]
-    author           userinfo   @relation(fields: [author_Id], references: [id], onDelete: Cascade)
-    category         category   @relation(fields: [category_id], references: [id], onDelete: Cascade)
+    author           userinfo     @relation(fields: [author_Id], references: [id], onDelete: Cascade)
     likes            postlike[]
 
-    @@index([category_id])
+    @@index([category])
     @@schema("public")
 }
 

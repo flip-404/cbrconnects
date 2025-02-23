@@ -6,16 +6,22 @@ import RefreshIcon from '@/assets/refresh.svg'
 import ArrowBackIcon from '@/assets/arrow_back.svg'
 import ArrowForwardIcon from '@/assets/arrow_forward.svg'
 import useUser from '../hooks/useUser'
+import { useRouter } from 'next/navigation'
 
-function BoardControls() {
+function BoardControls({ category }: { category: string }) {
   const { user } = useUser()
+  const router = useRouter()
 
   return (
     <Container>
       <div>
-        <WriteButton isLogin={Boolean(user)} disabled={!user}>
+        <WriteButton
+          $isLogin={Boolean(user)}
+          disabled={!user}
+          onClick={() => router.push(`/write?category=${category}`)}
+        >
           <AddIcon />
-          글쓰기
+          <span>글쓰기</span>
         </WriteButton>
         <Button>
           <RefreshIcon />
@@ -29,7 +35,7 @@ function BoardControls() {
       </div>
       <div>
         {Array.from({ length: 10 }).map((_, index) => (
-          <>{index + 1}</>
+          <div key={index}>{index + 1}</div>
         ))}
       </div>
       <div>
@@ -71,16 +77,22 @@ const Container = styled.div`
   }
 `
 
-const WriteButton = styled.button<{ isLogin: boolean }>`
+const WriteButton = styled.button<{ $isLogin: boolean }>`
   border: none;
   border-radius: 6px;
   margin-right: 30px;
-  padding: 10px 22px;
-  font-size: 17px;
-  color: white;
-  background-color: ${(props) => (props.isLogin ? '#007aff' : '#f2f2f7')};
+  padding: 10px 27px 10px 22px;
   display: flex;
   align-items: center;
+  color: white;
+  background-color: ${(props) => (props.$isLogin ? '#007aff' : '#f2f2f7')};
+  cursor: ${(props) => (props.$isLogin ? 'pointer' : 'auto')};
+
+  span {
+    margin-top: 2px;
+
+    font-size: 17px;
+  }
 `
 
 const Button = styled.button`
