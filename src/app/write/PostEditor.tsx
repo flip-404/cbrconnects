@@ -128,7 +128,7 @@ function PostEditor() {
       return
     }
 
-    const { data: post } = await api.post('/post', {
+    const { data: post } = await api.post('/posts', {
       user,
       title,
       content,

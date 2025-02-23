@@ -5,12 +5,8 @@ import PostBoard from './NewComponent/PostBoard'
 import styled from 'styled-components'
 import PinnedBoard from './NewComponent/PinnedBoard'
 import NewsBoard from './NewComponent/NewsBoard'
-import { useEffect } from 'react'
-import api from '@/libs/axiosInstance'
 
 export default function Home() {
-  const isMobile = useMediaQuery('(max-width:768px)')
-
   return (
     <Container>
       <Pinned>
