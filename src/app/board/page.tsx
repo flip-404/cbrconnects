@@ -51,7 +51,7 @@ function Board() {
                 </div>
                 <p>
                   {post.search_author}
-                  <span>{post.created_At}</span>
+                  <span>{post.created_at}</span>
                 </p>
               </div>
               <span>

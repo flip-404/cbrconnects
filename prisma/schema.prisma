@@ -359,15 +359,15 @@ model post {
     view_count       Int          @default(0)
     category         CategoryType
     thumbnail        String?
-    created_At       DateTime     @default(now())
-    updated_At       DateTime     @updatedAt
+    created_at       DateTime     @default(now())
+    updated_at       DateTime     @updatedAt
     search_title     String       @map("search_title")
     search_content   String       @map("search_content")
     search_full_text String       @map("search_full_text")
     search_author    String       @map("search_author")
-    author_Id        String       @db.Uuid
+    author_id        String       @db.Uuid
     comments         comment[]
-    author           userinfo     @relation(fields: [author_Id], references: [id], onDelete: Cascade)
+    author           userinfo     @relation(fields: [author_id], references: [id], onDelete: Cascade)
     likes            postlike[]
 
     @@index([category])
@@ -377,17 +377,17 @@ model post {
 model comment {
     id         Int       @id @default(autoincrement())
     content    String
-    created_At DateTime  @default(now())
-    updated_At DateTime  @updatedAt
-    post_Id    Int
+    created_at DateTime  @default(now())
+    updated_at DateTime  @updatedAt
+    post_id    Int
     parent_id  Int?
     author_id  String    @db.Uuid
     author     userinfo  @relation(fields: [author_id], references: [id])
     parent     comment?  @relation("commentTocomment", fields: [parent_id], references: [id], onDelete: Cascade)
     replies    comment[] @relation("commentTocomment")
-    post       post      @relation(fields: [post_Id], references: [id], onDelete: Cascade)
+    post       post      @relation(fields: [post_id], references: [id], onDelete: Cascade)
 
-    @@index([post_Id])
+    @@index([post_id])
     @@schema("public")
 }
 

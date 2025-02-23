@@ -5,26 +5,18 @@ import { CommentWithRelations } from '@/types'
 interface ViewModeProps {
   comment: CommentWithRelations
   editText: string
-  handleLike: () => void
-  isLiked: boolean
   selectReplyComment: (id: number) => void
 }
 
-const ViewMode = ({
-  comment,
-  editText,
-  handleLike,
-  isLiked,
-  selectReplyComment,
-}: ViewModeProps) => (
+const ViewMode = ({ comment, editText, selectReplyComment }: ViewModeProps) => (
   <>
     <CommentBody>{editText}</CommentBody>
     <CommentFooter>
-      <Reply onClick={() => selectReplyComment(comment.id)}>답글 남기기</Reply>
-      <LikeWrapper $isLiked={isLiked}>
-        <LikeIcon onClick={handleLike} />
-        {comment.likes?.length}
-      </LikeWrapper>
+      {!comment.parent_id && (
+        <Reply onClick={() => selectReplyComment(comment.id)}>
+          답글 남기기
+        </Reply>
+      )}
     </CommentFooter>
   </>
 )

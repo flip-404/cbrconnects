@@ -1,28 +1,6 @@
 import prisma from '@/libs/prisma'
 import { NextRequest, NextResponse } from 'next/server'
 
-async function getCommentsBypostId(postId: number) {
-  return prisma.comment.findMany({
-    where: { postId, parentId: null },
-    include: {
-      likes: true,
-      author: {
-        select: { id: true, nickname: true, profileImage: true },
-      },
-      replies: {
-        include: {
-          likes: true,
-          author: {
-            select: { id: true, nickname: true, profileImage: true },
-          },
-        },
-        orderBy: { createdAt: 'asc' },
-      },
-    },
-    orderBy: { createdAt: 'asc' },
-  })
-}
-
 async function GET(request: NextRequest) {
   const url = new URL(request.url)
   const postId = url.searchParams.get('postId')
@@ -44,25 +22,22 @@ async function GET(request: NextRequest) {
 
 async function POST(request: NextRequest) {
   const body = await request.json()
+  const { post_id, author_id, content, parent_id } = body
 
-  const { postId, authorId, content, parentId } = body
-
-  if (!postId || !authorId || !content) {
+  if (!post_id || !author_id || !content) {
     return new NextResponse(
       JSON.stringify({ error: 'Missing required fields' }),
       { status: 400 },
     )
   }
 
-  console.log('\n\n', parentId, '\n\n')
-
   try {
     const comment = await prisma.comment.create({
       data: {
-        postId,
-        authorId,
+        post_id,
+        author_id,
         content,
-        parentId: parentId || null,
+        parent_id: parent_id || null,
       },
     })
 

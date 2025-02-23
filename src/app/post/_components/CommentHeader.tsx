@@ -21,7 +21,7 @@ const CommentHeader = ({
     <HeaderLeft>
       <span>{comment.author.nickname}</span>
       {comment.author.id === comment.postId && <AuthorChip>작성자</AuthorChip>}
-      {formatDateToFullYear(comment.createdAt, true)}
+      {formatDateToFullYear(comment.created_at, true)}
     </HeaderLeft>
     {isMyComment && !isEditMode && (
       <HeaderRight>

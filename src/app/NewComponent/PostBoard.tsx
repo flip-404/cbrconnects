@@ -23,7 +23,7 @@ function PostBoard({ title, category }: { title: string; category: string }) {
             <p>
               <Link href={`/post?postId=${post.id}`}>{post.title}</Link>
               <span>
-                {post.search_author} · {post.created_At}
+                {post.search_author} · {post.created_at}
               </span>
             </p>
           </Post>

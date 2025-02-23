@@ -25,7 +25,7 @@ function PinnedBoard({ category }: { category?: string }) {
                 {category === 'NOTICE' ? '🇦🇺' : '🍒'} &nbsp; {post.title}{' '}
                 <span>{post.comment_count}</span>
               </Link>
-              <span>{post.created_At}</span>
+              <span>{post.created_at}</span>
             </Post>
           ))}
         </Board>

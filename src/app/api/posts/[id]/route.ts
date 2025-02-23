@@ -20,15 +20,21 @@ export async function GET(
           },
         },
         comments: {
+          where: { parent_id: null },
+          orderBy: { created_at: 'asc' },
           select: {
             id: true,
             content: true,
-            created_At: true,
+            created_at: true,
             author: {
               select: {
                 nickname: true,
                 profile_image: true,
               },
+            },
+            replies: {
+              orderBy: { created_at: 'asc' },
+              include: { author: true },
             },
           },
         },
@@ -45,7 +51,7 @@ export async function GET(
         id: post.id,
         title: post.title,
         content: post.content,
-        created_At: post.created_At,
+        created_at: post.created_at,
         view_count: post.view_count,
         category: post.category,
         author: post.author,

@@ -4,13 +4,14 @@ import useUser from '../hooks/useUser'
 import { useQuery } from '@tanstack/react-query'
 import api from '@/libs/axiosInstance'
 import EmptyProfileIcon from '@/assets/empty_profile.svg'
+import LikeIcon from '@/assets/like.svg'
+import CommentSection from './_components/CommentSection'
+import { CommentProvider } from '@/contexts/commentContext'
 
 function PostViewer() {
   const { user } = useUser()
   const searchParams = useSearchParams()
   const postId = searchParams.get('postId')
-
-  console.log('postId', postId)
 
   const { data, isLoading, error } = useQuery({
     queryKey: ['post', postId],
@@ -19,43 +20,51 @@ function PostViewer() {
   })
 
   const post = data?.data
-  console.log('POST', post)
-
-  console.log('post.author.id', post?.author.id)
-  console.log('user.id', user?.id)
 
   return (
     <Container>
       {post && (
-        <Viwer>
-          <Category>{post.category}</Category>
-          <h1>{post.title}</h1>
-          <AuthorProfile>
-            {false ? (
-              <img src={post.author.profile_image} alt="profile" />
-            ) : (
-              <EmptyProfileIcon />
-            )}
-            <div>
-              <p>{post.author.nickname}</p>
-              <span>
-                {post.author.description || '입력된 자기소개가 없습니다.'}
-              </span>
-            </div>
-          </AuthorProfile>
-          <Details>
-            <p>
-              {post.created_At} · {post.view_count} views
-            </p>
-            {user?.id === post.author.id && (
+        <>
+          {' '}
+          <Viwer>
+            <Category>{post.category}</Category>
+            <h1>{post.title}</h1>
+            <AuthorProfile>
+              {false ? (
+                <img src={post.author.profile_image} alt="profile" />
+              ) : (
+                <EmptyProfileIcon />
+              )}
               <div>
-                <button>수정하기</button>
-                <button>삭제하기</button>
+                <p>{post.author.nickname}</p>
+                <span>
+                  {post.author.description || '입력된 자기소개가 없습니다.'}
+                </span>
               </div>
-            )}
-          </Details>
-          <Content>{post.content}</Content>
-        </Viwer>
+            </AuthorProfile>
+            <Details>
+              <p>
+                {post.created_at} · {post.view_count} views
+              </p>
+              {user?.id === post.author.id && (
+                <div>
+                  <button>수정하기</button>
+                  <button>삭제하기</button>
+                </div>
+              )}
+            </Details>
+            <Content>{post.content}</Content>
+            <Like>
+              <button>
+                <LikeIcon /> 좋아요
+              </button>
+              <span>{post.likes_count}명이 이 글을 좋아합니다</span>
+            </Like>
+          </Viwer>
+          <CommentProvider>
+            <CommentSection post={post} comments={post.comments} />
+          </CommentProvider>
+        </>
       )}
     </Container>
   )
@@ -143,3 +152,40 @@ const Details = styled.div`
   }
 `
 const Content = styled.div``
+
+const Like = styled.div`
+  margin-top: 30px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+
+  button {
+    display: flex;
+    align-items: center;
+    background-color: transparent;
+    border: 1px solid #ffcc00;
+    border-radius: 4px;
+    padding: 5px 10px;
+    color: #ffcc00;
+    font-size: 17px;
+    font-weight: 700;
+
+    svg {
+      background-color: transparent;
+      width: 23px;
+      height: 23px;
+      margin-right: 5px;
+
+      path {
+        background-color: #ffcc00;
+      }
+    }
+  }
+
+  span {
+    letter-spacing: 0.5px;
+    margin-left: 5px;
+    font-size: 13px;
+    font-weight: 600;
+  }
+`

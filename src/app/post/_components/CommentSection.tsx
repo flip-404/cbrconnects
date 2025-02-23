@@ -13,6 +13,7 @@ interface CommentSectionProps {
 }
 
 function CommentSection({ post, comments }: CommentSectionProps) {
+  console.log('commeㅇㅇnts', comments)
   const { selectedReplyComment } = useComment()
 
   return (
@@ -23,7 +24,7 @@ function CommentSection({ post, comments }: CommentSectionProps) {
           <>
             <Comment post={post} comment={comment} />
             <ReplySection>
-              {comment.replies.map((reply) => {
+              {comment.replies?.map((reply) => {
                 return <Comment post={post} comment={reply} />
               })}
               {comment.id === selectedReplyComment && (

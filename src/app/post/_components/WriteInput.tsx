@@ -16,9 +16,9 @@ function WriteInput({ post, parentId = null }: WriteInputProps) {
   const onClickWrite = () => {
     api.post('/comments', {
       content: comment,
-      postId: post.id,
-      authorId: user?.id,
-      parentId,
+      post_id: post.id,
+      author_id: user?.id,
+      parent_id: parentId,
     })
   }
 
