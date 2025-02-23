@@ -1,40 +1,31 @@
 'use client'
 
+import api from '@/libs/axiosInstance'
+import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
 import styled from 'styled-components'
-import { comment } from 'stylis'
 
-const MockData = [
-  {
-    title: '3월 7일 쿼카마켓 이벤트 안내',
-    date: '16일 전',
-    commentCount: 3,
-  },
-  {
-    title: '구인구직 게시판 오픈',
-    date: '20일 전',
-    commentCount: 3,
-  },
-  {
-    title: '캔버라 커넥트 리뉴얼 안내',
-    date: '2021-10-11',
-    commentCount: 10,
-  },
-]
+function PinnedBoard({ category }: { category?: string }) {
+  const { data } = useQuery({
+    queryKey: ['posts', category],
+    queryFn: ({ queryKey }) => api.get(`/posts?category=${queryKey[1]}`),
+    enabled: !!category,
+  })
+  const posts = data?.data.posts || []
 
-function PinnedBoard({ isEmpty }: { isEmpty?: boolean }) {
   return (
     <Container>
-      {isEmpty ? (
+      {!posts ? (
         <></>
       ) : (
         <Board>
-          {MockData.map((data, index) => (
-            <Post>
-              <a href="/">
-                🇦🇺&nbsp; {data.title} <span>{data.commentCount}</span>
-              </a>
-              <span>{data.date}</span>
+          {posts.slice(0, 3).map((post, index) => (
+            <Post key={post.id}>
+              <Link href="/">
+                {category === 'NOTICE' ? '🇦🇺' : '🍒'} &nbsp; {post.title}{' '}
+                <span>{post.comment_count}</span>
+              </Link>
+              <span>{post.created_At}</span>
             </Post>
           ))}
         </Board>
@@ -65,6 +56,7 @@ const Post = styled.li`
 
   & > a {
     text-decoration: none;
+    color: black;
     font-size: 13px;
     font-weight: 400;
 

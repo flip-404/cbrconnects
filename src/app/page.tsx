@@ -5,21 +5,31 @@ import PostBoard from './NewComponent/PostBoard'
 import styled from 'styled-components'
 import PinnedBoard from './NewComponent/PinnedBoard'
 import NewsBoard from './NewComponent/NewsBoard'
+import { boardLinks } from './NewComponent/NewHeader'
 
 export default function Home() {
   return (
     <Container>
       <Pinned>
-        <PinnedBoard isEmpty={true} />
         <PinnedBoard />
+        <PinnedBoard category={boardLinks[0].category} />
+        <PinnedBoard category={boardLinks[4].category} />
         <PinnedBoard />
-        <PinnedBoard isEmpty={true} />
       </Pinned>
       <NewsBoard />
       <Boards>
-        <PostBoard title="자유게시판" />
-        <PostBoard title="쿼카마켓" />
-        <PostBoard title="구인구직" />
+        <PostBoard
+          title={boardLinks[1].label}
+          category={boardLinks[1].category}
+        />
+        <PostBoard
+          title={boardLinks[2].label}
+          category={boardLinks[2].category}
+        />
+        <PostBoard
+          title={boardLinks[3].label}
+          category={boardLinks[3].category}
+        />
       </Boards>
     </Container>
   )

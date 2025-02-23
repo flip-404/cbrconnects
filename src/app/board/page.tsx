@@ -21,8 +21,6 @@ function Board() {
   })
   const posts = data?.data.posts || []
 
-  console.log('posts', posts)
-
   useEffect(() => {
     refetch()
   }, [tab, refetch])

@@ -1,78 +1,29 @@
 'use client'
 
+import api from '@/libs/axiosInstance'
+import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
 import styled from 'styled-components'
-import { comment } from 'stylis'
 
-const MockData = [
-  {
-    title: '새로 가입했습니다. 인사드립니다 안녕하세요. 안녕하세요.',
-    nickname: '캔버라커넥트',
-    date: '2021-10-11',
-    commentCount: 13,
-  },
-  {
-    title: '새로 가입했습니다. 인사드립니다 안녕하세요.',
-    nickname: '캔버라커넥트',
-    date: '2021-10-11',
-    commentCount: 13,
-  },
-  {
-    title: '새로 가입했습니다. 인사드립니다 안녕하세요.',
-    nickname: '캔버라커넥트',
-    date: '2021-10-11',
-    commentCount: 13,
-  },
-  {
-    title: '새로 가입했습니다. 인사드립니다 안녕하세요.',
-    nickname: '캔버라커넥트',
-    date: '2021-10-11',
-    commentCount: 13,
-  },
-  {
-    title: '새로 가입했습니다. 인사드립니다 안녕하세요.',
-    nickname: '캔버라커넥트',
-    date: '2021-10-11',
-    commentCount: 13,
-  },
-  {
-    title: '새로 가입했습니다. 인사드립니다 안녕하세요.',
-    nickname: '캔버라커넥트',
-    date: '2021-10-11',
-    commentCount: 13,
-  },
-  {
-    title: '새로 가입했습니다. 인사드립니다 안녕하세요.',
-    nickname: '캔버라커넥트',
-    date: '2021-10-11',
-    commentCount: 13,
-  },
-  {
-    title: '새로 가입했습니다. 인사드립니다 안녕하세요.',
-    nickname: '캔버라커넥트',
-    date: '2021-10-11',
-    commentCount: 13,
-  },
-  {
-    title: '새로 가입했습니다. 인사드립니다 안녕하세요.',
-    nickname: '캔버라커넥트',
-    date: '2021-10-11',
-    commentCount: 13,
-  },
-]
+function PostBoard({ title, category }: { title: string; category: string }) {
+  const { data } = useQuery({
+    queryKey: ['posts', category],
+    queryFn: ({ queryKey }) => api.get(`/posts?category=${queryKey[1]}`),
+  })
+  const posts = data?.data.posts || []
 
-function PostBoard({ title }: { title: string }) {
+  // ToDo: posts 타입 지정
   return (
     <Container>
       <Title href="/freeboard">{title}</Title>
       <Posts>
-        {MockData.map((data, index) => (
-          <Post>
-            <span>{data.commentCount}</span>
+        {posts.map((post, index) => (
+          <Post key={post.id}>
+            <span>{post.comment_count}</span>
             <p>
-              <a>{data.title}</a>
+              <a>{post.title}</a>
               <span>
-                {data.nickname} · {data.date}
+                {post.search_author} · {post.created_At}
               </span>
             </p>
           </Post>

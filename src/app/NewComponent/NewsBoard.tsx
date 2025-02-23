@@ -5,23 +5,14 @@ import { useEffect, useState } from 'react'
 import api from '@/libs/axiosInstance'
 import { NewsItem } from '../api/news/route'
 import Link from 'next/link'
+import { useQuery } from '@tanstack/react-query'
 
 function NewsBoard() {
-  const [newsList, setNewsList] = useState<NewsItem[]>([])
-
-  useEffect(() => {
-    async function newsTest() {
-      const {
-        data: { newsList },
-      } = await api.get('/news')
-
-      if (newsList) {
-        setNewsList(newsList)
-      }
-    }
-
-    newsTest()
-  }, [])
+  const { data } = useQuery({
+    queryKey: ['news'],
+    queryFn: () => api.get(`/news`),
+  })
+  const newsList = data?.data.newsList || []
 
   return (
     <Container>

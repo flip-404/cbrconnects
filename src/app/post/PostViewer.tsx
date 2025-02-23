@@ -36,7 +36,6 @@ function PostViewer() {
             ) : (
               <EmptyProfileIcon />
             )}
-
             <div>
               <p>{post.author.nickname}</p>
               <span>
