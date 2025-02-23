@@ -21,7 +21,7 @@ function PinnedBoard({ category }: { category?: string }) {
         <Board>
           {posts.slice(0, 3).map((post, index) => (
             <Post key={post.id}>
-              <Link href="/">
+              <Link href={`/post?postId=${post.id}`}>
                 {category === 'NOTICE' ? '🇦🇺' : '🍒'} &nbsp; {post.title}{' '}
                 <span>{post.comment_count}</span>
               </Link>

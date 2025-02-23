@@ -21,7 +21,7 @@ function PostBoard({ title, category }: { title: string; category: string }) {
           <Post key={post.id}>
             <span>{post.comment_count}</span>
             <p>
-              <a>{post.title}</a>
+              <Link href={`/post?postId=${post.id}`}>{post.title}</Link>
               <span>
                 {post.search_author} · {post.created_At}
               </span>
@@ -83,6 +83,7 @@ const Post = styled.li`
     width: 350px;
 
     a {
+      all: unset;
       font-size: 20px;
       font-weight: 500;
       white-space: nowrap;
