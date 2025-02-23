@@ -136,7 +136,7 @@ function PostEditor() {
       thumbnail: thumbnail || undefined,
     })
 
-    router.push('post?id=' + post.id)
+    router.push('post?postId=' + post.id)
   }
 
   const handleChange = (value: string) => {
