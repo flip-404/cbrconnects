@@ -8,8 +8,9 @@ export async function GET(
   const { id } = params
 
   try {
-    const post = await prisma.post.findUnique({
+    const post = await prisma.post.update({
       where: { id: parseInt(id) },
+      data: { view_count: { increment: 1 } },
       include: {
         author: {
           select: {
@@ -55,7 +56,7 @@ export async function GET(
     )
   } catch (error) {
     return NextResponse.json(
-      { message: 'Internal Server Error', error: error.message },
+      { message: 'Internal Server Error', error: error },
       { status: 500 },
     )
   }
