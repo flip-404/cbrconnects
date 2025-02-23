@@ -9,6 +9,7 @@ import { boardLinks } from '../NewComponent/NewHeader'
 import { useQuery } from '@tanstack/react-query'
 import api from '@/libs/axiosInstance'
 import SkeletonPosts from './SkeletonPosts'
+import Link from 'next/link'
 
 function Board() {
   const searchParams = useSearchParams()
@@ -19,6 +20,8 @@ function Board() {
     queryFn: ({ queryKey }) => api.get(`/posts?category=${queryKey[1]}`),
   })
   const posts = data?.data.posts || []
+
+  console.log('posts', posts)
 
   useEffect(() => {
     refetch()
@@ -42,11 +45,11 @@ function Board() {
           <SkeletonPosts />
         ) : (
           posts.map((post) => (
-            <Post key={post.title}>
+            <Post key={post.id}>
               <div>
                 <span>{post.comment_count}</span>
                 <div>
-                  <a>{post.title}</a>
+                  <Link href={`/post?postId=${post.id}`}>{post.title}</Link>
                 </div>
                 <p>
                   {post.search_author}
@@ -62,7 +65,7 @@ function Board() {
           ))
         )}
       </Posts>
-      <BoardControls category={category}></BoardControls>
+      <BoardControls category={tab}></BoardControls>
     </Container>
   )
 }
@@ -86,6 +89,8 @@ const Post = styled.li`
       margin-right: 25px;
 
       a {
+        color: black;
+        text-decoration: none;
         cursor: pointer;
         font-size: 22px;
         font-weight: 600;
