@@ -31,7 +31,6 @@ async function GET() {
 
     const title = $(element).find('h3').text().trim()
     let image = $(element).find('img').attr('src')
-
     const fullLink = link.startsWith('http')
       ? link
       : `https://www.sbs.com.au${link}`

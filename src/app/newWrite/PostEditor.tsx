@@ -12,12 +12,7 @@ import ImageResize from 'quill-image-resize-module-react'
 import { ImageDrop } from 'quill-image-drop-module'
 import ReactQuill, { Quill } from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
-import api from '@/libs/axiosInstance'
-import formats from './default'
-import Header from './Header'
 import useUser from '../hooks/useUser'
-import useSWR from 'swr'
-import fetcher from '@/utils/fetcher'
 
 Quill.register('modules/imageResize', ImageResize)
 Quill.register('modules/imageDrop', ImageDrop)
@@ -48,18 +43,10 @@ const DynamicReactQuill = dynamic(
 )
 
 function PostEditor() {
-  const [isLoading, setIsLoading] = useState(false)
-  const router = useRouter()
-  const { user } = useUser()
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const quillRef = useRef<ReactQuill>()
   const [thumbnail, setThumbnail] = useState(null)
-  const [mainCategory, setMainCateogy] = useState<Category | null>(null)
-  const [subCategory, setSubCategory] = useState<Category | null>(null)
-  const [errorModal, setErrorModal] = useState<null | string>(null)
-  const { data } = useSWR(`/api/category`, fetcher)
-  const categories = data?.categories
 
   const imageHandler = async () => {
     const input = document.createElement('input')
@@ -124,52 +111,18 @@ function PostEditor() {
     [],
   )
 
-  const handleWritePost = async () => {
-    if (!title) {
-      setErrorModal('제목은 필수 입력입니다.')
-      return
-    }
-    if (!content) {
-      setErrorModal('본문은 필수 입력입니다.')
-      return
-    }
-    if (mainCategory?.label !== '쿼카마켓' && (!mainCategory || !subCategory)) {
-      setErrorModal('게시판을 선택해 주세요.')
-      return
-    }
-
-    setIsLoading(true)
-    setTimeout(() => {
-      setIsLoading(false)
-      router.back()
-    }, 2000)
-
-    try {
-      const res = await api.post('/posts', {
-        title,
-        content,
-        userId: user?.id,
-        mainCategoryId: mainCategory.id,
-        subCategoryId: subCategory?.id,
-        thumbnail: thumbnail || undefined,
-        isNotice: false,
-      })
-    } catch (e) {}
-  }
-
   const handleChange = (value: string) => {
     setContent(value)
   }
 
   return (
     <Container>
-      <Header onClickWrite={handleWritePost} />
+      <h2></h2>
       <QuillContainer>
         <DynamicReactQuill
           forwardedRef={quillRef}
           theme="snow"
           modules={modules}
-          formats={formats}
           value={content}
           onChange={handleChange}
         />
@@ -182,7 +135,6 @@ export default PostEditor
 
 const Container = styled.div`
   margin-top: 80px;
-  background-color: #fafafa;
   display: flex;
   flex-direction: column;
   align-items: center;

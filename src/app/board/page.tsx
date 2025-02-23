@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import styled from 'styled-components'
 import LikeIcon from '@/assets/like.svg'
+import BoardControls from './BoardControls'
 
 const posts = [
   {
@@ -155,6 +156,7 @@ function Board() {
           </Post>
         ))}
       </Posts>
+      <BoardControls></BoardControls>
     </Container>
   )
 }
