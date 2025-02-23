@@ -1,190 +1,49 @@
-import { useState } from 'react'
 import { useSearchParams } from 'next/navigation'
 import styled from 'styled-components'
-import parse from 'html-react-parser'
-import LikeIcon from '@/assets/desktop/like_icon.svg'
-import CommentIcon from '@/assets/desktop/comment_icon.svg'
-import Link from 'next/link'
-import PostViewerSkeleton from './PostViewerSkeleton'
-import usePost from '../hooks/usePost'
-import useComment from '../hooks/useComment'
-import PostDetail from './PostDetail'
-import EditDeleteButtons from './EditDeleteButtons'
 import useUser from '../hooks/useUser'
-import NewCommentSection from './_components/CommentSection'
-import { CommentProvider } from '@/contexts/commentContext'
 
 function PostViewer() {
+  const { user } = useUser()
   const searchParams = useSearchParams()
   const postId = searchParams.get('postId')
-  const { user } = useUser()
-
-  const { post, error, handleLikePost, handleDeletePost, isPostLoading } =
-    usePost(postId)
-  const { comments, handleLikeComment, handleWriteComment, handleEditComment } =
-    useComment(postId)
-
-  console.log('post', post)
-
-  const [requireLoginModal, setRequireLoginModal] = useState(false)
-  const [deleteModal, setDeleteModal] = useState(false)
-
-  if (isPostLoading || !post) return <PostViewerSkeleton />
-  if (error) return <div>Failed to load post</div>
 
   return (
     <Container>
-      {user?.id === post?.authorId && (
-        <UDWrapper>
-          <EditDeleteButtons
-            postId={post.id}
-            onDelete={() => setDeleteModal(true)}
-          />
-        </UDWrapper>
-      )}
-      <ContentBox>
-        <CategoryLink href={`${post?.mainCategory.href}`}>
-          {`${post?.mainCategory.label}${post?.subCategory ? ` > ${post?.subCategory.label}` : ''}`}
-        </CategoryLink>
-        <Title>{post?.title}</Title>
-        <PostDetail post={post} />
-        <Content>{parse(post!.content)}</Content>
-        <ReactionSummary>
-          <LikeWrapper
-            $isLiked={post.likes.some((like) => like.userId === user?.id)}
-          >
-            <LikeIcon onClick={handleLikePost} /> {post.likes.length}
-          </LikeWrapper>
-          <CommentCount>
-            <CommentIcon /> {comments?.length}
-          </CommentCount>
-        </ReactionSummary>
-
-        <CommentProvider>
-          <NewCommentSection post={post} comments={comments} />
-        </CommentProvider>
-      </ContentBox>
+      <Viwer>
+        <Category>FreeBoard</Category>
+        <Title>안녕하세요</Title>
+        <AuthorProfile></AuthorProfile>
+        <Details>
+          <div>2025.02.23 18:22 · 0 views</div>
+          <div>
+            <a>수정하기</a>
+            <a>삭제하기</a>
+          </div>
+        </Details>
+        <Content>안녕하세요</Content>
+      </Viwer>
     </Container>
   )
 }
 
 export default PostViewer
 
-const Container = styled.div<{ $isModal: boolean }>`
-  padding-top: ${(props) => (props.$isModal ? '0px' : '24px')};
-
-  @media (max-width: 768px) {
-    padding: 0px;
-  }
-`
-const UDWrapper = styled.div`
+const Container = styled.div`
   display: flex;
-  justify-content: end;
-  gap: 12px;
-  margin-bottom: 14px;
-
-  @media (max-width: 768px) {
-    display: none; // 임시
-  }
-`
-
-const ContentBox = styled.div`
-  padding: 28px 18px;
-  border: 1px solid #dfdfdf;
-  border-radius: 16px;
-
-  @media (max-width: 768px) {
-    padding: 30px 16px;
-    border: none;
-    border-radius: 0px;
-  }
-`
-const CategoryLink = styled(Link)`
-  padding: 6px 8px;
-  font-size: 14px;
-  color: #878787;
-  text-decoration: none;
-
-  @media (max-width: 768px) {
-    padding: 0px 10px;
-    font-family: Pretendard;
-    font-size: 14px;
-    font-weight: 400;
-    color: #8390a2;
-  }
-`
-const Title = styled.h1`
-  font-size: 20px;
-  padding: 4px 8px;
-  margin: 0;
-
-  @media (max-width: 768px) {
-    margin-top: 15px;
-    padding: 0px 10px;
-    font-family: NanumSquare Neo;
-    font-size: 18px;
-    font-weight: 700;
-  }
-`
-const Content = styled.div`
-  padding: 10px;
-  font-size: 18px;
-  line-height: 28px;
-  text-align: left;
-  color: #444444;
-  border-bottom: 1px solid #d9d9d9;
-
-  @media (max-width: 768px) {
-    margin-top: 10px;
-    font-family: Pretendard;
-    font-size: 16px;
-    font-weight: 500;
-    line-height: 28px;
-  }
-`
-const ReactionSummary = styled.div`
-  margin-top: 13px;
-  display: flex;
+  flex-direction: column;
+  justify-content: center;
   align-items: center;
-  gap: 12px;
-  font-size: 16px;
-  color: #878787;
-
-  @media (max-width: 768px) {
-    margin-top: 11px;
-    font-family: Pretendard;
-    font-size: 12px;
-    font-weight: 500;
-    line-height: 14.32px;
-    text-align: left;
-    color: #8390a2;
-  }
-`
-const CommentCount = styled.span`
-  display: flex;
-  gap: 6px;
-  align-items: center;
-
-  @media (max-width: 768px) {
-  }
 `
 
-const LikeWrapper = styled.div<{ $isLiked: boolean }>`
-  display: flex;
-  gap: 6px;
-  align-items: center;
-  cursor: pointer;
-  path {
-    stroke: ${(props) => props.$isLiked && '#ff4d4d'};
-    fill: ${(props) => props.$isLiked && '#ff4d4d'};
-  }
-  &:hover {
-    path {
-      stroke: #ff4d4d;
-      fill: #ff4d4d;
-    }
-  }
-
-  @media (max-width: 768px) {
-  }
+const Viwer = styled.div`
+  width: 700px;
 `
+const Category = styled.div`
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 1px;
+`
+const Title = styled.div``
+const AuthorProfile = styled.div``
+const Details = styled.div``
+const Content = styled.div``

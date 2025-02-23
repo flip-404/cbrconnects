@@ -2,7 +2,6 @@ import { useSession } from 'next-auth/react'
 import useSWR from 'swr'
 import fetcher from '@/utils/fetcher'
 import { CommentWithRelations } from '@/types'
-import { CommentLike } from '@prisma/client'
 import useUser from './useUser'
 
 export default function useComment(postId: string | null) {
@@ -15,7 +14,6 @@ export default function useComment(postId: string | null) {
   const handleLikeComment = (commentId: number, parentId: number | null) => {
     if (!user || !comments) return
 
-    let isLiked: CommentLike | undefined
     let updatedComments
 
     if (parentId) {

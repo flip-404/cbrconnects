@@ -3,9 +3,9 @@ import { Inter } from 'next/font/google'
 import StyledComponentsRegistry from '@/libs/registry'
 import './globals.css'
 import { saira } from '@/fonts/fontConfig'
-import SupabaseProvider from './_components/SupabaseProvider'
 import NewHeader from './NewComponent/NewHeader'
 import Footer from '@/app/_components/molcules/Footer'
+import AppProvider from '@/AppProvider'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -23,13 +23,11 @@ export default function RootLayout({
     <html lang="ko">
       <body className={saira.className}>
         <StyledComponentsRegistry>
-          <SupabaseProvider>
+          <AppProvider>
             <NewHeader />
-            {/* <Header /> */}
-            {/* <Body>{children}</Body> */}
             {children}
             <Footer />
-          </SupabaseProvider>
+          </AppProvider>
         </StyledComponentsRegistry>
       </body>
     </html>
