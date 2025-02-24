@@ -7,7 +7,7 @@ import { useRef } from 'react'
 import SettingInput from './SettingInput'
 import ChangePassword from './ChangePassword'
 
-export interface SettingsForm {
+interface SettingsForm {
   email: string
   nickname: string
   profileImage: string | null
