@@ -7,6 +7,10 @@ import SignupModal from './SignupModal'
 import { useState } from 'react'
 import useUser from '../hooks/useUser'
 import supabase from '@/libs/supabaseClient'
+import ProfileIcon from '@/assets/profile.svg'
+import MessageIcon from '@/assets/message.svg'
+import SettingsIcon from '@/assets/settings.svg'
+import { useRouter } from 'next/navigation'
 
 export const boardLinks = [
   { label: '공지사항', category: 'NOTICE' },
@@ -21,75 +25,93 @@ function NewHeader() {
     null | 'SIGNIN' | 'SIGNUP'
   >(null)
   const { user, logout } = useUser()
+  const router = useRouter()
 
   return (
     <Container>
-      <LeftSection />
-      <CenterSection>
-        <Logo>
-          <Link href="/">캔버라커넥트</Link>
-        </Logo>
-        <Navigation>
-          {boardLinks.map((link) => (
-            <Link key={link.category} href={`/board?category=${link.category}`}>
-              {link.label}
-            </Link>
-          ))}
-        </Navigation>
-      </CenterSection>
-      <RightSection>
-        {/* 모달 부분 리팩토링 필요*/}
-        {user ? (
-          <Features>
-            <Button
-              onClick={() => {
-                setLoginModalOpen('SIGNIN')
-              }}
-            >
-              {user.nickname}
-            </Button>
-            <Button
-              onClick={() => {
-                supabase.auth.signOut()
-                logout()
-              }}
-            >
-              로그아웃
-            </Button>
-          </Features>
-        ) : (
-          <Features>
-            <Button
-              onClick={() => {
-                setLoginModalOpen('SIGNIN')
-              }}
-            >
-              로그인
-            </Button>
-            <Button
-              onClick={() => {
-                setLoginModalOpen('SIGNUP')
-              }}
-            >
-              회원가입
-            </Button>
-          </Features>
+      <div>
+        <LeftSection />
+        <CenterSection>
+          <Logo>
+            <Link href="/">캔버라커넥트</Link>
+          </Logo>
+        </CenterSection>
+        <RightSection>
+          {/* 모달 부분 리팩토링 필요*/}
+          {user ? (
+            <Features>
+              <button
+                onClick={() => {
+                  router.push('/profile')
+                }}
+              >
+                <ProfileIcon />
+                {user.nickname}
+              </button>
+              <button
+                onClick={() => {
+                  router.push('/messages')
+                }}
+              >
+                <MessageIcon />
+              </button>
+              <button
+                onClick={() => {
+                  router.push('/settings')
+                }}
+              >
+                <SettingsIcon />
+              </button>
+              <button
+                onClick={() => {
+                  supabase.auth.signOut()
+                  logout()
+                }}
+              >
+                로그아웃
+              </button>
+            </Features>
+          ) : (
+            <Features>
+              <button
+                onClick={() => {
+                  setLoginModalOpen('SIGNIN')
+                }}
+              >
+                로그인
+              </button>
+              <button
+                onClick={() => {
+                  setLoginModalOpen('SIGNUP')
+                }}
+              >
+                회원가입
+              </button>
+            </Features>
+          )}
+        </RightSection>
+        {loginModalOpen === 'SIGNIN' && (
+          <LoginModal
+            closeModal={() => {
+              setLoginModalOpen(null)
+            }}
+          />
         )}
-      </RightSection>
-      {loginModalOpen === 'SIGNIN' && (
-        <LoginModal
-          closeModal={() => {
-            setLoginModalOpen(null)
-          }}
-        />
-      )}
-      {loginModalOpen === 'SIGNUP' && (
-        <SignupModal
-          closeModal={() => {
-            setLoginModalOpen(null)
-          }}
-        />
-      )}
+        {loginModalOpen === 'SIGNUP' && (
+          <SignupModal
+            closeModal={() => {
+              setLoginModalOpen(null)
+            }}
+          />
+        )}
+      </div>
+      <Navigation>
+        {boardLinks.map((link) => (
+          <Link key={link.category} href={`/board?category=${link.category}`}>
+            {link.label}
+          </Link>
+        ))}
+      </Navigation>
     </Container>
   )
 }
@@ -99,9 +121,13 @@ export default NewHeader
 const Container = styled.header`
   padding: 25px;
   display: flex;
-  justify-content: space-between;
-
+  flex-direction: column;
   border-bottom: 0.5px solid #eaeaea;
+
+  & > div {
+    display: flex;
+    justify-content: space-between;
+  }
 `
 
 const LeftSection = styled.div`
@@ -134,7 +160,7 @@ const Logo = styled.h1`
   }
 `
 
-const Navigation = styled.div`
+const Navigation = styled.section`
   display: flex;
   justify-content: center;
   gap: 25px;
@@ -147,12 +173,26 @@ const Navigation = styled.div`
   }
 `
 
-const Features = styled.div``
+const Features = styled.div`
+  display: flex;
+  align-items: start;
+  gap: 10px;
 
-const Button = styled.button`
-  all: unset;
-  cursor: pointer;
-  font-size: 12px;
-  font-weight: 400;
-  margin-left: 20px;
+  svg {
+    width: 17px;
+    height: 17px;
+  }
+
+  button {
+    all: unset;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    font-size: 12px;
+    font-weight: 400;
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
 `
