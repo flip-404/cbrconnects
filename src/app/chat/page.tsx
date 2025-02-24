@@ -23,7 +23,7 @@ const chats = [
     time: '16:38',
     nickname: '공효진',
     content:
-      '안감독이 유망주 기용 적극적으로 하고, 2122시즌쯤엔 모들 이미 대체 된 상태로 챔스우승 못했다는 가정이면 지금보다 비판 덜 받았을까요? 안첼로티니나 모들이나 공과 전부 따지면 공이 확연히 크다봐서 마무리는 좋게갔으면 하네요',
+      '안감독이 유망주 기용 적극적으로 하고, 2122시즌쯤엔 모들 이미 대체 된 상태로 챔스우승 못했다는 가정이면 지금보다 비판 덜 받았을까요? 안첼로티니나 모들이나 공과 엔 모들 이미 대체 된 상태로 챔스우승 못했다는 가정이면 지금보다 비판 덜 받았을까요? 안첼로티니나 모들이나 공과 전부 따지면 공이 확연히 크다봐서 마무리는 좋게갔으면 하네요',
   },
   {
     time: '16:35',
@@ -124,7 +124,7 @@ function ChatPage() {
     <Container>
       <h3>CHAT</h3>
       <ChatControls>
-        <input />
+        <input placeholder="입력 후 엔터키" />
         <RefreshIcon />
         <ArrowBackIcon />
         <ArrowForwardIcon />
@@ -154,7 +154,8 @@ const Container = styled.div`
   justify-content: center;
 
   h3 {
-    margin: 0px;
+    letter-spacing: 2px;
+    margin: 0 0 10px 0;
     width: 1300px;
     font-size: 38px;
     font-weight: 800;
@@ -166,6 +167,7 @@ const ChatControls = styled.div`
   display: flex;
   align-items: center;
   gap: 10px;
+  margin-bottom: 20px;
 
   input {
     padding-bottom: 5px;
