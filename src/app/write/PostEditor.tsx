@@ -205,6 +205,7 @@ const QuillContainer = styled.div`
 `
 
 const WriteButton = styled.button`
+  cursor: pointer;
   border: none;
   margin-top: 15px;
   background-color: #007aff;

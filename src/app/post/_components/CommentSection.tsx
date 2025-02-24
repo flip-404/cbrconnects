@@ -13,12 +13,13 @@ interface CommentSectionProps {
 }
 
 function CommentSection({ post, comments }: CommentSectionProps) {
-  console.log('commeㅇㅇnts', comments)
+  const [count, setCount] = useState()
+
   const { selectedReplyComment } = useComment()
 
   return (
-    <>
-      <NewWriteCommentBox post={post} parentId={null} />
+    <Cotaniner>
+      <Count>댓글 {comments?.length}개</Count>
       {comments?.map((comment) => {
         return (
           <>
@@ -34,13 +35,23 @@ function CommentSection({ post, comments }: CommentSectionProps) {
           </>
         )
       })}
-    </>
+      <NewWriteCommentBox post={post} parentId={null} />
+    </Cotaniner>
   )
 }
 
 export default CommentSection
 
+const Cotaniner = styled.div`
+  width: 700px;
+`
+
+const Count = styled.p`
+  margin: 60px 0 20px 0;
+  font-size: 28px;
+  font-weight: 700;
+`
+
 const ReplySection = styled.div`
-  background-color: #f9f9f9;
-  padding: 0px 50px;
+  margin-left: 10px;
 `

@@ -1,4 +1,4 @@
-import { createContext, useContext, useState } from 'react'
+import { createContext, useContext, useEffect, useState } from 'react'
 
 interface CommentContextType {
   selectedReplyComment: number | null
@@ -14,6 +14,7 @@ export const CommentProvider = ({
 }: {
   children: React.ReactNode
 }) => {
+  const [count, setCount] = useState()
   const [selectedReplyComment, setSelectedReplyComment] = useState<
     number | null
   >(null)

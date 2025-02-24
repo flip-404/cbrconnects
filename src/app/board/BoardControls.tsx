@@ -90,7 +90,6 @@ const WriteButton = styled.button<{ $isLogin: boolean }>`
 
   span {
     margin-top: 2px;
-
     font-size: 17px;
   }
 `
