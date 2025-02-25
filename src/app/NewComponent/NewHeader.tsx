@@ -2,15 +2,15 @@
 
 import Link from 'next/link'
 import styled from 'styled-components'
-import LoginModal from './LoginModal'
-import SignupModal from './SignupModal'
 import { useState } from 'react'
-import useUser from '../hooks/useUser'
 import supabase from '@/libs/supabaseClient'
 import ProfileIcon from '@/assets/profile.svg'
 import MessageIcon from '@/assets/message.svg'
 import SettingsIcon from '@/assets/settings.svg'
 import { useRouter } from 'next/navigation'
+import useUser from '../hooks/useUser'
+import SignupModal from './SignupModal'
+import LoginModal from './LoginModal'
 
 export const boardLinks = [
   { label: '공지사항', category: 'NOTICE' },
@@ -37,32 +37,39 @@ function NewHeader() {
           </Logo>
         </CenterSection>
         <RightSection>
-          {/* 모달 부분 리팩토링 필요*/}
+          {/* 모달 부분 리팩토링 필요 */}
           {user ? (
             <Features>
               <button
+                type="button"
                 onClick={() => {
                   router.push('/profile')
                 }}
+                aria-label="Profiles"
               >
                 <ProfileIcon />
                 {user.nickname}
               </button>
               <button
+                type="button"
                 onClick={() => {
                   router.push('/messages')
                 }}
+                aria-label="Messages"
               >
                 <MessageIcon />
               </button>
               <button
+                type="button"
                 onClick={() => {
                   router.push('/settings')
                 }}
+                aria-label="Settings"
               >
                 <SettingsIcon />
               </button>
               <button
+                type="button"
                 onClick={() => {
                   supabase.auth.signOut()
                   logout()
@@ -74,16 +81,20 @@ function NewHeader() {
           ) : (
             <Features>
               <button
+                type="button"
                 onClick={() => {
                   setLoginModalOpen('SIGNIN')
                 }}
+                aria-label="Sign in"
               >
                 로그인
               </button>
               <button
+                type="button"
                 onClick={() => {
                   setLoginModalOpen('SIGNUP')
                 }}
+                aria-label="Sign up"
               >
                 회원가입
               </button>
