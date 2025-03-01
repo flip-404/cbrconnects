@@ -6,6 +6,7 @@ import EmptyProfileIcon from '@/assets/empty_profile.svg'
 import LikeIcon from '@/assets/like.svg'
 import { CommentProvider } from '@/contexts/commentContext'
 import { postlike } from '@prisma/client'
+import Image from 'next/image'
 import CommentSection from './_components/CommentSection'
 import useUser from '../../hooks/useUser'
 
@@ -53,7 +54,11 @@ function PostViewer() {
             <Category>{post.category}</Category>
             <h1>{post.title}</h1>
             <AuthorProfile>
-              {false ? <img src={post.author.profile_image} alt="profile" /> : <EmptyProfileIcon />}
+              {post.author.profile_image ? (
+                <Image src={post.author.profile_image} alt="프로필 사진" width={70} height={70} />
+              ) : (
+                <EmptyProfileIcon />
+              )}
               <div>
                 <p>{post.author.nickname}</p>
                 <span>{post.author.description || '입력된 자기소개가 없습니다.'}</span>
@@ -111,13 +116,6 @@ const Viwer = styled.div`
     font-size: 50px;
     font-weight: 700;
   }
-
-  svg {
-    border-radius: 4px;
-    width: 70px;
-    height: 70px;
-    background-color: #d8d8d8;
-  }
 `
 const Category = styled.div`
   font-size: 11px;
@@ -127,6 +125,18 @@ const Category = styled.div`
 const AuthorProfile = styled.div`
   display: flex;
   gap: 15px;
+
+  & > svg {
+    border-radius: 4px;
+    width: 70px;
+    height: 70px;
+    background-color: #d8d8d8;
+  }
+
+  & > img {
+    border-radius: 4px;
+    object-fit: cover;
+  }
 
   div {
     display: flex;

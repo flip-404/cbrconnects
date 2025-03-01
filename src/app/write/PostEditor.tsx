@@ -13,11 +13,11 @@ import { ImageDrop } from 'quill-image-drop-module'
 import ReactQuill, { Quill } from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import api from '@/libs/axiosInstance'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
+import useCategoryStore from '@/store/useCategoryStore'
 import formats from './default'
 import useUser from '../../hooks/useUser'
 import { boardLinks } from '../NewComponent/NewHeader'
-import { useMutation, useQueryClient } from '@tanstack/react-query'
-import useCategoryStore from '@/store/useCategoryStore'
 
 Quill.register('modules/imageResize', ImageResize)
 Quill.register('modules/imageDrop', ImageDrop)
@@ -60,12 +60,12 @@ function PostEditor() {
   const [thumbnail, setThumbnail] = useState(null)
 
   const { mutate: writePost } = useMutation({
-    mutationFn: async (newPost: NewPostType) => await api.post('/posts', newPost),
+    mutationFn: async (newPost: NewPostType) => api.post('/posts', newPost),
     onSuccess: ({ data: post }) => {
       queryClient.invalidateQueries({
         queryKey: ['posts', category],
       })
-      router.push('post?postId=' + post.id)
+      router.push(`post?postId=${post.id}`)
     },
   })
 
@@ -149,7 +149,7 @@ function PostEditor() {
     <Container>
       <QuillContainer>
         <h1>{boardLinks.find((link) => link.category === category)?.label} 글쓰기</h1>
-        <input placeholder="제목" onChange={(e) => setTitle(e.target.value)} value={title}></input>
+        <input placeholder="제목" onChange={(e) => setTitle(e.target.value)} value={title} />
         <DynamicReactQuill
           forwardedRef={quillRef}
           theme="snow"
