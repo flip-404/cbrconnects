@@ -24,8 +24,8 @@ function Settings() {
   // React의 useState는 초기값만 한 번 설정될 뿐, 이후에는 자동으로 업데이트되지 않는다
   // 이후 user 값이 들어와도, useState는 userProfile을 자동으로 업데이트하지 않음. useState는 초기 렌더링 시 지정된 값만 기억하고 유지
 
-  const handleImageChange = (e) => {
-    const file = e.target.files[0]
+  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0]
     if (file) {
       const imageUrl = URL.createObjectURL(file) // 선택한 이미지의 URL 생성
       setUserProfile((prev) => ({
