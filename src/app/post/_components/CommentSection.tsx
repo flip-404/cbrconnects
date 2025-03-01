@@ -1,11 +1,10 @@
 'use client'
 
 import { CommentWithRelations, PostWithRelations } from '@/types'
-import NewWriteCommentBox from './WriteInput'
-import Comment from './Comment'
-import { useState } from 'react'
-import { CommentProvider, useComment } from '@/contexts/commentContext'
+import { useComment } from '@/contexts/commentContext'
 import styled from 'styled-components'
+import Comment from './Comment'
+import NewWriteCommentBox from './WriteInput'
 
 interface CommentSectionProps {
   post: PostWithRelations
@@ -22,14 +21,16 @@ function CommentSection({ post, comments }: CommentSectionProps) {
         return (
           <>
             <Comment post={post} comment={comment} />
-            <ReplySection>
-              {comment.replies?.map((reply) => {
-                return <Comment post={post} comment={reply} />
-              })}
-              {comment.id === selectedReplyComment && (
-                <NewWriteCommentBox post={post} parentId={comment.id} />
-              )}
-            </ReplySection>
+            {comment.replies.length !== 0 && (
+              <ReplySection>
+                {comment.replies?.map((reply) => {
+                  return <Comment key={reply.id} post={post} comment={reply} />
+                })}
+                {comment.id === selectedReplyComment && (
+                  <NewWriteCommentBox post={post} parentId={comment.id} />
+                )}
+              </ReplySection>
+            )}
           </>
         )
       })}
@@ -52,4 +53,7 @@ const Count = styled.p`
 
 const ReplySection = styled.div`
   margin-left: 10px;
+  padding: 5px 20px;
+  background-color: #f9f9f9;
+  border-radius: 4px;
 `

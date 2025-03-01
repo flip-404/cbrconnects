@@ -68,7 +68,8 @@ function BoardControls({
           length: pagePhases === Math.floor((totalPage - 1) / 10) ? totalPage % 10 : 10,
         }).map((_, index) => (
           <button
-            key={index}
+            // eslint-disable-next-line react/no-array-index-key
+            key={`${index}`}
             type="button"
             onClick={() => onPageChange(pagePhases * 10 + index + 1)}
             style={{

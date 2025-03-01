@@ -1,3 +1,4 @@
+import { useComment } from '@/contexts/commentContext'
 import useUser from '@/hooks/useUser'
 import api from '@/libs/axiosInstance'
 import { PostWithRelations } from '@/types'
@@ -20,6 +21,7 @@ function WriteInput({ post, parentId = null }: WriteInputProps) {
   const [comment, setComment] = useState('')
   const { user } = useUser()
   const queryClient = useQueryClient()
+  const { selectReplyComment } = useComment()
 
   const { mutate: writeComment } = useMutation({
     mutationFn: (newComment: CommentData) => api.post('/comments', newComment),
@@ -35,6 +37,7 @@ function WriteInput({ post, parentId = null }: WriteInputProps) {
   const onClickWrite = () => {
     if (!user) return
 
+    selectReplyComment(null)
     writeComment({
       content: comment,
       post_id: post.id,
@@ -47,13 +50,13 @@ function WriteInput({ post, parentId = null }: WriteInputProps) {
     <Container>
       <Label>{parentId ? '답' : '댓'}글 남기기</Label>
       <Input
-        disabled={!Boolean(user)}
-        placeholder={!Boolean(user) ? '로그인이 필요합니다.' : '댓글을 작성해주세요.'}
+        disabled={!user}
+        placeholder={!user ? '로그인이 필요합니다.' : '댓글을 작성해주세요.'}
         value={comment}
         onChange={(e) => setComment(e.target.value)}
       />
       <ButtonWrapper>
-        <Button disabled={!Boolean(user)} onClick={onClickWrite}>
+        <Button disabled={!user} onClick={onClickWrite}>
           등록하기
         </Button>
       </ButtonWrapper>

@@ -6,16 +6,18 @@ interface EditModeProps {
   handleEdit: () => void
 }
 
-const EditMode = ({ editText, setEditText, handleEdit }: EditModeProps) => (
-  <Container>
-    <Input value={editText} onChange={(e) => setEditText(e.target.value)} />
-    <ButtonWrapper>
-      <EditButton onClick={handleEdit} disabled={!editText}>
-        수정하기
-      </EditButton>
-    </ButtonWrapper>
-  </Container>
-)
+function EditMode({ editText, setEditText, handleEdit }: EditModeProps) {
+  return (
+    <Container>
+      <Input value={editText} onChange={(e) => setEditText(e.target.value)} />
+      <ButtonWrapper>
+        <EditButton onClick={handleEdit} disabled={!editText}>
+          수정하기
+        </EditButton>
+      </ButtonWrapper>
+    </Container>
+  )
+}
 
 const Container = styled.div`
   display: flex;

@@ -24,8 +24,8 @@ function PostViewer() {
   const post = data?.data
 
   const { mutate: likePost } = useMutation({
-    mutationFn: ({ userId, postId }: { userId: string; postId: string }) =>
-      api.post('/like', { userId, postId }),
+    mutationFn: ({ userId, postId: mutationPostId }: { userId: string; postId: string }) =>
+      api.post('/like', { userId, postId: mutationPostId }),
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ['post', postId],
@@ -71,7 +71,7 @@ function PostViewer() {
               )}
             </Details>
             <Content>{post.content}</Content>
-            <Like>
+            <Like $isActive={post.likes.some((like: postlike) => like.user_id === user?.id)}>
               <button
                 type="button"
                 onClick={() => {
@@ -175,20 +175,23 @@ const Details = styled.div`
 `
 const Content = styled.div``
 
-const Like = styled.div`
+const Like = styled.div<{ $isActive: boolean }>`
   margin-top: 30px;
   display: flex;
   align-items: center;
   gap: 12px;
 
   button {
+    cursor: pointer;
     display: flex;
     align-items: center;
     background-color: transparent;
-    border: 1px solid #ffcc00;
+    border: ${(props) => (props.$isActive ? '1px solid #ffcc00' : '1px solid #3c3c4399')};
+
     border-radius: 4px;
     padding: 5px 10px;
-    color: #ffcc00;
+    color: ${(props) => (props.$isActive ? '#ffcc00' : '#3c3c4399')};
+
     font-size: 17px;
     font-weight: 700;
 
@@ -197,6 +200,15 @@ const Like = styled.div`
       width: 23px;
       height: 23px;
       margin-right: 5px;
+      fill: ${(props) => (props.$isActive ? '#ffcc00' : '#3c3c4399')};
+    }
+
+    &:hover {
+      border: 1px solid #ffcc00;
+      color: #ffcc00;
+      svg {
+        fill: #ffcc00;
+      }
     }
   }
 
