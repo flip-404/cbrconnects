@@ -1,12 +1,12 @@
 import prisma from '@/libs/prisma'
 import { NextResponse } from 'next/server'
 
-export async function GET(req: Request, { params }: { params: { id: string } }) {
+async function GET(req: Request, { params }: { params: { id: string } }) {
   const { id } = params
 
   try {
     const post = await prisma.post.update({
-      where: { id: parseInt(id) },
+      where: { id: parseInt(id, 10) },
       data: { view_count: { increment: 1 } },
       include: {
         author: {
@@ -59,6 +59,8 @@ export async function GET(req: Request, { params }: { params: { id: string } }) 
       { status: 200 },
     )
   } catch (error) {
-    return NextResponse.json({ message: 'Internal Server Error', error: error }, { status: 500 })
+    return NextResponse.json({ message: 'Internal Server Error', error }, { status: 500 })
   }
 }
+
+export { GET }
