@@ -7,6 +7,7 @@ import ArrowBackIcon from '@/assets/arrow_back.svg'
 import ArrowForwardIcon from '@/assets/arrow_forward.svg'
 import { useRouter } from 'next/navigation'
 import { useQueryClient } from '@tanstack/react-query'
+import { useState } from 'react'
 import useUser from '../../hooks/useUser'
 
 function BoardControls({
@@ -27,6 +28,19 @@ function BoardControls({
   const router = useRouter()
   const totalPage = Math.floor(totalPosts / limit) + 1
   const pagePhases = Math.floor((page - 1) / 10)
+  const [filter, setFilter] = useState<string[]>([])
+
+  const handleFilterChange = (option: 'author' | 'title' | 'content') => {
+    if (option === 'author') {
+      setFilter(['author'])
+    } else {
+      setFilter((prev) =>
+        prev.includes(option)
+          ? prev.filter((f) => f !== option)
+          : [...prev.filter((f) => f !== 'author'), option],
+      )
+    }
+  }
 
   return (
     <Container>
@@ -91,9 +105,18 @@ function BoardControls({
         )}
       </Pagination>
       <div>
-        <Filter>작성자</Filter>
-        <Filter>제목</Filter>
-        <Filter>내용</Filter>
+        <Filter $isActive={filter.includes('author')} onClick={() => handleFilterChange('author')}>
+          작성자
+        </Filter>
+        <Filter $isActive={filter.includes('title')} onClick={() => handleFilterChange('title')}>
+          제목
+        </Filter>
+        <Filter
+          $isActive={filter.includes('content')}
+          onClick={() => handleFilterChange('content')}
+        >
+          내용
+        </Filter>
         <Input type="text" placeholder="검색어" />
         <SearchButton
           style={{
@@ -173,12 +196,13 @@ const Pagination = styled.div`
   }
 `
 
-const Filter = styled.button`
+const Filter = styled.button<{ $isActive: boolean }>`
   all: unset;
   cursor: pointer;
-  color: rgba(60, 60, 67, 0.3);
+  color: ${(props) => (props.$isActive ? '#007aff' : 'rgba(60, 60, 67, 0.3)')};
   font-size: 13px;
   font-weight: 600;
+  transition: color 0.3s ease-in-out;
 `
 
 const Input = styled.input`
