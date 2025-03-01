@@ -7,6 +7,7 @@ import EmptyProfileIcon from '@/assets/empty_profile.svg'
 import LikeIcon from '@/assets/like.svg'
 import CommentSection from './_components/CommentSection'
 import { CommentProvider } from '@/contexts/commentContext'
+import { useEffect } from 'react'
 
 function PostViewer() {
   const { user } = useUser()

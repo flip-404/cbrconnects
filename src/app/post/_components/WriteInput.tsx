@@ -1,20 +1,41 @@
 import useUser from '@/hooks/useUser'
 import api from '@/libs/axiosInstance'
 import { PostWithRelations } from '@/types'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
 import styled from 'styled-components'
 
+type CommentData = {
+  content: string
+  post_id: string
+  author_id: string
+  parent_id: string | null
+}
 interface WriteInputProps {
   post: PostWithRelations
-  parentId: number | null
+  parentId: string | null
 }
 
 function WriteInput({ post, parentId = null }: WriteInputProps) {
   const [comment, setComment] = useState('')
   const { user } = useUser()
+  const queryClient = useQueryClient()
+
+  const { mutate: writeComment } = useMutation({
+    mutationFn: (newComment: CommentData) => api.post('/comments', newComment),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['post', post.id.toString()],
+      })
+
+      setComment('')
+    },
+  })
 
   const onClickWrite = () => {
-    api.post('/comments', {
+    if (!user) return
+
+    writeComment({
       content: comment,
       post_id: post.id,
       author_id: user?.id,
