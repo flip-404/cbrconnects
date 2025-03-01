@@ -5,8 +5,9 @@ import AddIcon from '@mui/icons-material/Add'
 import RefreshIcon from '@/assets/refresh.svg'
 import ArrowBackIcon from '@/assets/arrow_back.svg'
 import ArrowForwardIcon from '@/assets/arrow_forward.svg'
-import useUser from '../../hooks/useUser'
 import { useRouter } from 'next/navigation'
+import { useQueryClient } from '@tanstack/react-query'
+import useUser from '../../hooks/useUser'
 
 function BoardControls({
   category,
@@ -21,6 +22,7 @@ function BoardControls({
   totalPosts: number
   limit: number
 }) {
+  const queryClient = useQueryClient()
   const { user } = useUser()
   const router = useRouter()
   const totalPage = Math.floor(totalPosts / limit) + 1
@@ -37,7 +39,11 @@ function BoardControls({
           <AddIcon />
           <span>글쓰기</span>
         </WriteButton>
-        <Button>
+        <Button
+          onClick={() => {
+            queryClient.invalidateQueries({ queryKey: ['posts', category, page, limit] })
+          }}
+        >
           <RefreshIcon />
         </Button>
         <Button onClick={() => page !== 1 && onPageChange(page - 1)}>

@@ -4,7 +4,6 @@ import { NextRequest, NextResponse } from 'next/server'
 
 async function GET(request: NextRequest) {
   const url = new URL(request.url)
-
   const category = url.searchParams.get('category') as CategoryType
 
   if (!category)
@@ -23,4 +22,4 @@ async function GET(request: NextRequest) {
   }
 }
 
-export default { GET }
+export { GET }
