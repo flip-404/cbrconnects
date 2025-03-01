@@ -111,12 +111,10 @@ const StyledInput = styled.input<{
 }>`
   display: flex;
   flex: 1;
-  background: ${(props) =>
-    props.disabled ? '1px solid #C1C7D1' : 'transparent'};
+  background: ${(props) => (props.disabled ? '1px solid #C1C7D1' : 'transparent')};
   border-radius: 8px;
   padding: 10px 12px;
-  border: ${(props) =>
-    props.$isError ? '0.87px solid #FC5555' : '1px solid #D8D8D8'};
+  border: ${(props) => (props.$isError ? '0.87px solid #FC5555' : '1px solid #D8D8D8')};
 
   font-family: Pretendard;
   font-size: 16px;

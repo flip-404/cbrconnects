@@ -117,10 +117,8 @@ const SocialSignupButton = styled.button<{ $socialType: string }>`
   position: relative;
   text-align: center;
   padding: 19px 22px;
-  background: ${(props) =>
-    props.$socialType === 'kakao' ? '#FFEB02' : 'transparent'};
-  border: ${(props) =>
-    props.$socialType === 'kakao' ? 'none' : '0.87px solid #D8D8D8'};
+  background: ${(props) => (props.$socialType === 'kakao' ? '#FFEB02' : 'transparent')};
+  border: ${(props) => (props.$socialType === 'kakao' ? 'none' : '0.87px solid #D8D8D8')};
   border-radius: 7px;
   font-family: Pretendard;
   font-size: 16px;

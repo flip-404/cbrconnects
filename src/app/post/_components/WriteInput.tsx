@@ -48,9 +48,7 @@ function WriteInput({ post, parentId = null }: WriteInputProps) {
       <Label>{parentId ? '답' : '댓'}글 남기기</Label>
       <Input
         disabled={!Boolean(user)}
-        placeholder={
-          !Boolean(user) ? '로그인이 필요합니다.' : '댓글을 작성해주세요.'
-        }
+        placeholder={!Boolean(user) ? '로그인이 필요합니다.' : '댓글을 작성해주세요.'}
         value={comment}
         onChange={(e) => setComment(e.target.value)}
       />

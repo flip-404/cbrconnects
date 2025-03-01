@@ -14,8 +14,7 @@ export interface SignUpBody {
 type RequestBody = SignUpBody
 
 async function POST(request: Request) {
-  const { email, password, nickname, profileImage, provider }: RequestBody =
-    await request.json()
+  const { email, password, nickname, profileImage, provider }: RequestBody = await request.json()
 
   if (provider === 'kakao') {
     const res = await supabase.auth.signInWithOAuth({
@@ -42,8 +41,7 @@ async function POST(request: Request) {
     console.log('password', password)
     console.log('\n\n', data)
     console.log('\n\n', error)
-    if (!error)
-      return NextResponse.json({ message: '회원가입 완료' }, { status: 200 })
+    if (!error) return NextResponse.json({ message: '회원가입 완료' }, { status: 200 })
     else return NextResponse.json({ message: '회원가입 실패' }, { status: 400 })
   }
 }

@@ -17,10 +17,7 @@ export default function usePost(postId: string | null) {
     error,
     mutate,
     isLoading: isPostLoading,
-  } = useSWR<PostWithRelations>(
-    postId ? `/api/posts?postId=${postId}` : null,
-    fetcher,
-  )
+  } = useSWR<PostWithRelations>(postId ? `/api/posts?postId=${postId}` : null, fetcher)
 
   const handleLikePost = async () => {
     if (!user || !post) return
@@ -37,9 +34,7 @@ export default function usePost(postId: string | null) {
       method: isLiked ? 'DELETE' : 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
-        postLikeId: isLiked
-          ? post.likes.find((like) => like.userId === user.id)?.id
-          : null,
+        postLikeId: isLiked ? post.likes.find((like) => like.userId === user.id)?.id : null,
         postId: post.id,
         userId: user.id,
       }),

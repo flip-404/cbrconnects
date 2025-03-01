@@ -39,13 +39,7 @@ export type Category = {
 const DynamicReactQuill = dynamic(
   async () => {
     const { default: RQ } = await import('react-quill')
-    return function comp({
-      forwardedRef,
-      ...props
-    }: {
-      forwardedRef: any
-      [key: string]: any
-    }) {
+    return function comp({ forwardedRef, ...props }: { forwardedRef: any; [key: string]: any }) {
       return <RQ ref={forwardedRef} {...props} />
     }
   },
@@ -66,8 +60,7 @@ function PostEditor() {
   const [thumbnail, setThumbnail] = useState(null)
 
   const { mutate: writePost } = useMutation({
-    mutationFn: async (newPost: NewPostType) =>
-      await api.post('/posts', newPost),
+    mutationFn: async (newPost: NewPostType) => await api.post('/posts', newPost),
     onSuccess: ({ data: post }) => {
       queryClient.invalidateQueries({
         queryKey: ['posts', category],
@@ -117,12 +110,7 @@ function PostEditor() {
         container: [
           [{ size: ['small', false, 'large', 'huge'] }], // 텍스트 크기 옵션 추가
           ['bold', 'italic', 'underline', 'strike'],
-          [
-            { list: 'ordered' },
-            { list: 'bullet' },
-            { indent: '-1' },
-            { indent: '+1' },
-          ],
+          [{ list: 'ordered' }, { list: 'bullet' }, { indent: '-1' }, { indent: '+1' }],
           ['link', 'image'],
           [{ align: [] }, { color: [] }, { background: [] }],
         ],
@@ -160,14 +148,8 @@ function PostEditor() {
   return (
     <Container>
       <QuillContainer>
-        <h1>
-          {boardLinks.find((link) => link.category === category)?.label} 글쓰기
-        </h1>
-        <input
-          placeholder="제목"
-          onChange={(e) => setTitle(e.target.value)}
-          value={title}
-        ></input>
+        <h1>{boardLinks.find((link) => link.category === category)?.label} 글쓰기</h1>
+        <input placeholder="제목" onChange={(e) => setTitle(e.target.value)} value={title}></input>
         <DynamicReactQuill
           forwardedRef={quillRef}
           theme="snow"

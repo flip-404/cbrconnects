@@ -17,12 +17,8 @@ interface CommentProps {
 }
 
 function Comment({ post, comment }: CommentProps) {
-  const {
-    selectedReplyComment,
-    selectedEditComment,
-    selectReplyComment,
-    selectEditComment,
-  } = useComment()
+  const { selectedReplyComment, selectedEditComment, selectReplyComment, selectEditComment } =
+    useComment()
   const [editText, setEditText] = useState<string>('')
   const { user } = useUser()
   const isEditMode = selectedEditComment === comment.id
@@ -59,11 +55,7 @@ function Comment({ post, comment }: CommentProps) {
         )}
       </div>
       {isEditMode ? (
-        <EditMode
-          editText={editText}
-          setEditText={setEditText}
-          handleEdit={handleEdit}
-        />
+        <EditMode editText={editText} setEditText={setEditText} handleEdit={handleEdit} />
       ) : (
         <>
           <p>

@@ -24,10 +24,7 @@ export function useUser() {
       clearUser()
     } else {
       setUser(userInfo)
-      localStorage.setItem(
-        'user-storage',
-        JSON.stringify({ state: { user: userInfo } }),
-      )
+      localStorage.setItem('user-storage', JSON.stringify({ state: { user: userInfo } }))
     }
   }
   useEffect(() => {

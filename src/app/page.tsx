@@ -18,18 +18,9 @@ export default function Home() {
       </Pinned>
       <NewsBoard />
       <Boards>
-        <PostBoard
-          title={boardLinks[1].label}
-          category={boardLinks[1].category}
-        />
-        <PostBoard
-          title={boardLinks[2].label}
-          category={boardLinks[2].category}
-        />
-        <PostBoard
-          title={boardLinks[3].label}
-          category={boardLinks[3].category}
-        />
+        <PostBoard title={boardLinks[1].label} category={boardLinks[1].category} />
+        <PostBoard title={boardLinks[2].label} category={boardLinks[2].category} />
+        <PostBoard title={boardLinks[3].label} category={boardLinks[3].category} />
       </Boards>
     </Container>
   )

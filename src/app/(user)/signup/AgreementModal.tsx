@@ -1,12 +1,6 @@
 import styled from 'styled-components'
 
-function AgreementModal({
-  toggleModal,
-  content,
-}: {
-  toggleModal: () => void
-  content: string
-}) {
+function AgreementModal({ toggleModal, content }: { toggleModal: () => void; content: string }) {
   return (
     <ModalOverlay onClick={toggleModal}>
       <Modal onClick={(e) => e.stopPropagation()}>

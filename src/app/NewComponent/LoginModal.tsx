@@ -84,9 +84,7 @@ function LoginModal({ closeModal }: { closeModal: () => void }) {
           <ExtraFeatureContainer>
             <CheckboxWrapper>
               <Checkbox type="checkbox" id="rememberMe" />
-              <CheckboxLabel htmlFor="rememberMe">
-                로그인 상태 유지
-              </CheckboxLabel>
+              <CheckboxLabel htmlFor="rememberMe">로그인 상태 유지</CheckboxLabel>
             </CheckboxWrapper>
             <div>
               <FindFeature>아이디 · 비밀번호 찾기</FindFeature>
@@ -227,10 +225,8 @@ const SocialLoginButton = styled.button<{ $socialType: string }>`
   position: relative;
   text-align: center;
   padding: 19px 22px;
-  background: ${(props) =>
-    props.$socialType === 'kakao' ? '#FFEB02' : 'transparent'};
-  border: ${(props) =>
-    props.$socialType === 'kakao' ? 'none' : '0.87px solid #D8D8D8'};
+  background: ${(props) => (props.$socialType === 'kakao' ? '#FFEB02' : 'transparent')};
+  border: ${(props) => (props.$socialType === 'kakao' ? 'none' : '0.87px solid #D8D8D8')};
   border-radius: 7px;
 
   font-family: Pretendard;

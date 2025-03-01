@@ -2,10 +2,6 @@
 
 import FirstDepthLayout from './FirstDepthLayout'
 
-export default function LayoutByDepth({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function LayoutByDepth({ children }: { children: React.ReactNode }) {
   return <FirstDepthLayout>{children}</FirstDepthLayout>
 }

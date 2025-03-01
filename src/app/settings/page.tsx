@@ -92,10 +92,8 @@ function Settings() {
                   },
                   validate: {
                     hasLetter: (value) =>
-                      /[a-zA-Z]/.test(value) ||
-                      '영문자가 하나 이상 포함되어야 합니다.',
-                    hasNumber: (value) =>
-                      /\d/.test(value) || '숫자가 하나 이상 포함되어야 합니다.',
+                      /[a-zA-Z]/.test(value) || '영문자가 하나 이상 포함되어야 합니다.',
+                    hasNumber: (value) => /\d/.test(value) || '숫자가 하나 이상 포함되어야 합니다.',
                   },
                 })}
                 errorMessage={errors.password?.message || ''}
@@ -105,8 +103,7 @@ function Settings() {
                 register={register('passwordCheck', {
                   required: '비밀번호를 한번 더 입력해 주세요.',
                   validate: (passwordCheck) =>
-                    passwordCheck === passwordRef.current ||
-                    '비밀번호가 일치하지 않습니다.',
+                    passwordCheck === passwordRef.current || '비밀번호가 일치하지 않습니다.',
                 })}
                 errorMessage={errors.passwordCheck?.message || ''}
               />

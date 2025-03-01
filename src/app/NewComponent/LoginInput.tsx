@@ -70,8 +70,7 @@ const StyledInput = styled.input<{
   background: transparent;
   border-radius: 4px;
   padding: 20px 26px;
-  border: ${(props) =>
-    props.$isError ? '0.87px solid #FC5555' : '0.87px solid #D8D8D8'};
+  border: ${(props) => (props.$isError ? '0.87px solid #FC5555' : '0.87px solid #D8D8D8')};
 
   font-family: Pretendard;
   font-size: 16px;

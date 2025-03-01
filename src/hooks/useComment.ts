@@ -18,24 +18,18 @@ export default function useComment(postId: string | null) {
 
     if (parentId) {
       const parentComment = comments.find((comment) => comment.id === parentId)
-      const targetReply = parentComment?.replies.find(
-        (reply) => reply.id === commentId,
-      )
+      const targetReply = parentComment?.replies.find((reply) => reply.id === commentId)
       isLiked = targetReply?.likes.find((like) => like.userId === user?.id)
 
       const updatedReplies = parentComment?.replies.map((reply) => {
         const updatedLikes = isLiked
           ? reply.likes.filter((like) => like.userId !== user?.id)
           : [...reply.likes, { id: Math.random(), commentId, userId: user?.id }]
-        return reply.id === commentId
-          ? { ...reply, likes: updatedLikes }
-          : reply
+        return reply.id === commentId ? { ...reply, likes: updatedLikes } : reply
       })
 
       updatedComments = comments.map((comment) =>
-        comment.id === parentId
-          ? { ...comment, replies: updatedReplies }
-          : comment,
+        comment.id === parentId ? { ...comment, replies: updatedReplies } : comment,
       )
     } else {
       const targetComment = comments.find((comment) => comment.id === commentId)
@@ -47,10 +41,7 @@ export default function useComment(postId: string | null) {
               ...comment,
               likes: isLiked
                 ? comment.likes.filter((like) => like.userId !== user?.id)
-                : [
-                    ...comment.likes,
-                    { id: Math.random(), commentId, userId: user?.id },
-                  ],
+                : [...comment.likes, { id: Math.random(), commentId, userId: user?.id }],
             }
           : comment,
       )

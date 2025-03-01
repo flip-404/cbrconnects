@@ -10,18 +10,9 @@ export default function ImageSelector({
 }) {
   return (
     <ProfileImageWrapper>
-      <ImageInput
-        type="file"
-        id="profile-image"
-        accept="image/*"
-        onChange={handleImageChange}
-      />
+      <ImageInput type="file" id="profile-image" accept="image/*" onChange={handleImageChange} />
       <ImageLabel htmlFor="profile-image">
-        {profileImage ? (
-          <ProfileImage src={profileImage} alt="Profile" />
-        ) : (
-          <PlusIcon />
-        )}
+        {profileImage ? <ProfileImage src={profileImage} alt="Profile" /> : <PlusIcon />}
       </ImageLabel>
       <StyledLabel>프로필 사진 (선택)</StyledLabel>
     </ProfileImageWrapper>

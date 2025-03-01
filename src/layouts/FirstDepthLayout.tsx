@@ -15,11 +15,7 @@ import PostPagination from '@/app/_components/PostPagination'
 import { useMediaQuery } from '@mui/material'
 import MobileSubHeader from '@/app/_components/MobileSubHeader'
 
-export default function FirstDepthLayout({
-  children,
-}: {
-  children: React.ReactNode
-}) {
+export default function FirstDepthLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname()
   const firstNavItem = NavsData.find((item) => item.href === pathname)!
   const [subCategory, setSubCategory] = useState<null | NavsDataType>(null)
@@ -34,10 +30,7 @@ export default function FirstDepthLayout({
     limit: `${limit}`,
   })
 
-  const { data, isLoading } = useSWR(
-    `/api/posts${query ? `?${query}` : ''}`,
-    fetcher,
-  )
+  const { data, isLoading } = useSWR(`/api/posts${query ? `?${query}` : ''}`, fetcher)
   const { posts, totalCount } = data || { posts: [], totalCount: 0 }
 
   const handlePageChange = (pageNum: number) => {
@@ -53,11 +46,7 @@ export default function FirstDepthLayout({
         changeSubCategory={setSubCategory}
       />
       <PostList posts={posts} isLoading={isLoading} />
-      <PostPagination
-        curPage={page}
-        totalCount={totalCount}
-        handlePageChange={handlePageChange}
-      />
+      <PostPagination curPage={page} totalCount={totalCount} handlePageChange={handlePageChange} />
       <PromotionList />
       {children}
     </LayoutWrapper>

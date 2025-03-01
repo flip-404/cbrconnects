@@ -50,9 +50,7 @@ function BoardControls({ category }: { category: string }) {
         >
           검색
         </SearchButton>
-        <SearchButton style={{ color: 'rgba(60, 60, 67, 0.6)' }}>
-          취소
-        </SearchButton>
+        <SearchButton style={{ color: 'rgba(60, 60, 67, 0.6)' }}>취소</SearchButton>
       </div>
     </Container>
   )

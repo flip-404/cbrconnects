@@ -10,8 +10,7 @@ export type NewsItem = {
 }
 
 async function GET() {
-  const URL =
-    'https://www.sbs.com.au/language/korean/ko/collection/news-and-features'
+  const URL = 'https://www.sbs.com.au/language/korean/ko/collection/news-and-features'
 
   const { data } = await axios.get(URL, {
     headers: {
@@ -31,13 +30,8 @@ async function GET() {
 
     const title = $(element).find('h3').text().trim()
     let image = $(element).find('img').attr('src')
-    const fullLink = link.startsWith('http')
-      ? link
-      : `https://www.sbs.com.au${link}`
-    const fullImage =
-      image && !image.startsWith('http')
-        ? `https://www.sbs.com.au${image}`
-        : image
+    const fullLink = link.startsWith('http') ? link : `https://www.sbs.com.au${link}`
+    const fullImage = image && !image.startsWith('http') ? `https://www.sbs.com.au${image}` : image
 
     if (title && fullLink && fullImage) {
       newsList.push({ title, image: fullImage, link: fullLink })

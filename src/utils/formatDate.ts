@@ -52,10 +52,7 @@ function formatDateToMonth(input: Date | string): string {
   return `${year}.${String(month).padStart(2, '0')}.${String(day).padStart(2, '0')}`
 }
 
-function formatDateToFullYear(
-  input: Date | string,
-  includeTime: boolean = false,
-) {
+function formatDateToFullYear(input: Date | string, includeTime: boolean = false) {
   let date
 
   if (typeof input === 'string') {

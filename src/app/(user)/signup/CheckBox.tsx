@@ -10,13 +10,7 @@ type CheckBoxProps = {
   fullText?: string
 }
 
-function CheckBox({
-  name,
-  label,
-  checked,
-  handleChange,
-  fullText,
-}: CheckBoxProps) {
+function CheckBox({ name, label, checked, handleChange, fullText }: CheckBoxProps) {
   const [isModalOpen, setModalOpen] = useState(false)
   const toggleModal = () => {
     setModalOpen(!isModalOpen)
@@ -24,23 +18,13 @@ function CheckBox({
   return (
     <Container>
       <CheckboxWrapper type={name}>
-        <input
-          type="checkbox"
-          id={name}
-          name={name}
-          checked={checked}
-          onChange={handleChange}
-        />
+        <input type="checkbox" id={name} name={name} checked={checked} onChange={handleChange} />
         <label htmlFor={name}>
           {label} {name !== 'checkAll' && <span>(필수)</span>}
         </label>
       </CheckboxWrapper>
-      {fullText && (
-        <ShowAgreement onClick={toggleModal}>전문보기</ShowAgreement>
-      )}
-      {fullText && isModalOpen && (
-        <AgreementModal toggleModal={toggleModal} content={fullText} />
-      )}
+      {fullText && <ShowAgreement onClick={toggleModal}>전문보기</ShowAgreement>}
+      {fullText && isModalOpen && <AgreementModal toggleModal={toggleModal} content={fullText} />}
     </Container>
   )
 }

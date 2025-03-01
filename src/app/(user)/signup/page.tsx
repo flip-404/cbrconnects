@@ -26,10 +26,7 @@ function SignUp() {
           <Phase phase={phase} />
         </Header>
         {phase === 0 ? (
-          <SignUpForm
-            onChangeNickname={onChangeNickname}
-            handleNextPhase={handleNextPhase}
-          />
+          <SignUpForm onChangeNickname={onChangeNickname} handleNextPhase={handleNextPhase} />
         ) : (
           <CompletionBox userName={userName} />
         )}

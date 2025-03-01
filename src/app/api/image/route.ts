@@ -6,10 +6,9 @@ async function POST(request: NextRequest) {
   const imageFile = formData.get('file')
 
   if (!imageFile) {
-    return new NextResponse(
-      JSON.stringify({ ok: false, error: 'Image file is missing' }),
-      { status: 400 },
-    )
+    return new NextResponse(JSON.stringify({ ok: false, error: 'Image file is missing' }), {
+      status: 400,
+    })
   }
 
   const { result } = await fetch(

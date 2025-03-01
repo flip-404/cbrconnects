@@ -17,18 +17,12 @@ async function PATCH(request: Request) {
   })
 
   if (!user) {
-    return NextResponse.json(
-      { message: '사용자를 찾을 수 없습니다.' },
-      { status: 404 },
-    )
+    return NextResponse.json({ message: '사용자를 찾을 수 없습니다.' }, { status: 404 })
   }
 
   const isPasswordValid = await bcrypt.compare(body.prevPassword, user.password)
   if (!isPasswordValid) {
-    return NextResponse.json(
-      { message: '기존 비밀번호가 잘못되었습니다.' },
-      { status: 400 },
-    )
+    return NextResponse.json({ message: '기존 비밀번호가 잘못되었습니다.' }, { status: 400 })
   }
 
   const hashedPassword = await bcrypt.hash(body.newPassword, 10)

@@ -11,10 +11,7 @@ async function GET(request: NextRequest) {
   console.log('\n\ncategory', category)
 
   if (!category)
-    return new NextResponse(
-      JSON.stringify({ message: '카테고리가 없습니다.' }),
-      { status: 500 },
-    )
+    return new NextResponse(JSON.stringify({ message: '카테고리가 없습니다.' }), { status: 500 })
 
   try {
     const posts = await prisma.post.findMany({

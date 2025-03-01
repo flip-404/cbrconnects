@@ -21,9 +21,7 @@ export const boardLinks = [
 ]
 
 function NewHeader() {
-  const [loginModalOpen, setLoginModalOpen] = useState<
-    null | 'SIGNIN' | 'SIGNUP'
-  >(null)
+  const [loginModalOpen, setLoginModalOpen] = useState<null | 'SIGNIN' | 'SIGNUP'>(null)
   const { user, logout } = useUser()
   const router = useRouter()
 

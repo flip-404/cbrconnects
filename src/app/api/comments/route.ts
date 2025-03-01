@@ -25,10 +25,7 @@ async function POST(request: NextRequest) {
   const { post_id, author_id, content, parent_id } = body
 
   if (!post_id || !author_id || !content) {
-    return new NextResponse(
-      JSON.stringify({ error: 'Missing required fields' }),
-      { status: 400 },
-    )
+    return new NextResponse(JSON.stringify({ error: 'Missing required fields' }), { status: 400 })
   }
 
   try {
@@ -54,10 +51,7 @@ async function PUT(request: NextRequest) {
   console.log('\n\n', commentId, content, '\n\n')
 
   if (!commentId || !content) {
-    return new NextResponse(
-      JSON.stringify({ error: 'Missing required fields' }),
-      { status: 400 },
-    )
+    return new NextResponse(JSON.stringify({ error: 'Missing required fields' }), { status: 400 })
   }
 
   try {
@@ -90,10 +84,9 @@ async function DELETE(request: NextRequest) {
       where: { id: parseInt(commentId, 10) },
     })
 
-    return new NextResponse(
-      JSON.stringify({ message: 'Comment deleted successfully' }),
-      { status: 200 },
-    )
+    return new NextResponse(JSON.stringify({ message: 'Comment deleted successfully' }), {
+      status: 200,
+    })
   } catch (error) {
     return new NextResponse(
       JSON.stringify({ error: 'Comment not found or could not be deleted' }),

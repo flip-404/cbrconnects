@@ -9,18 +9,10 @@ interface CommentContextType {
 
 const CommentContext = createContext<CommentContextType | undefined>(undefined)
 
-export const CommentProvider = ({
-  children,
-}: {
-  children: React.ReactNode
-}) => {
+export const CommentProvider = ({ children }: { children: React.ReactNode }) => {
   const [count, setCount] = useState()
-  const [selectedReplyComment, setSelectedReplyComment] = useState<
-    number | null
-  >(null)
-  const [selectedEditComment, setSelectedEditComment] = useState<number | null>(
-    null,
-  )
+  const [selectedReplyComment, setSelectedReplyComment] = useState<number | null>(null)
+  const [selectedEditComment, setSelectedEditComment] = useState<number | null>(null)
 
   const selectReplyComment = (commentId: number | null) => {
     setSelectedReplyComment(commentId)

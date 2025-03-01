@@ -81,10 +81,7 @@ function SignUpForm({
   return (
     <StyledForm onSubmit={handleSubmit(onValid)}>
       <Label>회원 정보를 입력해 주세요.</Label>
-      <ImageSelector
-        handleImageChange={handleImageChange}
-        profileImage={profileImage}
-      />
+      <ImageSelector handleImageChange={handleImageChange} profileImage={profileImage} />
       <SignupInput
         disabled={!!defaultValues?.email}
         id="email"
@@ -125,10 +122,8 @@ function SignUpForm({
             },
             validate: {
               hasLetter: (value) =>
-                /[a-zA-Z]/.test(value) ||
-                '영문자가 하나 이상 포함되어야 합니다.',
-              hasNumber: (value) =>
-                /\d/.test(value) || '숫자가 하나 이상 포함되어야 합니다.',
+                /[a-zA-Z]/.test(value) || '영문자가 하나 이상 포함되어야 합니다.',
+              hasNumber: (value) => /\d/.test(value) || '숫자가 하나 이상 포함되어야 합니다.',
             },
           })}
           isError={Boolean(errors.password)}
@@ -141,8 +136,7 @@ function SignUpForm({
           register={register('passwordCheck', {
             required: '비밀번호를 한번 더 입력해 주세요.',
             validate: (passwordCheck) =>
-              passwordCheck === passwordRef.current ||
-              '비밀번호가 일치하지 않습니다.',
+              passwordCheck === passwordRef.current || '비밀번호가 일치하지 않습니다.',
           })}
           isError={Boolean(errors.passwordCheck)}
           errorMessage={errors.passwordCheck?.message || ''}

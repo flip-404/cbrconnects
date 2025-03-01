@@ -14,8 +14,7 @@ function AgreementBox({
     privacyChecked: false,
   })
 
-  const allChecked =
-    agreement.ageChecked && agreement.serviceChecked && agreement.privacyChecked
+  const allChecked = agreement.ageChecked && agreement.serviceChecked && agreement.privacyChecked
 
   const handleCheckAll = (event: React.ChangeEvent<HTMLInputElement>) => {
     const isChecked = event.target.checked

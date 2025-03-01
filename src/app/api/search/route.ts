@@ -63,10 +63,7 @@ async function GET(request: NextRequest) {
       status: 200,
     })
   } catch (error) {
-    return new NextResponse(
-      JSON.stringify({ error: 'Failed to fetch posts' }),
-      { status: 500 },
-    )
+    return new NextResponse(JSON.stringify({ error: 'Failed to fetch posts' }), { status: 500 })
   }
 }
 

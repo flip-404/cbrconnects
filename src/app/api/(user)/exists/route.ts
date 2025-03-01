@@ -23,9 +23,7 @@ async function GET(request: Request) {
     })
   }
 
-  return exists
-    ? Response.json({ exists: true })
-    : Response.json({ exists: false })
+  return exists ? Response.json({ exists: true }) : Response.json({ exists: false })
 }
 
 export { GET }
