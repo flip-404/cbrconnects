@@ -6,10 +6,11 @@ import { use, useEffect, useState } from 'react'
 import useUser from '@/hooks/useUser'
 import api from '@/libs/axiosInstance'
 import { useComment } from '@/contexts/commentContext'
-import CommentHeader from './CommentHeader'
-import EditMode from './EditMode'
 import Link from 'next/link'
 import EmptyIcon from '@/assets/empty_profile.svg'
+import Image from 'next/image'
+import CommentHeader from './CommentHeader'
+import EditMode from './EditMode'
 
 interface CommentProps {
   post: PostWithRelations
@@ -32,11 +33,22 @@ function Comment({ post, comment }: CommentProps) {
     api.delete(`/comments?commentId=${comment.id}`)
   }
 
+  console.log()
+
+  useEffect(() => {
+    console.log('comment', comment)
+  }, [comment])
+
   return (
-    <CommentItem $hasReply={Boolean(comment.replies)} $isReply={true}>
-      <div>
+    <CommentItem $hasReply={Boolean(comment.replies)} $isReply>
+      <AuthorProfile>
         <Link href="profile">
-          <EmptyIcon /> {comment.author.nickname}
+          {comment.author.profile_image ? (
+            <Image src={comment.author.profile_image} alt="프로필 사진" width={30} height={30} />
+          ) : (
+            <EmptyIcon />
+          )}
+          {comment.author.nickname}
         </Link>
         {isEditMode && (
           <button
@@ -48,7 +60,7 @@ function Comment({ post, comment }: CommentProps) {
             취소
           </button>
         )}
-      </div>
+      </AuthorProfile>
       {isEditMode ? (
         <EditMode editText={editText} setEditText={setEditText} handleEdit={handleEdit} />
       ) : (
@@ -82,10 +94,13 @@ function Comment({ post, comment }: CommentProps) {
           </p>
           {!comment.parent_id && (
             <button
+              type="button"
               onClick={() => {
-                selectedReplyComment === comment.id
-                  ? selectReplyComment(null)
-                  : selectReplyComment(comment.id)
+                if (selectedReplyComment === comment.id) {
+                  selectReplyComment(null)
+                } else {
+                  selectReplyComment(comment.id)
+                }
               }}
             >
               댓글
@@ -105,33 +120,6 @@ const CommentItem = styled.div<{ $isReply: boolean; $hasReply: boolean }>`
   margin-bottom: 20px;
 
   & > div {
-    display: flex;
-    justify-content: space-between;
-
-    & > a {
-      text-decoration: none;
-      color: black;
-      display: flex;
-      align-items: center;
-      font-size: 15px;
-      font-weight: 600;
-
-      & > svg {
-        width: 30px;
-        height: 30px;
-      }
-
-      &:hover {
-        opacity: 0.7;
-      }
-    }
-
-    & > button {
-      all: unset;
-      color: #3c3c4366;
-      font-size: 14px;
-      cursor: pointer;
-    }
   }
 
   & > p {
@@ -165,5 +153,42 @@ const CommentItem = styled.div<{ $isReply: boolean; $hasReply: boolean }>`
     color: #3c3c4366;
     font-size: 13px;
     font-weight: 600;
+  }
+`
+
+const AuthorProfile = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 10px;
+
+  & > a {
+    text-decoration: none;
+    color: black;
+    display: flex;
+    align-items: center;
+    font-size: 15px;
+    font-weight: 600;
+
+    & > img {
+      border-radius: 4px;
+      margin-right: 5px;
+    }
+
+    & > svg {
+      width: 30px;
+      height: 30px;
+      margin-right: 5px;
+    }
+
+    &:hover {
+      opacity: 0.7;
+    }
+  }
+
+  & > button {
+    all: unset;
+    color: #3c3c4366;
+    font-size: 14px;
+    cursor: pointer;
   }
 `
