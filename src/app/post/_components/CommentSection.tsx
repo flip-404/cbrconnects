@@ -13,13 +13,15 @@ interface CommentSectionProps {
 }
 
 function CommentSection({ post, comments }: CommentSectionProps) {
-  const [count, setCount] = useState()
-
   const { selectedReplyComment } = useComment()
 
   return (
     <Cotaniner>
-      <Count>댓글 {comments?.length}개</Count>
+      <Count>
+        {comments?.length
+          ? `댓글 ${comments?.length}개`
+          : '첫 댓글을 작성해 보세요'}
+      </Count>
       {comments?.map((comment) => {
         return (
           <>

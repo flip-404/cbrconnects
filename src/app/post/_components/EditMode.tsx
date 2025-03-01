@@ -7,15 +7,20 @@ interface EditModeProps {
 }
 
 const EditMode = ({ editText, setEditText, handleEdit }: EditModeProps) => (
-  <>
+  <Container>
     <Input value={editText} onChange={(e) => setEditText(e.target.value)} />
     <ButtonWrapper>
       <EditButton onClick={handleEdit} disabled={!editText}>
         수정하기
       </EditButton>
     </ButtonWrapper>
-  </>
+  </Container>
 )
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+`
 
 const Input = styled.textarea`
   all: unset;
@@ -38,13 +43,9 @@ const ButtonWrapper = styled.div`
 const EditButton = styled.button`
   all: unset;
   cursor: pointer;
-  padding: 7.5px 18px;
-  background: #d9e1fd;
-  font-family: Pretendard;
+  margin-top: 5px;
+  color: #3c3c4366;
   font-size: 14px;
-  font-weight: 500;
-  color: #222222;
-  border-radius: 7px;
 `
 
 export default EditMode

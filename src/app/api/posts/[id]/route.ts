@@ -28,6 +28,7 @@ export async function GET(
             created_at: true,
             author: {
               select: {
+                id: true,
                 nickname: true,
                 profile_image: true,
               },

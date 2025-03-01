@@ -7,13 +7,13 @@ import styled from 'styled-components'
 
 type CommentData = {
   content: string
-  post_id: string
+  post_id: number
   author_id: string
-  parent_id: string | null
+  parent_id: number | null
 }
 interface WriteInputProps {
   post: PostWithRelations
-  parentId: string | null
+  parentId: number | null
 }
 
 function WriteInput({ post, parentId = null }: WriteInputProps) {
@@ -68,7 +68,6 @@ export default WriteInput
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  padding: 24px 10px;
   gap: 8px;
 `
 
@@ -106,26 +105,7 @@ const ButtonWrapper = styled.div`
 const Button = styled.button<{ disabled?: boolean }>`
   all: unset;
   cursor: pointer;
-  padding: 7.5px 18px;
-  background: #d9e1fd;
-  font-family: Pretendard;
+  margin-top: 5px;
+  color: #3c3c4366;
   font-size: 14px;
-  font-weight: 500;
-  line-height: 16.71px;
-  color: #222222;
-  border-radius: 7px;
-
-  @media (max-width: 768px) {
-    background: #64748b;
-    color: #eef1f6;
-  }
-
-  ${(props) =>
-    props.disabled && {
-      ...{
-        cursor: 'default',
-        background: '#C1C7D1',
-        color: '#EEF1F6',
-      },
-    }}
 `
