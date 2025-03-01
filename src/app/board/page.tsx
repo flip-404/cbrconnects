@@ -10,20 +10,15 @@ import { useQuery } from '@tanstack/react-query'
 import api from '@/libs/axiosInstance'
 import SkeletonPosts from './SkeletonPosts'
 import Link from 'next/link'
+import useCategoryStore from '@/store/useCategoryStore'
 
 function Board() {
-  const searchParams = useSearchParams()
-  const category = searchParams.get('category')
-  const [tab, setTab] = useState(category || 'FREEBOARD')
+  const { category, setCategory } = useCategoryStore()
   const { data, isLoading, refetch } = useQuery({
-    queryKey: ['posts', tab],
+    queryKey: ['posts', category],
     queryFn: ({ queryKey }) => api.get(`/posts?category=${queryKey[1]}`),
   })
   const posts = data?.data.posts || []
-
-  useEffect(() => {
-    refetch()
-  }, [tab, refetch])
 
   return (
     <Container>
@@ -31,8 +26,8 @@ function Board() {
         {boardLinks.map((item) => (
           <Tab
             key={item.category}
-            onClick={() => setTab(item.category)}
-            $active={tab === item.category}
+            onClick={() => setCategory(item.category)}
+            $active={category === item.category}
           >
             {item.label}
           </Tab>
@@ -63,7 +58,7 @@ function Board() {
           ))
         )}
       </Posts>
-      <BoardControls category={tab}></BoardControls>
+      <BoardControls category={category}></BoardControls>
     </Container>
   )
 }

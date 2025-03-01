@@ -11,8 +11,13 @@ import { useRouter } from 'next/navigation'
 import useUser from '../../hooks/useUser'
 import SignupModal from './SignupModal'
 import LoginModal from './LoginModal'
+import { CategoryType } from '@prisma/client'
+import useCategoryStore from '@/store/useCategoryStore'
 
-export const boardLinks = [
+export const boardLinks: {
+  label: string
+  category: CategoryType
+}[] = [
   { label: '공지사항', category: 'NOTICE' },
   { label: '자유게시판', category: 'FREEBOARD' },
   { label: '쿼카마켓', category: 'MARKET' },
@@ -23,6 +28,7 @@ export const boardLinks = [
 function NewHeader() {
   const [loginModalOpen, setLoginModalOpen] = useState<null | 'SIGNIN' | 'SIGNUP'>(null)
   const { user, logout } = useUser()
+  const { setCategory } = useCategoryStore()
   const router = useRouter()
 
   return (
@@ -116,7 +122,7 @@ function NewHeader() {
       </div>
       <Navigation>
         {boardLinks.map((link) => (
-          <Link key={link.category} href={`/board?category=${link.category}`}>
+          <Link key={link.category} href={`/board`} onClick={() => setCategory(link.category)}>
             {link.label}
           </Link>
         ))}
