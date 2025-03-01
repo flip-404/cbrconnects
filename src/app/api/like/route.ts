@@ -4,7 +4,6 @@ import { NextResponse } from 'next/server'
 async function POST(request: Request) {
   const body = await request.json()
   const { userId, postId } = body
-
   try {
     const existingLike = await prisma.postlike.findUnique({
       where: {
@@ -38,6 +37,4 @@ async function POST(request: Request) {
   }
 }
 
-export default {
-  POST,
-}
+export { POST }

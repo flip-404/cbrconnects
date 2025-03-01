@@ -71,7 +71,7 @@ function PostViewer() {
               )}
             </Details>
             <Content>{post.content}</Content>
-            <Like $isLiked={post.likes.some((like: postlike) => like.user_id === user?.id)}>
+            <Like>
               <button
                 onClick={() => {
                   onClickLike()
@@ -174,7 +174,7 @@ const Details = styled.div`
 `
 const Content = styled.div``
 
-const Like = styled.div<{ $isLiked: boolean }>`
+const Like = styled.div`
   margin-top: 30px;
   display: flex;
   align-items: center;
