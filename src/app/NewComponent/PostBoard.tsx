@@ -1,6 +1,7 @@
 'use client'
 
 import api from '@/libs/axiosInstance'
+import { post } from '@prisma/client'
 import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
 import styled from 'styled-components'
@@ -12,12 +13,12 @@ function PostBoard({ title, category }: { title: string; category: string }) {
   })
   const posts = data?.data.posts || []
 
-  // ToDo: posts 타입 지정
+  // ToDo: posts 타입 지정 (모든 API 리턴문에 적용)
   return (
     <Container>
       <Title href="/freeboard">{title}</Title>
       <Posts>
-        {posts.map((post, index) => (
+        {posts.map((post) => (
           <Post key={post.id}>
             <span>{post.comment_count}</span>
             <p>
