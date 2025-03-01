@@ -6,6 +6,7 @@ interface User {
   email: string
   profile_image: string | null
   nickname: string
+  description: string | null
 }
 
 interface UserState {

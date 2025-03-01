@@ -74,6 +74,7 @@ function SignUpForm({
     if (response.status === 200) {
       handleNextPhase()
     } else {
+      console.log('response', response)
       setModalStatus('fail')
     }
   }
@@ -158,6 +159,13 @@ function SignUpForm({
         })}
         isError={Boolean(errors.nickname)}
         errorMessage={errors.nickname?.message || ''}
+      />
+      <SignupInput
+        id="description"
+        placeholder="나의 한 줄 소개를 입력해 보세요."
+        label="한 줄 소개(선택)"
+        register={register('description')}
+        isRequired={false}
       />
       <AgreementBox setAllAgreementChecked={setAllAgreementChecked} />
       <SignupButton type="submit">회원가입</SignupButton>

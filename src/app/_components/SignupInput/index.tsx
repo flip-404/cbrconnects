@@ -9,11 +9,12 @@ type Props = {
   id: string
   register: UseFormRegisterReturn
   placeholder?: string
-  isError: boolean
-  errorMessage: string
+  isError?: boolean
+  errorMessage?: string
   label?: string
   type?: string
   disabled?: boolean
+  isRequired?: boolean
 }
 
 function SignupInput({
@@ -25,6 +26,7 @@ function SignupInput({
   label,
   type = 'text',
   disabled = false,
+  isRequired = true,
 }: Props) {
   const [passwordOn, setPasswordOn] = useState(false)
 
@@ -36,7 +38,7 @@ function SignupInput({
     <Container>
       {label && (
         <Label>
-          {label} <span>*</span>
+          {label} {isRequired && <span>*</span>}
         </Label>
       )}
       <InputWrapper>

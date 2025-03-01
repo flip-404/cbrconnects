@@ -25,7 +25,7 @@ function ProfilePage() {
       )}
 
       <h2>{user?.nickname}</h2>
-      <p>레알팬입니다~</p>
+      <p>{user?.description}</p>
       <button type="button">
         <LetterIcon />
         쪽지 보내기
