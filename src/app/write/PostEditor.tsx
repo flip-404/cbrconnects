@@ -16,9 +16,18 @@ import api from '@/libs/axiosInstance'
 import formats from './default'
 import useUser from '../../hooks/useUser'
 import { boardLinks } from '../NewComponent/NewHeader'
+import { useMutation, useQueryClient } from '@tanstack/react-query'
 
 Quill.register('modules/imageResize', ImageResize)
 Quill.register('modules/imageDrop', ImageDrop)
+
+type NewPostType = {
+  user: any
+  title: string
+  content: string
+  category: string
+  thumbnail: string | undefined
+}
 
 export type Category = {
   id: number
@@ -46,14 +55,26 @@ const DynamicReactQuill = dynamic(
 )
 
 function PostEditor() {
+  const queryClient = useQueryClient()
   const searchParams = useSearchParams()
-  const category = searchParams.get('category')
+  const category = searchParams.get('category') || 'FREEBOARD'
   const { user } = useUser()
   const router = useRouter()
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const quillRef = useRef<ReactQuill>()
   const [thumbnail, setThumbnail] = useState(null)
+
+  const { mutate: writePost } = useMutation({
+    mutationFn: async (newPost: NewPostType) =>
+      await api.post('/posts', newPost),
+    onSuccess: ({ data: post }) => {
+      queryClient.invalidateQueries({
+        queryKey: ['posts', category],
+      })
+      router.push('post?postId=' + post.id)
+    },
+  })
 
   const imageHandler = async () => {
     const input = document.createElement('input')
@@ -119,24 +140,17 @@ function PostEditor() {
   )
 
   const onClickWrite = async () => {
-    if (!title) {
-      alert('제목은 필수 입력입니다.')
+    if (!title || !content) {
+      alert(title ? '본문은 필수 입력입니다.' : '제목은 필수 입력입니다.')
       return
     }
-    if (!content) {
-      alert('본문은 필수 입력입니다.')
-      return
-    }
-
-    const { data: post } = await api.post('/posts', {
+    writePost({
       user,
       title,
       content,
       category,
       thumbnail: thumbnail || undefined,
     })
-
-    router.push('post?postId=' + post.id)
   }
 
   const handleChange = (value: string) => {
