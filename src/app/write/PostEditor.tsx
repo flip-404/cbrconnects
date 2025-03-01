@@ -5,7 +5,7 @@
 'use client'
 
 import styled from 'styled-components'
-import { useRouter, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import { useMemo, useRef, useState } from 'react'
 import dynamic from 'next/dynamic'
 import ImageResize from 'quill-image-resize-module-react'
@@ -17,6 +17,7 @@ import formats from './default'
 import useUser from '../../hooks/useUser'
 import { boardLinks } from '../NewComponent/NewHeader'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
+import useCategoryStore from '@/store/useCategoryStore'
 
 Quill.register('modules/imageResize', ImageResize)
 Quill.register('modules/imageDrop', ImageDrop)
@@ -50,8 +51,7 @@ const DynamicReactQuill = dynamic(
 
 function PostEditor() {
   const queryClient = useQueryClient()
-  const searchParams = useSearchParams()
-  const category = searchParams.get('category') || 'FREEBOARD'
+  const { category } = useCategoryStore()
   const { user } = useUser()
   const router = useRouter()
   const [title, setTitle] = useState('')
