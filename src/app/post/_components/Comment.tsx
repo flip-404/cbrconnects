@@ -2,14 +2,13 @@
 
 import { CommentWithRelations, PostWithRelations } from '@/types'
 import styled from 'styled-components'
-import { use, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import useUser from '@/hooks/useUser'
 import api from '@/libs/axiosInstance'
 import { useComment } from '@/contexts/commentContext'
 import Link from 'next/link'
 import EmptyIcon from '@/assets/empty_profile.svg'
 import Image from 'next/image'
-import CommentHeader from './CommentHeader'
 import EditMode from './EditMode'
 
 interface CommentProps {
@@ -33,8 +32,6 @@ function Comment({ post, comment }: CommentProps) {
     api.delete(`/comments?commentId=${comment.id}`)
   }
 
-  console.log()
-
   useEffect(() => {
     console.log('comment', comment)
   }, [comment])
@@ -52,6 +49,7 @@ function Comment({ post, comment }: CommentProps) {
         </Link>
         {isEditMode && (
           <button
+            type="button"
             onClick={() => {
               selectEditComment(null)
               setEditText('')
@@ -99,6 +97,7 @@ function Comment({ post, comment }: CommentProps) {
                 if (selectedReplyComment === comment.id) {
                   selectReplyComment(null)
                 } else {
+                  console.log('뭐여')
                   selectReplyComment(comment.id)
                 }
               }}
@@ -115,6 +114,7 @@ function Comment({ post, comment }: CommentProps) {
 export default Comment
 
 const CommentItem = styled.div<{ $isReply: boolean; $hasReply: boolean }>`
+  margin-top: 10px;
   display: flex;
   flex-direction: column;
   margin-bottom: 20px;

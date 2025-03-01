@@ -3,6 +3,7 @@
 import { CommentWithRelations, PostWithRelations } from '@/types'
 import { useComment } from '@/contexts/commentContext'
 import styled from 'styled-components'
+import { useEffect } from 'react'
 import Comment from './Comment'
 import NewWriteCommentBox from './WriteInput'
 
@@ -14,6 +15,11 @@ interface CommentSectionProps {
 function CommentSection({ post, comments }: CommentSectionProps) {
   const { selectedReplyComment } = useComment()
 
+  useEffect(() => {
+    console.log('comments', comments)
+    console.log('selectedReplyComment', selectedReplyComment)
+  }, [selectedReplyComment])
+
   return (
     <Cotaniner>
       <Count>{comments?.length ? `댓글 ${comments?.length}개` : '첫 댓글을 작성해 보세요'}</Count>
@@ -21,16 +27,14 @@ function CommentSection({ post, comments }: CommentSectionProps) {
         return (
           <>
             <Comment post={post} comment={comment} />
-            {comment.replies.length !== 0 && (
-              <ReplySection>
-                {comment.replies?.map((reply) => {
-                  return <Comment key={reply.id} post={post} comment={reply} />
-                })}
-                {comment.id === selectedReplyComment && (
-                  <NewWriteCommentBox post={post} parentId={comment.id} />
-                )}
-              </ReplySection>
-            )}
+            <ReplySection>
+              {comment.replies?.map((reply) => {
+                return <Comment key={reply.id} post={post} comment={reply} />
+              })}
+              {comment.id === selectedReplyComment && (
+                <NewWriteCommentBox post={post} parentId={comment.id} />
+              )}
+            </ReplySection>
           </>
         )
       })}
