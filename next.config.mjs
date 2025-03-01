@@ -12,7 +12,14 @@ const nextConfig = {
     styledComponents: true,
   },
   images: {
-    domains: ['openweathermap.org'],
+    remotePatterns: [
+      {
+        protocol: 'http',
+        hostname: 'k.kakaocdn.net',
+        port: '',
+        pathname: '/**',
+      },
+    ],
   },
 }
 

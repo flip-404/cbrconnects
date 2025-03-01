@@ -4,7 +4,7 @@ import { persist } from 'zustand/middleware'
 interface User {
   id: string
   email: string
-  profileImage: string | null
+  profile_image: string | null
   nickname: string
 }
 

@@ -3,12 +3,28 @@
 import styled from 'styled-components'
 import EmptyIcon from '@/assets/empty_profile.svg'
 import LetterIcon from '@/assets/letter.svg'
+import useUser from '@/hooks/useUser'
+import Image from 'next/image'
 
 function ProfilePage() {
+  const { user } = useUser()
+
   return (
     <Container>
-      <EmptyIcon />
-      <h2>teaaaa</h2>
+      {user?.profile_image ? (
+        <div>
+          <Image
+            width={500}
+            height={500}
+            alt={`${user.nickname}의 프로필 사진`}
+            src={user?.profile_image}
+          />
+        </div>
+      ) : (
+        <EmptyIcon />
+      )}
+
+      <h2>{user?.nickname}</h2>
       <p>레알팬입니다~</p>
       <button type="button">
         <LetterIcon />
@@ -21,11 +37,22 @@ function ProfilePage() {
 export default ProfilePage
 
 const Container = styled.div`
+  position: relative;
   margin-top: 80px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+
+  & > div {
+    width: 500px;
+    height: 500px;
+    border-radius: 8px;
+    overflow: hidden;
+    img {
+      object-fit: cover;
+    }
+  }
 
   & > svg {
     background-color: #f0f0f0;
