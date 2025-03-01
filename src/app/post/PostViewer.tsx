@@ -1,13 +1,13 @@
 import { useSearchParams } from 'next/navigation'
 import styled from 'styled-components'
-import useUser from '../../hooks/useUser'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import api from '@/libs/axiosInstance'
 import EmptyProfileIcon from '@/assets/empty_profile.svg'
 import LikeIcon from '@/assets/like.svg'
-import CommentSection from './_components/CommentSection'
 import { CommentProvider } from '@/contexts/commentContext'
 import { postlike } from '@prisma/client'
+import CommentSection from './_components/CommentSection'
+import useUser from '../../hooks/useUser'
 
 function PostViewer() {
   const queryClient = useQueryClient()
@@ -65,14 +65,15 @@ function PostViewer() {
               </p>
               {user?.id === post.author.id && (
                 <div>
-                  <button>수정하기</button>
-                  <button>삭제하기</button>
+                  <button type="button">수정하기</button>
+                  <button type="button">삭제하기</button>
                 </div>
               )}
             </Details>
             <Content>{post.content}</Content>
             <Like>
               <button
+                type="button"
                 onClick={() => {
                   onClickLike()
                 }}
