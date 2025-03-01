@@ -18,7 +18,7 @@ function PostBoard({ title, category }: { title: string; category: string }) {
     <Container>
       <Title href="/freeboard">{title}</Title>
       <Posts>
-        {posts.map((post) => (
+        {posts.slice(0, 10).map((post) => (
           <Post key={post.id}>
             <span>{post.comment_count}</span>
             <p>
