@@ -57,7 +57,7 @@ export async function GET(
         category: post.category,
         author: post.author,
         comments: post.comments,
-        likes_count: post.likes.length,
+        likes: post.likes,
       },
       { status: 200 },
     )
