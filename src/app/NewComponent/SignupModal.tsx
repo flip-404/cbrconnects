@@ -13,10 +13,6 @@ function SignupModal({ closeModal }: { closeModal: () => void }) {
   const router = useRouter()
   const { user, login } = useUser()
 
-  useEffect(() => {
-    console.log('user,user')
-  }, [user])
-
   const handleKakaoSignup = async () => {
     const { data, error } = await supabase.auth.signInWithOAuth({
       provider: 'kakao',

@@ -11,15 +11,10 @@ const Footer = () => {
       const {
         data: { visit },
       } = await api.get('/visit')
-      console.log('visit', visit)
       setVisitCount(visit.count)
     }
     getVisitCount()
   }, [])
-
-  useEffect(() => {
-    console.log('visitCount', visitCount)
-  }, [visitCount])
 
   return (
     <Container>

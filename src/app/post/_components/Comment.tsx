@@ -32,11 +32,6 @@ function Comment({ post, comment }: CommentProps) {
     api.delete(`/comments?commentId=${comment.id}`)
   }
 
-  useEffect(() => {
-    console.log('user?.id === comment.author_id', user?.id, comment.author.id)
-    console.log('comment', comment)
-  }, [comment, user?.id])
-
   return (
     <CommentItem $hasReply={Boolean(comment.replies)} $isReply={true}>
       <div>

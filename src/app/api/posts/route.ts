@@ -8,8 +8,6 @@ async function GET(request: NextRequest) {
   const category = url.searchParams.get('category') as CategoryType
   const page = url.searchParams.get('page') ?? '1'
 
-  console.log('\n\ncategory', category)
-
   if (!category)
     return new NextResponse(JSON.stringify({ message: '카테고리가 없습니다.' }), { status: 500 })
 
@@ -64,7 +62,6 @@ async function GET(request: NextRequest) {
 
     return NextResponse.json({ posts: formattedPosts }, { status: 200 })
   } catch (error) {
-    console.log('error', error)
     return NextResponse.json({ error: error }, { status: 500 })
   }
 }
@@ -90,7 +87,6 @@ async function POST(request: NextRequest) {
 
     return new NextResponse(JSON.stringify(post), { status: 201 })
   } catch (error) {
-    console.log(error)
     return new NextResponse(JSON.stringify({ error }), { status: 500 })
   }
 }

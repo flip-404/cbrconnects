@@ -48,8 +48,6 @@ async function PUT(request: NextRequest) {
   const body = await request.json()
   const { commentId, content } = body
 
-  console.log('\n\n', commentId, content, '\n\n')
-
   if (!commentId || !content) {
     return new NextResponse(JSON.stringify({ error: 'Missing required fields' }), { status: 400 })
   }

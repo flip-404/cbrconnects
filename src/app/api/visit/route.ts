@@ -14,11 +14,8 @@ async function GET() {
       },
     })
 
-    console.log('visit', visit)
-
     return NextResponse.json({ visit }, { status: 200 })
   } catch (error) {
-    console.log('error', error)
     return NextResponse.json({ error }, { status: 500 })
   }
 }
