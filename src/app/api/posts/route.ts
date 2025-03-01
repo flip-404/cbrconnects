@@ -1,3 +1,5 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
+/* eslint-disable @typescript-eslint/naming-convention */
 import prisma from '@/libs/prisma'
 import { CategoryType } from '@prisma/client'
 import { NextRequest, NextResponse } from 'next/server'
@@ -8,15 +10,26 @@ async function GET(request: NextRequest) {
   const category = url.searchParams.get('category') as CategoryType
   const page = url.searchParams.get('page') ?? '1'
   const limit = url.searchParams.get('limit') ?? '16'
+  const search_filter = url.searchParams.get('search_filter')
+  const search_keyword = url.searchParams.get('search_keyword')
 
   if (!category)
     return new NextResponse(JSON.stringify({ message: '카테고리가 없습니다.' }), { status: 500 })
 
+  const whereCondition: any = {
+    category,
+  }
+
+  if (search_filter && search_keyword)
+    whereCondition[search_filter] = {
+      contains: search_keyword,
+      mode: 'insensitive',
+    }
+
   try {
     const posts = await prisma.post.findMany({
-      where: {
-        category,
-      },
+      where: whereCondition,
+
       orderBy: {
         created_at: 'desc',
       },

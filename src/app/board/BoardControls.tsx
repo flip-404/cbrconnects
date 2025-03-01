@@ -7,7 +7,7 @@ import ArrowBackIcon from '@/assets/arrow_back.svg'
 import ArrowForwardIcon from '@/assets/arrow_forward.svg'
 import { useRouter } from 'next/navigation'
 import { useQueryClient } from '@tanstack/react-query'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import useUser from '../../hooks/useUser'
 
 function BoardControls({
@@ -16,31 +16,43 @@ function BoardControls({
   onPageChange,
   totalPosts,
   limit,
+  updateSearchOptions,
+  resetSearchOptions,
 }: {
   category: string
   page: number
   onPageChange: (newPage: number) => void
   totalPosts: number
   limit: number
+  updateSearchOptions: (
+    filter: 'search_author' | 'search_title' | 'search_content' | 'search_full_text',
+    keyword: string,
+  ) => void
+  resetSearchOptions: () => void
 }) {
   const queryClient = useQueryClient()
   const { user } = useUser()
   const router = useRouter()
   const totalPage = Math.floor(totalPosts / limit) + 1
   const pagePhases = Math.floor((page - 1) / 10)
-  const [filter, setFilter] = useState<string[]>([])
+  const [searchFilter, setSearchFilter] = useState<string[]>(['title'])
+  const [searchKeyword, setSearchKeyword] = useState('')
 
   const handleFilterChange = (option: 'author' | 'title' | 'content') => {
     if (option === 'author') {
-      setFilter(['author'])
+      setSearchFilter(['author'])
     } else {
-      setFilter((prev) =>
+      setSearchFilter((prev) =>
         prev.includes(option)
           ? prev.filter((f) => f !== option)
           : [...prev.filter((f) => f !== 'author'), option],
       )
     }
   }
+
+  useEffect(() => {
+    setSearchKeyword('')
+  }, [category])
 
   return (
     <Container>
@@ -105,27 +117,58 @@ function BoardControls({
         )}
       </Pagination>
       <div>
-        <Filter $isActive={filter.includes('author')} onClick={() => handleFilterChange('author')}>
+        <Filter
+          $isActive={searchFilter.includes('author')}
+          onClick={() => handleFilterChange('author')}
+        >
           작성자
         </Filter>
-        <Filter $isActive={filter.includes('title')} onClick={() => handleFilterChange('title')}>
+        <Filter
+          $isActive={searchFilter.includes('title')}
+          onClick={() => handleFilterChange('title')}
+        >
           제목
         </Filter>
         <Filter
-          $isActive={filter.includes('content')}
+          $isActive={searchFilter.includes('content')}
           onClick={() => handleFilterChange('content')}
         >
           내용
         </Filter>
-        <Input type="text" placeholder="검색어" />
+        <Input
+          type="text"
+          placeholder="검색어"
+          value={searchKeyword}
+          onChange={(e) => setSearchKeyword(e.target.value)}
+        />
         <SearchButton
           style={{
             color: 'rgb(0, 122, 255)',
           }}
+          onClick={() => {
+            if (searchFilter.includes('author')) {
+              updateSearchOptions('search_author', searchKeyword)
+            } else if (searchFilter.includes('title') && searchFilter.includes('content')) {
+              updateSearchOptions('search_full_text', searchKeyword)
+            } else if (searchFilter.includes('title')) {
+              updateSearchOptions('search_title', searchKeyword)
+            } else if (searchFilter.includes('content')) {
+              updateSearchOptions('search_content', searchKeyword)
+            } else {
+              alert('검색 조건을 선택해주세요')
+            }
+          }}
         >
           검색
         </SearchButton>
-        <SearchButton style={{ color: 'rgba(60, 60, 67, 0.6)' }}>취소</SearchButton>
+        <SearchButton
+          style={{ color: 'rgba(60, 60, 67, 0.6)' }}
+          onClick={() => {
+            resetSearchOptions()
+          }}
+        >
+          취소
+        </SearchButton>
       </div>
     </Container>
   )
