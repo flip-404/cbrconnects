@@ -14,7 +14,7 @@ import ReactQuill, { Quill } from 'react-quill'
 import 'react-quill/dist/quill.snow.css'
 import api from '@/libs/axiosInstance'
 import formats from './default'
-import useUser from '../hooks/useUser'
+import useUser from '../../hooks/useUser'
 import { boardLinks } from '../NewComponent/NewHeader'
 
 Quill.register('modules/imageResize', ImageResize)

@@ -5,7 +5,7 @@ import AddIcon from '@mui/icons-material/Add'
 import RefreshIcon from '@/assets/refresh.svg'
 import ArrowBackIcon from '@/assets/arrow_back.svg'
 import ArrowForwardIcon from '@/assets/arrow_forward.svg'
-import useUser from '../hooks/useUser'
+import useUser from '../../hooks/useUser'
 import { useRouter } from 'next/navigation'
 
 function BoardControls({ category }: { category: string }) {

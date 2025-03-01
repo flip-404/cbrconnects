@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import { useForm } from 'react-hook-form'
 import MyInfoInput from '@/app/_components/MyInfoInput'
 import { useState } from 'react'
-import useUser from '@/app/hooks/useUser'
+import useUser from '@/hooks/useUser'
 import EditPasswordModal from '../EditPasswordModal'
 
 function EditInfo() {

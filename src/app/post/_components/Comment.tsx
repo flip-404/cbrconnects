@@ -3,7 +3,7 @@
 import { CommentWithRelations, PostWithRelations } from '@/types'
 import styled from 'styled-components'
 import { useEffect, useState } from 'react'
-import useUser from '@/app/hooks/useUser'
+import useUser from '@/hooks/useUser'
 import api from '@/libs/axiosInstance'
 import { useComment } from '@/contexts/commentContext'
 import CommentHeader from './CommentHeader'

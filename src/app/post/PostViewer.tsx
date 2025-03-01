@@ -1,6 +1,6 @@
 import { useSearchParams } from 'next/navigation'
 import styled from 'styled-components'
-import useUser from '../hooks/useUser'
+import useUser from '../../hooks/useUser'
 import { useQuery } from '@tanstack/react-query'
 import api from '@/libs/axiosInstance'
 import EmptyProfileIcon from '@/assets/empty_profile.svg'

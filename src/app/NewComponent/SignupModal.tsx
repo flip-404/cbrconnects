@@ -6,7 +6,7 @@ import GoogleIcon from '@/assets/desktop/google_icon.svg'
 import CloseIcon from '@/assets/desktop/close_icon.svg'
 import supabase from '@/libs/supabaseClient'
 import api from '@/libs/axiosInstance'
-import useUser from '@/app/hooks/useUser'
+import useUser from '@/hooks/useUser'
 import { useEffect } from 'react'
 
 function SignupModal({ closeModal }: { closeModal: () => void }) {

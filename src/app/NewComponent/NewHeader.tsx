@@ -8,7 +8,7 @@ import ProfileIcon from '@/assets/profile.svg'
 import MessageIcon from '@/assets/message.svg'
 import SettingsIcon from '@/assets/settings.svg'
 import { useRouter } from 'next/navigation'
-import useUser from '../hooks/useUser'
+import useUser from '../../hooks/useUser'
 import SignupModal from './SignupModal'
 import LoginModal from './LoginModal'
 

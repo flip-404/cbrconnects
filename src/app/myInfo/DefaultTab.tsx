@@ -8,7 +8,7 @@ import fetcher from '@/utils/fetcher'
 import RightArrow from '@/assets/mobile/rightArrow.svg'
 import { useMediaQuery } from '@mui/material'
 import supabase from '@/libs/supabaseClient'
-import useUser from '../hooks/useUser'
+import useUser from '../../hooks/useUser'
 
 function DefaultTab({
   tab,
