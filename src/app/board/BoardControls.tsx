@@ -8,9 +8,23 @@ import ArrowForwardIcon from '@/assets/arrow_forward.svg'
 import useUser from '../../hooks/useUser'
 import { useRouter } from 'next/navigation'
 
-function BoardControls({ category }: { category: string }) {
+function BoardControls({
+  category,
+  page,
+  onPageChange,
+  totalPosts,
+  limit,
+}: {
+  category: string
+  page: number
+  onPageChange: (newPage: number) => void
+  totalPosts: number
+  limit: number
+}) {
   const { user } = useUser()
   const router = useRouter()
+  const totalPage = Math.floor(totalPosts / limit) + 1
+  const pagePhases = Math.floor((page - 1) / 10)
 
   return (
     <Container>
@@ -26,18 +40,49 @@ function BoardControls({ category }: { category: string }) {
         <Button>
           <RefreshIcon />
         </Button>
-        <Button>
+        <Button onClick={() => page !== 1 && onPageChange(page - 1)}>
           <ArrowBackIcon />
         </Button>
-        <Button>
+        <Button onClick={() => page !== totalPage && onPageChange(page + 1)}>
           <ArrowForwardIcon />
         </Button>
       </div>
-      <div>
-        {Array.from({ length: 10 }).map((_, index) => (
-          <div key={index}>{index + 1}</div>
+      <Pagination>
+        {page > 10 && pagePhases !== 0 && (
+          <button
+            type="button"
+            onClick={() => {
+              onPageChange(1)
+            }}
+          >
+            1...
+          </button>
+        )}
+        {Array.from({
+          length: pagePhases === Math.floor((totalPage - 1) / 10) ? totalPage % 10 : 10,
+        }).map((_, index) => (
+          <button
+            key={index}
+            type="button"
+            onClick={() => onPageChange(pagePhases * 10 + index + 1)}
+            style={{
+              color: pagePhases * 10 + index + 1 === page ? '#007aff' : 'black',
+            }}
+          >
+            {pagePhases * 10 + index + 1}
+          </button>
         ))}
-      </div>
+        {totalPage > 10 && pagePhases !== Math.floor((totalPage - 1) / 10) && (
+          <button
+            type="button"
+            onClick={() => {
+              onPageChange(totalPage)
+            }}
+          >
+            ...{totalPage}
+          </button>
+        )}
+      </Pagination>
       <div>
         <Filter>작성자</Filter>
         <Filter>제목</Filter>
@@ -101,6 +146,23 @@ const Button = styled.button`
 
   &:hover {
     opacity: 0.5;
+  }
+`
+
+const Pagination = styled.div`
+  display: flex;
+  gap: 10px;
+
+  button {
+    all: unset;
+    cursor: pointer;
+    padding: 0px 5px;
+
+    &:hover {
+      border-radius: 4px;
+      color: #007aff;
+      background-color: #f2f2f7;
+    }
   }
 `
 

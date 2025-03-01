@@ -1,23 +1,37 @@
 'use client'
 
-import React, { useEffect, useState } from 'react'
+import React, { useState } from 'react'
 import styled from 'styled-components'
 import LikeIcon from '@/assets/like.svg'
-import BoardControls from './BoardControls'
-import { boardLinks } from '../NewComponent/NewHeader'
 import { useQuery } from '@tanstack/react-query'
 import api from '@/libs/axiosInstance'
-import SkeletonPosts from './SkeletonPosts'
 import Link from 'next/link'
 import useCategoryStore from '@/store/useCategoryStore'
+import SkeletonPosts from './SkeletonPosts'
+import { boardLinks } from '../NewComponent/NewHeader'
+import BoardControls from './BoardControls'
+
+const limit = 16
 
 function Board() {
   const { category, setCategory } = useCategoryStore()
-  const { data, isLoading, refetch } = useQuery({
-    queryKey: ['posts', category],
-    queryFn: ({ queryKey }) => api.get(`/posts?category=${queryKey[1]}`),
+  const [page, setPage] = useState(1)
+  const { data, isLoading } = useQuery({
+    queryKey: ['posts', category, page, limit],
+    queryFn: ({ queryKey }) =>
+      api.get(`/posts?category=${queryKey[1]}&page=${page}&limit=${limit}`),
   })
+
+  const { data: totalPostData } = useQuery({
+    queryKey: ['posts', category],
+    queryFn: ({ queryKey }) => api.get(`/posts/count?category=${queryKey[1]}`),
+  })
+
   const posts = data?.data.posts || []
+
+  const onPageChange = (newPage: number) => {
+    setPage(newPage)
+  }
 
   return (
     <Container>
@@ -49,15 +63,21 @@ function Board() {
                 </p>
               </div>
               <span>
-                {Array.from({ length: post.like_count }).map((_, index) => (
-                  <LikeIcon key={index} />
+                {post.likes.map((like) => (
+                  <LikeIcon key={like.id} />
                 ))}
               </span>
             </Post>
           ))
         )}
       </Posts>
-      <BoardControls category={category}></BoardControls>
+      <BoardControls
+        category={category}
+        page={page}
+        onPageChange={onPageChange}
+        totalPosts={totalPostData?.data.totalPosts || 0}
+        limit={limit}
+      />
     </Container>
   )
 }

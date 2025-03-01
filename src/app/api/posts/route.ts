@@ -7,6 +7,7 @@ async function GET(request: NextRequest) {
 
   const category = url.searchParams.get('category') as CategoryType
   const page = url.searchParams.get('page') ?? '1'
+  const limit = url.searchParams.get('limit') ?? '16'
 
   if (!category)
     return new NextResponse(JSON.stringify({ message: '카테고리가 없습니다.' }), { status: 500 })
@@ -14,12 +15,12 @@ async function GET(request: NextRequest) {
   try {
     const posts = await prisma.post.findMany({
       where: {
-        category: category,
+        category,
       },
       orderBy: {
         created_at: 'desc',
       },
-      skip: (parseInt(page) - 1) * 16,
+      skip: (parseInt(page, 10) - 1) * parseInt(limit, 10),
       take: 16,
       select: {
         id: true,
@@ -62,7 +63,7 @@ async function GET(request: NextRequest) {
 
     return NextResponse.json({ posts: formattedPosts }, { status: 200 })
   } catch (error) {
-    return NextResponse.json({ error: error }, { status: 500 })
+    return NextResponse.json({ error }, { status: 500 })
   }
 }
 
@@ -75,7 +76,7 @@ async function POST(request: NextRequest) {
       data: {
         title,
         content,
-        category: category,
+        category,
         thumbnail,
         author_id: user.id,
         search_title: title,
