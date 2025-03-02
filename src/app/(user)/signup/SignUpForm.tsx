@@ -1,6 +1,6 @@
 'use client'
 
-import SignupInput from '@/app/_components/SignupInput'
+import SignupInput from '@/components/_components/SignupInput'
 import { useRef, useState } from 'react'
 import styled from 'styled-components'
 import { useForm } from 'react-hook-form'

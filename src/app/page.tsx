@@ -1,10 +1,10 @@
 'use client'
 
 import styled from 'styled-components'
-import PostBoard from './NewComponent/PostBoard'
-import PinnedBoard from './NewComponent/PinnedBoard'
-import NewsBoard from './NewComponent/NewsBoard'
-import { boardLinks } from './NewComponent/NewHeader'
+import PostBoard from '@/components/NewComponent/PostBoard'
+import PinnedBoard from '@/components/NewComponent/PinnedBoard'
+import NewsBoard from '@/components/NewComponent/NewsBoard'
+import { boardLinks } from '@/components/NewComponent/NewHeader'
 
 export default function Home() {
   return (

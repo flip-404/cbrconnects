@@ -2,6 +2,7 @@
 
 'use client'
 
+import { boardLinks } from '@/components/NewComponent/NewHeader'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import LikeIcon from '@/assets/like.svg'
@@ -9,8 +10,8 @@ import { useQuery, useQueryClient } from '@tanstack/react-query'
 import api from '@/libs/axiosInstance'
 import Link from 'next/link'
 import useCategoryStore from '@/store/useCategoryStore'
+import { GET_Posts } from '@/types/newIndex'
 import SkeletonPosts from './SkeletonPosts'
-import { boardLinks } from '../NewComponent/NewHeader'
 import BoardControls from './BoardControls'
 
 const limit = 16
@@ -83,7 +84,7 @@ function Board() {
         ) : posts.length === 0 ? (
           '게시물이 없습니다.'
         ) : (
-          posts.map((post) => (
+          posts.map((post: GET_Posts) => (
             <Post key={post.id}>
               <div>
                 <span>{post.comment_count}</span>
@@ -91,7 +92,7 @@ function Board() {
                   <Link href={`/post?postId=${post.id}`}>{post.title}</Link>
                 </div>
                 <p>
-                  {post.search_author}
+                  {post.author_name}
                   <span>{post.created_at}</span>
                 </p>
               </div>

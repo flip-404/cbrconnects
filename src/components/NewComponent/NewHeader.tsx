@@ -47,7 +47,7 @@ function NewHeader() {
               <button
                 type="button"
                 onClick={() => {
-                  router.push('/profile')
+                  router.push(`/profile?userId=${user.id}`)
                 }}
                 aria-label="Profiles"
               >

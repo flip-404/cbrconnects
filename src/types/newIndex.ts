@@ -1,3 +1,5 @@
+import { postlike } from '@prisma/client'
+
 // GET 'posts'
 export type GET_Posts = {
   id: number
@@ -12,4 +14,5 @@ export type GET_Posts = {
   comment_count: number
   like_count: number
   author_name: string
+  likes: postlike[]
 }

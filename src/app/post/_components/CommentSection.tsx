@@ -20,12 +20,12 @@ function CommentSection({ post, comments }: CommentSectionProps) {
       {comments?.map((comment) => {
         return (
           <>
-            <Comment post={post} comment={comment} />
+            <Comment comment={comment} />
             <ReplySection
               $visible={comment.replies.length !== 0 || comment.id === selectedReplyComment}
             >
               {comment.replies?.map((reply) => {
-                return <Comment key={reply.id} post={post} comment={reply} />
+                return <Comment key={reply.id} comment={reply} />
               })}
               {comment.id === selectedReplyComment && (
                 <NewWriteCommentBox post={post} parentId={comment.id} />

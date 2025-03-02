@@ -1,9 +1,11 @@
-'use client'
-
+import dynamic from 'next/dynamic'
 import { Suspense } from 'react'
-import PostViewer from './PostViewer'
 
-function Posts() {
+const PostViewer = dynamic(() => import('./PostViewer'), {
+  ssr: false,
+})
+
+function PostPage() {
   return (
     <Suspense fallback={<div>Loading...</div>}>
       <PostViewer />
@@ -11,4 +13,4 @@ function Posts() {
   )
 }
 
-export default Posts
+export default PostPage

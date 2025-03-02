@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import api from '@/libs/axiosInstance'
 import Link from 'next/link'
 import { useQuery } from '@tanstack/react-query'
-import { NewsItem } from '../api/news/route'
+import { NewsItem } from '@/app/api/news/route'
 
 function NewsBoard() {
   const { data } = useQuery({
