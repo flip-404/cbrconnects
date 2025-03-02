@@ -1,4 +1,4 @@
-import { useSearchParams } from 'next/navigation'
+import { useRouter, useSearchParams } from 'next/navigation'
 import styled from 'styled-components'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import api from '@/libs/axiosInstance'
@@ -16,6 +16,7 @@ function PostViewer() {
   const { user } = useUser()
   const searchParams = useSearchParams()
   const postId = searchParams.get('postId')
+  const router = useRouter()
 
   const { data } = useQuery({
     queryKey: ['post', postId],
@@ -32,6 +33,16 @@ function PostViewer() {
       queryClient.invalidateQueries({
         queryKey: ['post', postId],
       })
+    },
+  })
+
+  const { mutate: postDelete } = useMutation({
+    mutationFn: () => api.delete(`/posts/${postId}`),
+    onSuccess: () => {
+      queryClient.invalidateQueries({
+        queryKey: ['post', postId],
+      })
+      router.push('/board')
     },
   })
 
@@ -71,8 +82,21 @@ function PostViewer() {
               </p>
               {user?.id === post.author.id && (
                 <div>
-                  <button type="button">수정하기</button>
-                  <button type="button">삭제하기</button>
+                  <button type="button" onClick={() => {}}>
+                    수정하기
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => {
+                      const isConfirmed = window.confirm('정말로 이 게시물을 삭제하시겠습니까?')
+
+                      if (isConfirmed) {
+                        postDelete()
+                      }
+                    }}
+                  >
+                    삭제하기
+                  </button>
                 </div>
               )}
             </Details>

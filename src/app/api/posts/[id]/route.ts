@@ -64,4 +64,28 @@ async function GET(req: Request, { params }: { params: { id: string } }) {
   }
 }
 
-export { GET }
+async function DELETE(req: Request, { params }: { params: { id: string } }) {
+  const { id } = params
+
+  if (!id) {
+    return new NextResponse(JSON.stringify({ error: 'Missing postId' }), {
+      status: 400,
+    })
+  }
+
+  try {
+    await prisma.post.delete({
+      where: { id: parseInt(id, 10) },
+    })
+
+    return new NextResponse(JSON.stringify({ message: 'POST deleted successfully' }), {
+      status: 200,
+    })
+  } catch (error) {
+    return new NextResponse(JSON.stringify({ error: 'POST not found or could not be deleted' }), {
+      status: 500,
+    })
+  }
+}
+
+export { GET, DELETE }

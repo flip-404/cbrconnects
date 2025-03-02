@@ -25,7 +25,6 @@ async function POST(request: Request) {
     return NextResponse.json({ message: '회원가입 완료' }, { status: 200 })
   }
 
-  console.log('\n\n\n', description)
   const { error } = await supabase.auth.signUp({
     email,
     password,
@@ -34,7 +33,6 @@ async function POST(request: Request) {
     },
   })
   if (!error) return NextResponse.json({ message: '회원가입 완료' }, { status: 200 })
-  console.log(error)
   return NextResponse.json({ message: '회원가입 실패', error }, { status: 400 })
 }
 export { POST }

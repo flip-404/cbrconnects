@@ -32,10 +32,6 @@ function Comment({ post, comment }: CommentProps) {
     api.delete(`/comments?commentId=${comment.id}`)
   }
 
-  useEffect(() => {
-    console.log('comment', comment)
-  }, [comment])
-
   return (
     <CommentItem $hasReply={Boolean(comment.replies)} $isReply>
       <AuthorProfile>
@@ -97,7 +93,6 @@ function Comment({ post, comment }: CommentProps) {
                 if (selectedReplyComment === comment.id) {
                   selectReplyComment(null)
                 } else {
-                  console.log('뭐여')
                   selectReplyComment(comment.id)
                 }
               }}

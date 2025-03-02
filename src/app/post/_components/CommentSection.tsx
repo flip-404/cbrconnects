@@ -15,11 +15,6 @@ interface CommentSectionProps {
 function CommentSection({ post, comments }: CommentSectionProps) {
   const { selectedReplyComment } = useComment()
 
-  useEffect(() => {
-    console.log('comments', comments)
-    console.log('selectedReplyComment', selectedReplyComment)
-  }, [selectedReplyComment])
-
   return (
     <Cotaniner>
       <Count>{comments?.length ? `댓글 ${comments?.length}개` : '첫 댓글을 작성해 보세요'}</Count>
