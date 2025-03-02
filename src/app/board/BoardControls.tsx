@@ -50,6 +50,20 @@ function BoardControls({
     }
   }
 
+  const onSearchButtonClick = () => {
+    if (searchFilter.includes('author')) {
+      updateSearchOptions('search_author', searchKeyword)
+    } else if (searchFilter.includes('title') && searchFilter.includes('content')) {
+      updateSearchOptions('search_full_text', searchKeyword)
+    } else if (searchFilter.includes('title')) {
+      updateSearchOptions('search_title', searchKeyword)
+    } else if (searchFilter.includes('content')) {
+      updateSearchOptions('search_content', searchKeyword)
+    } else {
+      alert('검색 조건을 선택해주세요')
+    }
+  }
+
   useEffect(() => {
     setSearchKeyword('')
   }, [category])
@@ -140,23 +154,16 @@ function BoardControls({
           placeholder="검색어"
           value={searchKeyword}
           onChange={(e) => setSearchKeyword(e.target.value)}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') onSearchButtonClick()
+          }}
         />
         <SearchButton
           style={{
             color: 'rgb(0, 122, 255)',
           }}
           onClick={() => {
-            if (searchFilter.includes('author')) {
-              updateSearchOptions('search_author', searchKeyword)
-            } else if (searchFilter.includes('title') && searchFilter.includes('content')) {
-              updateSearchOptions('search_full_text', searchKeyword)
-            } else if (searchFilter.includes('title')) {
-              updateSearchOptions('search_title', searchKeyword)
-            } else if (searchFilter.includes('content')) {
-              updateSearchOptions('search_content', searchKeyword)
-            } else {
-              alert('검색 조건을 선택해주세요')
-            }
+            onSearchButtonClick()
           }}
         >
           검색
