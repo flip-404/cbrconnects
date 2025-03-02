@@ -1,11 +1,10 @@
 'use client'
 
 import styled from 'styled-components'
-import { useEffect, useState } from 'react'
 import api from '@/libs/axiosInstance'
-import { NewsItem } from '../api/news/route'
 import Link from 'next/link'
 import { useQuery } from '@tanstack/react-query'
+import { NewsItem } from '../api/news/route'
 
 function NewsBoard() {
   const { data } = useQuery({
@@ -16,8 +15,8 @@ function NewsBoard() {
 
   return (
     <Container>
-      {newsList.slice(0, 8).map((news, index) => (
-        <News key={index} style={{ backgroundImage: `url(${news.image})` }}>
+      {newsList.slice(0, 8).map((news: NewsItem) => (
+        <News key={news.link} style={{ backgroundImage: `url(${news.image})` }}>
           <Link href={news.link} target="_blank">
             {news.title}
           </Link>

@@ -3,7 +3,6 @@
 import { CommentWithRelations, PostWithRelations } from '@/types'
 import { useComment } from '@/contexts/commentContext'
 import styled from 'styled-components'
-import { useEffect } from 'react'
 import Comment from './Comment'
 import NewWriteCommentBox from './WriteInput'
 

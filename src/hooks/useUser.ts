@@ -34,7 +34,7 @@ export function useUser() {
   return {
     user,
     isLoggedIn: !!user,
-    login: login,
+    login,
     logout: clearUser,
   }
 }

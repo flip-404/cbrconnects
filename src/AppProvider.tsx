@@ -12,7 +12,7 @@ interface ProviderProps {
   children: React.ReactNode
 }
 
-const AppProvider = ({ children }: ProviderProps) => {
+function AppProvider({ children }: ProviderProps) {
   const [supabaseClient] = useState(() => createClientComponentClient())
 
   return (

@@ -41,7 +41,7 @@ function Settings() {
   }
 
   const onSaveClick = async () => {
-    const res = await api.put('/profile', userProfile)
+    await api.put('/profile', userProfile)
   }
 
   useEffect(() => {
@@ -111,7 +111,12 @@ function Settings() {
             />
           </SettingInput>
           <Controls>
-            <button type="button" onClick={onSaveClick}>
+            <button
+              type="button"
+              onClick={() => {
+                if (window.confirm('변경된 내용을 저장하시겠습니까?')) onSaveClick()
+              }}
+            >
               저장
             </button>
             <button type="button">캔버라커넥트 탈퇴</button>

@@ -23,6 +23,8 @@
     "prettier" // eslint-config-prettier prettier와 중복된 eslint 규칙 제거
   ],
   "rules": {
+    "@typescript-eslint/naming-convention": "off",
+    "import/prefer-default-export": "off",
     "import/no-named-as-default": "off",
     "import/no-extraneous-dependencies": "off",
     "import/no-webpack-loader-syntax": "off",

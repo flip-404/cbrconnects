@@ -1,8 +1,8 @@
 'use client'
 
-import { CommentWithRelations, PostWithRelations } from '@/types'
+import { CommentWithRelations } from '@/types'
 import styled from 'styled-components'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import useUser from '@/hooks/useUser'
 import api from '@/libs/axiosInstance'
 import { useComment } from '@/contexts/commentContext'
@@ -12,11 +12,10 @@ import Image from 'next/image'
 import EditMode from './EditMode'
 
 interface CommentProps {
-  post: PostWithRelations
   comment: CommentWithRelations
 }
 
-function Comment({ post, comment }: CommentProps) {
+function Comment({ comment }: CommentProps) {
   const { selectedReplyComment, selectedEditComment, selectReplyComment, selectEditComment } =
     useComment()
   const [editText, setEditText] = useState<string>('')

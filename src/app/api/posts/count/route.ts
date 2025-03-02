@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import prisma from '@/libs/prisma'
 import { CategoryType } from '@prisma/client'
 import { NextRequest, NextResponse } from 'next/server'

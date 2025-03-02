@@ -1,4 +1,4 @@
-import { createContext, useContext, useEffect, useState } from 'react'
+import { createContext, useContext, useMemo, useState } from 'react'
 
 interface CommentContextType {
   selectedReplyComment: number | null
@@ -9,8 +9,7 @@ interface CommentContextType {
 
 const CommentContext = createContext<CommentContextType | undefined>(undefined)
 
-export const CommentProvider = ({ children }: { children: React.ReactNode }) => {
-  const [count, setCount] = useState()
+export function CommentProvider({ children }: { children: React.ReactNode }) {
   const [selectedReplyComment, setSelectedReplyComment] = useState<number | null>(null)
   const [selectedEditComment, setSelectedEditComment] = useState<number | null>(null)
 
@@ -22,18 +21,17 @@ export const CommentProvider = ({ children }: { children: React.ReactNode }) => 
     setSelectedEditComment(commentId)
   }
 
-  return (
-    <CommentContext.Provider
-      value={{
-        selectedReplyComment,
-        selectedEditComment,
-        selectReplyComment,
-        selectEditComment,
-      }}
-    >
-      {children}
-    </CommentContext.Provider>
+  const value = useMemo(
+    () => ({
+      selectedReplyComment,
+      selectedEditComment,
+      selectReplyComment,
+      selectEditComment,
+    }),
+    [selectedReplyComment, selectedEditComment],
   )
+
+  return <CommentContext.Provider value={value}>{children}</CommentContext.Provider>
 }
 
 export const useComment = () => {

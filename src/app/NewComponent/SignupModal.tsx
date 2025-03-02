@@ -5,16 +5,14 @@ import KakaoIcon from '@/assets/desktop/kakao_icon.svg'
 import GoogleIcon from '@/assets/desktop/google_icon.svg'
 import CloseIcon from '@/assets/desktop/close_icon.svg'
 import supabase from '@/libs/supabaseClient'
-import api from '@/libs/axiosInstance'
 import useUser from '@/hooks/useUser'
-import { useEffect } from 'react'
 
 function SignupModal({ closeModal }: { closeModal: () => void }) {
   const router = useRouter()
-  const { user, login } = useUser()
+  const { login } = useUser()
 
   const handleKakaoSignup = async () => {
-    const { data, error } = await supabase.auth.signInWithOAuth({
+    const { error } = await supabase.auth.signInWithOAuth({
       provider: 'kakao',
     })
     if (!error) {

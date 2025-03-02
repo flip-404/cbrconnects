@@ -1,10 +1,10 @@
 'use client'
 
 import api from '@/libs/axiosInstance'
-import { use, useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import styled from 'styled-components'
 
-const Footer = () => {
+function Footer() {
   const [visitCount, setVisitCount] = useState<number>(0)
   useEffect(() => {
     async function getVisitCount() {

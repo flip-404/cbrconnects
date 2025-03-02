@@ -1,6 +1,7 @@
 'use client'
 
 import api from '@/libs/axiosInstance'
+import { GET_Posts } from '@/types/newIndex'
 import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
 import styled from 'styled-components'
@@ -19,7 +20,7 @@ function PinnedBoard({ category }: { category?: string }) {
         <></>
       ) : (
         <Board>
-          {posts.slice(0, 3).map((post, index) => (
+          {posts.slice(0, 3).map((post: GET_Posts) => (
             <Post key={post.id}>
               <Link href={`/post?postId=${post.id}`}>
                 {category === 'NOTICE' ? '🇦🇺' : '🍒'} &nbsp; {post.title}{' '}

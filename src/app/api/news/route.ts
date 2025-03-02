@@ -1,4 +1,3 @@
-import type { NextApiRequest, NextApiResponse } from 'next'
 import axios from 'axios'
 import * as cheerio from 'cheerio'
 import { NextResponse } from 'next/server'
@@ -29,7 +28,7 @@ async function GET() {
     }
 
     const title = $(element).find('h3').text().trim()
-    let image = $(element).find('img').attr('src')
+    const image = $(element).find('img').attr('src')
     const fullLink = link.startsWith('http') ? link : `https://www.sbs.com.au${link}`
     const fullImage = image && !image.startsWith('http') ? `https://www.sbs.com.au${image}` : image
 

@@ -1,26 +1,26 @@
 import styled from 'styled-components'
-import { SignInForm } from '@/app/api/(user)/signin/route'
 import { useForm } from 'react-hook-form'
 import KakaoIcon from '@/assets/desktop/kakao_icon.svg'
 import GoogleIcon from '@/assets/desktop/google_icon.svg'
 import CloseIcon from '@/assets/desktop/close_icon.svg'
-import api from '@/libs/axiosInstance'
 import useUser from '@/hooks/useUser'
-import LoginInput from './LoginInput'
 import supabase from '@/libs/supabaseClient'
+import LoginInput from './LoginInput'
+
+type SignInCredentials = { email: string; password: string }
 
 function LoginModal({ closeModal }: { closeModal: () => void }) {
   const {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SignInForm>({
+  } = useForm<SignInCredentials>({
     mode: 'onBlur',
   })
   const { login } = useUser()
 
-  const handleCredentialsLogin = async (formData: SignInForm) => {
-    const { data, error } = await supabase.auth.signInWithPassword({
+  const handleCredentialsLogin = async (formData: SignInCredentials) => {
+    const { error } = await supabase.auth.signInWithPassword({
       email: formData.email,
       password: formData.password,
     })
@@ -33,10 +33,7 @@ function LoginModal({ closeModal }: { closeModal: () => void }) {
   }
 
   const handleKakaoLogin = async () => {
-    // toDo, 현재 경로로 리다이렉트 옵션 추가?
-    // 혹은 유지하며 로그인 상태만 업데이트
-    // 그리고 useUser로 빼기??
-    const { data, error } = await supabase.auth.signInWithOAuth({
+    const { error } = await supabase.auth.signInWithOAuth({
       provider: 'kakao',
     })
     if (!error) {

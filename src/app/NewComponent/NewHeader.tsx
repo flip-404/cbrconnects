@@ -8,11 +8,11 @@ import ProfileIcon from '@/assets/profile.svg'
 import MessageIcon from '@/assets/message.svg'
 import SettingsIcon from '@/assets/settings.svg'
 import { useRouter } from 'next/navigation'
+import { CategoryType } from '@prisma/client'
+import useCategoryStore from '@/store/useCategoryStore'
 import useUser from '../../hooks/useUser'
 import SignupModal from './SignupModal'
 import LoginModal from './LoginModal'
-import { CategoryType } from '@prisma/client'
-import useCategoryStore from '@/store/useCategoryStore'
 
 export const boardLinks: {
   label: string
@@ -122,7 +122,7 @@ function NewHeader() {
       </div>
       <Navigation>
         {boardLinks.map((link) => (
-          <Link key={link.category} href={`/board`} onClick={() => setCategory(link.category)}>
+          <Link key={link.category} href="/board" onClick={() => setCategory(link.category)}>
             {link.label}
           </Link>
         ))}

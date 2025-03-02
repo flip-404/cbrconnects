@@ -4,7 +4,7 @@ import prisma from '@/libs/prisma'
 import { CategoryType } from '@prisma/client'
 import { NextRequest, NextResponse } from 'next/server'
 
-async function GET(request: NextRequest) {
+async function GET(request: NextRequest): Promise<NextResponse> {
   const url = new URL(request.url)
 
   const category = url.searchParams.get('category') as CategoryType

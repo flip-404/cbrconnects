@@ -126,8 +126,8 @@ function ChatPage() {
         <ArrowForwardIcon />
       </ChatControls>
       <Chats>
-        {chats.map((chat, index) => (
-          <Chat>
+        {chats.map((chat) => (
+          <Chat key={chat.content}>
             <span>{chat.time}</span>
             <Link href="profile">
               <EmptyIcon /> {chat.nickname}

@@ -1,8 +1,7 @@
 'use client'
 
-import { useMediaQuery } from '@mui/material'
-import PostBoard from './NewComponent/PostBoard'
 import styled from 'styled-components'
+import PostBoard from './NewComponent/PostBoard'
 import PinnedBoard from './NewComponent/PinnedBoard'
 import NewsBoard from './NewComponent/NewsBoard'
 import { boardLinks } from './NewComponent/NewHeader'

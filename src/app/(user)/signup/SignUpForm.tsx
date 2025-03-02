@@ -5,7 +5,6 @@ import { useRef, useState } from 'react'
 import styled from 'styled-components'
 import { useForm } from 'react-hook-form'
 import type { SignUpBody } from '@/app/api/(user)/signup/route'
-import { useRouter } from 'next/navigation'
 import api from '@/libs/axiosInstance'
 import AgreementBox from './AgreementBox'
 import ImageSelector from './ImageSelector'
@@ -36,6 +35,7 @@ function SignUpForm({
   passwordRef.current = watch('password')
 
   // const router = useRouter()
+  console.log('modalStatus', modalStatus)
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files![0]
