@@ -3,11 +3,20 @@
 import styled from 'styled-components'
 import EmptyIcon from '@/assets/empty_profile.svg'
 import LetterIcon from '@/assets/letter.svg'
-import useUser from '@/hooks/useUser'
 import Image from 'next/image'
+import { useSearchParams } from 'next/navigation'
+import { useQuery } from '@tanstack/react-query'
+import api from '@/libs/axiosInstance'
 
 function ProfilePage() {
-  const { user } = useUser()
+  const searchParams = useSearchParams()
+  const userId = searchParams.get('userId')
+  const { data } = useQuery({
+    queryKey: ['profile', userId],
+    queryFn: ({ queryKey }) => api.get(`/profile?userId=${queryKey[1]}`),
+  })
+
+  const user = data?.data?.user
 
   return (
     <Container>
