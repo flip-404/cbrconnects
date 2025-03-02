@@ -1,40 +1,21 @@
 import prisma from '@/libs/prisma'
 import { NextRequest, NextResponse } from 'next/server'
 
-async function GET(request: NextRequest) {
-  const url = new URL(request.url)
-  const postId = url.searchParams.get('postId')
-
-  if (!postId) return new NextResponse(JSON.stringify([]), { status: 400 })
-
-  try {
-    let comments
-    if (postId) {
-      comments = await getCommentsBypostId(parseInt(postId, 10))
-      return new NextResponse(JSON.stringify(comments), { status: 200 })
-    }
-
-    return new NextResponse(JSON.stringify([]), { status: 400 })
-  } catch (error) {
-    return new NextResponse(JSON.stringify([]), { status: 500 })
-  }
-}
-
 async function POST(request: NextRequest) {
   const body = await request.json()
-  const { post_id, author_id, content, parent_id } = body
+  const { post_id: postId, author_id: authorId, content, parent_id: parentId } = body
 
-  if (!post_id || !author_id || !content) {
+  if (!postId || !authorId || !content) {
     return new NextResponse(JSON.stringify({ error: 'Missing required fields' }), { status: 400 })
   }
 
   try {
     const comment = await prisma.comment.create({
       data: {
-        post_id,
-        author_id,
+        post_id: postId,
+        author_id: authorId,
         content,
-        parent_id: parent_id || null,
+        parent_id: parentId || null,
       },
     })
 
@@ -93,4 +74,4 @@ async function DELETE(request: NextRequest) {
   }
 }
 
-export { GET, POST, PUT, DELETE }
+export { POST, PUT, DELETE }

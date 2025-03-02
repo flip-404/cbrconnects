@@ -42,7 +42,6 @@ function Settings() {
 
   const onSaveClick = async () => {
     const res = await api.put('/profile', userProfile)
-    console.log('res', res)
   }
 
   useEffect(() => {
