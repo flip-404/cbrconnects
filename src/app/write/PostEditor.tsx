@@ -57,7 +57,6 @@ function PostEditor() {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const quillRef = useRef<ReactQuill>()
-  const [thumbnail, setThumbnail] = useState(null)
 
   const { mutate: writePost } = useMutation({
     mutationFn: async (newPost: NewPostType) => api.post('/posts', newPost),
@@ -88,18 +87,12 @@ function PostEditor() {
 
         quillObj.insertEmbed(range.index, 'image', '/ImageLoading.gif')
 
-        const { imageURL } = await fetch(`/api/image`, {
-          method: 'POST',
-          body: formData,
-        }).then((res) => {
-          quillObj.deleteText(range.index, 1)
-          return res.json()
-        })
+        const {
+          data: { imageURL },
+        } = await api.post('/image', formData)
+        quillObj.deleteText(range.index, 1)
         quillObj?.insertEmbed(range.index, 'image', `${imageURL}`)
         quillObj.setSelection(range.index + 1, 1)
-        if (!thumbnail) {
-          setThumbnail(imageURL)
-        }
       }
     }
   }
@@ -132,12 +125,19 @@ function PostEditor() {
       alert(title ? '본문은 필수 입력입니다.' : '제목은 필수 입력입니다.')
       return
     }
+
+    // 썸네일 설정
+    const tempDiv = document.createElement('div')
+    tempDiv.innerHTML = content
+    const firstImg = tempDiv.querySelector('img')
+    const thumbnailUrl = firstImg ? firstImg.src : undefined
+
     writePost({
       user,
       title,
       content,
       category,
-      thumbnail: thumbnail || undefined,
+      thumbnail: thumbnailUrl || undefined,
     })
   }
 
