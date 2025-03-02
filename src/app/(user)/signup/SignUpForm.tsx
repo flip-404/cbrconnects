@@ -35,7 +35,7 @@ function SignUpForm({
   const passwordRef = useRef<string>('')
   passwordRef.current = watch('password')
 
-  const router = useRouter()
+  // const router = useRouter()
 
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files![0]
@@ -43,25 +43,21 @@ function SignUpForm({
 
     const formData = new FormData()
     formData.append('file', file)
-    const { imageURL } = await fetch(`/api/image`, {
-      method: 'POST',
-      body: formData,
-    }).then((res) => {
-      return res.json()
-    })
-
+    const {
+      data: { imageURL },
+    } = await api.post('/image', formData)
     setProfileImage(imageURL)
   }
 
-  const handleModalClose = () => {
-    router.back()
-  }
+  // const handleModalClose = () => {
+  //   router.back()
+  // }
 
-  const checkExists = async (value: string, type: string) => {
-    // const response = await fetch(`/api/exists?${type}=${value}`)
-    // const { exists } = await response.json()
-    // return !exists
-  }
+  // const checkExists = async (value: string, type: string) => {
+  // const response = await fetch(`/api/exists?${type}=${value}`)
+  // const { exists } = await response.json()
+  // return !exists
+  // }
 
   const onValid = async (formData: SignUpBody) => {
     if (!allAgreementChecked) return
@@ -74,7 +70,6 @@ function SignUpForm({
     if (response.status === 200) {
       handleNextPhase()
     } else {
-      console.log('response', response)
       setModalStatus('fail')
     }
   }

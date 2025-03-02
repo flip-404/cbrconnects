@@ -27,7 +27,9 @@ function CommentSection({ post, comments }: CommentSectionProps) {
         return (
           <>
             <Comment post={post} comment={comment} />
-            <ReplySection>
+            <ReplySection
+              $visible={comment.replies.length !== 0 || comment.id === selectedReplyComment}
+            >
               {comment.replies?.map((reply) => {
                 return <Comment key={reply.id} post={post} comment={reply} />
               })}
@@ -55,7 +57,8 @@ const Count = styled.p`
   font-weight: 700;
 `
 
-const ReplySection = styled.div`
+const ReplySection = styled.div<{ $visible: boolean }>`
+  display: ${({ $visible }) => ($visible ? 'block' : 'none')};
   margin-left: 10px;
   padding: 5px 20px;
   background-color: #f9f9f9;

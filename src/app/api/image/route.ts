@@ -1,4 +1,5 @@
 /* eslint-disable import/prefer-default-export */
+import api from '@/libs/axiosInstance'
 import { NextRequest, NextResponse } from 'next/server'
 
 async function POST(request: NextRequest) {
@@ -23,16 +24,12 @@ async function POST(request: NextRequest) {
   ).then((value) => value.json())
 
   const { uploadURL } = result
-  const uploadFormData = new FormData()
-  uploadFormData.append('file', imageFile)
 
   const {
-    result: { variants },
-  } = await fetch(uploadURL, {
-    method: 'POST',
-    body: formData,
-  }).then((res) => res.json())
+    data: { result: uploadResult },
+  } = await api.post(uploadURL, formData)
+  const { variants, filename } = uploadResult
 
-  return new NextResponse(JSON.stringify({ ok: true, imageURL: variants[0] }))
+  return new NextResponse(JSON.stringify({ ok: true, imageURL: variants[0], filename }))
 }
 export { POST }
