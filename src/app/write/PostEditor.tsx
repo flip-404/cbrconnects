@@ -111,6 +111,10 @@ function PostEditor() {
       alert(title ? '본문은 필수 입력입니다.' : '제목은 필수 입력입니다.')
       return
     }
+    if (title.length > 80) {
+      alert('제목은 80자 이내로 입력해주세요.')
+      return
+    }
 
     setIsPending(true) // 게시글 작성 중
     const tempDiv = document.createElement('div')
