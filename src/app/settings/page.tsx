@@ -5,9 +5,11 @@ import EmptyImage from '@/assets/empty_profile.svg'
 import useUser from '@/hooks/useUser'
 import Image from 'next/image'
 import { useEffect, useState } from 'react'
+import api from '@/libs/axiosInstance'
 
 type UserProfile = {
-  profile_image: string | null
+  userId: string
+  profileImage: string | null
   email: string
   nickname: string
   description: string | null
@@ -16,29 +18,38 @@ type UserProfile = {
 function Settings() {
   const { user } = useUser()
   const [userProfile, setUserProfile] = useState<UserProfile>({
-    profile_image: '',
+    userId: '',
+    profileImage: '',
     email: '',
     nickname: '',
     description: '',
   })
-  // React의 useState는 초기값만 한 번 설정될 뿐, 이후에는 자동으로 업데이트되지 않는다
-  // 이후 user 값이 들어와도, useState는 userProfile을 자동으로 업데이트하지 않음. useState는 초기 렌더링 시 지정된 값만 기억하고 유지
 
-  const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0]
     if (file) {
-      const imageUrl = URL.createObjectURL(file) // 선택한 이미지의 URL 생성
+      const formData = new FormData()
+      formData.append('file', file)
+      const {
+        data: { imageURL },
+      } = await api.post('/image', formData)
       setUserProfile((prev) => ({
         ...prev,
-        profile_image: imageUrl,
+        profileImage: imageURL,
       }))
     }
+  }
+
+  const onSaveClick = async () => {
+    const res = await api.put('/profile', userProfile)
+    console.log('res', res)
   }
 
   useEffect(() => {
     if (user) {
       setUserProfile({
-        profile_image: user.profile_image,
+        userId: user.id,
+        profileImage: user.profile_image,
         email: user.email,
         nickname: user.nickname,
         description: user.description,
@@ -51,9 +62,9 @@ function Settings() {
       <h3>프로필 수정</h3>
       <div>
         <ImageEdit>
-          {userProfile?.profile_image ? (
+          {userProfile?.profileImage ? (
             <Image
-              src={userProfile?.profile_image}
+              src={userProfile?.profileImage}
               alt={`${userProfile.nickname}'s profile image`}
               width={300}
               height={300}
@@ -101,7 +112,9 @@ function Settings() {
             />
           </SettingInput>
           <Controls>
-            <button type="submit">저장</button>
+            <button type="button" onClick={onSaveClick}>
+              저장
+            </button>
             <button type="button">캔버라커넥트 탈퇴</button>
           </Controls>
         </DetailEdit>
@@ -204,11 +217,16 @@ const Controls = styled.div`
 
   button {
     all: unset;
+    cursor: pointer;
     border-radius: 4px;
     padding: 10px 20px;
     background-color: #007aff;
     font-weight: 600;
     color: white;
+
+    &:hover {
+      opacity: 0.8;
+    }
   }
 `
 const SettingInput = styled.div`
