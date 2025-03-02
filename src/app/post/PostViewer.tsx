@@ -8,6 +8,7 @@ import { CommentProvider } from '@/contexts/commentContext'
 import { postlike } from '@prisma/client'
 import Image from 'next/image'
 import ReactQuill from 'react-quill'
+import Link from 'next/link'
 import CommentSection from './_components/CommentSection'
 import useUser from '../../hooks/useUser'
 
@@ -72,7 +73,7 @@ function PostViewer() {
                 <EmptyProfileIcon />
               )}
               <div>
-                <p>{post.author.nickname}</p>
+                <Link href={`/profile?userId=${post.author.id}`}>{post.author.nickname}</Link>
                 <span>{post.author.description || '입력된 자기소개가 없습니다.'}</span>
               </div>
             </AuthorProfile>
@@ -179,16 +180,23 @@ const AuthorProfile = styled.div`
     justify-content: center;
     gap: 5;
 
-    p {
-      margin: 0;
-      font-size: 17px;
-      font-weight: 600;
-    }
-
     span {
       color: #3c3c4399;
       font-size: 15px;
       font-weight: 400;
+    }
+
+    a {
+      margin: 0;
+      color: black;
+      font-size: 17px;
+      font-weight: 600;
+      text-decoration: none;
+
+      cursor: pointer;
+      &:hover {
+        text-decoration: underline;
+      }
     }
   }
 `
