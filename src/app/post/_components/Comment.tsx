@@ -34,7 +34,7 @@ function Comment({ comment }: CommentProps) {
   return (
     <CommentItem $hasReply={Boolean(comment.replies)} $isReply>
       <AuthorProfile>
-        <Link href="profile">
+        <Link href={`/profile?userId=${comment.author.id}`}>
           {comment.author.profile_image ? (
             <Image src={comment.author.profile_image} alt="프로필 사진" width={30} height={30} />
           ) : (
