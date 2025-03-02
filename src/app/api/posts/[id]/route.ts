@@ -14,6 +14,7 @@ async function GET(req: Request, { params }: { params: { id: string } }) {
             id: true,
             nickname: true,
             profile_image: true,
+            description: true,
           },
         },
         comments: {
