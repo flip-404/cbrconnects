@@ -1,6 +1,6 @@
+/* eslint-disable no-param-reassign */
 /* eslint-disable react/jsx-props-no-spreading */
 /* eslint-disable @typescript-eslint/no-explicit-any */
-/* eslint-disable @typescript-eslint/no-unused-vars */
 
 'use client'
 
@@ -57,6 +57,7 @@ function PostEditor() {
   const [title, setTitle] = useState('')
   const [content, setContent] = useState('')
   const quillRef = useRef<ReactQuill>()
+  const [isPending, setIsPending] = useState(false)
 
   const { mutate: writePost } = useMutation({
     mutationFn: async (newPost: NewPostType) => api.post('/posts', newPost),
@@ -68,33 +69,21 @@ function PostEditor() {
     },
   })
 
-  const imageHandler = async () => {
-    const input = document.createElement('input')
-    input.setAttribute('type', 'file')
-    input.setAttribute('accept', 'image/*')
-    input.click()
+  const onDrop = (acceptedFiles: File[]) => {
+    const file: File = acceptedFiles[0]
 
-    input.onchange = async () => {
-      const file: any = input.files ? input.files[0] : null
-      if (!file) return
-
-      const formData = new FormData()
-      formData.append('file', file)
-
-      const quillObj = quillRef.current?.getEditor()
-      if (quillObj) {
-        const range = quillObj.getSelection()!
-
-        quillObj.insertEmbed(range.index, 'image', '/ImageLoading.gif')
-
-        const {
-          data: { imageURL },
-        } = await api.post('/image', formData)
-        quillObj.deleteText(range.index, 1)
-        quillObj?.insertEmbed(range.index, 'image', `${imageURL}`)
-        quillObj.setSelection(range.index + 1, 1)
+    const reader: FileReader = new FileReader()
+    reader.onloadend = () => {
+      const base64String: string | ArrayBuffer | null = reader.result
+      if (typeof base64String === 'string') {
+        const range = quillRef.current?.getEditor().getSelection()
+        if (range) {
+          quillRef.current?.getEditor().insertEmbed(range.index, 'image', base64String)
+        }
       }
     }
+
+    reader.readAsDataURL(file)
   }
 
   const modules = useMemo(
@@ -107,11 +96,9 @@ function PostEditor() {
           ['link', 'image'],
           [{ align: [] }, { color: [] }, { background: [] }],
         ],
-        handlers: {
-          image: imageHandler,
-        },
       },
-      imageDrop: imageHandler,
+
+      imageDrop: onDrop,
       imageResize: {
         parchment: Quill.import('parchment'),
         modules: ['Resize', 'DisplaySize'],
@@ -119,25 +106,46 @@ function PostEditor() {
     }),
     [],
   )
-
   const onClickWrite = async () => {
     if (!title || !content) {
       alert(title ? '본문은 필수 입력입니다.' : '제목은 필수 입력입니다.')
       return
     }
 
-    // 썸네일 설정
+    setIsPending(true) // 게시글 작성 중
     const tempDiv = document.createElement('div')
     tempDiv.innerHTML = content
-    const firstImg = tempDiv.querySelector('img')
-    const thumbnailUrl = firstImg ? firstImg.src : undefined
+    const imgElements = tempDiv.querySelectorAll('img')
+
+    await Promise.all(
+      Array.from(imgElements).map(async (img) => {
+        if (img.src.startsWith('data:image')) {
+          const formData = new FormData()
+          const base64Data = img.src.split(',')[1]
+          const blob = await fetch(`data:image/jpeg;base64,${base64Data}`).then((res) => res.blob())
+          formData.append('file', blob, 'image.jpg')
+
+          try {
+            const {
+              data: { imageURL },
+            } = await api.post('/image', formData)
+
+            img.src = imageURL
+          } catch (error) {
+            console.error('이미지 업로드 실패:', error)
+          }
+        }
+      }),
+    )
+
+    const updatedContent = tempDiv.innerHTML
 
     writePost({
       user,
       title,
-      content,
+      content: updatedContent,
       category,
-      thumbnail: thumbnailUrl || undefined,
+      thumbnail: imgElements.length > 0 ? imgElements[0].src : undefined,
     })
   }
 
@@ -149,7 +157,12 @@ function PostEditor() {
     <Container>
       <QuillContainer>
         <h1>{boardLinks.find((link) => link.category === category)?.label} 글쓰기</h1>
-        <input placeholder="제목" onChange={(e) => setTitle(e.target.value)} value={title} />
+        <input
+          placeholder="제목"
+          onChange={(e) => setTitle(e.target.value)}
+          value={title}
+          disabled={isPending}
+        />
         <DynamicReactQuill
           forwardedRef={quillRef}
           theme="snow"
@@ -157,8 +170,11 @@ function PostEditor() {
           formats={formats}
           value={content}
           onChange={handleChange}
+          readOnly={isPending}
         />
-        <WriteButton onClick={onClickWrite}>완료</WriteButton>
+        <WriteButton onClick={onClickWrite} $isPending={isPending}>
+          {isPending ? '게시글 작성 중' : '완료'}
+        </WriteButton>
       </QuillContainer>
     </Container>
   )
@@ -200,11 +216,12 @@ const QuillContainer = styled.div`
   }
 `
 
-const WriteButton = styled.button`
+const WriteButton = styled.button<{ $isPending: boolean }>`
   cursor: pointer;
   border: none;
   margin-top: 15px;
   background-color: #007aff;
+  background-color: ${(props) => (props.$isPending ? '#c4c4c4' : '#007aff')};
   font-size: 17px;
   font-weight: 700;
   color: white;

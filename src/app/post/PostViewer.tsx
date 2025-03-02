@@ -7,6 +7,7 @@ import LikeIcon from '@/assets/like.svg'
 import { CommentProvider } from '@/contexts/commentContext'
 import { postlike } from '@prisma/client'
 import Image from 'next/image'
+import ReactQuill from 'react-quill'
 import CommentSection from './_components/CommentSection'
 import useUser from '../../hooks/useUser'
 
@@ -75,7 +76,17 @@ function PostViewer() {
                 </div>
               )}
             </Details>
-            <Content>{post.content}</Content>
+
+            <Content>
+              <ReactQuill
+                value={post.content}
+                readOnly
+                theme="snow"
+                modules={{
+                  toolbar: false,
+                }}
+              />
+            </Content>
             <Like $isActive={post.likes.some((like: postlike) => like.user_id === user?.id)}>
               <button
                 type="button"
@@ -183,7 +194,18 @@ const Details = styled.div`
     }
   }
 `
-const Content = styled.div``
+const Content = styled.div`
+  * {
+    border: none !important;
+    border-image-width: 0 !important;
+    outline: none !important;
+  }
+
+  div {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+`
 
 const Like = styled.div<{ $isActive: boolean }>`
   margin-top: 30px;
