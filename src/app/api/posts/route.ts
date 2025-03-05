@@ -26,6 +26,8 @@ async function GET(request: NextRequest): Promise<NextResponse> {
       mode: 'insensitive',
     }
 
+  console.log('limit', limit)
+
   try {
     const posts = await prisma.post.findMany({
       where: whereCondition,
@@ -34,7 +36,7 @@ async function GET(request: NextRequest): Promise<NextResponse> {
         created_at: 'desc',
       },
       skip: (parseInt(page, 10) - 1) * parseInt(limit, 10),
-      take: 16,
+      take: parseInt(limit, 10),
       select: {
         id: true,
         title: true,

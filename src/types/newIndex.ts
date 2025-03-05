@@ -1,4 +1,12 @@
-import { postlike } from '@prisma/client'
+import { postlike, userinfo } from '@prisma/client'
+
+// GET 'posts'
+export type GET_chat = {
+  id: number
+  content: string
+  created_at: string
+  author: userinfo
+}
 
 // GET 'posts'
 export type GET_Posts = {
