@@ -48,10 +48,15 @@ function NewHeader() {
   useEffect(() => {
     if (chats.length > 0) {
       const interval = setInterval(() => {
-        if (visibleChats >= chatLimit - 1) {
-          setVisibleChats(0)
-        } else setVisibleChats((prev) => prev + 1)
+        setVisibleChats((prev) => {
+          if (prev < chatLimit - 1) {
+            return prev + 1
+          } else {
+            return 0
+          }
+        })
       }, 3000)
+
       return () => clearInterval(interval)
     }
   }, [chats])
