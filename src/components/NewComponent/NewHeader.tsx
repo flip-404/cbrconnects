@@ -2,17 +2,21 @@
 
 import Link from 'next/link'
 import styled from 'styled-components'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import supabase from '@/libs/supabaseClient'
 import ProfileIcon from '@/assets/profile.svg'
 import MessageIcon from '@/assets/message.svg'
 import SettingsIcon from '@/assets/settings.svg'
+import ChatIcon from '@/assets/chat.svg'
 import { useRouter } from 'next/navigation'
 import { CategoryType } from '@prisma/client'
 import useCategoryStore from '@/store/useCategoryStore'
 import useUser from '../../hooks/useUser'
 import SignupModal from './SignupModal'
 import LoginModal from './LoginModal'
+import { useQuery } from '@tanstack/react-query'
+import api from '@/libs/axiosInstance'
+import { GET_chat } from '@/types/newIndex'
 
 export const boardLinks: {
   label: string
@@ -27,14 +31,52 @@ export const boardLinks: {
 
 function NewHeader() {
   const [loginModalOpen, setLoginModalOpen] = useState<null | 'SIGNIN' | 'SIGNUP'>(null)
+  const [visibleChats, setVisibleChats] = useState(0)
   const { user, logout } = useUser()
   const { setCategory } = useCategoryStore()
   const router = useRouter()
 
+  // 모든 useQuery 훅으로 빼기
+  const chatLimit = 20
+  const { data: chatData } = useQuery({
+    queryKey: ['chat', 1, chatLimit],
+    queryFn: ({ queryKey }) => api.get(`/chat?page=${queryKey[1]}&limit=${queryKey[2]}`),
+  })
+
+  const chats = chatData?.data.chats || []
+
+  useEffect(() => {
+    if (chats.length > 0) {
+      const interval = setInterval(() => {
+        if (visibleChats >= chatLimit - 1) {
+          setVisibleChats(0)
+        } else setVisibleChats((prev) => prev + 1)
+      }, 3000)
+      return () => clearInterval(interval)
+    }
+  }, [chats])
+
   return (
     <Container>
       <div>
-        <LeftSection />
+        <LeftSection>
+          <Link href="/chat">
+            <ChatIcon />
+            {chats.map((chat: GET_chat, index: number) => {
+              let className
+              if (visibleChats === 19 && index === 0) className = 'exit'
+              else if (visibleChats + 1 === index) className = 'exit'
+              else if (visibleChats === index) className = 'enter'
+              else className = 'wait'
+
+              return (
+                <span className={className}>
+                  {chat.author.nickname}: {chat.content}
+                </span>
+              )
+            })}
+          </Link>
+        </LeftSection>
         <CenterSection>
           <Logo>
             <Link href="/">캔버라커넥트</Link>
@@ -147,6 +189,46 @@ const Container = styled.header`
 
 const LeftSection = styled.div`
   flex: 1;
+  position: relative;
+
+  & > a {
+    color: black;
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+
+    svg {
+      margin-right: 5px;
+      width: 17px;
+      height: 17px;
+    }
+
+    & > span {
+      position: absolute;
+      letter-spacing: 0.1rem;
+      top: -2px;
+      left: 25px;
+      transition:
+        opacity 0.5s ease,
+        transform 0.5s ease;
+      opacity: 0;
+
+      &.exit {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+
+      &.enter {
+        opacity: 1;
+        transform: translateY(0);
+      }
+
+      &.wait {
+        opacity: 0;
+        transform: translateY(-20px);
+      }
+    }
+  }
 `
 
 const CenterSection = styled.div`
