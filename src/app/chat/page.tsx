@@ -35,7 +35,7 @@ function ChatPage() {
 
   const { data } = useQuery({
     queryKey: ['chat', page, limit],
-    queryFn: ({ queryKey }) => api.get(`/chat?page=${queryKey[1]}&limit=${limit}`),
+    queryFn: ({ queryKey }) => api.get(`/chat?page=${queryKey[1]}&limit=${queryKey[2]}`),
   })
 
   const chats = data?.data.chats || []
