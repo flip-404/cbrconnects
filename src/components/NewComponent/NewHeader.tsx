@@ -1,3 +1,5 @@
+/* eslint-disable consistent-return */
+
 'use client'
 
 import Link from 'next/link'
@@ -11,12 +13,12 @@ import ChatIcon from '@/assets/chat.svg'
 import { useRouter } from 'next/navigation'
 import { CategoryType } from '@prisma/client'
 import useCategoryStore from '@/store/useCategoryStore'
-import useUser from '../../hooks/useUser'
-import SignupModal from './SignupModal'
-import LoginModal from './LoginModal'
 import { useQuery } from '@tanstack/react-query'
 import api from '@/libs/axiosInstance'
 import { GET_chat } from '@/types/newIndex'
+import useUser from '../../hooks/useUser'
+import SignupModal from './SignupModal'
+import LoginModal from './LoginModal'
 
 export const boardLinks: {
   label: string
@@ -51,9 +53,8 @@ function NewHeader() {
         setVisibleChats((prev) => {
           if (prev < chatLimit - 1) {
             return prev + 1
-          } else {
-            return 0
           }
+          return 0
         })
       }, 3000)
 
@@ -75,7 +76,7 @@ function NewHeader() {
               else className = 'wait'
 
               return (
-                <span className={className}>
+                <span className={className} key={chat.id}>
                   {chat.author.nickname}: {chat.content}
                 </span>
               )
