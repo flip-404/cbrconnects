@@ -22,12 +22,12 @@ async function GET() {
   const newsList: NewsItem[] = []
 
   $('div.SBS_ShelfItem').each((_, element) => {
-    const link = $(element).find('a').attr('href')
+    const link = $(element).attr('href')
     if (!link) {
       return
     }
 
-    const title = $(element).find('h3').text().trim()
+    const title = $(element).find('a').text().trim()
     const image = $(element).find('img').attr('src')
     const fullLink = link.startsWith('http') ? link : `https://www.sbs.com.au${link}`
     const fullImage = image && !image.startsWith('http') ? `https://www.sbs.com.au${image}` : image
