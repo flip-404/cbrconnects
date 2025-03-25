@@ -15,7 +15,7 @@ import 'react-quill/dist/quill.snow.css'
 import api from '@/libs/axiosInstance'
 import { useMutation, useQueryClient } from '@tanstack/react-query'
 import useCategoryStore from '@/store/useCategoryStore'
-import { boardLinks } from '@/components/NewComponent/NewHeader'
+import { boardLinks } from '@/components/NewComponent/Header'
 import formats from './default'
 import useUser from '../../hooks/useUser'
 

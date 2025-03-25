@@ -4,7 +4,10 @@ import './globals.css'
 import { saira } from '@/fonts/fontConfig'
 import Footer from '@/components/_components/molcules/Footer'
 import AppProvider from '@/AppProvider'
-import NewHeader from '@/components/NewComponent/NewHeader'
+import DesktopHeader from '@/components/NewComponent/Header'
+import { headers } from 'next/headers'
+import MobileHeader from '@/components/Mobile/Header'
+import MobileFooter from '@/components/Mobile/Footer'
 
 export const metadata: Metadata = {
   title: '캔버라커넥트',
@@ -16,14 +19,27 @@ export default function RootLayout({
 }: Readonly<{
   children: React.ReactNode
 }>) {
+  const headersList = headers()
+  const isMobilePredefined = headersList.get('x-is-mobile') === 'true'
+
   return (
     <html lang="ko">
       <body className={saira.className}>
         <StyledComponentsRegistry>
           <AppProvider>
-            <NewHeader />
-            {children}
-            <Footer />
+            {isMobilePredefined ? (
+              <>
+                <MobileHeader />
+                {children}
+                <MobileFooter />
+              </>
+            ) : (
+              <>
+                <DesktopHeader />
+                {children}
+                <Footer />
+              </>
+            )}
           </AppProvider>
         </StyledComponentsRegistry>
       </body>

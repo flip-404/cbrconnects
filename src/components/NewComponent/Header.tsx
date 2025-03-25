@@ -31,7 +31,7 @@ export const boardLinks: {
   { label: '홍보', category: 'PROMOTION' },
 ]
 
-function NewHeader() {
+function DesktopHeader() {
   const [loginModalOpen, setLoginModalOpen] = useState<null | 'SIGNIN' | 'SIGNUP'>(null)
   const [visibleChats, setVisibleChats] = useState(0)
   const { user, logout } = useUser()
@@ -179,7 +179,7 @@ function NewHeader() {
   )
 }
 
-export default NewHeader
+export default DesktopHeader
 
 const Container = styled.header`
   padding: 25px;

@@ -2,7 +2,7 @@
 
 'use client'
 
-import { boardLinks } from '@/components/NewComponent/NewHeader'
+import { boardLinks } from '@/components/NewComponent/Header'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import LikeIcon from '@/assets/like.svg'
