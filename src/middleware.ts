@@ -1,21 +1,19 @@
-/* eslint-disable consistent-return */
-// import { NextResponse, type NextRequest } from 'next/server'
-// import { getToken } from 'next-auth/jwt'
+import { NextRequest, NextResponse } from 'next/server'
 
-export async function middleware() {
-  // request: NextRequest
-  // const token = await getToken({
-  //   req: request,
-  //   secret: process.env.NEXTAUTH_SECRET,
-  // })
-  // if (token === null)
-  //   return NextResponse.redirect(new URL('/signin', request.url))
-  // if (token && !token.accessToken) {
-  //   return NextResponse.redirect(new URL('/complete-profile', request.url))
-  //   // return NextResponse.next()
-  // }
+export function middleware(request: NextRequest) {
+  const userAgent = request.headers.get('user-agent') || ''
+  const isMobile = /Android|webOS|iPhone|iPad|iPod|BlackBerry|IEMobile|Opera Mini/i.test(userAgent)
+
+  const requestHeaders = new Headers(request.headers)
+  requestHeaders.set('x-is-mobile', isMobile.toString())
+
+  return NextResponse.next({
+    request: {
+      headers: requestHeaders,
+    },
+  })
 }
 
 export const config = {
-  matcher: ['/write:path*'],
+  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
 }
