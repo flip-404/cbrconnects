@@ -8,13 +8,32 @@ import { useState } from 'react'
 export default function MobileHeader() {
   const [isOpenNav, setIsOpenNav] = useState(false)
 
+  // 뉴스 링크는 kbs로 할까..
   return (
     <Container>
       <Link href="/">캔버라커넥트</Link>
       <button type="button" aria-label="Open navigation" onClick={() => setIsOpenNav(!isOpenNav)}>
         <HamburgerIcon fill={isOpenNav ? '#007aff' : undefined} />
       </button>
-      <NavDropdown $isOpen={isOpenNav}>링크들</NavDropdown>
+      <NavDropdown $isOpen={isOpenNav}>
+        <strong>새로운 소식</strong>
+        <ul>
+          <li>공지사항</li>
+          <li>뉴스</li>
+          <li>홍보</li>
+          <li>채팅</li>
+        </ul>
+        <strong>게시판</strong>
+        <ul>
+          <li>자유게시판</li>
+          <li>쿼카마켓</li>
+          <li>구인구직</li>
+        </ul>
+        <strong>회원</strong>
+        <ul>
+          <li>로그인</li>
+        </ul>
+      </NavDropdown>
     </Container>
   )
 }
@@ -49,11 +68,14 @@ const Container = styled.div`
 
 const NavDropdown = styled.div<{ $isOpen: boolean }>`
   position: absolute;
+  box-sizing: border-box;
   top: 50px;
   left: 0;
   width: 100%;
-  background-color: #de9a9a;
+  padding: 30px;
   overflow: hidden;
+  display: flex;
+  flex-direction: column;
 
   transition:
     height 0.3s ease-in-out,
@@ -62,4 +84,23 @@ const NavDropdown = styled.div<{ $isOpen: boolean }>`
   height: ${(props) => (props.$isOpen ? 'calc(100vh - 50px)' : '0')};
   opacity: ${(props) => (props.$isOpen ? '1' : '0')};
   transform-origin: top;
+
+  strong {
+    color: #3c3c4399;
+    font-size: 13px;
+    font-weight: 400;
+  }
+
+  ul {
+    all: unset;
+    margin-bottom: 20px;
+    display: flex;
+    gap: 20px;
+
+    li {
+      all: unset;
+      font-size: 24px;
+      font-weight: 700;
+    }
+  }
 `
