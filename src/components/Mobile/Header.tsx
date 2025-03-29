@@ -39,6 +39,7 @@ export default function MobileHeader() {
 }
 
 const Container = styled.div`
+  background-color: #fff;
   box-sizing: border-box;
   position: fixed;
   width: 100%;
@@ -67,6 +68,8 @@ const Container = styled.div`
 `
 
 const NavDropdown = styled.div<{ $isOpen: boolean }>`
+  background-color: #fff;
+  z-index: 100;
   position: absolute;
   box-sizing: border-box;
   top: 50px;
@@ -74,6 +77,7 @@ const NavDropdown = styled.div<{ $isOpen: boolean }>`
   width: 100%;
   padding: 30px;
   overflow: hidden;
+  /* display: ${(props) => (props.$isOpen ? 'flex' : 'none')}; */
   display: flex;
   flex-direction: column;
 

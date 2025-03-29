@@ -11,7 +11,6 @@ import useUser from '@/hooks/useUser'
 import { useState } from 'react'
 import api from '@/libs/axiosInstance'
 import { GET_chat } from '@/types/newIndex'
-import { set } from 'react-hook-form'
 import Image from 'next/image'
 
 const limit = 20
