@@ -4,9 +4,11 @@ import Link from 'next/link'
 import styled from 'styled-components'
 import HamburgerIcon from '@/assets/hamburger.svg'
 import { useState } from 'react'
+import useCategoryStore from '@/store/useCategoryStore'
 
 export default function MobileHeader() {
   const [isOpenNav, setIsOpenNav] = useState(false)
+  const { setCategory } = useCategoryStore()
 
   // 뉴스 링크는 kbs로 할까..
   return (
@@ -18,16 +20,76 @@ export default function MobileHeader() {
       <NavDropdown $isOpen={isOpenNav}>
         <strong>새로운 소식</strong>
         <ul>
-          <li>공지사항</li>
-          <li>뉴스</li>
-          <li>홍보</li>
-          <li>채팅</li>
+          <li>
+            <Link
+              onClick={() => {
+                setIsOpenNav(false)
+                setCategory('NOTICE')
+              }}
+              href="/board"
+            >
+              공지사항
+            </Link>
+          </li>
+          <li>
+            <Link
+              href="https://www.sbs.com.au/language/korean/ko"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              뉴스
+            </Link>
+          </li>
+          <li>
+            <Link
+              onClick={() => {
+                setIsOpenNav(false)
+                setCategory('PROMOTION')
+              }}
+              href="/board"
+            >
+              홍보
+            </Link>
+          </li>
+          <li>
+            <Link href="/chat">채팅</Link>
+          </li>
         </ul>
         <strong>게시판</strong>
         <ul>
-          <li>자유게시판</li>
-          <li>쿼카마켓</li>
-          <li>구인구직</li>
+          <li>
+            <Link
+              onClick={() => {
+                setIsOpenNav(false)
+                setCategory('FREEBOARD')
+              }}
+              href="/board"
+            >
+              자유게시판
+            </Link>
+          </li>
+          <li>
+            <Link
+              onClick={() => {
+                setIsOpenNav(false)
+                setCategory('MARKET')
+              }}
+              href="/board"
+            >
+              쿼카마켓
+            </Link>
+          </li>
+          <li>
+            <Link
+              onClick={() => {
+                setIsOpenNav(false)
+                setCategory('JOB')
+              }}
+              href="/board"
+            >
+              구인구직
+            </Link>
+          </li>
         </ul>
         <strong>회원</strong>
         <ul>
@@ -39,6 +101,7 @@ export default function MobileHeader() {
 }
 
 const Container = styled.div`
+  z-index: 100;
   background-color: #fff;
   box-sizing: border-box;
   position: fixed;

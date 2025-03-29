@@ -18,7 +18,12 @@ export default function LinksSection() {
         >
           공지사항
         </Link>
-        <Link href="/about" className={linksSectionStyle.link}>
+        <Link
+          href="https://www.sbs.com.au/language/korean/ko"
+          className={linksSectionStyle.link}
+          target="_blank"
+          rel="noopener noreferrer"
+        >
           뉴스
         </Link>
         <Link
@@ -45,7 +50,7 @@ export default function LinksSection() {
         >
           쿼카마켓
         </Link>
-        <Link onClick={() => setCategory('JOB')} href="/about" className={linksSectionStyle.link}>
+        <Link onClick={() => setCategory('JOB')} href="/board" className={linksSectionStyle.link}>
           구인구직
         </Link>
       </div>

@@ -9,6 +9,7 @@ import { useRouter } from 'next/navigation'
 import { useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
 import useUser from '../../hooks/useUser'
+import { useMediaQuery } from '@mui/material'
 
 function BoardControls({
   category,
@@ -30,6 +31,7 @@ function BoardControls({
   ) => void
   resetSearchOptions: () => void
 }) {
+  const isMobile = useMediaQuery('(max-width: 1200px)')
   const queryClient = useQueryClient()
   const { user } = useUser()
   const router = useRouter()
@@ -70,29 +72,32 @@ function BoardControls({
 
   return (
     <Container>
-      <div>
-        <WriteButton
-          $isLogin={Boolean(user)}
-          disabled={!user}
-          onClick={() => router.push(`/write?category=${category}`)}
-        >
-          <AddIcon />
-          <span>글쓰기</span>
-        </WriteButton>
-        <Button
-          onClick={() => {
-            queryClient.invalidateQueries({ queryKey: ['posts', category, page, limit] })
-          }}
-        >
-          <RefreshIcon />
-        </Button>
-        <Button onClick={() => page !== 1 && onPageChange(page - 1)}>
-          <ArrowBackIcon />
-        </Button>
-        <Button onClick={() => page !== totalPage && onPageChange(page + 1)}>
-          <ArrowForwardIcon />
-        </Button>
-      </div>
+      {!isMobile && (
+        <div>
+          <WriteButton
+            $isLogin={Boolean(user)}
+            disabled={!user}
+            onClick={() => router.push(`/write?category=${category}`)}
+          >
+            <AddIcon />
+            <span>글쓰기</span>
+          </WriteButton>
+          <Button
+            onClick={() => {
+              queryClient.invalidateQueries({ queryKey: ['posts', category, page, limit] })
+            }}
+          >
+            <RefreshIcon />
+          </Button>
+          <Button onClick={() => page !== 1 && onPageChange(page - 1)}>
+            <ArrowBackIcon />
+          </Button>
+          <Button onClick={() => page !== totalPage && onPageChange(page + 1)}>
+            <ArrowForwardIcon />
+          </Button>
+        </div>
+      )}
+
       <Pagination>
         {page > 10 && pagePhases !== 0 && (
           <button
@@ -197,6 +202,14 @@ const Container = styled.div`
     display: flex;
     align-items: center;
     gap: 10px;
+  }
+
+  @media (max-width: 1200px) {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    align-items: center;
+    justify-content: space-between;
   }
 `
 

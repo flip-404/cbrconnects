@@ -13,10 +13,12 @@ import useCategoryStore from '@/store/useCategoryStore'
 import { GET_Posts } from '@/types/newIndex'
 import SkeletonPosts from './SkeletonPosts'
 import BoardControls from './BoardControls'
+import { useMediaQuery } from '@mui/material'
 
 const limit = 16
 
 function Board() {
+  const isMobile = useMediaQuery('(max-width: 1200px)')
   const queryClient = useQueryClient()
   const { category, setCategory } = useCategoryStore()
   const [searchFilter, setSearchFilter] = useState('')
@@ -64,19 +66,23 @@ function Board() {
   return (
     <Container>
       <Tabs>
-        {boardLinks.map((item) => (
-          <Tab
-            key={item.category}
-            onClick={() => {
-              setSearchFilter('')
-              setSearchKeyword('')
-              setCategory(item.category)
-            }}
-            $active={category === item.category}
-          >
-            {item.label}
-          </Tab>
-        ))}
+        {boardLinks.map((item) => {
+          if (isMobile && item.category !== category) return null
+          return (
+            <Tab
+              key={item.category}
+              onClick={() => {
+                setSearchFilter('')
+                setSearchKeyword('')
+                setCategory(item.category)
+              }}
+              $active={category === item.category}
+            >
+              {item.label}
+            </Tab>
+          )
+        })}
+        {isMobile && <Link href={`/write?category=${category}`}>새 글 쓰기</Link>}
       </Tabs>
       <Posts>
         {isLoading ? (
@@ -86,21 +92,46 @@ function Board() {
         ) : (
           posts.map((post: GET_Posts) => (
             <Post key={post.id}>
-              <div>
-                <span>{post.comment_count}</span>
-                <div>
-                  <Link href={`/post?postId=${post.id}`}>{post.title}</Link>
-                </div>
-                <p>
-                  {post.author_name}
-                  <span>{post.created_at}</span>
-                </p>
-              </div>
-              <span>
-                {post.likes.map((like) => (
-                  <LikeIcon key={like.id} />
-                ))}
-              </span>
+              {!isMobile ? (
+                <>
+                  <div>
+                    <span className="comment-count">{post.comment_count}</span>
+                    <div className="post-title">
+                      <Link href={`/post?postId=${post.id}`}>{post.title}</Link>
+                    </div>
+                    <p className="post-author">
+                      {post.author_name}
+                      <span>{post.created_at}</span>
+                    </p>
+                  </div>
+                  <span className="post-likes">
+                    {post.likes.map((like) => (
+                      <LikeIcon key={like.id} />
+                    ))}
+                  </span>
+                </>
+              ) : (
+                <>
+                  <div>
+                    <span className="comment-count">{post.comment_count}</span>
+                    <div>
+                      <div className="post-title">
+                        <Link href={`/post?postId=${post.id}`}>{post.title}</Link>
+                      </div>
+                      <div className="m-post-detail">
+                        {post.author_name} · {post.created_at}
+                        <span>
+                          <span className="post-likes">
+                            {post.likes.map((like) => (
+                              <LikeIcon key={like.id} />
+                            ))}
+                          </span>
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                </>
+              )}
             </Post>
           ))
         )}
@@ -118,6 +149,83 @@ function Board() {
   )
 }
 
+export default Board
+
+const Container = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+
+  @media (max-width: 1200px) {
+    margin-top: 50px;
+  }
+`
+
+const Tabs = styled.div`
+  margin-top: 40px;
+  width: 1300px;
+  display: flex;
+  gap: 25px;
+  color: 3c3c434d;
+
+  @media (max-width: 1200px) {
+    margin: 25px 0 0 0;
+    box-sizing: border-box;
+    padding: 0 20px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    a {
+      display: flex;
+      align-items: center;
+      border-radius: 4px;
+      text-decoration: none;
+      background-color: #007aff;
+      padding: 4px 15px;
+      color: white;
+      font-size: 15px;
+      font-weight: 600;
+    }
+  }
+`
+
+const Tab = styled.h2<{ $active: boolean }>`
+  margin: 0;
+  font-size: 38px;
+  font-weight: 800;
+  color: ${(props) => (props.$active ? '#000' : '#3c3c434d')};
+  cursor: pointer;
+  transition: color 0.3s;
+
+  &:hover {
+    color: #3c3c4399;
+  }
+
+  @media (max-width: 1200px) {
+    font-size: 24px;
+    font-weight: 800;
+  }
+`
+
+const Posts = styled.ul`
+  all: unset;
+  margin-top: 40px;
+  width: 1300px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+
+  @media (max-width: 1200px) {
+    margin-top: 20px;
+    box-sizing: border-box;
+    padding: 0 20px;
+    width: 100%;
+    gap: 0;
+  }
+`
+
 const Post = styled.li`
   all: unset;
   display: flex;
@@ -128,12 +236,13 @@ const Post = styled.li`
     display: flex;
     align-items: center;
 
-    & > span {
+    .comment-count {
       width: 50px;
       font-size: 17px;
       font-weight: 400;
     }
-    & > div {
+
+    .post-title {
       margin-right: 25px;
 
       a {
@@ -149,7 +258,7 @@ const Post = styled.li`
       }
     }
 
-    & > p {
+    .post-author {
       margin: 0;
       font-weight: 600;
       height: 22.5px;
@@ -163,9 +272,8 @@ const Post = styled.li`
     }
   }
 
-  & > span {
+  .post-likes {
     position: absolute;
-    font-size: 13px;
     left: 50px;
     bottom: -15px;
 
@@ -174,43 +282,79 @@ const Post = styled.li`
       height: 13px;
     }
   }
-`
 
-export default Board
+  @media (max-width: 1200px) {
+    padding: 15px 0;
+    display: flex;
+    flex-direction: row;
+    width: 100%;
 
-const Posts = styled.ul`
-  all: unset;
-  margin-top: 40px;
-  width: 1300px;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-`
+    border-top: 0.5px solid #3c3c434d;
+    &:last-child {
+      border-bottom: 0.5px solid #3c3c434d;
+    }
 
-const Container = styled.div`
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-`
+    & > div {
+      display: flex;
+      flex-direction: row;
+      flex-shrink: 0;
 
-const Tabs = styled.div`
-  margin-top: 40px;
-  width: 1300px;
-  display: flex;
-  gap: 25px;
-  color: 3c3c434d;
-`
+      .comment-count {
+        box-sizing: border-box;
+        width: 40px;
+        margin-top: 3px;
+        flex: 1;
+        height: 100%;
+        flex-shrink: 0;
+        font-size: 17px;
+        font-weight: 400;
+      }
 
-const Tab = styled.h2<{ $active: boolean }>`
-  margin: 0;
-  font-size: 38px;
-  font-weight: 800;
-  color: ${(props) => (props.$active ? '#000' : '#3c3c434d')};
-  cursor: pointer;
-  transition: color 0.3s;
+      .post-title {
+        flex: 1;
+        width: 100%;
 
-  &:hover {
-    color: #3c3c4399;
+        a {
+          width: 90%;
+          font-size: 17px;
+          overflow: hidden;
+          text-overflow: ellipsis;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          -webkit-line-clamp: 1;
+        }
+      }
+
+      .post-info {
+        display: flex;
+        flex-direction: column;
+      }
+
+      .m-post-detail {
+        display: flex;
+        margin: 0;
+        font-size: 13px;
+        color: #3c3c434d;
+
+        span {
+          position: relative;
+          display: flex;
+          align-items: center;
+
+          .post-likes {
+            position: absolute;
+            display: flex;
+            left: 5px;
+            top: 50%;
+            transform: translateY(-50%);
+
+            svg {
+              width: 13px;
+              height: 13px;
+            }
+          }
+        }
+      }
+    }
   }
 `
