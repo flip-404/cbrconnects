@@ -1,9 +1,13 @@
+import AnnounceSection from './AnnounceSection'
 import ChatSection from './ChatSection'
+import LinksSection from './LinksSection'
 import LoginButton from './LoginButton'
 import { root_container } from './MobileHome.css'
 import NewsSection from './NewsSection'
 import RecentSection from './RecentSection'
 
+// todo: StorySection 구현
+// todo: NoticeSection 구현 -> 프로모션 같이?
 export default function MobileHome() {
   return (
     <div className={root_container}>
@@ -11,10 +15,8 @@ export default function MobileHome() {
       <ChatSection />
       <NewsSection />
       <RecentSection />
-      <div />
-      <div />
-      <div />
-      <div />
+      <AnnounceSection />
+      <LinksSection />
     </div>
   )
 }

@@ -156,17 +156,71 @@ export const recentSectionStyle = {
 }
 
 /** promotion 영역 */
-export const promotionSectionStyle = {
-  container: style({}),
-  link: style({}),
-  list: style({}),
-  content: style({}),
+export const AnnounceSectionStyle = {
+  container: style({
+    margin: '10px 20px',
+    border: '0.5px solid #D1D1D6',
+    borderRadius: '16px',
+    padding: '10px 12px',
+  }),
+
+  label: style({ margin: '0', color: '#3c3c4399', fontSize: '11px', fontWeight: '600' }),
+  posts: style({
+    all: 'unset',
+    paddingTop: '5px',
+    display: 'flex',
+    flexDirection: 'column',
+    gap: '5px',
+  }),
+  listitem: style({
+    all: 'unset',
+    display: 'inline-flex',
+  }),
+  post: style({
+    all: 'unset',
+    textDecoration: 'none',
+    color: '#000',
+    fontSize: '11px',
+    letterSpacing: '-0.34px',
+    width: '90%',
+    display: '-webkit-box',
+    WebkitLineClamp: 1,
+    WebkitBoxOrient: 'vertical',
+    overflow: 'hidden',
+    textOverflow: 'ellipsis',
+    whiteSpace: 'normal',
+    wordBreak: 'break-word',
+  }),
 }
 
 /** links 영역 */
 export const linksSectionStyle = {
-  container: style({}),
-  link: style({}),
-  list: style({}),
-  content: style({}),
+  container: style({
+    margin: '20px 20px 0',
+    padding: '10px 0',
+    borderTop: '0.5px solid #D1D1D6',
+  }),
+  title: style({
+    margin: '0 0 10px 0',
+    color: '#3c3c4399',
+    fontSize: '11px',
+    fontWeight: '600',
+  }),
+  links: style({
+    display: 'grid',
+    gridTemplateColumns: 'repeat(3, 1fr)',
+    gap: '15px',
+  }),
+  link: style({
+    backgroundColor: '#f2f2f7',
+    padding: '10px 0',
+    borderRadius: '100px',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    textDecoration: 'none',
+    color: '#000',
+    fontSize: '13px',
+    fontWeight: '600',
+  }),
 }
