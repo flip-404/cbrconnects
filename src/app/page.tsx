@@ -1,5 +1,5 @@
-import DesktopHome from '@/components/home/DesktopHome'
-import MobileHome from '@/components/home/MobileHome'
+import DesktopHome from '@/components/home/desktop/DesktopHome'
+import MobileHome from '@/components/home/mobile/MobileHome'
 import { headers } from 'next/headers'
 
 export default function Home() {
