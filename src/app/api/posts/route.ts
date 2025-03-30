@@ -26,8 +26,6 @@ async function GET(request: NextRequest): Promise<NextResponse> {
       mode: 'insensitive',
     }
 
-  console.log('limit', limit)
-
   try {
     const posts = await prisma.post.findMany({
       where: whereCondition,
