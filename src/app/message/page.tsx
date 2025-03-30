@@ -2,6 +2,7 @@
 
 import useUser from '@/hooks/useUser'
 import api from '@/libs/axiosInstance'
+import { GET_Messages } from '@/types/newIndex'
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import styled from 'styled-components'
@@ -13,7 +14,7 @@ export default function MessagePage() {
   const { data: messages } = useQuery({
     queryKey: ['messages', user?.id, activeTab],
     enabled: !!user?.id,
-    queryFn: ({ queryKey }) => api.get(`/messages?userId=${user?.id}&type=${activeTab}`),
+    queryFn: ({ queryKey }) => api.get(`/messages?userId=${queryKey[1]}&type=${queryKey[2]}`),
   })
 
   return (
@@ -28,7 +29,7 @@ export default function MessagePage() {
           </Tab>
         </Tabs>
         <MessageContainer>
-          {messages?.data.map((message: any) => (
+          {messages?.data.map((message: GET_Messages) => (
             <li key={message.id}>
               <div>
                 <strong>

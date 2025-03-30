@@ -1,10 +1,10 @@
 'use client'
 
 import useUser from '@/hooks/useUser'
-import { SendMessagePageStyle } from './page.css'
+import { useRouter } from 'next/navigation'
 import { useState } from 'react'
 import api from '@/libs/axiosInstance'
-import { useRouter } from 'next/navigation'
+import { SendMessagePageStyle } from './page.css'
 
 type SendFormProps = {
   reveiverId: string
@@ -39,12 +39,8 @@ function SendForm({ reveiverId }: SendFormProps) {
         onChange={(e) => setContent(e.target.value)}
         placeholder="내용을 입력해주세요."
         className={SendMessagePageStyle.content}
-      ></textarea>
-      <input
-        type="submit"
-        className={SendMessagePageStyle.sendButton}
-        value={'쪽지 보내기'}
-      ></input>
+      />
+      <input type="submit" className={SendMessagePageStyle.sendButton} value="쪽지 보내기" />
     </form>
   )
 }

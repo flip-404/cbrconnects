@@ -4,16 +4,17 @@
 
 import React, { useState } from 'react'
 import styled from 'styled-components'
-import LikeIcon from '@/assets/like.svg'
 import { useQuery, useQueryClient } from '@tanstack/react-query'
+import { boardLinks } from '@/components/Desktop/DesktopHeader'
 import api from '@/libs/axiosInstance'
 import Link from 'next/link'
-import useCategoryStore from '@/store/useCategoryStore'
 import { GET_Posts } from '@/types/newIndex'
+import { useMediaQuery } from '@mui/material'
+
+import useCategoryStore from '@/store/useCategoryStore'
+import LikeIcon from '@/assets/like.svg'
 import SkeletonPosts from './SkeletonPosts'
 import BoardControls from './BoardControls'
-import { useMediaQuery } from '@mui/material'
-import { boardLinks } from '@/components/Desktop/DesktopHeader'
 
 const limit = 16
 

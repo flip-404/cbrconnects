@@ -34,9 +34,6 @@ function SignUpForm({
   const passwordRef = useRef<string>('')
   passwordRef.current = watch('password')
 
-  // const router = useRouter()
-  console.log('modalStatus', modalStatus)
-
   const handleImageChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files![0]
     if (!file) return
@@ -62,6 +59,8 @@ function SignUpForm({
   const onValid = async (formData: SignUpBody) => {
     if (!allAgreementChecked) return
     setModalStatus('loading')
+    console.log('modalStatus', modalStatus)
+
     const response = await api.post('/signup', {
       ...formData,
       profileImage,

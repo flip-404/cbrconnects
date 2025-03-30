@@ -1,8 +1,8 @@
 'use client'
 
 import Link from 'next/link'
-import { linksSectionStyle } from './MobileHome.css'
 import useCategoryStore from '@/store/useCategoryStore'
+import { linksSectionStyle } from './MobileHome.css'
 
 export default function LinksSection() {
   const { setCategory } = useCategoryStore()

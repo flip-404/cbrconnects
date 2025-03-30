@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import { recentSectionStyle } from './MobileHome.css'
 import { GET_Posts } from '@/types/newIndex'
+import { recentSectionStyle } from './MobileHome.css'
 import RecentSectionLinks from './RecentSectionLinks'
 
 export default async function RecentSection() {

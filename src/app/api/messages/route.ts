@@ -37,7 +37,6 @@ async function GET(request: Request) {
 
     return NextResponse.json({ message: '메시지 조회 중 오류가 발생했습니다.' }, { status: 400 })
   } catch (error) {
-    console.error('메시지 조회 중 오류 발생:', error)
     return NextResponse.json({ message: '메시지 조회 중 오류가 발생했습니다.' }, { status: 500 })
   }
 }
@@ -59,7 +58,6 @@ async function POST(request: Request) {
 
     return NextResponse.json(newMessage, { status: 201 })
   } catch (error) {
-    console.error('메시지 전송 실패:', error)
     return NextResponse.json({ message: '메시지 전송 중 오류가 발생했습니다.' }, { status: 500 })
   }
 }

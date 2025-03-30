@@ -1,4 +1,3 @@
-import { AnnounceSectionStyle } from './MobileHome.css'
 import AnnounceBox from './AnnounceBox'
 
 // 이거 포스트

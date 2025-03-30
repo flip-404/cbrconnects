@@ -1,6 +1,6 @@
 import Link from 'next/link'
-import { AnnounceSectionStyle } from './MobileHome.css'
 import { GET_Posts } from '@/types/newIndex'
+import { AnnounceSectionStyle } from './MobileHome.css'
 
 export default async function AnnounceBox({
   posts,

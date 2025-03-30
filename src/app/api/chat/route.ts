@@ -47,7 +47,6 @@ async function POST(request: Request) {
 
     return NextResponse.json({ message: 'CHAT SECCESS' }, { status: 200 })
   } catch (error) {
-    console.log('error', error)
     return NextResponse.json({ message: 'Internal server error' }, { status: 500 })
   }
 }

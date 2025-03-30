@@ -1,6 +1,6 @@
 import { postlike, userinfo } from '@prisma/client'
 
-// GET 'posts'
+// GET 'chat'
 export type GET_chat = {
   id: number
   content: string
@@ -23,4 +23,15 @@ export type GET_Posts = {
   like_count: number
   author_name: string
   likes: postlike[]
+}
+
+// GET 'messages'
+export type GET_Messages = {
+  id: number
+  content: string
+  created_at: string
+  sender: userinfo
+  sender_id: string
+  receiver: userinfo
+  receiver_id: string
 }

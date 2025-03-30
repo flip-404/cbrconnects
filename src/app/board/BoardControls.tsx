@@ -8,8 +8,9 @@ import ArrowForwardIcon from '@/assets/arrow_forward.svg'
 import { useRouter } from 'next/navigation'
 import { useQueryClient } from '@tanstack/react-query'
 import { useEffect, useState } from 'react'
-import useUser from '../../hooks/useUser'
 import { useMediaQuery } from '@mui/material'
+
+import useUser from '../../hooks/useUser'
 
 function BoardControls({
   category,
