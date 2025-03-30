@@ -76,7 +76,7 @@ function DesktopHeader() {
               else className = 'wait'
 
               return (
-                <span className={className} key={chat.id}>
+                <span className={className} key={chat.id + chat.created_at}>
                   {chat.author.nickname}: {chat.content}
                 </span>
               )

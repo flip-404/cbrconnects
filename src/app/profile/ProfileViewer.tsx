@@ -7,38 +7,52 @@ import Image from 'next/image'
 import { useSearchParams } from 'next/navigation'
 import { useQuery } from '@tanstack/react-query'
 import api from '@/libs/axiosInstance'
+import Link from 'next/link'
+import useUser from '@/hooks/useUser'
 
 function ProfileViewer() {
   const searchParams = useSearchParams()
-  const userId = searchParams.get('userId')
+  const profileUserId = searchParams.get('userId')
+  const { user } = useUser()
   const { data } = useQuery({
-    queryKey: ['profile', userId],
+    queryKey: ['profile', profileUserId],
     queryFn: ({ queryKey }) => api.get(`/profile?userId=${queryKey[1]}`),
   })
 
-  const user = data?.data?.user
+  const profileUser = data?.data?.user
 
   return (
     <Container>
-      {user?.profile_image ? (
+      {profileUser?.profile_image ? (
         <div>
           <Image
             width={500}
             height={500}
-            alt={`${user.nickname}의 프로필 사진`}
-            src={user?.profile_image}
+            alt={`${profileUser.nickname}의 프로필 사진`}
+            src={profileUser?.profile_image}
           />
         </div>
       ) : (
         <EmptyIcon />
       )}
 
-      <h2>{user?.nickname}</h2>
-      <p>{user?.description}</p>
-      <button type="button">
+      <h2>{profileUser?.nickname}</h2>
+      <p>{profileUser?.description}</p>
+      <Link
+        href={`/message/send?userId=${profileUserId}&nickname=${profileUser?.nickname}`}
+        onClick={(event) => {
+          if (!user || user.id === profileUserId) {
+            event.preventDefault()
+            console.log('링크 클릭이 비활성화되었습니다.')
+          }
+        }}
+        style={{
+          ...(!user || user.id === profileUserId ? { pointerEvents: 'none', opacity: 0.5 } : {}),
+        }}
+      >
         <LetterIcon />
         쪽지 보내기
-      </button>
+      </Link>
     </Container>
   )
 }
@@ -82,7 +96,8 @@ const Container = styled.div`
     font-weight: 400;
   }
 
-  button {
+  a {
+    text-decoration: none;
     display: flex;
     align-items: center;
     gap: 6px;

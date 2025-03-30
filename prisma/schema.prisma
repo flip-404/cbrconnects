@@ -328,18 +328,20 @@ model users {
 }
 
 model userinfo {
-  id            String     @id(map: "user_info_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  created_at    DateTime   @default(now()) @db.Timestamptz(6)
-  email         String?    @unique
-  nickname      String     @unique
-  profile_image String?
-  user_group    String     @default("User")
-  description   String?
-  comment       comment[]
-  post          post[]
-  postlike      postlike[]
-  users         users      @relation(fields: [id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "userinfo_id_fkey")
-  chat          chat[]
+  id                String     @id(map: "user_info_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at        DateTime   @default(now()) @db.Timestamptz(6)
+  email             String?    @unique
+  nickname          String     @unique
+  profile_image     String?
+  user_group        String     @default("User")
+  description       String?
+  comment           comment[]
+  post              post[]
+  postlike          postlike[]
+  users             users      @relation(fields: [id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "userinfo_id_fkey")
+  chat              chat[]
+  sent_messages     message[]  @relation("MessageSender")
+  received_messages message[]  @relation("MessageReceiver")
 
   @@schema("public")
 }
@@ -408,6 +410,21 @@ model chat {
   created_at DateTime @default(now())
   author     userinfo @relation(fields: [author_id], references: [id], onDelete: Cascade)
 
+  @@schema("public")
+}
+
+model message {
+  id          Int      @id @default(autoincrement())
+  content     String
+  sender_id   String   @db.Uuid
+  receiver_id String   @db.Uuid
+  created_at  DateTime @default(now())
+
+  sender   userinfo @relation("MessageSender", fields: [sender_id], references: [id], onDelete: Cascade)
+  receiver userinfo @relation("MessageReceiver", fields: [receiver_id], references: [id], onDelete: Cascade)
+
+  @@index([sender_id])
+  @@index([receiver_id])
   @@schema("public")
 }
 
