@@ -16,8 +16,6 @@ export default function MessagePage() {
     queryFn: ({ queryKey }) => api.get(`/messages?userId=${user?.id}&type=${activeTab}`),
   })
 
-  console.log('messages', messages)
-
   return (
     <>
       <Container>
