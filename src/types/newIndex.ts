@@ -35,3 +35,15 @@ export type GET_Messages = {
   receiver: userinfo
   receiver_id: string
 }
+
+// GET 'stories'
+export type GET_Stories = {
+  id: number
+  author: userinfo
+  author_id: string
+  content: string
+  link: string | null
+  image: string | null
+  views: number
+  created_at: string
+}

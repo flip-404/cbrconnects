@@ -342,6 +342,7 @@ model userinfo {
   chat              chat[]
   sent_messages     message[]  @relation("MessageSender")
   received_messages message[]  @relation("MessageReceiver")
+  story             story[]
 
   @@schema("public")
 }
@@ -425,6 +426,21 @@ model message {
 
   @@index([sender_id])
   @@index([receiver_id])
+  @@schema("public")
+}
+
+model story {
+  id         Int      @id @default(autoincrement())
+  author_id  String   @db.Uuid
+  views      Int      @default(0)
+  image      String?
+  content    String
+  link       String?
+  created_at DateTime @default(now())
+
+  author userinfo @relation(fields: [author_id], references: [id], onDelete: Cascade)
+
+  @@index([author_id])
   @@schema("public")
 }
 

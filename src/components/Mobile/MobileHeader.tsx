@@ -153,6 +153,7 @@ const NavDropdown = styled.div<{ $isOpen: boolean }>`
   /* display: ${(props) => (props.$isOpen ? 'flex' : 'none')}; */
   display: flex;
   flex-direction: column;
+  pointer-events: ${(props) => (props.$isOpen ? 'auto' : 'none')};
 
   transition:
     height 0.3s ease-in-out,
