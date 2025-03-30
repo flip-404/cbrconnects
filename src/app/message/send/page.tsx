@@ -6,8 +6,6 @@ type Props = {
 }
 
 function SendMessagePage({ searchParams }: Props) {
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {}
-
   return (
     <div className={SendMessagePageStyle.container}>
       <h2 className={SendMessagePageStyle.title}>To. {searchParams.nickname}</h2>
