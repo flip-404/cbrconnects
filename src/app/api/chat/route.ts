@@ -37,7 +37,6 @@ async function GET(request: Request) {
 async function POST(request: Request) {
   const body = await request.json()
   const { userId, content } = body
-  console.log('content', content)
   try {
     await prisma.chat.create({
       data: {

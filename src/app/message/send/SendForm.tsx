@@ -11,7 +11,7 @@ type SendFormProps = {
 }
 
 function SendForm({ reveiverId }: SendFormProps) {
-  const { user } = useUser() // senderId = user.id
+  const { user } = useUser()
   const [content, setContent] = useState('')
   const router = useRouter()
 
@@ -29,16 +29,14 @@ function SendForm({ reveiverId }: SendFormProps) {
       setContent('')
       router.back()
     } else {
-      alert('쪽지 전송 실패')
+      alert(`쪽지 전송 실패 \n${response.data.message}`)
     }
-
-    console.log('message send response', response)
   }
 
   return (
     <form className={SendMessagePageStyle.form} onSubmit={handleSubmit}>
       <textarea
-        onChange={(e) => setContent(e.target.value)} // 수정된 부분
+        onChange={(e) => setContent(e.target.value)}
         placeholder="내용을 입력해주세요."
         className={SendMessagePageStyle.content}
       ></textarea>
