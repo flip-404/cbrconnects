@@ -1,10 +1,13 @@
 'use client'
 
 import api from '@/libs/axiosInstance'
+import { useMediaQuery } from '@mui/material'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
+import MobileFooter from '../Mobile/MobileFooter'
 
-function Footer() {
+function DesktopFooter() {
+  const isMobile = useMediaQuery('(max-width: 1200px)')
   const [visitCount, setVisitCount] = useState<number>(0)
   useEffect(() => {
     async function getVisitCount() {
@@ -15,6 +18,8 @@ function Footer() {
     }
     getVisitCount()
   }, [])
+
+  if (isMobile) return <MobileFooter />
 
   return (
     <Container>
@@ -54,7 +59,7 @@ function Footer() {
   )
 }
 
-export default Footer
+export default DesktopFooter
 
 const Container = styled.div`
   padding: 100px 0;

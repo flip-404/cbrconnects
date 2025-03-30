@@ -2,7 +2,6 @@
 
 'use client'
 
-import { boardLinks } from '@/components/NewComponent/Header'
 import React, { useState } from 'react'
 import styled from 'styled-components'
 import LikeIcon from '@/assets/like.svg'
@@ -14,6 +13,7 @@ import { GET_Posts } from '@/types/newIndex'
 import SkeletonPosts from './SkeletonPosts'
 import BoardControls from './BoardControls'
 import { useMediaQuery } from '@mui/material'
+import { boardLinks } from '@/components/Desktop/DesktopHeader'
 
 const limit = 16
 
@@ -167,7 +167,7 @@ const Tabs = styled.div`
   width: 1300px;
   display: flex;
   gap: 25px;
-  color: 3c3c434d;
+  color: #3c3c434d;
 
   @media (max-width: 1200px) {
     margin: 25px 0 0 0;

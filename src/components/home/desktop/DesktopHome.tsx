@@ -4,7 +4,7 @@ import styled from 'styled-components'
 import PostBoard from '@/components/NewComponent/PostBoard'
 import PinnedBoard from '@/components/NewComponent/PinnedBoard'
 import NewsBoard from '@/components/NewComponent/NewsBoard'
-import { boardLinks } from '@/components/NewComponent/Header'
+import { boardLinks } from '../../Desktop/DesktopHeader'
 
 export default function DesktopHome() {
   return (

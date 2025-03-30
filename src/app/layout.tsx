@@ -2,12 +2,13 @@ import type { Metadata } from 'next'
 import StyledComponentsRegistry from '@/libs/registry'
 import './globals.css'
 import { saira } from '@/fonts/fontConfig'
-import Footer from '@/components/_components/molcules/Footer'
+import Footer from '@/components/Desktop/DesktopFooter'
 import AppProvider from '@/AppProvider'
 import DesktopHeader from '@/components/NewComponent/Header'
 import { headers } from 'next/headers'
-import MobileHeader from '@/components/Mobile/Header'
-import MobileFooter from '@/components/Mobile/Footer'
+import MobileHeader from '@/components/Mobile/MobileHeader'
+import MobileFooter from '@/components/Mobile/MobileFooter'
+import Header from '@/components/NewComponent/Header'
 
 export const metadata: Metadata = {
   title: '캔버라커넥트',
@@ -29,13 +30,13 @@ export default function RootLayout({
           <AppProvider>
             {isMobilePredefined ? (
               <>
-                <MobileHeader />
+                <Header />
                 {children}
                 <MobileFooter />
               </>
             ) : (
               <>
-                <DesktopHeader />
+                <Header />
                 {children}
                 <Footer />
               </>

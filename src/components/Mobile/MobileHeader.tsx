@@ -36,6 +36,9 @@ export default function MobileHeader() {
               href="https://www.sbs.com.au/language/korean/ko"
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => {
+                setIsOpenNav(false)
+              }}
             >
               뉴스
             </Link>
@@ -52,7 +55,14 @@ export default function MobileHeader() {
             </Link>
           </li>
           <li>
-            <Link href="/chat">채팅</Link>
+            <Link
+              onClick={() => {
+                setIsOpenNav(false)
+              }}
+              href="/chat"
+            >
+              채팅
+            </Link>
           </li>
         </ul>
         <strong>게시판</strong>
