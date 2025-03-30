@@ -90,9 +90,7 @@ function BoardControls({
           >
             <RefreshIcon />
           </Button>
-          <Button onClick={() => page !== 1 && onPageChange(page - 1)}>
-            <ArrowBackIcon />
-          </Button>
+
           <Button onClick={() => page !== totalPage && onPageChange(page + 1)}>
             <ArrowForwardIcon />
           </Button>
@@ -109,6 +107,11 @@ function BoardControls({
           >
             1...
           </button>
+        )}
+        {isMobile && (
+          <Button onClick={() => page !== 1 && onPageChange(page - 1)}>
+            <ArrowBackIcon />
+          </Button>
         )}
         {Array.from({
           length: pagePhases === Math.floor((totalPage - 1) / 10) ? totalPage % 10 : 10,
@@ -134,6 +137,11 @@ function BoardControls({
           >
             ...{totalPage}
           </button>
+        )}
+        {isMobile && (
+          <Button onClick={() => page !== totalPage && onPageChange(page + 1)}>
+            <ArrowForwardIcon />
+          </Button>
         )}
       </Pagination>
       <div>
@@ -245,11 +253,14 @@ const Button = styled.button`
 
 const Pagination = styled.div`
   display: flex;
+  align-items: center;
   gap: 10px;
 
   button {
     all: unset;
     cursor: pointer;
+    display: flex;
+    align-items: center;
     padding: 0px 5px;
 
     &:hover {
