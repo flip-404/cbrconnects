@@ -1,10 +1,22 @@
 'use client'
 
+import useUser from '@/hooks/useUser'
+import api from '@/libs/axiosInstance'
+import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import styled from 'styled-components'
 
 export default function MessagePage() {
   const [activeTab, setActiveTab] = useState<'received' | 'sent'>('received')
+  const { user } = useUser()
+
+  const { data: messages } = useQuery({
+    queryKey: ['messages', user?.id, activeTab],
+    enabled: !!user?.id,
+    queryFn: ({ queryKey }) => api.get(`/messages?userId=${user?.id}&type=${activeTab}`),
+  })
+
+  console.log('messages', messages)
 
   return (
     <>
@@ -17,7 +29,19 @@ export default function MessagePage() {
             보낸 쪽지함
           </Tab>
         </Tabs>
-        <MessageContainer></MessageContainer>
+        <MessageContainer>
+          {messages?.data.map((message: any) => (
+            <li key={message.id}>
+              <div>
+                <strong>
+                  {activeTab === 'received' ? message.sender.nickname : message.receiver.nickname}{' '}
+                  <span>{message.created_at.toString()}</span>
+                </strong>
+                <p>{message.content}</p>
+              </div>
+            </li>
+          ))}
+        </MessageContainer>
       </Container>
     </>
   )
@@ -36,7 +60,7 @@ const Container = styled.div`
 
 const Tabs = styled.ul`
   all: unset;
-  margin-top: 40px;
+  margin: 40px 0 40px 0;
   width: 1300px;
   display: flex;
   gap: 25px;
@@ -69,4 +93,37 @@ const Tab = styled.li<{ $active: boolean }>`
   }
 `
 
-const MessageContainer = styled.ul``
+const MessageContainer = styled.ul`
+  margin: 0;
+  padding: 0;
+  width: 700px;
+
+  li {
+    list-style: none;
+    background-color: #74748014;
+    margin: 0 0 5px 0;
+    padding: 30px;
+    font-size: 20px;
+    font-weight: 500;
+    color: #3c3c434d;
+    border-bottom: 1px solid #3c3c434d;
+
+    strong {
+      color: #000;
+      font-weight: 600;
+      margin-right: 15px;
+
+      span {
+        font-size: 11px;
+        color: #3c3c434d;
+      }
+    }
+
+    p {
+      margin: 0;
+      color: black;
+      font-weight: 400;
+      margin-right: 15px;
+    }
+  }
+`
