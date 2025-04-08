@@ -6,6 +6,7 @@ import AddPhotoIcon from '@/assets/mobile/add_photo.svg'
 import { useRef, useState } from 'react'
 import api from '@/libs/axiosInstance'
 import useUser from '@/hooks/useUser'
+import { useQueryClient } from '@tanstack/react-query'
 
 export default function StoryEditor({ closeEditor }: { closeEditor: () => void }) {
   const { user } = useUser()
@@ -15,6 +16,7 @@ export default function StoryEditor({ closeEditor }: { closeEditor: () => void }
   const [content, setContent] = useState<string>('')
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false)
   const fileInputRef = useRef<HTMLInputElement>(null)
+  const queryClient = useQueryClient()
 
   const stopPropagation = (e: React.MouseEvent) => {
     e.stopPropagation()
@@ -52,13 +54,17 @@ export default function StoryEditor({ closeEditor }: { closeEditor: () => void }
 
     const response = await api.post('/stories', {
       author_id: user?.id,
-      content: content,
-      link: link,
+      content,
+      link,
       image: imageURL,
     })
 
-    if (response.status === 201) alert('스토리가 등록되었습니다')
-    else alert('스토리 등록에 실패했습니다')
+    if (response.status === 201) {
+      queryClient.invalidateQueries({
+        queryKey: ['stories'],
+      })
+      alert('스토리가 등록되었습니다')
+    } else alert('스토리 등록에 실패했습니다')
 
     closeEditor()
   }
@@ -82,19 +88,16 @@ export default function StoryEditor({ closeEditor }: { closeEditor: () => void }
           accept="image/*"
           style={{ display: 'none' }}
         />
-
         {!selectedImage && (
-          <div className="add-photo" onClick={openFileSelector}>
+          <button className="add-photo" onClick={openFileSelector}>
             <AddPhotoIcon />
             <span>사진 선택</span>
-          </div>
+          </button>
         )}
-
         <div className="mention">
           <p>다양한 스토리를 사진과 함께 공유해보세요</p>
           <span>스토리는 24시간 뒤 자동으로 사라집니다</span>
         </div>
-
         <div className="input-wrapper">
           <input
             placeholder="링크"

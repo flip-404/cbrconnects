@@ -3,10 +3,13 @@
 import styled from 'styled-components'
 import PlusIcon from '@/assets/mobile/plus.svg'
 import { useEffect, useState } from 'react'
-import StoryEditor from './StoryEditor'
 import { useQuery } from '@tanstack/react-query'
 import api from '@/libs/axiosInstance'
 import { GET_Stories } from '@/types/newIndex'
+
+import StoryEditor from './StoryEditor'
+import { useStories } from '@/hooks/useStories'
+import StoryViewer from './StoryViewer'
 
 interface ReadStoryData {
   read: boolean
@@ -19,15 +22,8 @@ interface ReadStoriesState {
 
 export default function StorySection() {
   const [openStoryEditor, setOpenStoryEditor] = useState(false)
-  const [readStories, setReadStories] = useState<ReadStoriesState>({})
-  const { data } = useQuery({
-    queryKey: ['stories'],
-    queryFn: ({ queryKey }) => api.get(`/${queryKey[0]}`),
-  })
-
-  const {
-    data: { stories },
-  } = data || { data: { stories: [] } }
+  const [activeStoryIndex, setActiveStoryIndex] = useState<null | number>(null)
+  const { stories, markAsRead } = useStories()
 
   console.log('stories', stories)
 
@@ -35,52 +31,23 @@ export default function StorySection() {
     setOpenStoryEditor(false)
   }
 
-  const isStoryRead = (storyId: string): boolean => {
-    return readStories[storyId]?.read === true
+  const closeViwer = () => {
+    setActiveStoryIndex(null)
   }
 
-  const handleStoryClick = (storyId: string) => {
-    const currentTime = new Date().getTime()
-    const updatedReadStories: ReadStoriesState = {
-      ...readStories,
-      [storyId]: { read: true, timestamp: currentTime },
-    }
-    setReadStories(updatedReadStories)
-    localStorage.setItem('readStories', JSON.stringify(updatedReadStories))
+  const handleStoryClick = (storyId: number, activeStoryIndex: number) => {
+    markAsRead(storyId)
+    setActiveStoryIndex(activeStoryIndex)
   }
-
-  useEffect(() => {
-    const storedReadStories = localStorage.getItem('readStories')
-    if (storedReadStories) {
-      try {
-        const parsedStories = JSON.parse(storedReadStories) as ReadStoriesState
-        const currentTime = new Date().getTime()
-        const ONE_DAY_MS = 24 * 60 * 60 * 1000
-
-        const filteredStories = Object.entries(parsedStories).reduce<ReadStoriesState>(
-          (acc, [storyId, storyData]) => {
-            if (currentTime - storyData.timestamp < ONE_DAY_MS) {
-              acc[storyId] = storyData
-            }
-            return acc
-          },
-          {},
-        )
-
-        setReadStories(filteredStories)
-        localStorage.setItem('readStories', JSON.stringify(filteredStories))
-      } catch (error) {
-        setReadStories({})
-        localStorage.setItem('readStories', JSON.stringify({}))
-      }
-    }
-  }, [])
 
   return (
     <Contaniner>
       {openStoryEditor && <StoryEditor closeEditor={closeEditor} />}
+      {activeStoryIndex !== null && (
+        <StoryViewer closeViwer={closeViwer} clickedIndex={activeStoryIndex} />
+      )}
       <ul>
-        {stories?.map((story: GET_Stories) => (
+        {stories?.map((story, index: number) => (
           <li key={story.id}>
             <div>
               <button
@@ -89,14 +56,14 @@ export default function StorySection() {
                   story.author.profile_image
                     ? {
                         backgroundImage: `url(${story.author.profile_image})`,
-                        opacity: isStoryRead(story.id.toString()) ? 0.5 : 1,
+                        opacity: story.read ? 0.5 : 1,
                       }
                     : {
-                        opacity: isStoryRead(story.id.toString()) ? 0.5 : 1,
+                        opacity: story.read ? 0.5 : 1,
                       }
                 }
                 aria-label={`${story.author.nickname}의 스토리`}
-                onClick={() => handleStoryClick(story.id.toString())}
+                onClick={() => handleStoryClick(story.id, index)}
               />
             </div>
           </li>
@@ -123,6 +90,7 @@ const Contaniner = styled.div`
   box-sizing: border-box;
   padding: 20px;
   display: flex;
+  overflow-x: auto;
 
   ul {
     all: unset;

@@ -37,7 +37,7 @@ export type GET_Messages = {
 }
 
 // GET 'stories'
-export type GET_Stories = {
+export interface GET_Stories {
   id: number
   author: userinfo
   author_id: string
