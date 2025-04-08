@@ -21,6 +21,7 @@ export const useStoryStore = create<StoryStore>()(
     (set, get) => ({
       readStories: {},
 
+      // markAsRead에 increment
       markAsRead: (storyId: number) => {
         const currentTime = Date.now()
         set((state) => ({

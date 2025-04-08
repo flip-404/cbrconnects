@@ -8,7 +8,10 @@ import { Navigation } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
-import { useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
+import api from '@/libs/axiosInstance'
+import useUser from '@/hooks/useUser'
 
 export default function StoryViewer({
   closeViwer,
@@ -17,10 +20,64 @@ export default function StoryViewer({
   closeViwer: () => void
   clickedIndex: null | number
 }) {
+  const [comment, setComment] = useState('')
   const [currentIndex, setCurrentIndex] = useState<null | number>(clickedIndex)
+  const { user } = useUser()
   const { stories, markAsRead } = useStories()
+  const queryClient = useQueryClient()
+  const commentSectionRef = useRef<HTMLDivElement>(null)
 
-  //   todo: 스토리 읽음처리 고도화
+  const { data: storyCommentsData } = useQuery({
+    queryKey: ['/stories/comments', stories[currentIndex!].id],
+    queryFn: () => api.get(`/stories/comments?storyId=${stories[currentIndex!].id}`),
+    enabled: !!stories[currentIndex!].id,
+  })
+
+  const storyComments = storyCommentsData?.data?.comments
+
+  const { mutate: storyCommentPost } = useMutation({
+    mutationFn: ({ storyId, content }: { storyId: number; content: string }) =>
+      api.post('/stories/comments', {
+        userId: user?.id,
+        content,
+        storyId,
+      }),
+    onSuccess: (_, variables) => {
+      queryClient.invalidateQueries({
+        queryKey: ['/stories/comments', variables.storyId],
+      })
+    },
+    onSettled: () => {
+      setComment('')
+    },
+  })
+
+  const handleKeyPress = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.nativeEvent.isComposing) return
+    if (e.key === 'Enter' && comment.trim()) {
+      e.preventDefault()
+      const storyId = stories[currentIndex!].id
+      const content = comment
+
+      storyCommentPost({ storyId, content })
+    }
+  }
+
+  useEffect(() => {
+    if (commentSectionRef.current && storyComments?.length > 0) {
+      commentSectionRef.current.scrollTop = commentSectionRef.current.scrollHeight
+    }
+  }, [storyComments])
+
+  useEffect(() => {
+    if (commentSectionRef.current) {
+      commentSectionRef.current.scrollTop = commentSectionRef.current.scrollHeight
+    }
+  }, [currentIndex])
+
+  useEffect(() => {
+    console.log('storyComments', storyComments)
+  }, [storyComments])
 
   if (currentIndex === null) return null
   return (
@@ -28,11 +85,6 @@ export default function StoryViewer({
       onClick={(e) => {
         e.stopPropagation()
       }}
-      //   style={
-      //     stories[currentIndex].image
-      //       ? { backgroundImage: `url(${stories[currentIndex].image})` }
-      //       : {}
-      //   }
     >
       <Header>
         <span>캔버라커넥트</span>
@@ -43,13 +95,12 @@ export default function StoryViewer({
 
       <Body>
         <Swiper
-          modules={[Navigation]}
           spaceBetween={0}
           slidesPerView={1}
           initialSlide={currentIndex}
-          navigation
           onSlideChange={(swiper) => {
             const currentIndex = swiper.activeIndex
+            setCurrentIndex(currentIndex)
             if (stories[currentIndex]) {
               markAsRead(stories[currentIndex].id)
             }
@@ -61,13 +112,40 @@ export default function StoryViewer({
               id="slide122"
               style={story.image ? { backgroundImage: `url(${story.image})` } : {}}
             >
-              <p>{story.content}</p>
               {story.link && (
                 <div className="link">
                   <a href={story.link}>링크 이동</a>
                   <span>{story.author.nickname}님이 첨부한 링크가 있어요!</span>
                 </div>
               )}
+
+              <div className="detail">
+                <div
+                  className="comment-section"
+                  ref={currentIndex === index ? commentSectionRef : null}
+                >
+                  {storyComments?.map((comment) => (
+                    <div key={comment.id} className="comment">
+                      <span className="author">
+                        {comment.author.nickname} · {comment.created_at}
+                      </span>
+                      <p className="content">{comment.content}</p>
+                    </div>
+                  ))}
+                </div>
+                <span className="views">{story.views}</span>
+              </div>
+              <p>{story.content}</p>
+              <InputSection>
+                <input
+                  placeholder="댓글 쓰기"
+                  value={comment}
+                  onChange={(e) => {
+                    setComment(e.target.value)
+                  }}
+                  onKeyDown={handleKeyPress}
+                ></input>
+              </InputSection>
             </SwiperSlide>
           ))}
         </Swiper>
@@ -125,7 +203,6 @@ const Header = styled.div`
 const Body = styled.div`
   box-sizing: border-box;
   height: 100%;
-
   width: 100%;
 
   .swiper-wrapper {
@@ -134,29 +211,73 @@ const Body = styled.div`
   }
 
   .swiper-slide {
+    box-shadow: inset 0 -100px 100px 0px rgba(0, 0, 0, 0.5);
+    position: relative;
     box-sizing: border-box;
     height: 100vh;
     width: 100vw;
-    padding: 30px;
+    padding: 100px 30px 0 30px;
     display: flex;
     flex-direction: column;
     justify-content: flex-end;
     align-items: center;
-    gap: 60px;
 
     & > p {
+      width: 100%;
+      text-align: start;
       box-sizing: border-box;
-
       margin: 0;
       word-break: keep-all;
       color: white;
-      font-size: 20px;
+      font-size: 26px;
       font-weight: 400;
     }
 
-    .link {
-      box-sizing: border-box;
+    .detail {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: end;
 
+      .views {
+        color: #ebebf54d;
+        font-size: 11px;
+      }
+
+      .comment-section {
+        box-sizing: border-box;
+        overflow-y: scroll;
+        max-height: 300px;
+        min-height: 100px;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+
+        .comment {
+          span {
+            font-size: 9px;
+            font-weight: 600;
+            color: #ffffff66;
+          }
+
+          p {
+            margin: 0;
+            font-size: 13px;
+            font-weight: 400;
+            color: white;
+          }
+        }
+      }
+    }
+
+    .link {
+      position: absolute;
+      top: 100px;
+      left: 50%;
+      transform: translateX(-50%);
+
+      box-sizing: border-box;
       padding: 5px 10px;
       background-color: rgba(0, 0, 0, 0.5);
       border-radius: 10px;
@@ -180,5 +301,30 @@ const Body = styled.div`
         font-weight: 400;
       }
     }
+  }
+`
+
+const InputSection = styled.section`
+  z-index: 100;
+  box-sizing: border-box;
+  height: 60px;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  input {
+    box-sizing: border-box;
+    height: 36px;
+    width: 100%;
+    padding: 0 15px;
+
+    border-radius: 100px;
+    border: 1px solid rgb(58, 58, 60);
+    background-color: #000;
+    font-size: 15px;
+    font-weight: 400;
+    color: white;
+    outline: none;
   }
 `

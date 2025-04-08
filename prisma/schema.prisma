@@ -328,21 +328,22 @@ model users {
 }
 
 model userinfo {
-  id                String     @id(map: "user_info_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
-  created_at        DateTime   @default(now()) @db.Timestamptz(6)
-  email             String?    @unique
-  nickname          String     @unique
+  id                String          @id(map: "user_info_pkey") @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  created_at        DateTime        @default(now()) @db.Timestamptz(6)
+  email             String?         @unique
+  nickname          String          @unique
   profile_image     String?
-  user_group        String     @default("User")
+  user_group        String          @default("User")
   description       String?
   comment           comment[]
   post              post[]
   postlike          postlike[]
-  users             users      @relation(fields: [id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "userinfo_id_fkey")
+  users             users           @relation(fields: [id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "userinfo_id_fkey")
   chat              chat[]
-  sent_messages     message[]  @relation("MessageSender")
-  received_messages message[]  @relation("MessageReceiver")
+  sent_messages     message[]       @relation("MessageSender")
+  received_messages message[]       @relation("MessageReceiver")
   story             story[]
+  story_comment     story_comment[]
 
   @@schema("public")
 }
@@ -438,9 +439,25 @@ model story {
   link       String?
   created_at DateTime @default(now())
 
-  author userinfo @relation(fields: [author_id], references: [id], onDelete: Cascade)
+  author        userinfo        @relation(fields: [author_id], references: [id], onDelete: Cascade)
+  story_comment story_comment[]
 
   @@index([author_id])
+  @@schema("public")
+}
+
+model story_comment {
+  id         Int      @id @default(autoincrement())
+  content    String
+  author_id  String   @db.Uuid
+  story_id   Int
+  created_at DateTime @default(now())
+  updated_at DateTime @updatedAt
+
+  author userinfo @relation(fields: [author_id], references: [id], onDelete: Cascade)
+  story  story    @relation(fields: [story_id], references: [id], onDelete: Cascade)
+
+  @@index([story_id])
   @@schema("public")
 }
 
