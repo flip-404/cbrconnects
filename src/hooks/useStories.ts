@@ -25,6 +25,8 @@ export const useStories = () => {
     if (!data?.data?.stories) return []
     const stories = data?.data?.stories as GET_Stories[]
 
+    console.log('stories', stories)
+
     const enrichedStories = stories.map((story: GET_Stories): Story => {
       const readData = readStories[story.id]
       return {
@@ -36,11 +38,11 @@ export const useStories = () => {
 
     const unread = enrichedStories
       .filter((story) => !story.read)
-      .sort((a, b) => b.timestamp! - a.timestamp!)
+      .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
 
     const read = enrichedStories
       .filter((story) => story.read)
-      .sort((a, b) => b.timestamp! - a.timestamp!)
+      .sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
 
     return [...unread, ...read]
   }, [data, readStories])

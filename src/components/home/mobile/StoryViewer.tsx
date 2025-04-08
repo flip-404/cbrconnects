@@ -49,10 +49,10 @@ export default function StoryViewer({
           initialSlide={currentIndex}
           navigation
           onSlideChange={(swiper) => {
-            // const currentIndex = swiper.activeIndex
-            // if (stories[currentIndex]) {
-            //   markAsRead(stories[currentIndex].id)
-            // }
+            const currentIndex = swiper.activeIndex
+            if (stories[currentIndex]) {
+              markAsRead(stories[currentIndex].id)
+            }
           }}
         >
           {stories.map((story, index) => (

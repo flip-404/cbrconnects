@@ -53,9 +53,9 @@ export default function StorySection() {
               <button
                 type="button"
                 style={
-                  story.author.profile_image
+                  story.image
                     ? {
-                        backgroundImage: `url(${story.author.profile_image})`,
+                        backgroundImage: `url(${story.image})`,
                         opacity: story.read ? 0.5 : 1,
                       }
                     : {
@@ -125,6 +125,8 @@ const Contaniner = styled.div`
           background-repeat: no-repeat;
           cursor: pointer;
           transition: opacity 0.3s ease;
+
+          font-size: 11px;
         }
       }
     }
