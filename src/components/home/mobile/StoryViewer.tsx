@@ -4,7 +4,6 @@ import styled from 'styled-components'
 import CloseIcon from '@/assets/mobile/story_close.svg'
 import { useStories } from '@/hooks/useStories'
 import { Swiper, SwiperSlide } from 'swiper/react'
-import { Navigation } from 'swiper/modules'
 import 'swiper/css'
 import 'swiper/css/navigation'
 import 'swiper/css/pagination'
@@ -12,6 +11,8 @@ import { useEffect, useRef, useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import api from '@/libs/axiosInstance'
 import useUser from '@/hooks/useUser'
+import ViewsIcon from '@/assets/mobile/views.svg'
+import { GET_Stories } from '@/types/newIndex'
 
 export default function StoryViewer({
   closeViwer,
@@ -26,11 +27,12 @@ export default function StoryViewer({
   const { stories, markAsRead } = useStories()
   const queryClient = useQueryClient()
   const commentSectionRef = useRef<HTMLDivElement>(null)
+  const currentStoryId = stories[currentIndex!]?.id
 
   const { data: storyCommentsData } = useQuery({
-    queryKey: ['/stories/comments', stories[currentIndex!].id],
-    queryFn: () => api.get(`/stories/comments?storyId=${stories[currentIndex!].id}`),
-    enabled: !!stories[currentIndex!].id,
+    queryKey: ['/stories/comments', currentStoryId],
+    queryFn: () => api.get(`/stories/comments?storyId=${currentStoryId}`),
+    enabled: !!currentStoryId,
   })
 
   const storyComments = storyCommentsData?.data?.comments
@@ -75,10 +77,6 @@ export default function StoryViewer({
     }
   }, [currentIndex])
 
-  useEffect(() => {
-    console.log('storyComments', storyComments)
-  }, [storyComments])
-
   if (currentIndex === null) return null
   return (
     <Contaniner
@@ -99,10 +97,10 @@ export default function StoryViewer({
           slidesPerView={1}
           initialSlide={currentIndex}
           onSlideChange={(swiper) => {
-            const currentIndex = swiper.activeIndex
-            setCurrentIndex(currentIndex)
-            if (stories[currentIndex]) {
-              markAsRead(stories[currentIndex].id)
+            const { activeIndex } = swiper
+            setCurrentIndex(activeIndex)
+            if (stories[activeIndex]) {
+              markAsRead(stories[activeIndex].id, queryClient)
             }
           }}
         >
@@ -124,16 +122,21 @@ export default function StoryViewer({
                   className="comment-section"
                   ref={currentIndex === index ? commentSectionRef : null}
                 >
-                  {storyComments?.map((comment) => (
-                    <div key={comment.id} className="comment">
+                  {storyComments?.map((storyComment: GET_Stories) => (
+                    <div key={storyComment.id} className="comment">
                       <span className="author">
-                        {comment.author.nickname} · {comment.created_at}
+                        {storyComment.author.nickname} · {storyComment.created_at}
                       </span>
-                      <p className="content">{comment.content}</p>
+                      <p className="content">{storyComment.content}</p>
                     </div>
                   ))}
                 </div>
-                <span className="views">{story.views}</span>
+                <span className="views">
+                  <div className="view-icon-wrapper">
+                    <ViewsIcon />
+                  </div>
+                  {story.views}
+                </span>
               </div>
               <p>{story.content}</p>
               <InputSection>
@@ -144,7 +147,7 @@ export default function StoryViewer({
                     setComment(e.target.value)
                   }}
                   onKeyDown={handleKeyPress}
-                ></input>
+                />
               </InputSection>
             </SwiperSlide>
           ))}
@@ -240,8 +243,24 @@ const Body = styled.div`
       align-items: end;
 
       .views {
+        display: flex;
+        justify-content: center;
+        align-items: center;
         color: #ebebf54d;
         font-size: 11px;
+        gap: 3px;
+
+        .view-icon-wrapper {
+          width: 11px;
+          height: 11px;
+          margin-bottom: 3px;
+
+          svg {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+        }
       }
 
       .comment-section {

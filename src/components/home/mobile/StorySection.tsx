@@ -2,30 +2,18 @@
 
 import styled from 'styled-components'
 import PlusIcon from '@/assets/mobile/plus.svg'
-import { useEffect, useState } from 'react'
-import { useQuery } from '@tanstack/react-query'
-import api from '@/libs/axiosInstance'
-import { GET_Stories } from '@/types/newIndex'
+import { useState } from 'react'
 
-import StoryEditor from './StoryEditor'
 import { useStories } from '@/hooks/useStories'
+import { useQueryClient } from '@tanstack/react-query'
+import StoryEditor from './StoryEditor'
 import StoryViewer from './StoryViewer'
-
-interface ReadStoryData {
-  read: boolean
-  timestamp: number
-}
-
-interface ReadStoriesState {
-  [key: string]: ReadStoryData
-}
 
 export default function StorySection() {
   const [openStoryEditor, setOpenStoryEditor] = useState(false)
   const [activeStoryIndex, setActiveStoryIndex] = useState<null | number>(null)
   const { stories, markAsRead } = useStories()
-
-  console.log('stories', stories)
+  const queryClient = useQueryClient()
 
   const closeEditor = () => {
     setOpenStoryEditor(false)
@@ -35,9 +23,9 @@ export default function StorySection() {
     setActiveStoryIndex(null)
   }
 
-  const handleStoryClick = (storyId: number, activeStoryIndex: number) => {
-    markAsRead(storyId)
-    setActiveStoryIndex(activeStoryIndex)
+  const handleStoryClick = (storyId: number, storyIndex: number) => {
+    markAsRead(storyId, queryClient)
+    setActiveStoryIndex(storyIndex)
   }
 
   return (

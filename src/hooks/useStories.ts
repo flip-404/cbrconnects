@@ -25,8 +25,6 @@ export const useStories = () => {
     if (!data?.data?.stories) return []
     const stories = data?.data?.stories as GET_Stories[]
 
-    console.log('stories', stories)
-
     const enrichedStories = stories.map((story: GET_Stories): Story => {
       const readData = readStories[story.id]
       return {

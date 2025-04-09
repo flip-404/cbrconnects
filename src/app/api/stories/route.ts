@@ -1,7 +1,7 @@
 import prisma from '@/libs/prisma'
 import { NextRequest, NextResponse } from 'next/server'
 
-export async function GET() {
+async function GET() {
   try {
     const twentyFourHoursAgo = new Date()
     twentyFourHoursAgo.setHours(twentyFourHoursAgo.getHours() - 24)
@@ -73,4 +73,30 @@ async function POST(request: NextRequest) {
   }
 }
 
-export { POST }
+async function PATCH(request: NextRequest) {
+  const { storyId } = await request.json()
+
+  if (!storyId) {
+    return NextResponse.json({ error: '스토리 ID가 필요합니다.' }, { status: 400 })
+  }
+
+  try {
+    const updatedStory = await prisma.story.update({
+      where: { id: storyId },
+      data: {
+        views: {
+          increment: 1,
+        },
+      },
+    })
+    console.log('updatedStory', updatedStory.views)
+    return NextResponse.json({ story: updatedStory })
+  } catch (error) {
+    return NextResponse.json(
+      { error: '조회수를 증가시키는 중 오류가 발생했습니다.' },
+      { status: 500 },
+    )
+  }
+}
+
+export { GET, POST, PATCH }

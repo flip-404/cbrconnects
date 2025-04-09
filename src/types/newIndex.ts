@@ -47,3 +47,15 @@ export interface GET_Stories {
   views: number
   created_at: string
 }
+
+// GET 'stories/comments'
+export interface GET_StoryComments {
+  id: number
+  author: userinfo
+  author_id: string
+  content: string
+  link: string | null
+  image: string | null
+  views: number
+  created_at: string
+}

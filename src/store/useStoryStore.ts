@@ -1,3 +1,7 @@
+import api from '@/libs/axiosInstance'
+import { GET_Stories } from '@/types/newIndex'
+import { useQueryClient } from '@tanstack/react-query'
+import { AxiosResponse } from 'axios'
 import { create } from 'zustand'
 import { persist } from 'zustand/middleware'
 
@@ -10,7 +14,7 @@ export type ReadStoriesState = {
 
 export interface StoryStore {
   readStories: ReadStoriesState
-  markAsRead: (storyId: number) => void
+  markAsRead: (storyId: number, queryClient: ReturnType<typeof useQueryClient>) => void
   clearOldStories: () => void
 }
 
@@ -21,8 +25,20 @@ export const useStoryStore = create<StoryStore>()(
     (set, get) => ({
       readStories: {},
 
-      // markAsRead에 increment
-      markAsRead: (storyId: number) => {
+      markAsRead: (storyId: number, queryClient) => {
+        api.patch('/stories', { storyId })
+
+        // toDo: 실시간 데이터를 반영하기 위해 invalidateQueries가 필요할지 고민
+        queryClient.setQueryData(['stories'], (oldData: AxiosResponse) => {
+          if (!oldData) return oldData
+          return {
+            ...oldData,
+            data: oldData.data.stories.map((story: GET_Stories) =>
+              story.id === storyId ? { ...story, views: story.views + 1 } : story,
+            ),
+          }
+        })
+
         const currentTime = Date.now()
         set((state) => ({
           readStories: {
