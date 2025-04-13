@@ -5,8 +5,11 @@ import styled from 'styled-components'
 import HamburgerIcon from '@/assets/hamburger.svg'
 import { useState } from 'react'
 import useCategoryStore from '@/store/useCategoryStore'
+import useUser from '@/hooks/useUser'
+import supabase from '@/libs/supabaseClient'
 
 export default function MobileHeader() {
+  const { user, logout } = useUser()
   const [isOpenNav, setIsOpenNav] = useState(false)
   const { setCategory } = useCategoryStore()
 
@@ -103,7 +106,53 @@ export default function MobileHeader() {
         </ul>
         <strong>회원</strong>
         <ul>
-          <li>로그인</li>
+          {user ? (
+            <>
+              {' '}
+              <li>
+                <Link
+                  onClick={() => {
+                    setIsOpenNav(false)
+                  }}
+                  href="/message"
+                >
+                  쪽지함
+                </Link>
+              </li>
+              <li>
+                <Link
+                  onClick={() => {
+                    setIsOpenNav(false)
+                  }}
+                  href={`/profile?userId=${user.id}`}
+                >
+                  프로필
+                </Link>
+              </li>
+              <li>
+                <Link
+                  onClick={() => {
+                    supabase.auth.signOut()
+                    logout()
+                  }}
+                  href="/"
+                >
+                  로그아웃
+                </Link>
+              </li>
+            </>
+          ) : (
+            <li>
+              <Link
+                onClick={() => {
+                  setIsOpenNav(false)
+                }}
+                href="/login"
+              >
+                로그인
+              </Link>
+            </li>
+          )}
         </ul>
       </NavDropdown>
     </Container>
