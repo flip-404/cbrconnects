@@ -18,6 +18,7 @@ import BoardControls from './BoardControls'
 
 const limit = 16
 
+// todo: like mobile overflow 조정 ex) like: 3
 function Board() {
   const isMobile = useMediaQuery('(max-width: 1200px)')
   const queryClient = useQueryClient()
