@@ -115,7 +115,7 @@ function Board() {
                 <>
                   <div>
                     <span className="comment-count">{post.comment_count}</span>
-                    <div>
+                    <div className="right-section">
                       <div className="post-title">
                         <Link href={`/post?postId=${post.id}`}>{post.title}</Link>
                       </div>
@@ -310,48 +310,51 @@ const Post = styled.li`
         font-size: 17px;
         font-weight: 400;
       }
-
-      .post-title {
-        flex: 1;
-        width: 100%;
-
-        a {
-          width: 90%;
-          font-size: 17px;
-          overflow: hidden;
-          text-overflow: ellipsis;
-          display: -webkit-box;
-          -webkit-box-orient: vertical;
-          -webkit-line-clamp: 1;
-        }
-      }
-
-      .post-info {
+      .right-section {
         display: flex;
         flex-direction: column;
-      }
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        min-width: 250px;
+        width: 300px;
 
-      .m-post-detail {
-        display: flex;
-        margin: 0;
-        font-size: 13px;
-        color: #3c3c434d;
+        .post-title {
+          flex: 1;
+          width: 100%;
 
-        span {
-          position: relative;
+          a {
+            display: inline-block;
+            max-width: 100%;
+            font-size: 17px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+        }
+
+        .m-post-detail {
           display: flex;
-          align-items: center;
+          margin: 0;
+          font-size: 13px;
+          color: #3c3c434d;
 
-          .post-likes {
-            position: absolute;
+          span {
+            position: relative;
             display: flex;
-            left: 5px;
-            top: 50%;
-            transform: translateY(-50%);
+            align-items: center;
 
-            svg {
-              width: 13px;
-              height: 13px;
+            .post-likes {
+              position: absolute;
+              display: flex;
+              left: 5px;
+              top: 50%;
+              transform: translateY(-50%);
+
+              svg {
+                width: 13px;
+                height: 13px;
+              }
             }
           }
         }

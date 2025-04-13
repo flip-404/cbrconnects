@@ -114,7 +114,15 @@ function BoardControls({
           </Button>
         )}
         {Array.from({
-          length: pagePhases === Math.floor((totalPage - 1) / 10) ? totalPage % 10 : 10,
+          length: Math.min(
+            isMobile ? 5 : 10,
+            // eslint-disable-next-line no-nested-ternary
+            pagePhases === Math.floor((totalPage - 1) / 10)
+              ? totalPage % 10 || (isMobile ? 5 : 10)
+              : isMobile
+                ? 5
+                : 10,
+          ),
         }).map((_, index) => (
           <button
             // eslint-disable-next-line react/no-array-index-key
@@ -145,24 +153,29 @@ function BoardControls({
         )}
       </Pagination>
       <div>
-        <Filter
-          $isActive={searchFilter.includes('author')}
-          onClick={() => handleFilterChange('author')}
-        >
-          작성자
-        </Filter>
-        <Filter
-          $isActive={searchFilter.includes('title')}
-          onClick={() => handleFilterChange('title')}
-        >
-          제목
-        </Filter>
-        <Filter
-          $isActive={searchFilter.includes('content')}
-          onClick={() => handleFilterChange('content')}
-        >
-          내용
-        </Filter>
+        {!isMobile && (
+          <>
+            <Filter
+              $isActive={searchFilter.includes('author')}
+              onClick={() => handleFilterChange('author')}
+            >
+              작성자
+            </Filter>
+            <Filter
+              $isActive={searchFilter.includes('title')}
+              onClick={() => handleFilterChange('title')}
+            >
+              제목
+            </Filter>
+            <Filter
+              $isActive={searchFilter.includes('content')}
+              onClick={() => handleFilterChange('content')}
+            >
+              내용
+            </Filter>
+          </>
+        )}
+
         <Input
           type="text"
           placeholder="검색어"
