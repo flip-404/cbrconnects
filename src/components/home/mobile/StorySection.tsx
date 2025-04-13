@@ -2,10 +2,9 @@
 
 import styled from 'styled-components'
 import PlusIcon from '@/assets/mobile/plus.svg'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 
 import { useStories } from '@/hooks/useStories'
-import { useQueryClient } from '@tanstack/react-query'
 import StoryEditor from './StoryEditor'
 import StoryViewer from './StoryViewer'
 
@@ -13,7 +12,10 @@ export default function StorySection() {
   const [openStoryEditor, setOpenStoryEditor] = useState(false)
   const [activeStoryIndex, setActiveStoryIndex] = useState<null | number>(null)
   const { stories, markAsRead } = useStories()
-  const queryClient = useQueryClient()
+
+  useEffect(() => {
+    console.log('stories', stories)
+  }, [stories])
 
   const closeEditor = () => {
     setOpenStoryEditor(false)
@@ -24,7 +26,7 @@ export default function StorySection() {
   }
 
   const handleStoryClick = (storyId: number, storyIndex: number) => {
-    markAsRead(storyId, queryClient)
+    markAsRead(storyId)
     setActiveStoryIndex(storyIndex)
   }
 

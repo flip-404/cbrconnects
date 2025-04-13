@@ -100,7 +100,7 @@ export default function StoryViewer({
             const { activeIndex } = swiper
             setCurrentIndex(activeIndex)
             if (stories[activeIndex]) {
-              markAsRead(stories[activeIndex].id, queryClient)
+              markAsRead(stories[activeIndex].id)
             }
           }}
         >
@@ -118,20 +118,20 @@ export default function StoryViewer({
                   <span>{story.author.nickname}님이 첨부한 링크가 있어요!</span>
                 </div>
               )}
-
               <div className="detail">
                 <div
                   className="comment-section"
                   ref={currentIndex === index ? commentSectionRef : null}
                 >
-                  {storyComments?.map((storyComment: GET_Stories) => (
-                    <div key={storyComment.id} className="comment">
-                      <span className="author">
-                        {storyComment.author.nickname} · {storyComment.created_at}
-                      </span>
-                      <p className="content">{storyComment.content}</p>
-                    </div>
-                  ))}
+                  {currentIndex === index &&
+                    storyComments?.map((storyComment: GET_Stories) => (
+                      <div key={storyComment.id} className="comment">
+                        <span className="author">
+                          {storyComment.author.nickname} · {storyComment.created_at}
+                        </span>
+                        <p className="content">{storyComment.content}</p>
+                      </div>
+                    ))}
                 </div>
                 <span className="views">
                   <div className="view-icon-wrapper">
