@@ -1,6 +1,9 @@
 'use client'
 
 import styled from 'styled-components'
+import RefreshIcon from '@/assets/refresh.svg'
+import ArrowBackIcon_ from '@/assets/arrow_back.svg'
+import ArrowForwardIcon_ from '@/assets/arrow_forward.svg'
 import EmptyIcon from '@/assets/empty_profile.svg'
 import Link from 'next/link'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
@@ -70,6 +73,7 @@ function MobileChatPage() {
 
   return (
     <Container>
+      <h3>채팅</h3>
       <Chats>
         {groupedChats.map((chatGroup) => (
           <Chat key={chatGroup.id}>
@@ -97,6 +101,47 @@ function MobileChatPage() {
           </Chat>
         ))}
       </Chats>
+      <input
+        placeholder="입력 후 엔터키"
+        value={content}
+        onChange={(e) => {
+          setContent(e.target.value)
+        }}
+        onKeyDown={(e) => {
+          if (e.nativeEvent.isComposing) return
+          if (e.key === 'Enter' && content) {
+            if (content.length > 50) {
+              alert('50자 이내로 입력해주세요.')
+              return
+            }
+            chatPost()
+          }
+        }}
+      />
+      <ChatControls>
+        <ArrowBackIcon
+          $disabled={page === 1}
+          onClick={() => {
+            if (page !== 1) setPage(page - 1)
+            else alert('첫 페이지입니다.')
+          }}
+        />
+        <RefreshIcon
+          onClick={() => {
+            queryClient.invalidateQueries({
+              queryKey: ['chat'],
+            })
+            setPage(1)
+          }}
+        />
+        <ArrowForwardIcon
+          $disabled={totalCount <= page * limit}
+          onClick={() => {
+            if (totalCount > page * limit) setPage(page + 1)
+            else alert('마지막 페이지입니다.')
+          }}
+        />
+      </ChatControls>
     </Container>
   )
 }
@@ -105,28 +150,47 @@ export default MobileChatPage
 
 const Container = styled.div`
   margin-top: 80px;
+  padding: 0 20px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 
   h3 {
-    letter-spacing: 2px;
+    width: 100%;
     margin: 0 0 10px 0;
-    width: 1300px;
-    font-size: 38px;
+    font-size: 24px;
     font-weight: 800;
+    letter-spacing: -0.34px;
+    line-height: 28.8px;
+  }
+
+  input {
+    all: unset;
+    width: 100%;
+    border-radius: 12px;
+    padding: 10px 10px;
+    font-size: 17px;
+    background: #f9f9f9;
+    border: 0.65px solid #bfbfbf;
+    &:focus {
+      background: white;
+      border-color: #3399ff;
+      box-shadow: 0 0 0 3px #b6daff;
+    }
   }
 `
 
 const Chats = styled.ul`
   all: unset;
+  overflow-y: scroll;
+  height: 60vh;
   box-sizing: border-box;
   width: 100%;
-  padding: 15px 20px;
   display: flex;
-  flex-direction: column;
+  flex-direction: column-reverse;
   gap: 20px;
+  padding: 15px 0px;
 `
 
 const Chat = styled.li`
@@ -146,7 +210,7 @@ const Chat = styled.li`
 
   .content-container {
     display: flex;
-    flex-direction: column;
+    flex-direction: column-reverse;
     gap: 5px;
 
     .message {
@@ -179,4 +243,30 @@ const Chat = styled.li`
     width: 24px;
     height: 24px;
   }
+`
+
+const ChatControls = styled.div`
+  margin-top: 20px;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 20px;
+
+  svg {
+    cursor: pointer;
+    width: 30px;
+    height: 30px;
+  }
+`
+
+const ArrowBackIcon = styled(ArrowBackIcon_)<{ $disabled: boolean }>`
+  opacity: ${({ $disabled }) => ($disabled ? 0.2 : 1)};
+  pointer-events: ${({ $disabled }) => ($disabled ? 'none' : 'auto')};
+`
+
+const ArrowForwardIcon = styled(ArrowForwardIcon_)<{ $disabled: boolean }>`
+  opacity: ${({ $disabled }) => ($disabled ? 0.2 : 1)};
+  pointer-events: ${({ $disabled }) => ($disabled ? 'none' : 'auto')};
 `
