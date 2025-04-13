@@ -89,7 +89,7 @@ export default function StoryEditor({ closeEditor }: { closeEditor: () => void }
           style={{ display: 'none' }}
         />
         {!selectedImage && (
-          <button className="add-photo" onClick={openFileSelector}>
+          <button type="button" className="add-photo" onClick={openFileSelector}>
             <AddPhotoIcon />
             <span>사진 선택</span>
           </button>
