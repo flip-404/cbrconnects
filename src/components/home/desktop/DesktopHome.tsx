@@ -30,6 +30,10 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  @media (max-width: 1200px) {
+    margin-top: 50px;
+  }
 `
 
 const Pinned = styled.div`
