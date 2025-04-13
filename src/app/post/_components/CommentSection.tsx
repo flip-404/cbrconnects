@@ -42,7 +42,13 @@ function CommentSection({ post, comments }: CommentSectionProps) {
 export default CommentSection
 
 const Cotaniner = styled.div`
+  box-sizing: border-box;
   width: 700px;
+
+  @media (max-width: 1200px) {
+    width: 100%;
+    padding: 0 20px;
+  }
 `
 
 const Count = styled.p`

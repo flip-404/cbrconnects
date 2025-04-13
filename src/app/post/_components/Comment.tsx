@@ -60,7 +60,7 @@ function Comment({ comment }: CommentProps) {
         <>
           <p>
             {comment.content}
-            <span>
+            <div>
               {comment.created_at.toString()}
               {user?.id === comment.author.id && (
                 <>
@@ -83,7 +83,7 @@ function Comment({ comment }: CommentProps) {
                   </button>
                 </>
               )}
-            </span>
+            </div>
           </p>
           {!comment.parent_id && (
             <button
@@ -122,8 +122,10 @@ const CommentItem = styled.div<{ $isReply: boolean; $hasReply: boolean }>`
     font-weight: 400;
     letter-spacing: -0.26px;
     line-height: 27.2px;
+    white-space: pre-wrap;
+    word-break: break-word;
 
-    & > span {
+    & > div {
       font-size: 11px;
       font-weight: 400;
       color: #3c3c434d;

@@ -142,6 +142,9 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  @media (max-width: 1200px) {
+  }
 `
 
 const Viwer = styled.div`
@@ -153,6 +156,11 @@ const Viwer = styled.div`
 
     font-size: 50px;
     font-weight: 700;
+  }
+
+  @media (max-width: 1200px) {
+    width: auto;
+    padding: 0 20px;
   }
 `
 const Category = styled.div`
