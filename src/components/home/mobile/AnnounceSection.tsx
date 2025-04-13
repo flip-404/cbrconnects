@@ -6,7 +6,6 @@ export default async function AnnounceSection() {
   const headersList = headers()
   const host = headersList.get('host') || ''
   const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https'
-  const res = await fetch(`${protocol}://${host}/api/recent`)
   const [noticeRes, promotionRes] = await Promise.all([
     fetch(`${protocol}://${host}/api/posts?category=NOTICE`),
     fetch(`${protocol}://${host}/api/posts?category=PROMOTION`),
