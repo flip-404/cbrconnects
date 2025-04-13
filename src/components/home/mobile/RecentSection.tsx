@@ -2,9 +2,13 @@ import Link from 'next/link'
 import { GET_Posts } from '@/types/newIndex'
 import { recentSectionStyle } from './MobileHome.css'
 import RecentSectionLinks from './RecentSectionLinks'
+import { headers } from 'next/headers'
 
 export default async function RecentSection() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/recent`)
+  const headersList = headers()
+  const host = headersList.get('host') || ''
+  const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https'
+  const res = await fetch(`${protocol}://${host}/api/recent`)
   const data = await res.json()
   const { posts = [] } = data
 

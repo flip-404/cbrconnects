@@ -1,9 +1,13 @@
 import { chat as Chat } from '@prisma/client'
 import Link from 'next/link'
 import { chatSectionStyle } from './MobileHome.css'
+import { headers } from 'next/headers'
 
 export default async function ChatSection() {
-  const res = await fetch(`${process.env.NEXT_PUBLIC_API_BASE_URL}/api/chat`)
+  const headersList = headers()
+  const host = headersList.get('host') || ''
+  const protocol = process.env.NODE_ENV === 'development' ? 'http' : 'https'
+  const res = await fetch(`${protocol}://${host}/api/chat`)
   const data = await res.json()
   const chats = data?.chats || []
 
