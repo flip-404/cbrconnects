@@ -9,8 +9,19 @@ import { useState } from 'react'
 import api from '@/libs/axiosInstance'
 import { GET_chat } from '@/types/newIndex'
 import Image from 'next/image'
+import { userinfo } from '@prisma/client'
 
 const limit = 20
+
+type GroupedChat = {
+  id: number
+  author: userinfo
+  messages: {
+    id: number
+    content: string
+    created_at: string
+  }[]
+}
 
 function MobileChatPage() {
   const queryClient = useQueryClient()
@@ -37,27 +48,51 @@ function MobileChatPage() {
   const chats = data?.data.chats || []
   const totalCount = data?.data.totalCount || 0
 
+  const groupedChats = chats.reduce((acc: GroupedChat[], chat: GET_chat, index: number) => {
+    const prevChat = index > 0 ? chats[index - 1] : null
+
+    if (!prevChat || prevChat.author.id !== chat.author.id) {
+      acc.push({
+        id: chat.id,
+        author: chat.author,
+        messages: [{ id: chat.id, content: chat.content, created_at: chat.created_at }],
+      })
+    } else {
+      acc[acc.length - 1].messages.push({
+        id: chat.id,
+        content: chat.content,
+        created_at: chat.created_at,
+      })
+    }
+
+    return acc
+  }, []) as GroupedChat[]
+
   return (
     <Container>
       <Chats>
-        {chats.map((chat: GET_chat) => (
-          <Chat key={chat.id}>
-            <Link className="profile" href={`/profile?userId=${chat.author.id}`}>
-              {chat.author.profile_image ? (
+        {groupedChats.map((chatGroup) => (
+          <Chat key={chatGroup.id}>
+            <Link className="profile" href={`/profile?userId=${chatGroup.author.id}`}>
+              {chatGroup.author.profile_image ? (
                 <Image
                   width={24}
                   height={24}
-                  src={chat.author.profile_image}
-                  alt={`${chat.author.nickname}님의 프로필 사진`}
+                  src={chatGroup.author.profile_image}
+                  alt={`${chatGroup.author.nickname}님의 프로필 사진`}
                 />
               ) : (
                 <EmptyIcon />
               )}
-              {chat.author.nickname}
+              {chatGroup.author.nickname}
             </Link>
             <div className="content-container">
-              <p>{chat.content}</p>
-              <span>{chat.created_at.toString()}</span>
+              {chatGroup.messages.map((message) => (
+                <div key={message.id} className="message">
+                  <p>{message.content}</p>
+                  <span>{message.created_at.toString()}</span>
+                </div>
+              ))}
             </div>
           </Chat>
         ))}
@@ -110,7 +145,16 @@ const Chat = styled.li`
   }
 
   .content-container {
-    & > p {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+
+    .message {
+      display: flex;
+      align-items: center;
+    }
+
+    & > div > p {
       display: inline-block;
       border-radius: 12px;
       margin: 0;
@@ -121,7 +165,7 @@ const Chat = styled.li`
       line-height: 22.5px;
     }
 
-    & > span {
+    & > div > span {
       margin-left: 5px;
       font-size: 9px;
       font-weight: 600;
