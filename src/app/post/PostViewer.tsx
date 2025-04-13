@@ -103,7 +103,6 @@ function PostViewer() {
                 </div>
               )}
             </Details>
-
             <Content>
               <ReactQuill
                 value={post.content}
@@ -156,6 +155,8 @@ const Viwer = styled.div`
     margin: 10px 0 30px -3px;
     font-size: 50px;
     font-weight: 700;
+    white-space: pre-wrap;
+    word-break: break-word;
   }
 
   @media (max-width: 1200px) {
@@ -247,6 +248,16 @@ const Content = styled.div`
   div {
     padding-left: 0 !important;
     padding-right: 0 !important;
+  }
+
+  @media (max-width: 1200px) {
+    white-space: pre-wrap;
+    word-break: break-word;
+
+    img {
+      max-width: 100%;
+      height: auto;
+    }
   }
 `
 
