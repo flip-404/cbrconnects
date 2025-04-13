@@ -149,18 +149,19 @@ const Container = styled.div`
 
 const Viwer = styled.div`
   margin-top: 70px;
+  box-sizing: border-box;
   width: 700px;
 
   h1 {
     margin: 10px 0 30px -3px;
-
     font-size: 50px;
     font-weight: 700;
   }
 
   @media (max-width: 1200px) {
-    width: auto;
+    box-sizing: border-box;
     padding: 0 20px;
+    width: 100%;
   }
 `
 const Category = styled.div`

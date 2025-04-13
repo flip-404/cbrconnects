@@ -191,6 +191,12 @@ const Container = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
+
+  @media (max-width: 1200px) {
+    padding: 0 20px;
+    box-sizing: border-box;
+    width: 100%;
+  }
 `
 
 const QuillContainer = styled.div`
@@ -217,6 +223,20 @@ const QuillContainer = styled.div`
   .ql-editor {
     height: 430px;
     overflow-y: scroll;
+  }
+
+  @media (max-width: 1200px) {
+    box-sizing: border-box;
+    width: 100%;
+
+    h1 {
+    }
+
+    input {
+    }
+
+    .ql-editor {
+    }
   }
 `
 
