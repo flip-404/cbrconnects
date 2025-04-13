@@ -72,6 +72,7 @@ const Container = styled.div`
     height: 500px;
     border-radius: 8px;
     overflow: hidden;
+
     img {
       object-fit: cover;
     }
@@ -108,5 +109,33 @@ const Container = styled.div`
     font-size: 17px;
     font-weight: 600;
     padding: 15px 40px;
+  }
+
+  @media (max-width: 1200px) {
+    & > div {
+      max-width: 100%;
+      height: auto;
+
+      img {
+        max-width: 100%;
+        height: auto;
+        border-radius: 8px;
+      }
+    }
+
+    h2 {
+      font-size: 32px;
+      font-weight: 800;
+    }
+
+    & > svg {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+    }
+
+    a {
+      font-size: 12px;
+    }
   }
 `

@@ -7,6 +7,13 @@ export const SendMessagePageStyle = {
     flexDirection: 'column',
     justifyContent: 'center',
     alignItems: 'center',
+
+    '@media': {
+      'screen and (max-width: 768px)': {
+        marginTop: '50px',
+        padding: '0 20px',
+      },
+    },
   }),
   title: style({
     width: '700px',
@@ -14,11 +21,23 @@ export const SendMessagePageStyle = {
     margin: '20px 0 10px 0',
     fontSize: '28px',
     fontWeight: 800,
+
+    '@media': {
+      'screen and (max-width: 768px)': {
+        width: '100%',
+      },
+    },
   }),
   form: style({
     display: 'flex',
     flexDirection: 'column',
     width: '700px',
+
+    '@media': {
+      'screen and (max-width: 768px)': {
+        width: '100%',
+      },
+    },
   }),
   content: style({
     all: 'unset',

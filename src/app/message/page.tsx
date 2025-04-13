@@ -125,4 +125,10 @@ const MessageContainer = styled.ul`
       margin-right: 15px;
     }
   }
+
+  @media (max-width: 1200px) {
+    box-sizing: border-box;
+    width: 100%;
+    padding: 10px 20px;
+  }
 `
