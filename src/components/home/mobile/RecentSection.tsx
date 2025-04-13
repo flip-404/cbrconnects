@@ -1,8 +1,8 @@
 import Link from 'next/link'
 import { GET_Posts } from '@/types/newIndex'
+import { headers } from 'next/headers'
 import { recentSectionStyle } from './MobileHome.css'
 import RecentSectionLinks from './RecentSectionLinks'
-import { headers } from 'next/headers'
 
 export default async function RecentSection() {
   const headersList = headers()

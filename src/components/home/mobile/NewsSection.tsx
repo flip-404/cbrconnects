@@ -1,7 +1,7 @@
 import Link from 'next/link'
 import { NewsItem } from '@/app/api/news/route'
-import { newsSectionStyle } from './MobileHome.css'
 import { headers } from 'next/headers'
+import { newsSectionStyle } from './MobileHome.css'
 
 export default async function NewsSection() {
   const headersList = headers()

@@ -1,7 +1,7 @@
 import { chat as Chat } from '@prisma/client'
+import { headers } from 'next/headers'
 import Link from 'next/link'
 import { chatSectionStyle } from './MobileHome.css'
-import { headers } from 'next/headers'
 
 export default async function ChatSection() {
   const headersList = headers()
