@@ -56,32 +56,3 @@ flowchart TD
     style ExternalAPIs fill:#bfb,stroke:#333,stroke-width:2px
     style Database fill:#ff9,stroke:#333,stroke-width:2px
 ```
-
-## Todo List
-
-- **Google Analytics 구축**
-
-  - 웹사이트 사용자 행동 분석
-  - 트래픽 모니터링
-
-- **쿼리 모듈화 및 최적화**
-
-  - 반복되는 데이터 페칭 로직 리팩토링
-  - 쿼리 성능 개선
-  - 코드 재사용성 향상
-
-- **CDN 이미지 최적화**
-
-  - 이미지 로딩 속도 개선
-  - 적절한 이미지 포맷 및 크기 설정
-  - 자동 이미지 압축 구현
-
-- **도메인 연결**
-
-  - 최종 도메인 구매
-  - DNS 설정
-  - SSL 인증서 발급
-
-- **프로덕션 DB 재배포**
-
-  - 실제 서비스 환경 준비
