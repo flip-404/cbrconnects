@@ -6,10 +6,6 @@ export async function GET(request: Request) {
   const code = searchParams.get('code')
   const next = searchParams.get('next') ?? '/'
 
-  console.log('Full URL:', request.url)
-  console.log('All search params:', Object.fromEntries(searchParams.entries()))
-  console.log('Code param:', code)
-
   if (code) {
     const { error } = await supabase.auth.exchangeCodeForSession(code)
     if (!error) {
