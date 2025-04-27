@@ -1,4 +1,4 @@
-# K-캔버라 (호주 한인 커뮤니티 - 1인 개발)
+# K-캔버라 (호주 캔버라 한인 커뮤니티 - 1인 개발)
 
 프로젝트 기간: 2024.06.10 ~ 진행 중 <br/>인원: 1인 개발
 <br/>사용 기술: Next.JS, tanstack-query, zustand, Supabase, Prisma, Styled-components, vanilla-extract css, kakao API, Google API
