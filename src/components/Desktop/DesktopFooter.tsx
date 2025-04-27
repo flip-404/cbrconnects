@@ -70,7 +70,7 @@ function DesktopFooter() {
 
 export default DesktopFooter
 
-const Container = styled.div`
+const Container = styled.footer`
   padding: 100px 0;
   width: 100%;
   display: flex;

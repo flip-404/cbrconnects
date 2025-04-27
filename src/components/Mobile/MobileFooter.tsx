@@ -3,7 +3,7 @@ import { container } from './Footer.css'
 
 export default function MobileFooter() {
   return (
-    <div className={container}>
+    <footer className={container}>
       <CanberraIcon width={24} height={24} />
       <p
         style={{
@@ -29,6 +29,6 @@ export default function MobileFooter() {
       >
         email us.
       </a>
-    </div>
+    </footer>
   )
 }

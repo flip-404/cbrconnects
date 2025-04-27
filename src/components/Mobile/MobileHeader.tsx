@@ -159,7 +159,7 @@ export default function MobileHeader() {
   )
 }
 
-const Container = styled.div`
+const Container = styled.header`
   z-index: 100;
   background-color: #fff;
   box-sizing: border-box;

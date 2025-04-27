@@ -11,10 +11,11 @@ import Header from '@/components/NewComponent/Header'
 export const metadata: Metadata = {
   title: 'K-캔버라 | 호주 캔버라 한인 커뮤니티',
   description:
-    '호주 캔버라에 거주하는 한인들을 위한 유일한 한인 커뮤니티 웹사이트. 정보 공유와 소통의 장을 제공합니다.',
-  keywords: '캔버라 한인, 호주 한인, 캔버라 커뮤니티, 한인 커뮤니티, 호주 캔버라, 캔버라 생활정보',
+    '호주 캔버라에 거주하는 한인들을 위한 유일한 한인 커뮤니티 웹사이트. 케이캔버라에서 정보 공유와 소통의 장을 제공합니다.',
+  keywords:
+    '캔버라 한인, 호주 한인, 캔버라 커뮤니티, 한인 커뮤니티, 호주 캔버라, 캔버라 생활정보, K-캔버라, 케이캔버라, 케이 캔버라',
   openGraph: {
-    title: 'K-캔버라 | 호주 캔버라 한인 커뮤니티',
+    title: 'K-캔버라(케이캔버라) | 호주 캔버라 한인 커뮤니티',
     description:
       '호주 캔버라에 거주하는 한인들을 위한 유일한 한인 커뮤니티 웹사이트. 정보 공유와 소통의 장을 제공합니다.',
     url: 'https://www.kcanberra.com',
