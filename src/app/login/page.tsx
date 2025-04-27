@@ -181,8 +181,8 @@ const CredentialLoginButton = styled.button`
   color: #f1f1f1;
 `
 
-const SocialLoginButton = styled.button<{ $socialType: string }>`
-  cursor: pointer;
+const SocialLoginButton = styled.button<{ $socialType: string; disabled?: boolean }>`
+  cursor: ${(props) => (props.disabled ? 'not-allowed' : 'pointer')};
   position: relative;
   text-align: center;
   padding: 19px 22px;
