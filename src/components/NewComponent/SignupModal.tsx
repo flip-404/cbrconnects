@@ -12,8 +12,6 @@ function SignupModal({ closeModal }: { closeModal: () => void }) {
   const { login } = useUser()
 
   const handleKakaoSignup = async () => {
-    console.log('디버깅 siteUrl', siteUrl)
-
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'kakao',
       options: {

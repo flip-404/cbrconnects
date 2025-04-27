@@ -4,6 +4,7 @@ import api from '@/libs/axiosInstance'
 import { useMediaQuery } from '@mui/material'
 import { useEffect, useState } from 'react'
 import styled from 'styled-components'
+import Link from 'next/link'
 import MobileFooter from '../Mobile/MobileFooter'
 
 function DesktopFooter() {
@@ -37,8 +38,16 @@ function DesktopFooter() {
           <div>
             <h3>지원</h3>
             <ul>
-              <li>이용약관</li>
-              <li>개인정보처리방침</li>
+              <li>
+                <Link href="/agreement.html?type=terms" target="_blank" rel="noopener noreferrer">
+                  이용약관
+                </Link>
+              </li>
+              <li>
+                <Link href="/agreement.html?type=privacy" target="_blank" rel="noopener noreferrer">
+                  개인정보처리방침
+                </Link>
+              </li>
             </ul>
           </div>
           <div>
@@ -96,6 +105,11 @@ const Content = styled.div`
         font-size: 13px;
         font-weight: 400;
         margin: 0 0 13px;
+
+        a {
+          all: unset;
+          cursor: pointer;
+        }
       }
     }
   }
