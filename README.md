@@ -2,7 +2,7 @@
 
 프로젝트 기간: 2024.06.10 ~ 진행 중 <br/>인원: 1인 개발
 <br/>사용 기술: Next.JS, tanstack-query, zustand, Supabase, Prisma, Styled-components, vanilla-extract css, kakao API, Google API
-<br/> SITE: <a href="https://www.kcanberra.com" target="_blank" rel="noopener noreferrer">https://www.kcanberra.com </a> (2025.04.27 프로덕션 배포)
+<br/>Link: <a href="https://www.kcanberra.com" target="_blank" rel="noopener noreferrer">https://www.kcanberra.com </a> (2025.04.27 프로덕션 배포)
 
 <br/>
 
