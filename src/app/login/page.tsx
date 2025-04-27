@@ -35,6 +35,8 @@ export default function Login() {
   }
 
   const handleKakaoLogin = async () => {
+    console.log('디버깅 siteUrl', siteUrl)
+
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'kakao',
       options: {

@@ -33,6 +33,8 @@ function LoginModal({ closeModal }: { closeModal: () => void }) {
   }
 
   const handleKakaoLogin = async () => {
+    console.log('디버깅 siteUrl', siteUrl)
+
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'kakao',
       options: {
