@@ -2,7 +2,7 @@
 
 import LoginInput from '@/components/NewComponent/LoginInput'
 import useUser from '@/hooks/useUser'
-import supabase from '@/libs/supabaseClient'
+import supabase, { siteUrl } from '@/libs/supabaseClient'
 import { useForm } from 'react-hook-form'
 import styled from 'styled-components'
 import KakaoIcon from '@/assets/desktop/kakao_icon.svg'
@@ -38,7 +38,7 @@ export default function Login() {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'kakao',
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
+        redirectTo: `${siteUrl}/auth/callback`,
       },
     })
     if (!error) {

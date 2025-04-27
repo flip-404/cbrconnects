@@ -4,7 +4,7 @@ import KakaoIcon from '@/assets/desktop/kakao_icon.svg'
 import GoogleIcon from '@/assets/desktop/google_icon.svg'
 import CloseIcon from '@/assets/desktop/close_icon.svg'
 import useUser from '@/hooks/useUser'
-import supabase from '@/libs/supabaseClient'
+import supabase, { siteUrl } from '@/libs/supabaseClient'
 import LoginInput from './LoginInput'
 
 type SignInCredentials = { email: string; password: string }
@@ -36,7 +36,7 @@ function LoginModal({ closeModal }: { closeModal: () => void }) {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'kakao',
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
+        redirectTo: `${siteUrl}/auth/callback`,
       },
     })
     if (!error) {

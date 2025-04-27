@@ -4,7 +4,7 @@ import { signIn } from 'next-auth/react'
 import KakaoIcon from '@/assets/desktop/kakao_icon.svg'
 import GoogleIcon from '@/assets/desktop/google_icon.svg'
 import CloseIcon from '@/assets/desktop/close_icon.svg'
-import supabase from '@/libs/supabaseClient'
+import supabase, { siteUrl } from '@/libs/supabaseClient'
 import useUser from '@/hooks/useUser'
 
 function SignupModal({ closeModal }: { closeModal: () => void }) {
@@ -15,7 +15,7 @@ function SignupModal({ closeModal }: { closeModal: () => void }) {
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'kakao',
       options: {
-        redirectTo: `${window.location.origin}/auth/callback`,
+        redirectTo: `${siteUrl}/auth/callback`,
       },
     })
     if (!error) {
