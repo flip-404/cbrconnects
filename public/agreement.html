@@ -497,68 +497,55 @@
       </div>
     </div>
     <script>
-      // 페이지 로드 시 실행할 함수
       document.addEventListener('DOMContentLoaded', function () {
-        // URL에서 쿼리 파라미터 가져오기
         const urlParams = new URLSearchParams(window.location.search)
         const tabType = urlParams.get('type')
 
-        // 파라미터에 따라 적절한 탭 활성화
         if (tabType === 'privacy') {
           activateTab('privacy')
         } else {
-          // type이 없거나 terms인 경우 기본값으로 이용약관 탭 활성화
           activateTab('terms')
         }
 
-        // 탭 클릭 이벤트 추가
         const tabs = document.getElementsByClassName('tab')
         for (let i = 0; i < tabs.length; i++) {
           tabs[i].addEventListener('click', function () {
             const tabName = this.getAttribute('data-tab')
-            // 탭 활성화
+
             activateTab(tabName)
-            // URL 파라미터 업데이트
+
             updateURLParameter(tabName)
           })
         }
       })
 
-      // 탭 활성화 함수
       function activateTab(tabName) {
-        // 모든 탭 콘텐츠 비활성화
         const tabContents = document.getElementsByClassName('tab-content')
         for (let i = 0; i < tabContents.length; i++) {
           tabContents[i].classList.remove('active')
         }
 
-        // 모든 탭 버튼 비활성화
         const tabs = document.getElementsByClassName('tab')
         for (let i = 0; i < tabs.length; i++) {
           tabs[i].classList.remove('active')
         }
 
-        // 선택한 탭 활성화
         document.getElementById(tabName).classList.add('active')
 
-        // 선택한 탭 버튼 활성화
         const selectedTab = document.querySelector(`.tab[data-tab="${tabName}"]`)
         if (selectedTab) {
           selectedTab.classList.add('active')
         }
       }
 
-      // URL 파라미터 업데이트 함수
       function updateURLParameter(tabName) {
-        // 현재 URL 가져오기
         const url = new URL(window.location.href)
-        // type 파라미터 설정
+
         url.searchParams.set('type', tabName)
-        // 브라우저 주소 업데이트 (페이지 새로고침 없이)
+
         window.history.pushState({}, '', url)
       }
 
-      // 클릭 이벤트를 위한 함수 (HTML 버튼에서 호출)
       function openTab(event, tabName) {
         event.preventDefault()
         activateTab(tabName)
