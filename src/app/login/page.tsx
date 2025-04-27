@@ -96,8 +96,8 @@ export default function Login() {
         <SocialLoginButton $socialType="kakao" onClick={handleKakaoLogin}>
           <KakaoIcon /> 카카오톡으로 시작하기
         </SocialLoginButton>
-        <SocialLoginButton $socialType="google" onClick={handleGoogleLogin}>
-          <GoogleIcon /> Google로 시작하기
+        <SocialLoginButton $socialType="google" onClick={handleGoogleLogin} disabled>
+          <GoogleIcon /> Google로 시작하기 (준비중)
         </SocialLoginButton>
       </ButtonContainer>
     </Container>
