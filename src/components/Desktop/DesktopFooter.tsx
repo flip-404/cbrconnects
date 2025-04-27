@@ -51,7 +51,7 @@ function DesktopFooter() {
         </Content>
         <Visited>
           <p>{visitCount.toLocaleString()}</p>
-          <span>Visits since 28 Feb 2025</span>
+          <span>Visits since 27 Apr 2025</span>
         </Visited>
       </Board>
       <CopyRight>ⓒ KCanberra ─ Contact ─ Designed by Matdongsan</CopyRight>
