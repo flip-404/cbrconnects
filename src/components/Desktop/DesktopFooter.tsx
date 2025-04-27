@@ -54,7 +54,7 @@ function DesktopFooter() {
           <span>Visits since 28 Feb 2025</span>
         </Visited>
       </Board>
-      <CopyRight>ⓒ CBRCONNECTS ─ Contact ─ Designed by Matdongsan</CopyRight>
+      <CopyRight>ⓒ KCanberra ─ Contact ─ Designed by Matdongsan</CopyRight>
     </Container>
   )
 }

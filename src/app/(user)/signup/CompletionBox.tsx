@@ -20,7 +20,7 @@ function CompletionBox({ userName }: { userName: string }) {
     <Container>
       <Header>가입이 완료되었습니다.</Header>
       <Body>
-        <Logo src="/CanberraLogo.png" alt="캔버라커넥트" />
+        <Logo src="/CanberraLogo.png" alt="케이캔버라" />
         <WelcomeGreting>
           안녕하세요! {userName} 님. <br />
           캔버라 커넥트 회원이 되신 것을 환영합니다.

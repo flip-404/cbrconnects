@@ -85,7 +85,7 @@ export default function StoryViewer({
       }}
     >
       <Header>
-        <span>캔버라커넥트</span>
+        <span>K-캔버라</span>
         <button type="button" aria-label="close storyViewer" onClick={closeViwer}>
           <CloseIcon fill="white" />
         </button>

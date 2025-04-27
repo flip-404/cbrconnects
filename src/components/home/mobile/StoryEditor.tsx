@@ -75,7 +75,7 @@ export default function StoryEditor({ closeEditor }: { closeEditor: () => void }
       style={imagePreview ? { backgroundImage: `url(${imagePreview})` } : {}}
     >
       <Header>
-        <span>캔버라커넥트</span>
+        <span>K-캔버라</span>
         <button type="button" aria-label="close storyeditor" onClick={closeEditor}>
           <CloseIcon fill="white" />
         </button>

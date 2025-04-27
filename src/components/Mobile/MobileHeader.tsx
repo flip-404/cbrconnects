@@ -16,7 +16,7 @@ export default function MobileHeader() {
   // 뉴스 링크는 kbs로 할까..
   return (
     <Container>
-      <Link href="/">캔버라커넥트</Link>
+      <Link href="/">K-캔버라</Link>
       <button type="button" aria-label="Open navigation" onClick={() => setIsOpenNav(!isOpenNav)}>
         <HamburgerIcon fill={isOpenNav ? '#007aff' : undefined} />
       </button>

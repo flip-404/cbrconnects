@@ -13,7 +13,7 @@ export default function MobileFooter() {
           letterSpacing: '0.2px',
         }}
       >
-        CANBERRA CONNECT
+        K-Canberra CONNECT
       </p>
       <span
         style={{

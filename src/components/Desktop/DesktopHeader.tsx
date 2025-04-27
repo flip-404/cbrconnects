@@ -85,7 +85,7 @@ function DesktopHeader() {
         </LeftSection>
         <CenterSection>
           <Logo>
-            <Link href="/">캔버라커넥트</Link>
+            <Link href="/">K-캔버라</Link>
           </Logo>
         </CenterSection>
         <RightSection>

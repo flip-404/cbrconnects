@@ -119,7 +119,7 @@ function Settings() {
             >
               저장
             </button>
-            <button type="button">캔버라커넥트 탈퇴</button>
+            <button type="button">K-캔버라 탈퇴</button>
           </Controls>
         </DetailEdit>
       </div>
