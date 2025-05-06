@@ -6,6 +6,14 @@
 
 <br/>
 
+<div style="display: flex; justify-content: center; gap: 10px;">
+<img src="https://velog.velcdn.com/images/flip_404/post/b057f39a-238c-43f1-b4df-d39ba9edd0f5/image.png" height="400">
+<img src="https://velog.velcdn.com/images/flip_404/post/3490bfb9-5e0d-4503-81c4-15acb89428f2/image.png" height="400">
+<img src="https://velog.velcdn.com/images/flip_404/post/291e5981-209f-43ae-99ae-2934c3dc7c49/image.png" height="400">
+</div>
+
+<br/>
+
 `K-캔버라`는 호주 캔버라에 거주하는 한인들을 위한 커뮤니티 웹사이트입니다. 이 웹사이트는 캔버라에 거주하는 한인들이 서로 소통하고 정보를 공유하며, 지역 사회에 쉽게 적응하고 통합할 수 있도록 돕는 것을 목표로 합니다. 이 프로젝트는 Next.JS, tanstack-query, Supabase, Prisma, Styled-components, vanilla-extract css, kakao API, Google API 등을 사용하여 개발됩니다.
 
 ### 기술 스택
