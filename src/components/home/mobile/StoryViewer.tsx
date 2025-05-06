@@ -113,7 +113,7 @@ export default function StoryViewer({
             >
               {story.link && (
                 <div className="link">
-                  <a href={`https://${story.link}`} target="_blank" rel="noopener noreferrer">
+                  <a href={`${story.link}`} target="_blank" rel="noopener noreferrer">
                     링크 이동
                   </a>
                   <span>{story.author.nickname}님이 첨부한 링크가 있어요!</span>
