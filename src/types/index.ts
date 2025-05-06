@@ -22,7 +22,7 @@ export type CommentWithRelations = comment & {
 export type CommentResponse = {
   id: number
   content: string
-  createdAt: Date
+  createdAt: string
   author: userinfo
   postId: number
   parentId: number
