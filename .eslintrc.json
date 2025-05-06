@@ -16,7 +16,6 @@
   "extends": [
     "airbnb",
     "airbnb-typescript",
-    "airbnb/hooks",
     "next/core-web-vitals",
     "plugin:@typescript-eslint/recommended", // ts 권장
     "plugin:prettier/recommended", // eslint의 포매팅을 prettier로 사용.
