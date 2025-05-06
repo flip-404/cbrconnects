@@ -13,6 +13,7 @@ import { useMediaQuery } from '@mui/material'
 import { formatPostDate } from '@/utils/formatDate'
 import useCategoryStore from '@/store/useCategoryStore'
 import LikeIcon from '@/assets/like.svg'
+import useUser from '@/hooks/useUser'
 import SkeletonPosts from './SkeletonPosts'
 import BoardControls from './BoardControls'
 
@@ -26,6 +27,7 @@ function Board() {
   const [searchFilter, setSearchFilter] = useState('')
   const [searchKeyword, setSearchKeyword] = useState('')
   const [page, setPage] = useState(1)
+  const { user } = useUser()
   const { data, isLoading } = useQuery({
     queryKey: ['posts', category, page, limit, searchFilter, searchKeyword],
     queryFn: ({ queryKey }) =>
@@ -84,7 +86,15 @@ function Board() {
             </Tab>
           )
         })}
-        {isMobile && <Link href={`/write?category=${category}`}>새 글 쓰기</Link>}
+        {isMobile &&
+          (!['NOTICE', 'PROMOTION'].includes(category) || user?.user_group === 'Admin') && (
+            <Link
+              href={user ? `/write?category=${category}` : '/login'}
+              className={!user ? 'disabled-link' : ''}
+            >
+              새 글 쓰기
+            </Link>
+          )}
       </Tabs>
       <Posts>
         {isLoading ? (
@@ -189,6 +199,12 @@ const Tabs = styled.div`
       color: white;
       font-size: 15px;
       font-weight: 600;
+    }
+
+    .disabled-link {
+      background-color: gray;
+      opacity: 0.5;
+      text-decoration: none;
     }
   }
 `

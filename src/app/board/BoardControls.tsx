@@ -75,14 +75,16 @@ function BoardControls({
     <Container>
       {!isMobile && (
         <div>
-          <WriteButton
-            $isLogin={Boolean(user)}
-            disabled={!user}
-            onClick={() => router.push(`/write?category=${category}`)}
-          >
-            <AddIcon />
-            <span>글쓰기</span>
-          </WriteButton>
+          {(!['NOTICE', 'PROMOTION'].includes(category) || user?.user_group === 'Admin') && (
+            <WriteButton
+              $isLogin={Boolean(user)}
+              disabled={!user}
+              onClick={() => router.push(`/write?category=${category}`)}
+            >
+              <AddIcon />
+              <span>글쓰기</span>
+            </WriteButton>
+          )}
           <Button
             onClick={() => {
               queryClient.invalidateQueries({ queryKey: ['posts', category, page, limit] })

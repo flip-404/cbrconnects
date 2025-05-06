@@ -7,6 +7,7 @@ interface User {
   profile_image: string | null
   nickname: string
   description: string | null
+  user_group: 'User' | 'Admin'
 }
 
 interface UserState {

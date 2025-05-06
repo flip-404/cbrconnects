@@ -84,6 +84,11 @@ async function POST(request: NextRequest) {
   const body = await request.json()
   const { user, title, content, category, thumbnail } = body
 
+  // 권한 체크
+  if (['NOTICE', 'PROMOTION'].includes(category) && user?.user_group !== 'Admin') {
+    return new NextResponse(JSON.stringify({ error: '권한이 없습니다.' }), { status: 403 })
+  }
+
   try {
     const post = await prisma.post.create({
       data: {
