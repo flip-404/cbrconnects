@@ -6,6 +6,7 @@ import { GET_Messages } from '@/types/newIndex'
 import { useQuery } from '@tanstack/react-query'
 import { useState } from 'react'
 import styled from 'styled-components'
+import { formatPostDate } from '@/utils/formatDate'
 
 export default function MessagePage() {
   const [activeTab, setActiveTab] = useState<'received' | 'sent'>('received')
@@ -34,7 +35,7 @@ export default function MessagePage() {
               <div>
                 <strong>
                   {activeTab === 'received' ? message.sender.nickname : message.receiver.nickname}{' '}
-                  <span>{message.created_at.toString()}</span>
+                  <span>{formatPostDate(message.created_at)}</span>
                 </strong>
                 <p>{message.content}</p>
               </div>

@@ -9,6 +9,7 @@ import { useComment } from '@/contexts/commentContext'
 import Link from 'next/link'
 import EmptyIcon from '@/assets/empty_profile.svg'
 import Image from 'next/image'
+import { formatPostDate } from '@/utils/formatDate'
 import EditMode from './EditMode'
 
 interface CommentProps {
@@ -61,7 +62,7 @@ function Comment({ comment }: CommentProps) {
           <p>
             {comment.content}
             <div>
-              {comment.created_at.toString()}
+              {formatPostDate(comment.created_at)}
               {user?.id === comment.author.id && (
                 <>
                   <button

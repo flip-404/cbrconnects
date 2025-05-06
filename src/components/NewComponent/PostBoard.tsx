@@ -5,6 +5,7 @@ import { GET_Posts } from '@/types/newIndex'
 import { useQuery } from '@tanstack/react-query'
 import Link from 'next/link'
 import styled from 'styled-components'
+import { formatPostDate } from '@/utils/formatDate'
 
 function PostBoard({ title, category }: { title: string; category: string }) {
   const { data } = useQuery({
@@ -23,7 +24,7 @@ function PostBoard({ title, category }: { title: string; category: string }) {
             <p>
               <Link href={`/post?postId=${post.id}`}>{post.title}</Link>
               <span>
-                {post.author_name} · {post.created_at}
+                {post.author_name} · {formatPostDate(post.created_at)}
               </span>
             </p>
           </Post>

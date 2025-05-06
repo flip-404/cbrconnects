@@ -11,6 +11,7 @@ import { postlike } from '@prisma/client'
 import Image from 'next/image'
 import ReactQuill from 'react-quill'
 import Link from 'next/link'
+import { formatPostDate } from '@/utils/formatDate'
 import CommentSection from './_components/CommentSection'
 import useUser from '../../hooks/useUser'
 
@@ -81,7 +82,7 @@ function PostViewer() {
             </AuthorProfile>
             <Details>
               <p>
-                {post.created_at} · {post.view_count} views
+                {formatPostDate(post.created_at)} · {post.view_count} views
               </p>
               {user?.id === post.author.id && (
                 <div>

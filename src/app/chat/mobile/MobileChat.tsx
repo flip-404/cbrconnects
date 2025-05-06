@@ -13,6 +13,7 @@ import api from '@/libs/axiosInstance'
 import { GET_chat } from '@/types/newIndex'
 import Image from 'next/image'
 import { userinfo } from '@prisma/client'
+import { formatPostDate } from '@/utils/formatDate'
 
 const limit = 20
 
@@ -94,7 +95,7 @@ function MobileChatPage() {
               {chatGroup.messages.map((message) => (
                 <div key={message.id} className="message">
                   <p>{message.content}</p>
-                  <span>{message.created_at.toString()}</span>
+                  <span>{formatPostDate(message.created_at)}</span>
                 </div>
               ))}
             </div>

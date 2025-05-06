@@ -13,6 +13,7 @@ import api from '@/libs/axiosInstance'
 import useUser from '@/hooks/useUser'
 import ViewsIcon from '@/assets/mobile/views.svg'
 import { GET_Stories } from '@/types/newIndex'
+import { formatPostDate } from '@/utils/formatDate'
 
 export default function StoryViewer({
   closeViwer,
@@ -127,7 +128,7 @@ export default function StoryViewer({
                     storyComments?.map((storyComment: GET_Stories) => (
                       <div key={storyComment.id} className="comment">
                         <span className="author">
-                          {storyComment.author.nickname} · {storyComment.created_at}
+                          {storyComment.author.nickname} · {formatPostDate(storyComment.created_at)}
                         </span>
                         <p className="content">{storyComment.content}</p>
                       </div>

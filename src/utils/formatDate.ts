@@ -1,84 +1,36 @@
-function formatDateToMonth(input: Date | string): string {
-  let date: Date
-
-  if (typeof input === 'string') {
-    date = new Date(input)
-
-    if (Number.isNaN(date.getTime())) {
-      return '유효하지 않은 날짜'
-    }
-  } else if (input instanceof Date) {
-    date = input
-  } else {
-    return '유효하지 않은 날짜'
-  }
-
+export function formatPostDate(isoString: string): string {
+  const postDate = new Date(isoString)
   const now = new Date()
 
-  const timeDifference = now.getTime() - date.getTime()
-  const oneMinute = 60 * 1000
-  const oneHour = 60 * 60 * 1000
-  const oneDay = 24 * 60 * 60 * 1000
-  const oneWeek = 7 * oneDay
+  const KST_OFFSET = 9 * 60 * 60 * 1000
+  const kstPostDate = new Date(postDate.getTime() + KST_OFFSET)
+  const kstNow = new Date(now.getTime() + KST_OFFSET)
 
-  if (timeDifference < oneMinute) {
-    return '방금 전'
-  }
-  if (timeDifference < oneHour) {
-    const minutes = Math.floor(timeDifference / (60 * 1000))
-    return `${minutes}분전`
-  }
-  if (timeDifference < oneDay) {
-    const hours = Math.floor(timeDifference / oneHour)
-    return `${hours}시간전`
-  }
-  if (timeDifference < oneWeek) {
-    const days = Math.floor(timeDifference / oneDay)
-    return `${days}일전`
-  }
+  const diffMs = kstNow.getTime() - kstPostDate.getTime()
+  const diffMinutes = Math.floor(diffMs / 1000 / 60)
+  const diffHours = Math.floor(diffMinutes / 60)
 
-  const currentYear = now.getFullYear()
-  const inputYear = date.getFullYear()
+  const startOfToday = new Date(kstNow.getFullYear(), kstNow.getMonth(), kstNow.getDate())
+  const startOfPostDate = new Date(
+    kstPostDate.getFullYear(),
+    kstPostDate.getMonth(),
+    kstPostDate.getDate(),
+  )
+  const diffDays = Math.floor(
+    (startOfToday.getTime() - startOfPostDate.getTime()) / (1000 * 60 * 60 * 24),
+  )
 
-  if (inputYear === currentYear) {
-    const month = date.getMonth() + 1
-    const day = date.getDate()
-    return `${String(month).padStart(2, '0')}.${String(day).padStart(2, '0')}`
+  if (diffDays === 0) {
+    if (diffMinutes < 60) {
+      return `${diffMinutes}분 전`
+    }
+    return `${diffHours}시간 전`
   }
-
-  const year = date.getFullYear()
-  const month = date.getMonth() + 1
-  const day = date.getDate()
-  return `${year}.${String(month).padStart(2, '0')}.${String(day).padStart(2, '0')}`
+  if (diffDays === 1) {
+    return '어제'
+  }
+  if (diffDays === 2) {
+    return '2일 전'
+  }
+  return kstPostDate.toISOString().slice(0, 10) // YYYY-MM-DD
 }
-
-function formatDateToFullYear(input: Date | string, includeTime: boolean = false) {
-  let date
-
-  if (typeof input === 'string') {
-    date = new Date(input)
-  } else if (input instanceof Date) {
-    date = input
-  } else {
-    throw new Error('Invalid input: input must be a string or Date object')
-  }
-
-  if (Number.isNaN(date.getTime())) {
-    throw new Error('Invalid date: unable to parse the input date')
-  }
-
-  const year = date.getFullYear()
-  const month = String(date.getMonth() + 1).padStart(2, '0')
-  const day = String(date.getDate()).padStart(2, '0')
-  const formattedDate = `${year}-${month}-${day}`
-
-  if (includeTime) {
-    const hours = String(date.getHours()).padStart(2, '0')
-    const minutes = String(date.getMinutes()).padStart(2, '0')
-    return `${formattedDate} ${hours}:${minutes}`
-  }
-
-  return formattedDate
-}
-
-export { formatDateToMonth, formatDateToFullYear }

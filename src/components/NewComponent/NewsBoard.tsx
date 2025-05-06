@@ -34,6 +34,8 @@ const Container = styled.ul`
   gap: 1px;
   width: 1300px;
   list-style: none;
+  margin: 0;
+  padding: 0;
 `
 
 const News = styled.li`

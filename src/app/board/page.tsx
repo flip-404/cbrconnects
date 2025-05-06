@@ -10,7 +10,7 @@ import api from '@/libs/axiosInstance'
 import Link from 'next/link'
 import { GET_Posts } from '@/types/newIndex'
 import { useMediaQuery } from '@mui/material'
-
+import { formatPostDate } from '@/utils/formatDate'
 import useCategoryStore from '@/store/useCategoryStore'
 import LikeIcon from '@/assets/like.svg'
 import SkeletonPosts from './SkeletonPosts'
@@ -103,7 +103,7 @@ function Board() {
                     </div>
                     <p className="post-author">
                       {post.author_name}
-                      <span>{post.created_at}</span>
+                      <span>{formatPostDate(post.created_at)}</span>
                     </p>
                   </div>
                   <span className="post-likes">
@@ -121,7 +121,7 @@ function Board() {
                         <Link href={`/post?postId=${post.id}`}>{post.title}</Link>
                       </div>
                       <div className="m-post-detail">
-                        {post.author_name} · {post.created_at}
+                        {post.author_name} · {formatPostDate(post.created_at)}
                         <span>
                           <span className="post-likes">
                             {post.likes.map((like) => (

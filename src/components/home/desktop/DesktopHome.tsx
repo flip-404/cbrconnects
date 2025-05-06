@@ -10,10 +10,8 @@ export default function DesktopHome() {
   return (
     <Container>
       <Pinned>
-        <PinnedBoard />
         <PinnedBoard category={boardLinks[0].category} />
         <PinnedBoard category={boardLinks[4].category} />
-        <PinnedBoard />
       </Pinned>
       <NewsBoard />
       <Boards>
@@ -38,9 +36,10 @@ const Container = styled.div`
 
 const Pinned = styled.div`
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  width: 1300px;
-  padding: 25px 0;
+  grid-template-columns: repeat(2, 1fr);
+
+  width: 900px;
+  padding: 15px 0 0 0;
 `
 
 const Boards = styled.div`

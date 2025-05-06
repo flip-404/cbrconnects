@@ -12,6 +12,7 @@ import { useState } from 'react'
 import api from '@/libs/axiosInstance'
 import { GET_chat } from '@/types/newIndex'
 import Image from 'next/image'
+import { formatPostDate } from '@/utils/formatDate'
 
 const limit = 20
 
@@ -85,7 +86,7 @@ function DesktopChatPage() {
       <Chats>
         {chats.map((chat: GET_chat) => (
           <Chat key={chat.id}>
-            <span>{chat.created_at.toString()}</span>
+            <span>{formatPostDate(chat.created_at)}</span>
             <Link href={`/profile?userId=${chat.author.id}`}>
               {chat.author.profile_image ? (
                 <Image
