@@ -1,6 +1,8 @@
 import prisma from '@/libs/prisma'
 import { NextResponse } from 'next/server'
 
+export const dynamic = 'force-dynamic'
+
 async function GET() {
   try {
     const visit = await prisma.visit.update({
@@ -9,13 +11,6 @@ async function GET() {
     })
 
     const res = NextResponse.json({ visit }, { status: 200 })
-
-    res.headers.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate')
-    res.headers.set('Pragma', 'no-cache')
-    res.headers.set('Expires', '0')
-    res.headers.set('Surrogate-Control', 'no-store')
-    res.headers.set('Vercel-CDN-Cache-Control', 'no-store')
-    res.headers.set('CDN-Cache-Control', 'no-store')
 
     return res
   } catch (error) {
