@@ -14,6 +14,8 @@ async function GET() {
     res.headers.set('Pragma', 'no-cache')
     res.headers.set('Expires', '0')
     res.headers.set('Surrogate-Control', 'no-store')
+    res.headers.set('Vercel-CDN-Cache-Control', 'no-store')
+    res.headers.set('CDN-Cache-Control', 'no-store')
 
     return res
   } catch (error) {
