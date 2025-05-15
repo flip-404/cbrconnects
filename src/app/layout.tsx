@@ -7,6 +7,7 @@ import AppProvider from '@/AppProvider'
 import { headers } from 'next/headers'
 import MobileFooter from '@/components/Mobile/MobileFooter'
 import Header from '@/components/NewComponent/Header'
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 export const metadata: Metadata = {
   title: 'K-캔버라 | 호주 캔버라 한인 커뮤니티',
@@ -80,6 +81,7 @@ export default function RootLayout({
             )}
           </AppProvider>
         </StyledComponentsRegistry>
+        <GoogleAnalytics gaId="G-VXWYYDWJ9F" />
       </body>
     </html>
   )
