@@ -62,7 +62,7 @@ function Comment({ comment }: CommentProps) {
           <p>
             {comment.content}
             <div>
-              {formatPostDate(comment.created_at.toISOString())}
+              {formatPostDate(comment.created_at)}
               {user?.id === comment.author.id && (
                 <>
                   <button

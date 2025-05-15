@@ -1,4 +1,4 @@
-export function formatPostDate(isoString: string): string {
+export function formatPostDate(isoString: string | Date): string {
   const postDate = new Date(isoString)
   const now = new Date()
 
