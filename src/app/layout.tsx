@@ -21,28 +21,15 @@ export const metadata: Metadata = {
       '호주 캔버라에 거주하는 한인들을 위한 유일한 한인 커뮤니티 웹사이트. 정보 공유와 소통의 장을 제공합니다.',
     url: 'https://www.kcanberra.com',
     siteName: 'K-캔버라',
-    images: [
-      {
-        url: 'https://www.kcanberra.com/CanberraLogo.png',
-        width: 500,
-        height: 500,
-      },
-    ],
+    images: [{ url: 'https://www.kcanberra.com/CanberraLogo.png', width: 500, height: 500 }],
     locale: 'ko_KR',
     type: 'website',
   },
-  alternates: {
-    canonical: 'https://www.kcanberra.com',
-  },
+  alternates: { canonical: 'https://www.kcanberra.com' },
   robots: {
     index: true,
     follow: true,
-    googleBot: {
-      index: true,
-      follow: true,
-      'max-image-preview': 'large',
-      'max-snippet': -1,
-    },
+    googleBot: { index: true, follow: true, 'max-image-preview': 'large', 'max-snippet': -1 },
   },
   icons: {
     icon: [
@@ -51,13 +38,10 @@ export const metadata: Metadata = {
       { url: '/favicon-48x48.png', sizes: '48x48', type: 'image/png' },
     ],
   },
+  other: { 'google-site-verification': 'DQfSWPmjzKsvdkG3rHON7pG25-GSkBH0N7e0MYI4boc' },
 }
 
-export default function RootLayout({
-  children,
-}: Readonly<{
-  children: React.ReactNode
-}>) {
+export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   const headersList = headers()
   const isMobilePredefined = headersList.get('x-is-mobile') === 'true'
 

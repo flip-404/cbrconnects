@@ -16,9 +16,7 @@ export default function Login() {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SignInCredentials>({
-    mode: 'onBlur',
-  })
+  } = useForm<SignInCredentials>({ mode: 'onBlur' })
   const { login } = useUser()
 
   const handleCredentialsLogin = async (formData: SignInCredentials) => {
@@ -39,9 +37,7 @@ export default function Login() {
 
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'kakao',
-      options: {
-        redirectTo: `${siteUrl}/auth/callback`,
-      },
+      options: { redirectTo: `${siteUrl}/auth/callback` },
     })
     if (!error) {
       login()
@@ -75,9 +71,7 @@ export default function Login() {
           id="password"
           type="password"
           placeholder="비밀번호를 입력해 주세요"
-          register={register('password', {
-            required: '비밀번호를 입력해 주세요',
-          })}
+          register={register('password', { required: '비밀번호를 입력해 주세요' })}
           isError={Boolean(errors.password)}
           errorMessage={errors.password?.message || ''}
         />

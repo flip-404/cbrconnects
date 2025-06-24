@@ -14,9 +14,7 @@ function LoginModal({ closeModal }: { closeModal: () => void }) {
     register,
     handleSubmit,
     formState: { errors },
-  } = useForm<SignInCredentials>({
-    mode: 'onBlur',
-  })
+  } = useForm<SignInCredentials>({ mode: 'onBlur' })
   const { login } = useUser()
 
   const handleCredentialsLogin = async (formData: SignInCredentials) => {
@@ -33,13 +31,11 @@ function LoginModal({ closeModal }: { closeModal: () => void }) {
   }
 
   const handleKakaoLogin = async () => {
-    console.log('디버깅 siteUrl', siteUrl)
+    console.log('kakao login 디버깅 siteUrl', siteUrl)
 
     const { error } = await supabase.auth.signInWithOAuth({
       provider: 'kakao',
-      options: {
-        redirectTo: `${siteUrl}/auth/callback`,
-      },
+      options: { redirectTo: `${siteUrl}/auth/callback` },
     })
     if (!error) {
       login()
@@ -49,7 +45,20 @@ function LoginModal({ closeModal }: { closeModal: () => void }) {
     }
   }
 
-  const handleGoogleLogin = async () => {}
+  const handleGoogleLogin = async () => {
+    console.log('google login 디버깅 siteUrl', siteUrl)
+
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider: 'google',
+      options: { redirectTo: `${siteUrl}/auth/callback` },
+    })
+    if (!error) {
+      login()
+      closeModal()
+    } else {
+      alert('카카오 로그인에 실패했습니다.')
+    }
+  }
 
   return (
     <ModalOverlay onClick={closeModal}>
@@ -77,9 +86,7 @@ function LoginModal({ closeModal }: { closeModal: () => void }) {
             id="password"
             type="password"
             placeholder="비밀번호를 입력해 주세요"
-            register={register('password', {
-              required: '비밀번호를 입력해 주세요',
-            })}
+            register={register('password', { required: '비밀번호를 입력해 주세요' })}
             isError={Boolean(errors.password)}
             errorMessage={errors.password?.message || ''}
           />
@@ -99,8 +106,8 @@ function LoginModal({ closeModal }: { closeModal: () => void }) {
           <SocialLoginButton $socialType="kakao" onClick={handleKakaoLogin}>
             <KakaoIcon /> 카카오톡으로 시작하기
           </SocialLoginButton>
-          <SocialLoginButton $socialType="google" onClick={handleGoogleLogin} disabled>
-            <GoogleIcon /> Google로 시작하기 (준비중)
+          <SocialLoginButton $socialType="google" onClick={handleGoogleLogin}>
+            <GoogleIcon /> Google로 시작하기
           </SocialLoginButton>
         </ButtonContainer>
       </Modal>
