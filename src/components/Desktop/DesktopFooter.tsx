@@ -39,14 +39,10 @@ function DesktopFooter() {
             <h3>지원</h3>
             <ul>
               <li>
-                <Link href="/agreement.html?type=terms" target="_blank" rel="noopener noreferrer">
-                  이용약관
-                </Link>
+                <Link href="/privacy">이용약관</Link>
               </li>
               <li>
-                <Link href="/agreement.html?type=privacy" target="_blank" rel="noopener noreferrer">
-                  개인정보처리방침
-                </Link>
+                <Link href="/privacy">개인정보처리방침</Link>
               </li>
             </ul>
           </div>
