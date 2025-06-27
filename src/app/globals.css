@@ -1,10 +1,4 @@
-:root {
-}
-
-@media (prefers-color-scheme: dark) {
-  :root {
-  }
-}
+@import 'tailwindcss';
 
 html,
 body {
